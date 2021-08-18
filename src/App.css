@@ -1,0 +1,71 @@
+html, body, #root {
+  font-family: 'Roboto Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  height: 100%;
+}
+
+body {
+  background-color: white;
+}
+
+.config-panel {
+  background-color: #F6F6F6;
+  border-right: 1px solid lightgray;
+  padding: 20px;
+  height: calc(100% - 40px);
+}
+
+.config-panel-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.config-panel-section-title {
+  font-size: 24px;
+  margin-top: 20px;
+}
+
+.config-panel-search-box {
+  font-size: 18px;
+  margin-top: 20px;
+  height: calc(30px - 6px);
+  width: calc(100% - 24px);
+  padding: 3px 12px;
+}
+
+.config-panel-button {
+  font-size: 18px;
+  margin-top: 20px;
+  height: 30px;
+  width: 100%;
+  text-align: center;
+  line-height: 30px;
+  border: 1px solid black;
+  border-radius: 3px;
+  background: white;
+  cursor: pointer;
+}
+
+.config-panel-button:hover {
+  box-shadow: 0px 0px 4px #00000066;
+}
+
+.vis-panel {
+  position: fixed;
+  right: 0;
+  top: 0;
+  overflow-y: auto;
+}
+
+.vis-panel-title {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 'Roboto Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  opacity: 30%;
+}
+
+.gosling-component > div > div {
+  /* background-color: #FAFAFA; */
+}
