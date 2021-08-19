@@ -2,12 +2,13 @@
   "name": "gosling-app-sv",
   "version": "0.0.0",
   "license": "MIT",
-  "homepage": "https://sehilyi.github.io/gosling-app-sv",
+  "homepage": "https://sehilyi.github.io/gosling-app-sv/",
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "deploy": "yarn build; touch dist/.nojekyll; gh-pages -d dist -t --git git"
+    "predeploy": "yarn build",
+    "deploy": "touch dist/.nojekyll; gh-pages -d dist -t --git git"
   },
   "dependencies": {
     "gosling.js": "0.9.3",
