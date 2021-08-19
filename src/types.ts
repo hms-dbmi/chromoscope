@@ -1,4 +1,4 @@
-declare module '*.schema.json' {
-    const content: string;
+declare module '*.json' {
+    const content: Object;
     export default content;
 }

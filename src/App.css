@@ -12,6 +12,11 @@ body {
   font-weight: bold;
 }
 
+.panel-title > small {
+  font-size: 16px;
+  margin-left: 6px;
+}
+
 .config-panel {
   background-color: #F6F6F6;
   border-right: 1px solid lightgray;
@@ -22,11 +27,42 @@ body {
 .config-panel-section-title {
   font-size: 20px;
   margin-top: 20px;
+  font-weight: bold;
+}
+
+.config-panel-input-container {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.config-panel-label {
+  /* label on the left of HTML elements */
+  font-size: 16px;
+  height: 30px;
+  line-height: 30px;
+  width: 40%;
+  display: inline-block;
+}
+
+.config-panel-label > small {
+  margin-left: 4px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.config-panel-input {
+  width: 60%;
+  display: inline-block;
+}
+
+.config-panel-dropdown {
+  font-size: 14px;
+  height: 30px;
+  width: 100%;
 }
 
 .config-panel-search-box {
   font-size: 14px;
-  margin-top: 20px;
   height: calc(30px - 6px);
   width: calc(100% - 24px);
   padding: 3px 12px;
