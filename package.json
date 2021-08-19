@@ -7,7 +7,7 @@
     "start": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "deploy": "yarn build && touch build/.nojekyll && gh-pages -d build -t --git git"
+    "deploy": "yarn build; touch dist/.nojekyll; gh-pages -d dist -t --git git"
   },
   "dependencies": {
     "gosling.js": "0.9.3",

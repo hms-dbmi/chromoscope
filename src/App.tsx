@@ -11,7 +11,7 @@ const VIS_PADDING = 60;
 
 function App() {
 
-  const gosRef = useRef<{ api: GoslingApi }>();
+  const gosRef = useRef<any>(); // { api: GoslingApi }
   const [visPanelWidth, setVisPanelWidth] = useState(INIT_VIS_PANEL_WIDTH - CONFIG_PANEL_WIDTH - VIS_PADDING * 2);
   const [navigationKeyword, setNavigationKeyword] = useState('');
 
