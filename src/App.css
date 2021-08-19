@@ -7,6 +7,11 @@ body {
   background-color: white;
 }
 
+.panel-title {
+  font-size: 22px;
+  font-weight: bold;
+}
+
 .config-panel {
   background-color: #F6F6F6;
   border-right: 1px solid lightgray;
@@ -14,18 +19,13 @@ body {
   height: calc(100% - 40px);
 }
 
-.config-panel-title {
-  font-size: 24px;
-  font-weight: bold;
-}
-
 .config-panel-section-title {
-  font-size: 24px;
+  font-size: 20px;
   margin-top: 20px;
 }
 
 .config-panel-search-box {
-  font-size: 18px;
+  font-size: 14px;
   margin-top: 20px;
   height: calc(30px - 6px);
   width: calc(100% - 24px);
@@ -33,7 +33,7 @@ body {
 }
 
 .config-panel-button {
-  font-size: 18px;
+  font-size: 14px;
   margin-top: 20px;
   height: 30px;
   width: 100%;
@@ -60,8 +60,6 @@ body {
   position: fixed;
   top: 20px;
   right: 20px;
-  font-size: 24px;
-  font-weight: bold;
   font-family: 'Roboto Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   opacity: 30%;
 }

@@ -6,7 +6,7 @@ import './App.css'
 import { GoslingApi } from 'gosling.js/dist/src/core/api'
 
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
-const CONFIG_PANEL_WIDTH = 600;
+const CONFIG_PANEL_WIDTH = 400;
 const VIS_PADDING = 60;
 
 function App() {
@@ -48,7 +48,7 @@ function App() {
   return (
     <>
       <div className='config-panel' style={{width: CONFIG_PANEL_WIDTH - 40}}>
-        <div className='config-panel-title'>Configuration</div>
+        <div className='panel-title'>Configuration</div>
         <div className='config-panel-section-title'>Data</div>
         <input
           className="config-panel-search-box"
@@ -80,7 +80,7 @@ function App() {
       </div>
       <div className='vis-panel' style={{ height: `calc(100% - ${VIS_PADDING * 2}px)`, padding: VIS_PADDING }}>
         {goslingComponent}
-        <div className='vis-panel-title'>Visualization</div>
+        <div className='vis-panel-title panel-title'>Visualization</div>
       </div>
     </>
   )
