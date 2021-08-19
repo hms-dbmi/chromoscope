@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "serve": "vite preview",
     "predeploy": "yarn build",
-    "format": "yarn run eslint .eslintrc.js",
+    "format": "yarn run eslint src",
     "deploy": "touch dist/.nojekyll; gh-pages -d dist -t --git git"
   },
   "dependencies": {
