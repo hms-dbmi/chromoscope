@@ -21,6 +21,7 @@ function App() {
   const [visPanelWidth, setVisPanelWidth] = useState(INIT_VIS_PANEL_WIDTH - CONFIG_PANEL_WIDTH - VIS_PADDING * 2);
   const [overviewChr, setOverviewChr] = useState('');
   const [genomeViewChr, setGenomeViewChr] = useState('');
+  const [interactive, setInteractive] = useState(false);
 
   useEffect(() => {
     if(!overviewChr) return;
@@ -150,10 +151,13 @@ function App() {
         <div className='config-panel-section-title'>Export</div>
         <div className='config-panel-button' onClick={() => gosRef.current?.api.exportPng()}>PNG</div>
       </div>
-      <div className='vis-panel' style={{ height: `calc(100% - ${VIS_PADDING * 2}px)`, padding: VIS_PADDING }}>
+      <div className='vis-panel' style={{ height: `calc(100% - ${VIS_PADDING * 2}px)`, padding: VIS_PADDING }} onClick={() => setInteractive(false)}>
         {goslingComponent}
         <div className='vis-panel-title panel-title'><small>v{packageJson.dependencies['gosling.js']}</small></div>
       </div>
+      {/* <div className={`vis-panel-overlay ${interactive ? 'vis-panel-overlay-active' : ''}`} style={{width: `calc(100% - ${CONFIG_PANEL_WIDTH + 1}px)`}} onClick={() => setInteractive(true)}>
+        <span>Click to interact ...</span>
+      </div> */}
     </>
   );
 }
