@@ -539,6 +539,11 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
+"@types/bezier-js@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@types/bezier-js/-/bezier-js-4.1.0.tgz#e1b023cc0a6e53492d0249a0711a3e73d1dfc8fe"
+  integrity sha512-ElU16s8E6Pr6magp8ihwH1O8pbUJASbMND/qgUc9RsLmP3lMLHiDMRXdjtaObwW5GPtOVYOsXDUIhTIluT+yaw==
+
 "@types/d3-array@^1":
   version "1.2.9"
   resolved "https://registry.yarnpkg.com/@types/d3-array/-/d3-array-1.2.9.tgz#c7dc78992cd8ca5c850243a265fd257ea56df1fa"
@@ -776,9 +781,9 @@
   integrity sha512-/BHF5HAx3em7/KkzVKm3LrsD6HZAXuXO1AJZQ3cRRBZj4oHZDviWPYu0aEplAqDFNHZPW6d3G7KN+ONcCCC7pw==
 
 "@types/node@^12.0.0":
-  version "12.20.19"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.20.19.tgz#538e61fc220f77ae4a4663c3d8c3cb391365c209"
-  integrity sha512-niAuZrwrjKck4+XhoCw6AAVQBENHftpXw9F4ryk66fTgYaKQ53R4FI7c9vUGGw5vQis1HKBHDR1gcYI/Bq1xvw==
+  version "12.20.21"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.20.21.tgz#575e91f59c2e79318c2d39a48286c6954e484fd5"
+  integrity sha512-Qk7rOvV2A4vNgXNS88vEvbJE1NDFPCQ8AU+pNElrU2bA4yrRDef3fg3SUe+xkwyin3Bpg/Xh5JkNWTlsOcS2tA==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -1100,6 +1105,11 @@ base64-arraybuffer@^1.0.1:
   resolved "https://registry.yarnpkg.com/base64-arraybuffer/-/base64-arraybuffer-1.0.1.tgz#87bd13525626db4a9838e00a508c2b73efcf348c"
   integrity sha512-vFIUq7FdLtjZMhATwDul5RZWv2jpXQ09Pd6jcVEOvIsqCWTRFD/ONHNfyOS8dA/Ippi5dsIgpyKWKZaAKZltbA==
 
+bezier-js@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/bezier-js/-/bezier-js-4.1.1.tgz#414df656833104e86765c0fa5e31439fb3e83a34"
+  integrity sha512-oVOS6SSFFFlfnZdzC+lsfvhs/RRcbxJ47U04M4s5QIBaJmr3YWmTIL3qmrOK9uW+nUUcl9Jccmo/xpTrG+bBoQ==
+
 big-integer@^1.6.16:
   version "1.6.48"
   resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.48.tgz#8fd88bd1632cba4a1c8c3e3d7159f08bb95b4b9e"
@@ -1329,9 +1339,9 @@ convert-source-map@^1.7.0:
     safe-buffer "~5.1.1"
 
 core-js-pure@^3.16.0:
-  version "3.16.2"
-  resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.16.2.tgz#0ef4b79cabafb251ea86eb7d139b42bd98c533e8"
-  integrity sha512-oxKe64UH049mJqrKkynWp6Vu0Rlm/BTXO/bJZuN2mmR3RtOFNepLlSWDd1eo16PzHpQAoNG97rLU1V/YxesJjw==
+  version "3.16.3"
+  resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.16.3.tgz#41ccb9b6027535f8dd51a0af004c1c7f0a8c9ca7"
+  integrity sha512-6In+2RwN0FT5yK0ZnhDP5rco/NnuuFZhHauQizZiHo5lDnqAvq8Phxcpy3f+prJOqtKodt/cftBl/GTOW0kiqQ==
 
 core-js@^1.0.0:
   version "1.2.7"
@@ -1344,9 +1354,9 @@ core-js@^2.4.0:
   integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
 
 core-js@^3.6.0:
-  version "3.16.2"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.16.2.tgz#3f485822889c7fc48ef463e35be5cc2a4a01a1f4"
-  integrity sha512-P0KPukO6OjMpjBtHSceAZEWlDD1M2Cpzpg6dBbrjFqFhBHe/BwhxaP820xKOjRn/lZRQirrCusIpLS/n2sgXLQ==
+  version "3.16.3"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.16.3.tgz#1f2d43c51a9ed014cc6c83440af14697ae4b75f2"
+  integrity sha512-lM3GftxzHNtPNUJg0v4pC2RC6puwMd6VZA7vXUczi+SKmCWSf4JwO89VJGMqbzmB7jlK7B5hr3S64PqwFL49cA==
 
 core-util-is@~1.0.0:
   version "1.0.2"
@@ -2391,17 +2401,19 @@ gosling-theme@0.0.7:
   resolved "https://registry.yarnpkg.com/gosling-theme/-/gosling-theme-0.0.7.tgz#4b1bd5ad3730b2028ccc36f813fddb6bd98466a8"
   integrity sha512-rXFeettHSzs117dPQqsQZj7IyujeKf3uvDXTlymQ1hQdDwQOP1p3yBrHMDwsBXvvwzRY3jwgkB9z7Su9jnWmHA==
 
-gosling.js@0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/gosling.js/-/gosling.js-0.9.3.tgz#0ebda938a1b0207552eddc3049688ba5bb4e01da"
-  integrity sha512-8rAtwsUodIvP0luunFbc6hH2xiXeMwyoVoDi3VpaHrsSryKeNtjRj1L5PdWPabiJT81jXiE5bvdPeL3MrOyacQ==
+gosling.js@^0.9.4:
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/gosling.js/-/gosling.js-0.9.4.tgz#34ef28c253ab5821238232527435484f12bf6cbe"
+  integrity sha512-E0+gjisUoSXV4jpvOJtE1tIJ07jeqpjk5IFSswuaQX1zzaGe4o6SAG1zSoMNedSfcimL4ZNi/s0fOZYSAqIiAg==
   dependencies:
     "@gmod/bam" "^1.1.6"
     "@gmod/bbi" "^1.0.30"
+    "@types/bezier-js" "^4.1.0"
     "@types/d3" "^5.7.2"
     "@types/lodash" "^4.14.151"
     "@types/node" "^12.0.0"
     "@types/uuid" "^8.3.0"
+    bezier-js "^4.1.1"
     box-intersect "^1.0.2"
     d3-array "^2.5.1"
     d3-color "^2.0.0"

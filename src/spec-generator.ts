@@ -5,6 +5,7 @@ import defaultEncodings from './default-encoding';
 export interface SpecOption { 
   showOverview: boolean;
   showPutativeDriver: boolean;
+  xOffset: number; 
   width: number;
   svUrl: string;
   cnvUrl: string;
@@ -17,6 +18,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
   const midViewWidth = width;
   const bottomViewGap = 20;
   const bottomViewWidth = width / 2.0 - bottomViewGap / 2.0;
+  const topViewXOffset = (width - topViewWidth) / 2.0;
 
   return {
     'layout': 'linear',
@@ -33,7 +35,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
       {
         'arrangement': 'vertical',
         'views': [
-          ...getOverviewSpec({ ...option, width: topViewWidth}),
+          ...getOverviewSpec({ ...option, width: topViewWidth, xOffset: topViewXOffset }),
           {
             'linkingId': 'mid-scale',
             'xDomain': {'chromosome': '1'},
@@ -199,9 +201,9 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   'strandColor': {'field': 'strand', 'range': ['gray']},
                   'strandRow': {'field': 'strand'},
                   'opacity': {'value': 0.4},
-                  'geneHeight': {'value': 100 / 5.0},
+                  'geneHeight': {'value': 60 / 3.0},
                   'geneLabel': {'field': 'name'},
-                  'geneLabelFontSize': {'value': 100 / 5.0},
+                  'geneLabelFontSize': {'value': 60 / 3.0},
                   'geneLabelColor': {'field': 'strand', 'range': ['gray']},
                   'geneLabelStroke': {'value': 'white'},
                   'geneLabelStrokeThickness': {'value': 4},
@@ -209,7 +211,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   'type': {'field': 'type'}
                 },
                 width: midViewWidth,
-                'height': 100
+                'height': 60
               },
               {
                 'title': 'Gain',
@@ -280,14 +282,20 @@ function generateSpec(option: SpecOption): GoslingSpec {
                     'xe': {'field': 'end2', 'type': 'genomic'}
                   },
                   {
-                    'mark': 'point',
-                    'x': {'field': 'start1', 'type': 'genomic'},
-                    'y': {'value': 400}
+                    'mark': 'brush',
+                    'x': { linkingId: 'detail-scale-1' },
+                    color: { value: 'black' },
+                    stroke: { value: 'black' },
+                    strokeWidth: { value: 2 },
+                    opacity: { value: 0.3 }
                   },
                   {
-                    'mark': 'point',
-                    'x': {'field': 'end2', 'type': 'genomic'},
-                    'y': {'value': 400}
+                    'mark': 'brush',
+                    'x': { linkingId: 'detail-scale-2' },
+                    color: { value: 'black' },
+                    stroke: { value: 'black' },
+                    strokeWidth: { value: 2 },
+                    opacity: { value: 0.3 }
                   }
                 ],
                 'color': {
@@ -306,6 +314,11 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'strokeWidth': {'value': 1},
                 'opacity': {'value': 0.6},
                 'size': {'value': 4},
+                'tooltip': [
+                  {'field': 'start1', 'type': 'genomic'},
+                  {'field': 'end2', 'type': 'genomic'},
+                  {'field': 'svclass', 'type': 'nominal'}
+                ],
                 'style': {'legendTitle': 'SV Class', 'bazierLink': true},
                 width: midViewWidth,
                 'height': 200
@@ -324,12 +337,15 @@ function generateSpec(option: SpecOption): GoslingSpec {
             'centerRadius': 0.05,
             'xDomain': {'chromosome': '1', 'interval': [205000, 207000]},
             'spacing': 0.01,
+            linkingId: 'detail-scale-1',
             'tracks': [
               {
+                id: 'bam-1',
                 'title': 'Coverage',
                 'data': {
                   'type': 'bam',
-                  'url': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam'
+                  'url': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam',
+                  'indexUrl': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam.bai'
                 },
                 'dataTransform': [
                   {'type': 'coverage', 'startField': 'from', 'endField': 'to'}
@@ -374,9 +390,9 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   'strandColor': {'field': 'strand', 'range': ['gray']},
                   'strandRow': {'field': 'strand'},
                   'opacity': {'value': 0.4},
-                  'geneHeight': {'value': 100 / 5.0},
+                  'geneHeight': {'value': 60 / 3.0},
                   'geneLabel': {'field': 'name'},
-                  'geneLabelFontSize': {'value': 100 / 5.0},
+                  'geneLabelFontSize': {'value': 60 / 3.0},
                   'geneLabelColor': {'field': 'strand', 'range': ['gray']},
                   'geneLabelStroke': {'value': 'white'},
                   'geneLabelStrokeThickness': {'value': 4},
@@ -384,7 +400,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   'type': {'field': 'type'}
                 },
                 width: bottomViewWidth,
-                'height': 100
+                'height': 60
               },
               {
                 'title': 'Sequence',
@@ -447,7 +463,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   'legend': true
                 },
                 'text': {'field': 'base', 'type': 'nominal'},
-                'style': {'inlineLegend': true, 'outline': 'white'},
+                'style': {'inlineLegend': true },
                 width: bottomViewWidth,
                 'height': 40
               },
@@ -456,7 +472,8 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'title': 'Reads',
                 'data': {
                   'type': 'bam',
-                  'url': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam'
+                  'url': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam',
+                  'indexUrl': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam.bai'
                 },
                 'mark': 'rect',
                 'tracks': [
@@ -539,12 +556,15 @@ function generateSpec(option: SpecOption): GoslingSpec {
             'centerRadius': 0.05,
             'xDomain': {'chromosome': '1', 'interval': [490000, 496000]},
             'spacing': 0.01,
+            linkingId: 'detail-scale-2',
             'tracks': [
               {
+                id: 'bam-2',
                 'title': 'Coverage',
                 'data': {
                   'type': 'bam',
-                  'url': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam'
+                  'url': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam',
+                  'indexUrl': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam.bai'
                 },
                 'dataTransform': [
                   {'type': 'coverage', 'startField': 'from', 'endField': 'to'}
@@ -589,9 +609,9 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   'strandColor': {'field': 'strand', 'range': ['gray']},
                   'strandRow': {'field': 'strand'},
                   'opacity': {'value': 0.4},
-                  'geneHeight': {'value': 100 / 5.0},
+                  'geneHeight': {'value': 60 / 3.0},
                   'geneLabel': {'field': 'name'},
-                  'geneLabelFontSize': {'value': 100 / 5.0},
+                  'geneLabelFontSize': {'value': 60 / 3.0},
                   'geneLabelColor': {'field': 'strand', 'range': ['gray']},
                   'geneLabelStroke': {'value': 'white'},
                   'geneLabelStrokeThickness': {'value': 4},
@@ -599,7 +619,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   'type': {'field': 'type'}
                 },
                 width: bottomViewWidth,
-                'height': 100
+                'height': 60
               },
               {
                 'title': 'Sequence',
@@ -662,7 +682,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   'legend': true
                 },
                 'text': {'field': 'base', 'type': 'nominal'},
-                'style': {'inlineLegend': true, 'outline': 'white'},
+                'style': {'inlineLegend': true},
                 width: bottomViewWidth,
                 'height': 40
               },
@@ -671,7 +691,8 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'title': 'Reads',
                 'data': {
                   'type': 'bam',
-                  'url': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam'
+                  'url': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam',
+                  'indexUrl': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam.bai'
                 },
                 'mark': 'rect',
                 'tracks': [
@@ -742,7 +763,6 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 //   "range": ["#97A8B2", "#D4C6BA"]
                 // },
                 color: { value: '#97A8B2' },
-                'style': {'outlineWidth': 0.5},
                 width: bottomViewWidth,
                 'height': 310
               }
@@ -757,16 +777,20 @@ function generateSpec(option: SpecOption): GoslingSpec {
 export default generateSpec;
 
 function getOverviewSpec(option: SpecOption): View[] {
-  const { cnvUrl, svUrl, width, showPutativeDriver, showOverview } = option;
+  const { cnvUrl, svUrl, width, showPutativeDriver, showOverview, xOffset } = option;
   
   if(!showOverview) return [];
 
   return  [{
     // 'id': 'top-view',
     // "static": true,
-    // xOffset: (width - topViewWidth) / 2.0,
+    xOffset,
     'layout': 'circular',
     'spacing': 1,
+    'style': {
+      'outlineWidth': 1,
+      'outline': 'lightgray',
+    },
     'tracks': [
       {
         'id': 'top-view',

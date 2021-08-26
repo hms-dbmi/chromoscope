@@ -4,6 +4,7 @@ import { debounce } from 'lodash';
 import generateSpec from './spec-generator';
 import packageJson from '../package.json';
 import './App.css';
+import { CommonEventData } from 'gosling.js/dist/src/core/api';
 // import { GoslingApi } from 'gosling.js/dist/src/core/api'
 
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
@@ -24,13 +25,27 @@ function App() {
   const [interactive, setInteractive] = useState(false);
 
   useEffect(() => {
+    if(!gosRef.current) return;
+    
+    gosRef.current.api.subscribe('click', (type: string, e: CommonEventData) => {
+      // start and end positions are already cumulative values
+      gosRef.current.api.zoomTo('bam-1', `chr1:${e.data.start1}-${e.data.end1}`, 2000, 100);
+      gosRef.current.api.zoomTo('bam-2', `chr1:${e.data.start2}-${e.data.end2}`, 2000, 100);
+    });
+
+    return () => {
+      gosRef.current.api.unsubscribe('click');
+    };
+  }, [gosRef]);
+
+  useEffect(() => {
     if(!overviewChr) return;
     
     if(overviewChr.includes('chr')) {
-      gosRef.current?.api.zoomTo('top-view', overviewChr);
+      gosRef.current?.api.zoomTo('top-view', overviewChr, 0, 100);
       setGenomeViewChr(overviewChr);
     } else {
-      gosRef.current?.api.zoomToExtent('top-view');
+      gosRef.current?.api.zoomToExtent('top-view', 100);
     }
   }, [overviewChr]);
 
@@ -38,9 +53,9 @@ function App() {
     if(!genomeViewChr) return;
     
     if(genomeViewChr.includes('chr')) {
-      gosRef.current?.api.zoomTo('mid-view', genomeViewChr);
+      gosRef.current?.api.zoomTo('mid-view', genomeViewChr, 0, 100);
     } else {
-      gosRef.current?.api.zoomToExtent('mid-view');
+      gosRef.current?.api.zoomToExtent('mid-view', 100);
     }
   }, [genomeViewChr]);
 
@@ -50,20 +65,25 @@ function App() {
       'resize',
       debounce(() => {
         setVisPanelWidth(window.innerWidth - CONFIG_PANEL_WIDTH - VIS_PADDING * 2);
-      }, 100)
+      }, 500)
     );
   }, []);
 
   const goslingComponent = useMemo(() => {
+    const spec = JSON.parse(JSON.stringify(generateSpec({ svUrl, cnvUrl, showOverview, xOffset: 0, showPutativeDriver, width: visPanelWidth })));
     return (
       <GoslingComponent
         ref={gosRef}
-        spec={JSON.parse(JSON.stringify(generateSpec({ svUrl, cnvUrl, showOverview, showPutativeDriver, width: visPanelWidth })))}
+        spec={spec}
         padding={0}
-        margin={0} 
-        compiled={(spec) => {
-          console.log(spec);
-        }}
+        margin={0}
+        // theme={JSON.parse(JSON.stringify({
+        //   base: 'light',
+        //   axis: {
+        //     tickColor: 'lightgray',
+        //     baselineColor: 'lightgray'
+        //   }
+        // }))}
       />
     );
   }, [visPanelWidth, showOverview, showPutativeDriver, svUrl, cnvUrl]);
@@ -71,7 +91,7 @@ function App() {
   return (
     <>
       <div className='config-panel' style={{width: CONFIG_PANEL_WIDTH - 40}}>
-        <div className='panel-title'>Configuration</div>
+        {/* <div className='panel-title'>Configuration</div> */}
         <div className='config-panel-section-title'>Data</div>
         <div className='config-panel-input-container'>
           <span className='config-panel-label'>SV<small></small></span>
