@@ -1,5 +1,5 @@
 html, body, #root {
-  font-family: 'Roboto Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   height: 100%;
 }
 
@@ -8,7 +8,7 @@ body {
 }
 
 .panel-title {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
 }
 
@@ -27,19 +27,19 @@ body {
 }
 
 .config-panel-section-title {
-  font-size: 20px;
+  font-size: 18px;
   margin-top: 20px;
   font-weight: bold;
 }
 
 .config-panel-input-container {
-  margin-top: 20px;
+  margin-top: 18px;
   width: 100%;
 }
 
 .config-panel-label {
   /* label on the left of HTML elements */
-  font-size: 16px;
+  font-size: 14px;
   height: 30px;
   line-height: 30px;
   width: 40%;
