@@ -3,6 +3,7 @@ import { GoslingComponent } from 'gosling.js';
 import { debounce } from 'lodash';
 import generateSpec from './spec-generator';
 import packageJson from '../package.json';
+import drivers from './data/driver.json';
 import './App.css';
 import { CommonEventData } from 'gosling.js/dist/src/core/api';
 // import { GoslingApi } from 'gosling.js/dist/src/core/api'
@@ -22,6 +23,8 @@ function App() {
   const [visPanelWidth, setVisPanelWidth] = useState(INIT_VIS_PANEL_WIDTH - CONFIG_PANEL_WIDTH - VIS_PADDING * 2);
   const [overviewChr, setOverviewChr] = useState('');
   const [genomeViewChr, setGenomeViewChr] = useState('');
+  const [sampleId, setSampleId] = useState('84ca6ab0-9edc-4636-9d27-55cdba334d7d');
+  const [filteredDrivers, setFilteredDrivers] = useState(drivers.filter(d => d.sample_id === sampleId && +d.chr && +d.pos));
   const [interactive, setInteractive] = useState(false);
 
   useEffect(() => {
@@ -70,7 +73,7 @@ function App() {
   }, []);
 
   const goslingComponent = useMemo(() => {
-    const spec = JSON.parse(JSON.stringify(generateSpec({ svUrl, cnvUrl, showOverview, xOffset: 0, showPutativeDriver, width: visPanelWidth })));
+    const spec = JSON.parse(JSON.stringify(generateSpec({ svUrl, cnvUrl, showOverview, xOffset: 0, showPutativeDriver, width: visPanelWidth, drivers: filteredDrivers })));
     return (
       <GoslingComponent
         ref={gosRef}
@@ -111,6 +114,18 @@ function App() {
               className="config-panel-search-box"
               type="text"
               value={cnvUrl}
+              disabled={true}
+            />
+          </span>
+        </div>
+        <div className='config-panel-section-title'>Sample</div>
+        <div className='config-panel-input-container'>
+          <span className='config-panel-label'>ID<small></small></span>
+          <span className='config-panel-input'>
+            <input
+              className="config-panel-search-box"
+              type="text"
+              value={sampleId}
               disabled={true}
             />
           </span>

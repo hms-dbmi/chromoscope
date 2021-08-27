@@ -9,10 +9,11 @@ export interface SpecOption {
   width: number;
   svUrl: string;
   cnvUrl: string;
+  drivers: { [k: string]: string | number }[];
 }
 
 function generateSpec(option: SpecOption): GoslingSpec {
-  const { svUrl, cnvUrl, showPutativeDriver, showOverview, width } = option;
+  const { svUrl, cnvUrl, showPutativeDriver, showOverview, width, drivers } = option;
 
   const topViewWidth = Math.min(width, 600);
   const midViewWidth = width;
@@ -158,18 +159,17 @@ function generateSpec(option: SpecOption): GoslingSpec {
               ...(!showPutativeDriver ? [] : [{
                 'title': 'Putative Driver',
                 'data': {
-                  'url': 'https://s3.amazonaws.com/gosling-lang.org/data/SV/driver.df.scanb.complete.csv',
-                  'type': 'csv',
-                  'chromosomeField': 'Chr',
-                  'genomicFields': ['ChrStart', 'ChrEnd']
+                  'values': drivers,
+                  'type': 'json',
+                  'chromosomeField': 'chr',
+                  'genomicFields': ['pos']
                 },
-                'dataTransform': [
-                  {'type': 'filter', 'field': 'Sample', 'oneOf': ['PD35930a']}
-                ],
+                // dataTransform: [
+                //   { type: 'displace', method: 'pile', boundingBox: { startField: 'pos', endField: 'pos', padding: 100} }
+                // ],
                 'mark': 'text',
-                'x': {'field': 'ChrStart', 'type': 'genomic'},
-                'xe': {'field': 'ChrEnd', 'type': 'genomic'},
-                'text': {'field': 'Gene', 'type': 'nominal'},
+                'x': {'field': 'pos', 'type': 'genomic'},
+                'text': {'field': 'gene', 'type': 'nominal'},
                 'color': {'value': 'black'},
                 'style': {'textFontWeight': 'normal', 'dx': -10},
                 width: midViewWidth,
@@ -177,10 +177,10 @@ function generateSpec(option: SpecOption): GoslingSpec {
               } as SingleTrack]),
               {
                 'alignment': 'overlay',
-                'title': 'hg38 | Genes',
+                'title': 'hg19 | Genes',
                 'template': 'gene',
                 'data': {
-                  'url': 'https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation',
+                  'url': 'https://higlass.io/api/v1/tileset_info/?d=OHJakQICQD6gTD7skx4EWA',
                   'type': 'beddb',
                   'genomicFields': [
                     {'index': 1, 'name': 'start'},
@@ -230,7 +230,26 @@ function generateSpec(option: SpecOption): GoslingSpec {
                     'inRange': [4.5, 900]
                   }
                 ],
-                'mark': 'rect',
+                alignment: 'overlay',
+                tracks: [
+                  { 'mark': 'rect'},
+                  {
+                    'mark': 'brush',
+                    'x': { linkingId: 'detail-scale-1' },
+                    color: { value: 'black' },
+                    stroke: { value: 'black' },
+                    strokeWidth: { value: 2 },
+                    opacity: { value: 0.3 }
+                  },
+                  {
+                    'mark': 'brush',
+                    'x': { linkingId: 'detail-scale-2' },
+                    color: { value: 'black' },
+                    stroke: { value: 'black' },
+                    strokeWidth: { value: 2 },
+                    opacity: { value: 0.3 }
+                  }
+                ],
                 'x': {'field': 'start', 'type': 'genomic'},
                 'xe': {'field': 'end', 'type': 'genomic'},
                 'color': {'value': '#73C475'},
@@ -250,7 +269,26 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'dataTransform': [
                   {'type': 'filter', 'field': 'minor_cn', 'oneOf': ['0']}
                 ],
-                'mark': 'rect',
+                alignment: 'overlay',
+                tracks: [
+                  {'mark': 'rect'},
+                  {
+                    'mark': 'brush',
+                    'x': { linkingId: 'detail-scale-1' },
+                    color: { value: 'black' },
+                    stroke: { value: 'black' },
+                    strokeWidth: { value: 2 },
+                    opacity: { value: 0.3 }
+                  },
+                  {
+                    'mark': 'brush',
+                    'x': { linkingId: 'detail-scale-2' },
+                    color: { value: 'black' },
+                    stroke: { value: 'black' },
+                    strokeWidth: { value: 2 },
+                    opacity: { value: 0.3 }
+                  }
+                ],
                 'x': {'field': 'start', 'type': 'genomic'},
                 'xe': {'field': 'end', 'type': 'genomic'},
                 'color': {'value': '#FB6A4B'},
@@ -366,10 +404,11 @@ function generateSpec(option: SpecOption): GoslingSpec {
               },
               {
                 'alignment': 'overlay',
-                'title': 'hg38 | Genes',
+                'title': 'hg19 | Genes',
                 'template': 'gene',
                 'data': {
-                  'url': 'https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation',
+                  'url': 'https://higlass.io/api/v1/tileset_info/?d=OHJakQICQD6gTD7skx4EWA',
+                  // 'url': 'https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation',
                   'type': 'beddb',
                   'genomicFields': [
                     {'index': 1, 'name': 'start'},
@@ -777,7 +816,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
 export default generateSpec;
 
 function getOverviewSpec(option: SpecOption): View[] {
-  const { cnvUrl, svUrl, width, showPutativeDriver, showOverview, xOffset } = option;
+  const { cnvUrl, svUrl, width, showPutativeDriver, showOverview, xOffset, drivers } = option;
   
   if(!showOverview) return [];
 
@@ -847,21 +886,17 @@ function getOverviewSpec(option: SpecOption): View[] {
         'title': 'Putative Driver',
         'alignment': 'overlay',
         'data': {
-          'url': 'https://s3.amazonaws.com/gosling-lang.org/data/SV/driver.df.scanb.complete.csv',
-          'type': 'csv',
-          'chromosomeField': 'Chr',
-          'genomicFields': ['ChrStart', 'ChrEnd']
+          'values': drivers,
+          'type': 'json',
+          'chromosomeField': 'chr',
+          'genomicFields': ['pos']
         },
-        'dataTransform': [
-          {'type': 'filter', 'field': 'Sample', 'oneOf': ['PD35930a']}
-        ],
         'tracks': [
-          {'mark': 'text'},
-          {'mark': 'triangleBottom', 'size': {'value': 5}}
+          {'mark': 'text', size: {value: 6} },
+          // {'mark': 'triangleBottom', 'size': {'value': 5}}
         ],
-        'x': {'field': 'ChrStart', 'type': 'genomic'},
-        'xe': {'field': 'ChrEnd', 'type': 'genomic'},
-        'text': {'field': 'Gene', 'type': 'nominal'},
+        'x': {'field': 'pos', 'type': 'genomic'},
+        'text': {'field': 'gene', 'type': 'nominal'},
         'color': {'value': 'black'},
         'style': {
           'textFontWeight': 'normal',
