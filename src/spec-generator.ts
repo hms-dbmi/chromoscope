@@ -355,7 +355,10 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'tooltip': [
                   {'field': 'start1', 'type': 'genomic'},
                   {'field': 'end2', 'type': 'genomic'},
-                  {'field': 'svclass', 'type': 'nominal'}
+                  {'field': 'svclass', 'type': 'nominal'},
+                  {'field': 'sv_id', 'type': 'nominal'},
+                  {'field': 'svmethod', 'type': 'nominal'},
+                  {'field': 'pe_support', 'type': 'nominal'},
                 ],
                 'style': {'legendTitle': 'SV Class', 'bazierLink': true},
                 width: midViewWidth,
