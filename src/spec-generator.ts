@@ -204,7 +204,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   'geneHeight': {'value': 60 / 3.0},
                   'geneLabel': {'field': 'name'},
                   'geneLabelFontSize': {'value': 60 / 3.0},
-                  'geneLabelColor': {'field': 'strand', 'range': ['gray']},
+                  'geneLabelColor': {'field': 'strand', 'range': ['black']},
                   'geneLabelStroke': {'value': 'white'},
                   'geneLabelStrokeThickness': {'value': 4},
                   'geneLabelOpacity': {'value': 1},
@@ -236,18 +236,18 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   {
                     'mark': 'brush',
                     'x': { linkingId: 'detail-scale-1' },
-                    color: { value: 'black' },
-                    stroke: { value: 'black' },
-                    strokeWidth: { value: 2 },
-                    opacity: { value: 0.3 }
+                    'strokeWidth': {'value': 2},
+                    'stroke': {'value': '#0070DC'},
+                    'color': {'value': '#AFD8FF'},
+                    'opacity': {'value': 0.5}
                   },
                   {
                     'mark': 'brush',
                     'x': { linkingId: 'detail-scale-2' },
-                    color: { value: 'black' },
-                    stroke: { value: 'black' },
-                    strokeWidth: { value: 2 },
-                    opacity: { value: 0.3 }
+                    'strokeWidth': {'value': 2},
+                    'stroke': {'value': '#0070DC'},
+                    'color': {'value': '#AFD8FF'},
+                    'opacity': {'value': 0.5}
                   }
                 ],
                 'x': {'field': 'start', 'type': 'genomic'},
@@ -275,18 +275,18 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   {
                     'mark': 'brush',
                     'x': { linkingId: 'detail-scale-1' },
-                    color: { value: 'black' },
-                    stroke: { value: 'black' },
-                    strokeWidth: { value: 2 },
-                    opacity: { value: 0.3 }
+                    'strokeWidth': {'value': 2},
+                    'stroke': {'value': '#0070DC'},
+                    'color': {'value': '#AFD8FF'},
+                    'opacity': {'value': 0.5}
                   },
                   {
                     'mark': 'brush',
                     'x': { linkingId: 'detail-scale-2' },
-                    color: { value: 'black' },
-                    stroke: { value: 'black' },
-                    strokeWidth: { value: 2 },
-                    opacity: { value: 0.3 }
+                    'strokeWidth': {'value': 2},
+                    'stroke': {'value': '#0070DC'},
+                    'color': {'value': '#AFD8FF'},
+                    'opacity': {'value': 0.5}
                   }
                 ],
                 'x': {'field': 'start', 'type': 'genomic'},
@@ -322,18 +322,18 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   {
                     'mark': 'brush',
                     'x': { linkingId: 'detail-scale-1' },
-                    color: { value: 'black' },
-                    stroke: { value: 'black' },
-                    strokeWidth: { value: 2 },
-                    opacity: { value: 0.3 }
+                    'strokeWidth': {'value': 2},
+                    'stroke': {'value': '#0070DC'},
+                    'color': {'value': '#AFD8FF'},
+                    'opacity': {'value': 0.5}
                   },
                   {
                     'mark': 'brush',
                     'x': { linkingId: 'detail-scale-2' },
-                    color: { value: 'black' },
-                    stroke: { value: 'black' },
-                    strokeWidth: { value: 2 },
-                    opacity: { value: 0.3 }
+                    'strokeWidth': {'value': 2},
+                    'stroke': {'value': '#0070DC'},
+                    'color': {'value': '#AFD8FF'},
+                    'opacity': {'value': 0.5}
                   }
                 ],
                 'color': {
@@ -432,7 +432,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   'geneHeight': {'value': 60 / 3.0},
                   'geneLabel': {'field': 'name'},
                   'geneLabelFontSize': {'value': 60 / 3.0},
-                  'geneLabelColor': {'field': 'strand', 'range': ['gray']},
+                  'geneLabelColor': {'field': 'strand', 'range': ['black']},
                   'geneLabelStroke': {'value': 'white'},
                   'geneLabelStrokeThickness': {'value': 4},
                   'geneLabelOpacity': {'value': 1},
@@ -651,7 +651,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   'geneHeight': {'value': 60 / 3.0},
                   'geneLabel': {'field': 'name'},
                   'geneLabelFontSize': {'value': 60 / 3.0},
-                  'geneLabelColor': {'field': 'strand', 'range': ['gray']},
+                  'geneLabelColor': {'field': 'strand', 'range': ['black']},
                   'geneLabelStroke': {'value': 'white'},
                   'geneLabelStrokeThickness': {'value': 4},
                   'geneLabelOpacity': {'value': 1},
@@ -846,7 +846,7 @@ function getOverviewSpec(option: SpecOption): View[] {
           {
             'mark': 'brush',
             'x': {'linkingId': 'mid-scale'},
-            'strokeWidth': {'value': 1.5},
+            'strokeWidth': {'value': 2},
             'stroke': {'value': '#0070DC'},
             'color': {'value': '#AFD8FF'},
             'opacity': {'value': 0.5}
