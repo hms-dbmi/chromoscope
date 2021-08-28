@@ -385,8 +385,8 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'title': 'Coverage',
                 'data': {
                   'type': 'bam',
-                  'url': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam',
-                  'indexUrl': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam.bai'
+                  'url': 'https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam',
+                  'indexUrl': 'https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam.bai'
                 },
                 'dataTransform': [
                   {'type': 'coverage', 'startField': 'from', 'endField': 'to'}
@@ -514,8 +514,8 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'title': 'Reads',
                 'data': {
                   'type': 'bam',
-                  'url': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam',
-                  'indexUrl': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam.bai'
+                  'url': 'https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam',
+                  'indexUrl': 'https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam.bai'
                 },
                 'mark': 'rect',
                 'tracks': [
@@ -605,8 +605,8 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'title': 'Coverage',
                 'data': {
                   'type': 'bam',
-                  'url': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam',
-                  'indexUrl': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam.bai'
+                  'url': 'https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam',
+                  'indexUrl': 'https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam.bai'
                 },
                 'dataTransform': [
                   {'type': 'coverage', 'startField': 'from', 'endField': 'to'}
@@ -733,8 +733,8 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'title': 'Reads',
                 'data': {
                   'type': 'bam',
-                  'url': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam',
-                  'indexUrl': 'https://aveit.s3.amazonaws.com/higlass/bam/example_higlass.bam.bai'
+                  'url': 'https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam',
+                  'indexUrl': 'https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam.bai'
                 },
                 'mark': 'rect',
                 'tracks': [
