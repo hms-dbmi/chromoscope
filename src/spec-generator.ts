@@ -10,10 +10,12 @@ export interface SpecOption {
   svUrl: string;
   cnvUrl: string;
   drivers: { [k: string]: string | number }[];
+  selectedSvId: string;
+  hoveredSvId: string;
 }
 
 function generateSpec(option: SpecOption): GoslingSpec {
-  const { svUrl, cnvUrl, showPutativeDriver, showOverview, width, drivers } = option;
+  const { svUrl, cnvUrl, showPutativeDriver, showOverview, width, drivers, selectedSvId, hoveredSvId } = option;
 
   const topViewWidth = Math.min(width, 600);
   const midViewWidth = width;
@@ -43,7 +45,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
             'layout': 'linear',
             'tracks': [
               {
-                'id': 'mid-view',
+                'id': 'mid-ideogram',
                 'style': {
                   'background': '#D7EBFF',
                   'outline': '#8DC1F2',
@@ -157,6 +159,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'height': 30
               },
               ...(!showPutativeDriver ? [] : [{
+                'id': 'mid-driver',
                 'title': 'Putative Driver',
                 'data': {
                   'values': drivers,
@@ -176,6 +179,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'height': 20
               } as SingleTrack]),
               {
+                'id': 'mid-gene',
                 'alignment': 'overlay',
                 'title': 'hg19 | Genes',
                 'template': 'gene',
@@ -214,6 +218,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'height': 60
               },
               {
+                'id': 'mid-gain',
                 'title': 'Gain',
                 'style': {'background': 'lightgray', 'backgroundOpacity': 0.2},
                 'data': {
@@ -233,22 +238,6 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 alignment: 'overlay',
                 tracks: [
                   { 'mark': 'rect'},
-                  {
-                    'mark': 'brush',
-                    'x': { linkingId: 'detail-scale-1' },
-                    'strokeWidth': {'value': 2},
-                    'stroke': {'value': '#0070DC'},
-                    'color': {'value': '#AFD8FF'},
-                    'opacity': {'value': 0.5}
-                  },
-                  {
-                    'mark': 'brush',
-                    'x': { linkingId: 'detail-scale-2' },
-                    'strokeWidth': {'value': 2},
-                    'stroke': {'value': '#0070DC'},
-                    'color': {'value': '#AFD8FF'},
-                    'opacity': {'value': 0.5}
-                  }
                 ],
                 'x': {'field': 'start', 'type': 'genomic'},
                 'xe': {'field': 'end', 'type': 'genomic'},
@@ -257,6 +246,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'height': 20
               },
               {
+                'id': 'mid-loh',
                 'title': 'LOH',
                 'style': {'background': 'lightgray', 'backgroundOpacity': 0.2},
                 'data': {
@@ -272,22 +262,6 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 alignment: 'overlay',
                 tracks: [
                   {'mark': 'rect'},
-                  {
-                    'mark': 'brush',
-                    'x': { linkingId: 'detail-scale-1' },
-                    'strokeWidth': {'value': 2},
-                    'stroke': {'value': '#0070DC'},
-                    'color': {'value': '#AFD8FF'},
-                    'opacity': {'value': 0.5}
-                  },
-                  {
-                    'mark': 'brush',
-                    'x': { linkingId: 'detail-scale-2' },
-                    'strokeWidth': {'value': 2},
-                    'stroke': {'value': '#0070DC'},
-                    'color': {'value': '#AFD8FF'},
-                    'opacity': {'value': 0.5}
-                  }
                 ],
                 'x': {'field': 'start', 'type': 'genomic'},
                 'xe': {'field': 'end', 'type': 'genomic'},
@@ -296,6 +270,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'height': 20
               },
               {
+                'id': 'mid-sv',
                 'title': 'Structural Variant',
                 'data': {
                   'url': svUrl,
@@ -316,26 +291,29 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'tracks': [
                   {
                     'mark': 'withinLink',
-                    'x': {'field': 'start1', 'type': 'genomic'},
-                    'xe': {'field': 'end2', 'type': 'genomic'}
+                    dataTransform: [ { type: 'filter', field: 'sv_id', oneOf: [selectedSvId, hoveredSvId], not: true } ],
                   },
                   {
-                    'mark': 'brush',
-                    'x': { linkingId: 'detail-scale-1' },
-                    'strokeWidth': {'value': 2},
-                    'stroke': {'value': '#0070DC'},
-                    'color': {'value': '#AFD8FF'},
-                    'opacity': {'value': 0.5}
+                    'mark': 'withinLink',
+                    dataTransform: [ 
+                      { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] },
+                      { type: 'filter', field: 'sv_id', oneOf: [hoveredSvId], not: true } 
+                    ],
+                    'strokeWidth': {'value': 3},
+                    opacity: {value: 1}
                   },
                   {
-                    'mark': 'brush',
-                    'x': { linkingId: 'detail-scale-2' },
-                    'strokeWidth': {'value': 2},
-                    'stroke': {'value': '#0070DC'},
-                    'color': {'value': '#AFD8FF'},
-                    'opacity': {'value': 0.5}
-                  }
+                    'mark': 'withinLink',
+                    dataTransform: [ 
+                      { type: 'filter', field: 'sv_id', oneOf: [hoveredSvId] },
+                    ],
+                    stroke: {'value': 'black' },
+                    'strokeWidth': {'value': 3},
+                    opacity: {value: 1}
+                  },
                 ],
+                'x': {'field': 'start1', 'type': 'genomic'},
+                'xe': {'field': 'end2', 'type': 'genomic'},
                 'color': {
                   'field': 'svclass',
                   'type': 'nominal',
@@ -381,7 +359,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
             linkingId: 'detail-scale-1',
             'tracks': [
               {
-                id: 'bam-1',
+                id: 'bottom-left-coverage',
                 'title': 'Coverage',
                 'data': {
                   'type': 'bam',
@@ -406,6 +384,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'height': 80
               },
               {
+                id: 'bottom-left-gene',
                 'alignment': 'overlay',
                 'title': 'hg19 | Genes',
                 'template': 'gene',
@@ -445,6 +424,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'height': 60
               },
               {
+                id: 'bottom-left-sequence',
                 'title': 'Sequence',
                 'alignment': 'overlay',
                 'data': {
@@ -510,6 +490,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'height': 40
               },
               {
+                id: 'bottom-left-bam',
                 'alignment': 'overlay',
                 'title': 'Reads',
                 'data': {
@@ -601,7 +582,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
             linkingId: 'detail-scale-2',
             'tracks': [
               {
-                id: 'bam-2',
+                id: 'bottom-right-coverage',
                 'title': 'Coverage',
                 'data': {
                   'type': 'bam',
@@ -626,6 +607,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'height': 80
               },
               {
+                id: 'bottom-right-gene',
                 'alignment': 'overlay',
                 'title': 'hg38 | Genes',
                 'template': 'gene',
@@ -664,6 +646,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'height': 60
               },
               {
+                id: 'bottom-right-sequence',
                 'title': 'Sequence',
                 'alignment': 'overlay',
                 'data': {
@@ -729,6 +712,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 'height': 40
               },
               {
+                id: 'bottom-right-bam',
                 'alignment': 'overlay',
                 'title': 'Reads',
                 'data': {
@@ -835,7 +819,7 @@ function getOverviewSpec(option: SpecOption): View[] {
     },
     'tracks': [
       {
-        'id': 'top-view',
+        'id': 'top-ideogram',
         'title': 'Ideogram',
         'alignment': 'overlay',
         'data': {
@@ -886,6 +870,7 @@ function getOverviewSpec(option: SpecOption): View[] {
         'height': 100
       },
       ...(!showPutativeDriver ? [] : [{
+        'id': 'top-driver',
         'title': 'Putative Driver',
         'alignment': 'overlay',
         'data': {
@@ -910,6 +895,7 @@ function getOverviewSpec(option: SpecOption): View[] {
         'height': 40
       } as OverlaidTracks]),
       {
+        'id': 'top-gain',
         'title': 'Gain',
         'style': {'background': 'lightgray', 'backgroundOpacity': 0.2},
         'alignment': 'overlay',
@@ -943,6 +929,7 @@ function getOverviewSpec(option: SpecOption): View[] {
         'height': 40
       },
       {
+        'id': 'top-loh',
         'title': 'LOH',
         'style': {'background': 'lightgray', 'backgroundOpacity': 0.2},
         'alignment': 'overlay',
@@ -973,6 +960,7 @@ function getOverviewSpec(option: SpecOption): View[] {
         'height': 40
       },
       {
+        'id': 'top-sv',
         'title': 'Structural Variant',
         'data': {
           'url': svUrl,

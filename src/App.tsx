@@ -12,6 +12,8 @@ const INIT_VIS_PANEL_WIDTH = window.innerWidth;
 const CONFIG_PANEL_WIDTH = 400;
 const VIS_PADDING = 60;
 const CHROMOSOMES = ['chr1', 'chr2', 'chr3', 'chr4', 'chr5', 'chr6', 'chr7', 'chr8', 'chr9', 'chr10', 'chr11', 'chr12', 'chr13', 'chr14', 'chr15', 'chr16', 'chr17', 'chr18', 'chr19', 'chr20', 'chr21', 'chr22', 'chrX', 'chrY'];
+const ZOOM_PADDING = 500;
+const ZOOM_DURATION = 300;
 
 function App() {
 
@@ -26,18 +28,26 @@ function App() {
   const [sampleId, setSampleId] = useState('84ca6ab0-9edc-4636-9d27-55cdba334d7d');
   const [filteredDrivers, setFilteredDrivers] = useState(drivers.filter(d => d.sample_id === sampleId && +d.chr && +d.pos));
   const [interactive, setInteractive] = useState(false);
+  const [hoveredSvId, setHoveredSvId] = useState<string>('');
+  const [selectedSvId, setSelectedSvId] = useState<string>('');
 
   useEffect(() => {
     if(!gosRef.current) return;
     
     gosRef.current.api.subscribe('click', (type: string, e: CommonEventData) => {
       // start and end positions are already cumulative values
-      gosRef.current.api.zoomTo('bam-1', `chr1:${e.data.start1}-${e.data.end1}`, 2000, 100);
-      gosRef.current.api.zoomTo('bam-2', `chr1:${e.data.start2}-${e.data.end2}`, 2000, 100);
+      gosRef.current.api.zoomTo('bottom-left-coverage-view', `chr1:${e.data.start1}-${e.data.end1}`, ZOOM_PADDING, ZOOM_DURATION);
+      gosRef.current.api.zoomTo('bottom-right-coverage-view', `chr1:${e.data.start2}-${e.data.end2}`, ZOOM_PADDING, ZOOM_DURATION);
+      setSelectedSvId(e.data.sv_id + '');
+    });
+
+    gosRef.current.api.subscribe('mouseover', (type: string, e: CommonEventData) => {
+      // setHoveredSvId(e.data.sv_id + '');
     });
 
     return () => {
       gosRef.current.api.unsubscribe('click');
+      gosRef.current.api.unsubscribe('mouseover');
     };
   }, [gosRef]);
 
@@ -45,10 +55,10 @@ function App() {
     if(!overviewChr) return;
     
     if(overviewChr.includes('chr')) {
-      gosRef.current?.api.zoomTo('top-view', overviewChr, 0, 100);
+      gosRef.current?.api.zoomTo('top-ideogram-view', overviewChr, 0, ZOOM_DURATION);
       setGenomeViewChr(overviewChr);
     } else {
-      gosRef.current?.api.zoomToExtent('top-view', 100);
+      gosRef.current?.api.zoomToExtent('top-ideogram-view', ZOOM_DURATION);
     }
   }, [overviewChr]);
 
@@ -56,9 +66,9 @@ function App() {
     if(!genomeViewChr) return;
     
     if(genomeViewChr.includes('chr')) {
-      gosRef.current?.api.zoomTo('mid-view', genomeViewChr, 0, 100);
+      gosRef.current?.api.zoomTo('mid-ideogram-view', genomeViewChr, 0, ZOOM_DURATION);
     } else {
-      gosRef.current?.api.zoomToExtent('mid-view', 100);
+      gosRef.current?.api.zoomToExtent('mid-ideogram-view', ZOOM_DURATION);
     }
   }, [genomeViewChr]);
 
@@ -73,7 +83,17 @@ function App() {
   }, []);
 
   const goslingComponent = useMemo(() => {
-    const spec = JSON.parse(JSON.stringify(generateSpec({ svUrl, cnvUrl, showOverview, xOffset: 0, showPutativeDriver, width: visPanelWidth, drivers: filteredDrivers })));
+    const spec = JSON.parse(JSON.stringify(generateSpec({ 
+      svUrl, 
+      cnvUrl, 
+      showOverview, 
+      xOffset: 0, 
+      showPutativeDriver, 
+      width: visPanelWidth, 
+      drivers: filteredDrivers, 
+      selectedSvId,
+      hoveredSvId
+    })));
     return (
       <GoslingComponent
         ref={gosRef}
@@ -89,7 +109,7 @@ function App() {
         // }))}
       />
     );
-  }, [visPanelWidth, showOverview, showPutativeDriver, svUrl, cnvUrl]);
+  }, [visPanelWidth, showOverview, showPutativeDriver, svUrl, cnvUrl, selectedSvId, hoveredSvId]);
 
   return (
     <>
