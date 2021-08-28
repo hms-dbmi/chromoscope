@@ -12,8 +12,8 @@ const INIT_VIS_PANEL_WIDTH = window.innerWidth;
 const CONFIG_PANEL_WIDTH = 400;
 const VIS_PADDING = 60;
 const CHROMOSOMES = ['chr1', 'chr2', 'chr3', 'chr4', 'chr5', 'chr6', 'chr7', 'chr8', 'chr9', 'chr10', 'chr11', 'chr12', 'chr13', 'chr14', 'chr15', 'chr16', 'chr17', 'chr18', 'chr19', 'chr20', 'chr21', 'chr22', 'chrX', 'chrY'];
-const ZOOM_PADDING = 500;
-const ZOOM_DURATION = 300;
+const ZOOM_PADDING = 100;
+const ZOOM_DURATION = 1000;
 
 function App() {
 
@@ -30,14 +30,24 @@ function App() {
   const [interactive, setInteractive] = useState(false);
   const [hoveredSvId, setHoveredSvId] = useState<string>('');
   const [selectedSvId, setSelectedSvId] = useState<string>('');
+  const [initInvervals, setInitInvervals] = useState<[number, number, number, number]>([1, 100, 1, 100]);
 
   useEffect(() => {
     if(!gosRef.current) return;
     
     gosRef.current.api.subscribe('click', (type: string, e: CommonEventData) => {
-      // start and end positions are already cumulative values
-      gosRef.current.api.zoomTo('bottom-left-coverage-view', `chr1:${e.data.start1}-${e.data.end1}`, ZOOM_PADDING, ZOOM_DURATION);
-      gosRef.current.api.zoomTo('bottom-right-coverage-view', `chr1:${e.data.start2}-${e.data.end2}`, ZOOM_PADDING, ZOOM_DURATION);
+      if(selectedSvId !== '') {
+        // start and end positions are already cumulative values
+        gosRef.current.api.zoomTo('bottom-left-coverage-view', `chr1:${e.data.start1}-${e.data.end1}`, ZOOM_PADDING, ZOOM_DURATION);
+        gosRef.current.api.zoomTo('bottom-right-coverage-view', `chr1:${e.data.start2}-${e.data.end2}`, ZOOM_PADDING, ZOOM_DURATION);
+      } else {
+        // we will show the bam files, so set the initial positions
+        setInitInvervals([+e.data.start1 - ZOOM_PADDING, +e.data.end1 + ZOOM_PADDING, +e.data.start2 - ZOOM_PADDING, +e.data.end2 + ZOOM_PADDING]);
+
+        // const visPanel = document.getElementById("vis-panel")!;
+        // visPanel.scrollTop = visPanel.scrollHeight;
+      }
+
       setSelectedSvId(e.data.sv_id + '');
     });
 
@@ -92,7 +102,8 @@ function App() {
       width: visPanelWidth, 
       drivers: filteredDrivers, 
       selectedSvId,
-      hoveredSvId
+      hoveredSvId,
+      initInvervals
     })));
     return (
       <GoslingComponent
@@ -109,7 +120,7 @@ function App() {
         // }))}
       />
     );
-  }, [visPanelWidth, showOverview, showPutativeDriver, svUrl, cnvUrl, selectedSvId, hoveredSvId]);
+  }, [visPanelWidth, showOverview, showPutativeDriver, svUrl, cnvUrl, selectedSvId, hoveredSvId, initInvervals]);
 
   return (
     <>
@@ -206,7 +217,7 @@ function App() {
         <div className='config-panel-section-title'>Export</div>
         <div className='config-panel-button' onClick={() => gosRef.current?.api.exportPng()}>PNG</div>
       </div>
-      <div className='vis-panel' style={{ height: `calc(100% - ${VIS_PADDING * 2}px)`, padding: VIS_PADDING }} onClick={() => setInteractive(false)}>
+      <div id='vis-panel' className='vis-panel' style={{ height: `calc(100% - ${VIS_PADDING * 2}px)`, padding: VIS_PADDING }} onClick={() => setInteractive(false)}>
         {goslingComponent}
         <div className='vis-panel-title panel-title'><small>v{packageJson.dependencies['gosling.js']}</small></div>
       </div>

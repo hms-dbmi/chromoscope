@@ -1,5 +1,5 @@
 import { GoslingSpec } from 'gosling.js';
-import { OverlaidTracks, SingleTrack, View } from 'gosling.js/dist/src/core/gosling.schema';
+import { MultipleViews, OverlaidTracks, SingleTrack, SingleView, View } from 'gosling.js/dist/src/core/gosling.schema';
 import defaultEncodings from './default-encoding';
 
 export interface SpecOption { 
@@ -12,10 +12,11 @@ export interface SpecOption {
   drivers: { [k: string]: string | number }[];
   selectedSvId: string;
   hoveredSvId: string;
+  initInvervals: [number, number, number, number];
 }
 
 function generateSpec(option: SpecOption): GoslingSpec {
-  const { svUrl, cnvUrl, showPutativeDriver, showOverview, width, drivers, selectedSvId, hoveredSvId } = option;
+  const { svUrl, cnvUrl, showPutativeDriver, showOverview, width, drivers, selectedSvId, hoveredSvId, initInvervals } = option;
 
   const topViewWidth = Math.min(width, 600);
   const midViewWidth = width;
@@ -346,7 +347,8 @@ function generateSpec(option: SpecOption): GoslingSpec {
           }
         ]
       },
-      {
+      ...(selectedSvId === '' ?  [] :
+      [{
         'arrangement': 'horizontal',
         'spacing': bottomViewGap,
         'views': [
@@ -354,7 +356,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
             'static': false,
             'layout': 'linear',
             'centerRadius': 0.05,
-            'xDomain': {'chromosome': '1', 'interval': [205000, 207000]},
+            'xDomain': {'interval': [initInvervals[0], initInvervals[1]]},
             'spacing': 0.01,
             linkingId: 'detail-scale-1',
             'tracks': [
@@ -577,7 +579,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
             'static': false,
             'layout': 'linear',
             'centerRadius': 0.05,
-            'xDomain': {'chromosome': '1', 'interval': [490000, 496000]},
+            'xDomain': {'interval': [initInvervals[2], initInvervals[3]]},
             'spacing': 0.01,
             linkingId: 'detail-scale-2',
             'tracks': [
@@ -795,7 +797,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
             ]
           }
         ]
-      }
+      }] as (SingleView | MultipleViews)[])
     ]
   };
 }
