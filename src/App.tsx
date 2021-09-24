@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { GoslingComponent } from "gosling.js";
-import { debounce } from "lodash";
+import { debounce, uniqueId } from "lodash";
 import generateSpec from "./spec-generator";
 import packageJson from "../package.json";
 import { CommonEventData } from "gosling.js/dist/src/core/api";
@@ -177,7 +177,7 @@ function App() {
         title: d.id,
       })
     );
-    return specs.map((spec) => (
+    return specs.map((spec) => [
       <GoslingComponent
         key={JSON.stringify(spec)}
         ref={gosRef}
@@ -196,16 +196,17 @@ function App() {
             subtitleFontWeight: "bold",
           },
         }}
-      />
-    ));
+      />,
+      spec,
+    ]);
   }, []);
 
   const smallOverviewWrapper = useMemo(() => {
-    return smallOverviewGoslingComponents.map((component, i) => (
+    return smallOverviewGoslingComponents.map(([component, spec], i) => (
       <td
-        key={i}
+        key={JSON.stringify(spec)}
         onClick={() => setDemoIdx(i)}
-        className={demoIdx === i ? "selected-overview" : ""}
+        className={demoIdx === i ? "selected-overview" : "unselected-overview"}
       >
         {component}
       </td>
@@ -380,7 +381,7 @@ function App() {
           <table>
             <tr>{smallOverviewWrapper}</tr>
           </table>
-          <div className="overview-title">Samples</div>
+          {/* <div className="overview-title">{`Samples (Total ${samples.length})`}</div> */}
         </div>
         <div
           className="gosling-panel"

@@ -127,17 +127,27 @@ body {
 }
 
 .vis-overview-panel tr  {
+  
+}
+
+.vis-overview-panel td {
+  border-radius: 14px;
+}
+
+.vis-overview-panel .selected-overview {
+  box-shadow:inset 0px 0px 0px 2px gray;
+}
+
+.vis-overview-panel .unselected-overview {
   cursor: pointer;
-  border: 1px solid red;
+}
+
+.vis-overview-panel .unselected-overview:hover {
+  box-shadow:inset 0px 0px 0px 2px lightgray;
 }
 
 .vis-overview-panel td {
   padding: 20px;
-}
-
-.vis-overview-panel .selected-overview {
-  border: 2px solid gray;
-  border-radius: 14px;
 }
 
 .gosling-panel {
