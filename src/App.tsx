@@ -62,6 +62,7 @@ function App() {
   // interactions
   const [showOverview, setShowOverview] = useState(true);
   const [showPutativeDriver, setShowPutativeDriver] = useState(true);
+  const [svTransparency, setSvTransparency] = useState(0.6);
   const [visPanelWidth, setVisPanelWidth] = useState(
     INIT_VIS_PANEL_WIDTH - CONFIG_PANEL_WIDTH - VIS_PADDING * 2
   );
@@ -223,6 +224,7 @@ function App() {
       showOverview,
       xOffset: 0,
       showPutativeDriver,
+      svTransparency,
       width: visPanelWidth,
       drivers: filteredDrivers,
       selectedSvId,
@@ -235,6 +237,7 @@ function App() {
         spec={spec}
         padding={0}
         margin={0}
+        experimental={{ reactive: false }}
         // theme={JSON.parse(JSON.stringify({
         //   base: 'light',
         //   root: {
@@ -252,6 +255,7 @@ function App() {
     selectedSvId,
     hoveredSvId,
     initInvervals,
+    svTransparency,
   ]);
 
   return (
@@ -365,6 +369,22 @@ function App() {
             />
           </span>
         </div>
+        {/* <div className="config-panel-section-title">Encoding</div>
+        <div className="config-panel-input-container">
+          <span className="config-panel-label">SV Transparency</span>
+          <span className="config-panel-input">
+            <input 
+              type="range" 
+              min={0}
+              max={1}
+              step={0.01} 
+              value={svTransparency}
+              className="slider" 
+              style={{ width: 100, display: 'inline', margin: 10}}
+              onChange={(e) => setSvTransparency(+e.currentTarget.value) }
+            />
+          </span>
+        </div> */}
         <div className="config-panel-section-title">Export</div>
         <div
           className="config-panel-button"

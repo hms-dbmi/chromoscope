@@ -14,6 +14,7 @@ export interface SpecOption {
   showOverview: boolean;
   showPutativeDriver: boolean;
   xOffset: number;
+  svTransparency: number;
   width: number;
   svUrl: string;
   cnvUrl: string;
@@ -31,6 +32,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
     cnvUrl,
     showPutativeDriver,
     showOverview,
+    svTransparency,
     width,
     drivers,
     selectedSvId,
@@ -367,7 +369,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   range: defaultEncodings.color.svclass.range,
                 },
                 strokeWidth: { value: 1 },
-                opacity: { value: 0.6 },
+                opacity: { value: svTransparency },
                 size: { value: 4 },
                 tooltip: [
                   { field: "start1", type: "genomic" },
@@ -880,6 +882,7 @@ function getOverviewSpec(option: SpecOption): View[] {
     cnvUrl,
     svUrl,
     width,
+    svTransparency,
     showPutativeDriver,
     showOverview,
     xOffset,
@@ -1078,7 +1081,7 @@ function getOverviewSpec(option: SpecOption): View[] {
             range: defaultEncodings.color.svclass.range,
           },
           strokeWidth: { value: 1 },
-          opacity: { value: 0.6 },
+          opacity: { value: svTransparency },
           style: { legendTitle: "SV Class" },
           width,
           height: 80,
