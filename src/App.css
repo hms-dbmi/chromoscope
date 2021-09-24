@@ -1,5 +1,8 @@
-html, body, #root {
-  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+html,
+body,
+#root {
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   height: 100%;
 }
 
@@ -18,7 +21,7 @@ body {
 }
 
 .config-panel {
-  background-color: #F6F6F6;
+  background-color: #f6f6f6;
   border-right: 1px solid lightgray;
   padding: 20px;
   height: calc(100% - 40px);
@@ -91,14 +94,62 @@ body {
   position: fixed;
   right: 0;
   top: 0;
+  height: 100%;
+  width: calc(100% - 400px);
   overflow-y: auto;
+}
+
+.vis-overview-panel {
+  width: 100%;
+  border-bottom: 1px solid lightgray;
+  background-color: #f6f6f6;
+  overflow-x: auto;
+}
+
+.vis-overview-panel .gosling-component {
+  cursor: pointer;
+  pointer-events: none;
+}
+
+.vis-overview-panel table {
+  border-spacing: 40px 18px;
+}
+
+.vis-overview-panel .overview-title {
+  position: absolute;
+    left: -10px;
+    top: 120px;
+    transform: rotate(-90deg);
+    font-family: 'Roboto Condensed';
+    font-weight: bold;
+    font-size: 18px;
+    text-shadow: 0px 0px 12px #f6f6f6
+}
+
+.vis-overview-panel tr  {
+  cursor: pointer;
+  border: 1px solid red;
+}
+
+.vis-overview-panel td {
+  padding: 20px;
+}
+
+.vis-overview-panel .selected-overview {
+  border: 2px solid gray;
+  border-radius: 14px;
+}
+
+.gosling-panel {
+  /* overflow-y: auto; */
 }
 
 .vis-panel-title {
   position: fixed;
-  top: 20px;
+  bottom: 20px;
   right: 20px;
-  font-family: 'Roboto Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: "Roboto Condensed", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   opacity: 30%;
 }
 
@@ -113,13 +164,13 @@ body {
 }
 
 .vis-panel-overlay:hover {
-  box-shadow: inset 0px 0px 0px 2px #7AADED;
-  background-color: #7AADED22;
+  box-shadow: inset 0px 0px 0px 2px #7aaded;
+  background-color: #7aaded22;
 }
 
 .vis-panel-overlay-active {
-  box-shadow: inset 0px 0px 0px 2px #7AADED;
-  pointer-events: none;  
+  box-shadow: inset 0px 0px 0px 2px #7aaded;
+  pointer-events: none;
 }
 
 .vis-panel-overlay > span {
@@ -133,7 +184,7 @@ body {
   padding: 10px;
 }
 
-.vis-panel-overlay:hover > span  {
+.vis-panel-overlay:hover > span {
   opacity: 1;
-  background-color: #7AADED;
+  background-color: #7aaded;
 }

@@ -1912,6 +1912,18 @@ escodegen@~1.3.2:
   optionalDependencies:
     source-map "~0.1.33"
 
+eslint-config-prettier@^8.3.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.3.0.tgz#f7471b20b6fe8a9a9254cc684454202886a2dd7a"
+  integrity sha512-BgZuLUSeKzvlL/VUjx/Yb787VQ26RU3gGjA3iiFvdsp/2bMfVIWUVP7tjxtjS0e+HP409cPlPvNkQloz8C91ew==
+
+eslint-plugin-prettier@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-4.0.0.tgz#8b99d1e4b8b24a762472b4567992023619cb98e0"
+  integrity sha512-98MqmCJ7vJodoQK359bqQWaxOE0CS8paAz/GgjaZLyex4TTk3g9HugoO89EqWCrFiOqn9EVvcoo7gZzONCWVwQ==
+  dependencies:
+    prettier-linter-helpers "^1.0.0"
+
 eslint-plugin-react@^7.24.0:
   version "7.24.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.24.0.tgz#eadedfa351a6f36b490aa17f4fa9b14e842b9eb4"
@@ -2115,6 +2127,11 @@ fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
   integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
+
+fast-diff@^1.1.2:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/fast-diff/-/fast-diff-1.2.0.tgz#73ee11982d86caaf7959828d519cfe927fac5f03"
+  integrity sha512-xJuoT5+L99XlZ8twedaRf6Ax2TgQVxvgZOYoPKqZufmJib0tL2tegPBOZb1pVNgIhlqDlA0eO0c3wBvQcmzx4w==
 
 fast-glob@^3.1.1:
   version "3.2.7"
@@ -2401,15 +2418,15 @@ globby@^6.1.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
-gosling-theme@0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/gosling-theme/-/gosling-theme-0.0.7.tgz#4b1bd5ad3730b2028ccc36f813fddb6bd98466a8"
-  integrity sha512-rXFeettHSzs117dPQqsQZj7IyujeKf3uvDXTlymQ1hQdDwQOP1p3yBrHMDwsBXvvwzRY3jwgkB9z7Su9jnWmHA==
+gosling-theme@0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/gosling-theme/-/gosling-theme-0.0.9.tgz#211f6f3076ca29041c19b91f6494813e2fe5cab6"
+  integrity sha512-7CPVrmPCFFE08rk+tM6AxoT5agKALrBYpwU/bdeAxxXnA2Jwoenso8MOA+bYbmblpQ3WGQDlhcCyUi3I1jG3Aw==
 
-gosling.js@^0.9.7:
-  version "0.9.7"
-  resolved "https://registry.yarnpkg.com/gosling.js/-/gosling.js-0.9.7.tgz#110c7f6aad5b815c38f8657b9e258840e163df7f"
-  integrity sha512-obSeiGWN2EDTGl96R7hwBo9AOIDkd81A2oZkd4ctLSSnm7p/DUiCd2tk1426KDzmW9eMZ9DB2dQNZ+z/uzmNzg==
+gosling.js@^0.9.8:
+  version "0.9.8"
+  resolved "https://registry.yarnpkg.com/gosling.js/-/gosling.js-0.9.8.tgz#86e34fa7410d92d9ee13d47bf8a3432bb1c7a363"
+  integrity sha512-CyevfPnBS1czkRafFvXNiLUBgVQFVJyC04siXLc4ZY+ghjFAqG6DogaXNz9Q1tsk/go5leYgltItU7STdjzhWg==
   dependencies:
     "@gmod/bam" "^1.1.8"
     "@gmod/bbi" "^1.0.30"
@@ -2428,7 +2445,7 @@ gosling.js@^0.9.7:
     d3-shape "^2.0.0"
     file-loader "^6.0.0"
     generic-filehandle "^2.0.3"
-    gosling-theme "0.0.7"
+    gosling-theme "0.0.9"
     higlass "^1.11.7"
     higlass-register "^0.3.0"
     higlass-text "^0.1.1"
@@ -3470,6 +3487,18 @@ prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
+
+prettier-linter-helpers@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/prettier-linter-helpers/-/prettier-linter-helpers-1.0.0.tgz#d23d41fe1375646de2d0104d3454a3008802cf7b"
+  integrity sha512-GbK2cP9nraSSUF9N2XwUwqfzlAFlMNYYl+ShE/V+H8a9uNl/oUqB1w2EL54Jh0OlyRSd8RfWYJ3coVS4TROP2w==
+  dependencies:
+    fast-diff "^1.1.2"
+
+prettier@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.4.1.tgz#671e11c89c14a4cfc876ce564106c4a6726c9f5c"
+  integrity sha512-9fbDAXSBcc6Bs1mZrDYb3XKzDLm4EXXL9sC1LqKP5rZkT6KRr/rf9amVUcODVXgguK/isJz0d0hP72WeaKWsvA==
 
 prismjs@^1.16.0:
   version "1.24.1"
