@@ -9,6 +9,7 @@ import {
 import defaultEncodings from "./default-encoding";
 
 export interface SpecOption {
+  sampleId: string;
   title: string;
   subtitle: string;
   showOverview: boolean;
@@ -18,6 +19,8 @@ export interface SpecOption {
   width: number;
   svUrl: string;
   cnvUrl: string;
+  bamUrl: string;
+  baiUrl: string;
   drivers: { [k: string]: string | number }[];
   selectedSvId: string;
   hoveredSvId: string;
@@ -26,10 +29,13 @@ export interface SpecOption {
 
 function generateSpec(option: SpecOption): GoslingSpec {
   const {
+    sampleId,
     title,
     subtitle,
     svUrl,
     cnvUrl,
+    bamUrl,
+    baiUrl,
     showPutativeDriver,
     showOverview,
     svTransparency,
@@ -74,7 +80,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
             layout: "linear",
             tracks: [
               {
-                id: "mid-ideogram",
+                id: `${sampleId}-mid-ideogram`,
                 style: {
                   background: "#D7EBFF",
                   outline: "#8DC1F2",
@@ -191,7 +197,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 ? []
                 : [
                     {
-                      id: "mid-driver",
+                      id: `${sampleId}-mid-driver`,
                       title: "Putative Driver",
                       data: {
                         values: drivers,
@@ -212,7 +218,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                     } as SingleTrack,
                   ]),
               {
-                id: "mid-gene",
+                id: `${sampleId}-mid-gene`,
                 alignment: "overlay",
                 title: "hg19 | Genes",
                 template: "gene",
@@ -251,7 +257,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 height: 60,
               },
               {
-                id: "mid-gain",
+                id: `${sampleId}-mid-gain`,
                 title: "Gain",
                 style: { background: "lightgray", backgroundOpacity: 0.2 },
                 data: {
@@ -277,7 +283,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 height: 20,
               },
               {
-                id: "mid-loh",
+                id: `${sampleId}-mid-loh`,
                 title: "LOH",
                 style: { background: "lightgray", backgroundOpacity: 0.2 },
                 data: {
@@ -299,7 +305,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 height: 20,
               },
               {
-                id: "mid-sv",
+                id: `${sampleId}-mid-sv`,
                 title: "Structural Variant",
                 data: {
                   url: svUrl,
@@ -403,7 +409,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   linkingId: "detail-scale-1",
                   tracks: [
                     {
-                      id: "bottom-left-coverage",
+                      id: `${sampleId}-bottom-left-coverage`,
                       title: "Coverage",
                       data: {
                         type: "bam",
@@ -433,7 +439,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                       height: 80,
                     },
                     {
-                      id: "bottom-left-gene",
+                      id: `${sampleId}-bottom-left-gene`,
                       alignment: "overlay",
                       title: "hg19 | Genes",
                       template: "gene",
@@ -473,7 +479,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                       height: 60,
                     },
                     {
-                      id: "bottom-left-sequence",
+                      id: `${sampleId}-bottom-left-sequence`,
                       title: "Sequence",
                       alignment: "overlay",
                       data: {
@@ -539,7 +545,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                       height: 40,
                     },
                     {
-                      id: "bottom-left-bam",
+                      id: `${sampleId}-bottom-left-bam`,
                       alignment: "overlay",
                       title: "Reads",
                       data: {
@@ -642,7 +648,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                   linkingId: "detail-scale-2",
                   tracks: [
                     {
-                      id: "bottom-right-coverage",
+                      id: `${sampleId}-bottom-right-coverage`,
                       title: "Coverage",
                       data: {
                         type: "bam",
@@ -672,9 +678,9 @@ function generateSpec(option: SpecOption): GoslingSpec {
                       height: 80,
                     },
                     {
-                      id: "bottom-right-gene",
+                      id: `${sampleId}-bottom-right-gene`,
                       alignment: "overlay",
-                      title: "hg38 | Genes",
+                      title: "hg19 | Genes",
                       template: "gene",
                       data: {
                         url: "https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation",
@@ -711,7 +717,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                       height: 60,
                     },
                     {
-                      id: "bottom-right-sequence",
+                      id: `${sampleId}-bottom-right-sequence`,
                       title: "Sequence",
                       alignment: "overlay",
                       data: {
@@ -777,7 +783,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                       height: 40,
                     },
                     {
-                      id: "bottom-right-bam",
+                      id: `${sampleId}-bottom-right-bam`,
                       alignment: "overlay",
                       title: "Reads",
                       data: {
@@ -879,6 +885,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
 
 function getOverviewSpec(option: SpecOption): View[] {
   const {
+    sampleId,
     cnvUrl,
     svUrl,
     width,
@@ -904,7 +911,7 @@ function getOverviewSpec(option: SpecOption): View[] {
       },
       tracks: [
         {
-          id: "top-ideogram",
+          id: `${sampleId}-top-ideogram`,
           title: "Ideogram",
           alignment: "overlay",
           data: {
@@ -958,7 +965,7 @@ function getOverviewSpec(option: SpecOption): View[] {
           ? []
           : [
               {
-                id: "top-driver",
+                id: `${sampleId}-top-driver`,
                 title: "Putative Driver",
                 alignment: "overlay",
                 data: {
@@ -984,7 +991,7 @@ function getOverviewSpec(option: SpecOption): View[] {
               } as OverlaidTracks,
             ]),
         {
-          id: "top-gain",
+          id: `${sampleId}-top-gain`,
           title: "Gain",
           style: { background: "lightgray", backgroundOpacity: 0.2 },
           alignment: "overlay",
@@ -1018,7 +1025,7 @@ function getOverviewSpec(option: SpecOption): View[] {
           height: 40,
         },
         {
-          id: "top-loh",
+          id: `${sampleId}-top-loh`,
           title: "LOH",
           style: { background: "lightgray", backgroundOpacity: 0.2 },
           alignment: "overlay",
@@ -1047,7 +1054,7 @@ function getOverviewSpec(option: SpecOption): View[] {
           height: 40,
         },
         {
-          id: "top-sv",
+          id: `${sampleId}-top-sv`,
           title: "Structural Variant",
           data: {
             url: svUrl,

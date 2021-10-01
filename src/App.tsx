@@ -51,12 +51,16 @@ function App() {
   const [sampleId, setSampleId] = useState(samples[demoIdx].id);
   const [svUrl, setSvUrl] = useState(samples[demoIdx].sv);
   const [cnvUrl, setCnvUrl] = useState(samples[demoIdx].cnv);
+  const [bamUrl, setBamUrl] = useState(samples[demoIdx].bam);
+  const [baiUrl, setBaiUrl] = useState(samples[demoIdx].bai);
 
   // update demo
   useEffect(() => {
     setSampleId(samples[demoIdx].id);
     setSvUrl(samples[demoIdx].sv);
     setCnvUrl(samples[demoIdx].cnv);
+    setBamUrl(samples[demoIdx].bam);
+    setBaiUrl(samples[demoIdx].bai);
   }, [demoIdx]);
 
   // interactions
@@ -88,13 +92,13 @@ function App() {
         if (selectedSvId !== "") {
           // start and end positions are already cumulative values
           gosRef.current.api.zoomTo(
-            "bottom-left-coverage-view",
+            `${sampleId}-bottom-left-coverage-view`,
             `chr1:${e.data.start1}-${e.data.end1}`,
             ZOOM_PADDING,
             ZOOM_DURATION
           );
           gosRef.current.api.zoomTo(
-            "bottom-right-coverage-view",
+            `${sampleId}-bottom-right-coverage-view`,
             `chr1:${e.data.start2}-${e.data.end2}`,
             ZOOM_PADDING,
             ZOOM_DURATION
@@ -131,14 +135,17 @@ function App() {
 
     if (overviewChr.includes("chr")) {
       gosRef.current?.api.zoomTo(
-        "top-ideogram-view",
+        `${sampleId}-top-ideogram-view`,
         overviewChr,
         0,
         ZOOM_DURATION
       );
       setGenomeViewChr(overviewChr);
     } else {
-      gosRef.current?.api.zoomToExtent("top-ideogram-view", ZOOM_DURATION);
+      gosRef.current?.api.zoomToExtent(
+        `${sampleId}-top-ideogram-view`,
+        ZOOM_DURATION
+      );
     }
   }, [overviewChr]);
 
@@ -147,13 +154,16 @@ function App() {
 
     if (genomeViewChr.includes("chr")) {
       gosRef.current?.api.zoomTo(
-        "mid-ideogram-view",
+        `${sampleId}-mid-ideogram-view`,
         genomeViewChr,
         0,
         ZOOM_DURATION
       );
     } else {
-      gosRef.current?.api.zoomToExtent("mid-ideogram-view", ZOOM_DURATION);
+      gosRef.current?.api.zoomToExtent(
+        `${sampleId}-mid-ideogram-view`,
+        ZOOM_DURATION
+      );
     }
   }, [genomeViewChr]);
 
@@ -216,11 +226,14 @@ function App() {
 
   const goslingComponent = useMemo(() => {
     const spec = generateSpec({
+      sampleId,
       title: `Sample ID: ${sampleId}`,
       subtitle:
         "Click on a SV arc in the linear view to see alignments around two breakpoints...",
       svUrl,
       cnvUrl,
+      bamUrl,
+      baiUrl,
       showOverview,
       xOffset: 0,
       showPutativeDriver,
@@ -237,7 +250,7 @@ function App() {
         spec={spec}
         padding={0}
         margin={0}
-        experimental={{ reactive: false }}
+        experimental={{ reactive: true }}
         // theme={JSON.parse(JSON.stringify({
         //   base: 'light',
         //   root: {
@@ -276,6 +289,19 @@ function App() {
           </span>
         </div>
         <div className="config-panel-section-title">Data</div>
+        <div className="config-panel-input-container">
+          <span className="config-panel-label">
+            BAM<small></small>
+          </span>
+          <span className="config-panel-input">
+            <input
+              className="config-panel-search-box"
+              type="text"
+              value={bamUrl}
+              disabled={true}
+            />
+          </span>
+        </div>
         <div className="config-panel-input-container">
           <span className="config-panel-label">
             SV<small></small>
