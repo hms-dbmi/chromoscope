@@ -42,10 +42,23 @@ const CHROMOSOMES = [
 ];
 const ZOOM_PADDING = 100;
 const ZOOM_DURATION = 1000;
+const theme = {
+  base: "light",
+  root: {
+    background: "transparent",
+    // titleFontFamily: "Seogo UI",
+    // subtitleFontFamily: "Seogo UI",
+    subtitleAlign: "middle",
+    subtitleColor: "gray",
+    subtitleFontSize: 10,
+    subtitleFontWeight: "bold",
+  },
+};
 
 function App() {
   const gosRef = useRef<any>();
 
+  // TODO: We could just use sampleId to get detailed info. not to update all info as states.
   // demo
   const [demoIdx, setDemoIdx] = useState(0);
   const [sampleId, setSampleId] = useState(samples[demoIdx].id);
@@ -64,11 +77,13 @@ function App() {
   }, [demoIdx]);
 
   // interactions
+  const [showSamples, setShowSamples] = useState(true);
   const [showOverview, setShowOverview] = useState(true);
+  const [showDeletion, setShowDeletion] = useState(false);
   const [showPutativeDriver, setShowPutativeDriver] = useState(true);
   const [svTransparency, setSvTransparency] = useState(0.6);
   const [visPanelWidth, setVisPanelWidth] = useState(
-    INIT_VIS_PANEL_WIDTH - CONFIG_PANEL_WIDTH - VIS_PADDING * 2
+    INIT_VIS_PANEL_WIDTH - VIS_PADDING * 2
   );
   const [overviewChr, setOverviewChr] = useState("");
   const [genomeViewChr, setGenomeViewChr] = useState("");
@@ -172,9 +187,7 @@ function App() {
     window.addEventListener(
       "resize",
       debounce(() => {
-        setVisPanelWidth(
-          window.innerWidth - CONFIG_PANEL_WIDTH - VIS_PADDING * 2
-        );
+        setVisPanelWidth(window.innerWidth - VIS_PADDING * 2);
       }, 500)
     );
   }, []);
@@ -195,18 +208,7 @@ function App() {
         spec={spec}
         padding={0}
         margin={0}
-        theme={{
-          base: "light",
-          root: {
-            background: "transparent",
-            titleFontFamily: "Roboto Condensed",
-            subtitleFontFamily: "Roboto Condensed",
-            subtitleAlign: "middle",
-            subtitleColor: "gray",
-            subtitleFontSize: 10,
-            subtitleFontWeight: "bold",
-          },
-        }}
+        theme={theme}
       />,
       spec,
     ]);
@@ -214,13 +216,16 @@ function App() {
 
   const smallOverviewWrapper = useMemo(() => {
     return smallOverviewGoslingComponents.map(([component, spec], i) => (
-      <td
-        key={JSON.stringify(spec)}
-        onClick={() => setDemoIdx(i)}
-        className={demoIdx === i ? "selected-overview" : "unselected-overview"}
-      >
-        {component}
-      </td>
+      <tr key={JSON.stringify(spec)}>
+        <td
+          onClick={() => setDemoIdx(i)}
+          className={
+            demoIdx === i ? "selected-overview" : "unselected-overview"
+          }
+        >
+          {component}
+        </td>
+      </tr>
     ));
   }, [demoIdx]);
 
@@ -237,6 +242,7 @@ function App() {
       showOverview,
       xOffset: 0,
       showPutativeDriver,
+      showDeletion,
       svTransparency,
       width: visPanelWidth,
       drivers: filteredDrivers,
@@ -244,6 +250,7 @@ function App() {
       hoveredSvId,
       initInvervals,
     });
+    console.log(spec);
     return (
       <GoslingComponent
         ref={gosRef}
@@ -251,12 +258,7 @@ function App() {
         padding={0}
         margin={0}
         experimental={{ reactive: true }}
-        // theme={JSON.parse(JSON.stringify({
-        //   base: 'light',
-        //   root: {
-        //     titleFontFamily: "Roboto Condensed"
-        //   }
-        // }))}
+        theme={theme}
       />
     );
   }, [
@@ -419,30 +421,111 @@ function App() {
           PNG
         </div>
       </div>
+      <svg
+        className="config-button"
+        viewBox="0 0 16 16"
+        onClick={() => {
+          setShowSamples(true);
+        }}
+      >
+        <title>Menu</title>
+        <path
+          fillRule="evenodd"
+          d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+        />
+      </svg>
+      <div className="sample-label">SAMPLE{" • " + sampleId}</div>
       <div id="vis-panel" className="vis-panel">
-        <div
-          className="vis-overview-panel"
-          style={{ height: `${OVERVIEW_PANEL_HEIGHT}px` }}
-        >
-          <table>
-            <tr>{smallOverviewWrapper}</tr>
-          </table>
-          {/* <div className="overview-title">{`Samples (Total ${samples.length})`}</div> */}
+        <div className={"vis-overview-panel " + (!showSamples ? "hide" : "")}>
+          <div className="title">
+            Samples
+            <svg
+              className="button"
+              viewBox="0 0 16 16"
+              onClick={() => {
+                setShowSamples(false);
+              }}
+            >
+              <title>Close</title>
+              <path
+                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+                fill="currentColor"
+              ></path>
+            </svg>
+          </div>
+          <div className="config">
+            <div className="config-panel-input-container">
+              <span className="config-panel-label">Circular Overview</span>
+              <span className="config-panel-input">
+                {
+                  <select
+                    className="config-panel-dropdown"
+                    onChange={(e) => setOverviewChr(e.currentTarget.value)}
+                    value={overviewChr}
+                    disabled={!showOverview}
+                  >
+                    {["All", ...CHROMOSOMES].map((chr) => {
+                      return (
+                        <option key={chr} value={chr}>
+                          {chr}
+                        </option>
+                      );
+                    })}
+                  </select>
+                }
+              </span>
+            </div>
+            <div className="config-panel-input-container">
+              <span className="config-panel-label">Linear Genome View</span>
+              <span className="config-panel-input">
+                {
+                  <select
+                    className="config-panel-dropdown"
+                    onChange={(e) => setGenomeViewChr(e.currentTarget.value)}
+                    value={genomeViewChr}
+                  >
+                    {CHROMOSOMES.map((chr) => {
+                      return (
+                        <option key={chr} value={chr}>
+                          {chr}
+                        </option>
+                      );
+                    })}
+                  </select>
+                }
+              </span>
+            </div>
+            <div className="config-panel-input-container">
+              <span className="config-panel-label">Highlight Deletion</span>
+              <span className="config-panel-input">
+                <input
+                  type="checkbox"
+                  checked={showDeletion}
+                  onChange={() => {
+                    setShowDeletion(!showDeletion);
+                  }}
+                />
+              </span>
+            </div>
+
+            <div
+              className="config-panel-button"
+              onClick={() => gosRef.current?.api.exportPng()}
+            >
+              Export PNG
+            </div>
+          </div>
+          <table>{smallOverviewWrapper}</table>
         </div>
         <div
           className="gosling-panel"
           style={{
             width: `calc(100% - ${VIS_PADDING * 2}px)`,
-            height: `calc(100% - (${
-              VIS_PADDING * 1
-            }px + ${OVERVIEW_PANEL_HEIGHT}px))`,
+            height: `calc(100% - ${VIS_PADDING * 2}px)`,
             padding: VIS_PADDING,
           }}
         >
           {goslingComponent}
-        </div>
-        <div className="vis-panel-title panel-title">
-          <small>v{packageJson.dependencies["gosling.js"]}</small>
         </div>
       </div>
     </>

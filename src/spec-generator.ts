@@ -14,6 +14,7 @@ export interface SpecOption {
   subtitle: string;
   showOverview: boolean;
   showPutativeDriver: boolean;
+  showDeletion: boolean;
   xOffset: number;
   svTransparency: number;
   width: number;
@@ -25,6 +26,137 @@ export interface SpecOption {
   selectedSvId: string;
   hoveredSvId: string;
   initInvervals: [number, number, number, number];
+}
+
+function generateAlignment(option: SpecOption, isLeft: boolean): GoslingSpec {
+  const { sampleId, bamUrl, baiUrl, width, showDeletion } = option;
+
+  if (!showDeletion)
+    return {
+      id: `${sampleId}-bottom-${isLeft ? "left" : "right"}-bam`,
+      alignment: "overlay",
+      title: "Reads",
+      data: {
+        type: "bam",
+        url: "https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam",
+        indexUrl:
+          "https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam.bai",
+      },
+      mark: "rect",
+      tracks: [
+        {
+          dataTransform: [
+            {
+              type: "displace",
+              method: "pile",
+              boundingBox: {
+                startField: "from",
+                endField: "to",
+                // "groupField": "strand",
+                padding: 5,
+                isPaddingBP: true,
+              },
+              newField: "pileup-row",
+            },
+          ],
+          x: { field: "from", type: "genomic" },
+          xe: { field: "to", type: "genomic" },
+          stroke: { value: "white" },
+          strokeWidth: { value: 0.5 },
+        },
+        {
+          dataTransform: [
+            {
+              type: "displace",
+              method: "pile",
+              boundingBox: {
+                startField: "from",
+                endField: "to",
+                // "groupField": "strand",
+                padding: 5,
+                isPaddingBP: true,
+              },
+              newField: "pileup-row",
+            },
+            {
+              type: "subjson",
+              field: "substitutions",
+              genomicField: "pos",
+              baseGenomicField: "from",
+              genomicLengthField: "length",
+            },
+            {
+              type: "filter",
+              field: "isParsedRow",
+              oneOf: ["yes"],
+            },
+          ],
+          x: { field: "pos_start", type: "genomic" },
+          xe: { field: "pos_end", type: "genomic" },
+          color: {
+            field: "type",
+            type: "nominal",
+            legend: true,
+            domain: ["A", "T", "G", "C", "S", "H", "X", "I", "D"],
+          },
+        },
+      ],
+      y: { field: "pileup-row", type: "nominal", flip: false },
+      color: { value: "#97A8B2" },
+      style: { outlineWidth: 0.5 },
+      width,
+      height: 610,
+    };
+  else
+    return {
+      id: `${sampleId}-bottom-${isLeft ? "left" : "right"}-bam`,
+      alignment: "overlay",
+      title: "Reads",
+      data: {
+        type: "bam",
+        url: "https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam",
+        indexUrl:
+          "https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam.bai",
+      },
+      dataTransform: [
+        {
+          type: "combineMates",
+          idField: "name",
+          maintainDuplicates: true,
+        },
+        {
+          type: "displace",
+          method: "pile",
+          boundingBox: {
+            startField: "from",
+            endField: "to",
+            padding: 5,
+            isPaddingBP: true,
+          },
+          newField: "pileup-row",
+        },
+      ],
+
+      mark: "rect",
+      tracks: [
+        {
+          x: { field: "from", type: "genomic" },
+          xe: { field: "to", type: "genomic" },
+        },
+      ],
+      row: { field: "pileup-row", type: "nominal", flip: false },
+      color: {
+        field: "is_long",
+        type: "nominal",
+        domain: ["no", "yes"],
+        range: ["#97A8B2", "red"],
+      },
+      stroke: { value: "white" },
+      strokeWidth: { value: 0.5 },
+      style: { outlineWidth: 0.5 },
+      width,
+      height: 610,
+    };
 }
 
 function generateSpec(option: SpecOption): GoslingSpec {
@@ -53,7 +185,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
   const topViewXOffset = (width - topViewWidth) / 2.0;
 
   return {
-    title,
+    // title,
     // subtitle,
     layout: "linear",
     arrangement: "vertical",
@@ -545,97 +677,10 @@ function generateSpec(option: SpecOption): GoslingSpec {
                       height: 40,
                     },
                     {
-                      id: `${sampleId}-bottom-left-bam`,
-                      alignment: "overlay",
-                      title: "Reads",
-                      data: {
-                        type: "bam",
-                        url: "https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam",
-                        indexUrl:
-                          "https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam.bai",
-                      },
-                      mark: "rect",
-                      tracks: [
-                        {
-                          dataTransform: [
-                            {
-                              type: "displace",
-                              method: "pile",
-                              boundingBox: {
-                                startField: "from",
-                                endField: "to",
-                                // "groupField": "strand",
-                                padding: 5,
-                                isPaddingBP: true,
-                              },
-                              newField: "pileup-row",
-                            },
-                          ],
-                          x: { field: "from", type: "genomic" },
-                          xe: { field: "to", type: "genomic" },
-                          stroke: { value: "white" },
-                          strokeWidth: { value: 0.5 },
-                        },
-                        {
-                          dataTransform: [
-                            {
-                              type: "displace",
-                              method: "pile",
-                              boundingBox: {
-                                startField: "from",
-                                endField: "to",
-                                // "groupField": "strand",
-                                padding: 5,
-                                isPaddingBP: true,
-                              },
-                              newField: "pileup-row",
-                            },
-                            {
-                              type: "subjson",
-                              field: "substitutions",
-                              genomicField: "pos",
-                              baseGenomicField: "from",
-                              genomicLengthField: "length",
-                            },
-                            { type: "filter", field: "type", oneOf: ["sub"] },
-                          ],
-                          x: { field: "pos_start", type: "genomic" },
-                          xe: { field: "pos_end", type: "genomic" },
-                          color: {
-                            field: "variant",
-                            type: "nominal",
-                            domain: [
-                              "A",
-                              "T",
-                              "G",
-                              "C",
-                              "S",
-                              "H",
-                              "X",
-                              "I",
-                              "D",
-                            ],
-                            legend: true,
-                          },
-                        },
-                      ],
-                      y: { field: "pileup-row", type: "nominal", flip: false },
-                      // "row": {
-                      //   "field": "strand",
-                      //   "type": "nominal",
-                      //   "domain": ["+", "-"],
-                      //   "padding": 1
-                      // },
-                      // "color": {
-                      //   "field": "strand",
-                      //   "type": "nominal",
-                      //   "domain": ["+", "-"],
-                      //   "range": ["#97A8B2", "#D4C6BA"]
-                      // },
-                      color: { value: "#97A8B2" },
-                      style: { outlineWidth: 0.5 },
-                      width: bottomViewWidth,
-                      height: 310,
+                      ...generateAlignment(
+                        { ...option, width: bottomViewWidth },
+                        true
+                      ),
                     },
                   ],
                 },
@@ -783,96 +828,10 @@ function generateSpec(option: SpecOption): GoslingSpec {
                       height: 40,
                     },
                     {
-                      id: `${sampleId}-bottom-right-bam`,
-                      alignment: "overlay",
-                      title: "Reads",
-                      data: {
-                        type: "bam",
-                        url: "https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam",
-                        indexUrl:
-                          "https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam.bai",
-                      },
-                      mark: "rect",
-                      tracks: [
-                        {
-                          dataTransform: [
-                            {
-                              type: "displace",
-                              method: "pile",
-                              boundingBox: {
-                                startField: "from",
-                                endField: "to",
-                                // "groupField": "strand",
-                                padding: 5,
-                                isPaddingBP: true,
-                              },
-                              newField: "pileup-row",
-                            },
-                          ],
-                          x: { field: "from", type: "genomic" },
-                          xe: { field: "to", type: "genomic" },
-                          stroke: { value: "white" },
-                          strokeWidth: { value: 0.5 },
-                        },
-                        {
-                          dataTransform: [
-                            {
-                              type: "displace",
-                              method: "pile",
-                              boundingBox: {
-                                startField: "from",
-                                endField: "to",
-                                // "groupField": "strand",
-                                padding: 5,
-                                isPaddingBP: true,
-                              },
-                              newField: "pileup-row",
-                            },
-                            {
-                              type: "subjson",
-                              field: "substitutions",
-                              genomicField: "pos",
-                              baseGenomicField: "from",
-                              genomicLengthField: "length",
-                            },
-                            { type: "filter", field: "type", oneOf: ["sub"] },
-                          ],
-                          x: { field: "pos_start", type: "genomic" },
-                          xe: { field: "pos_end", type: "genomic" },
-                          color: {
-                            field: "variant",
-                            type: "nominal",
-                            domain: [
-                              "A",
-                              "T",
-                              "G",
-                              "C",
-                              "S",
-                              "H",
-                              "X",
-                              "I",
-                              "D",
-                            ],
-                            legend: true,
-                          },
-                        },
-                      ],
-                      y: { field: "pileup-row", type: "nominal", flip: false },
-                      // "row": {
-                      //   "field": "strand",
-                      //   "type": "nominal",
-                      //   "domain": ["+", "-"],
-                      //   "padding": 1
-                      // },
-                      // "color": {
-                      //   "field": "strand",
-                      //   "type": "nominal",
-                      //   "domain": ["+", "-"],
-                      //   "range": ["#97A8B2", "#D4C6BA"]
-                      // },
-                      color: { value: "#97A8B2" },
-                      width: bottomViewWidth,
-                      height: 310,
+                      ...generateAlignment(
+                        { ...option, width: bottomViewWidth },
+                        false
+                      ),
                     },
                   ],
                 },

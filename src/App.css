@@ -1,8 +1,7 @@
 html,
 body,
 #root {
-  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: Helvetica, Arial, sans-serif, "Lato", "Inter", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   height: 100%;
 }
 
@@ -11,17 +10,18 @@ body {
 }
 
 .panel-title {
-  font-size: 20px;
+  font-size: 14px;
   font-weight: bold;
 }
 
 .panel-title > small {
-  font-size: 16px;
+  font-size: 12px;
   margin-left: 6px;
 }
 
 .config-panel {
-  background-color: #f6f6f6;
+    visibility: hidden;
+    background-color: #f6f6f6;
   border-right: 1px solid lightgray;
   padding: 20px;
   height: calc(100% - 40px);
@@ -30,7 +30,7 @@ body {
 }
 
 .config-panel-section-title {
-  font-size: 18px;
+  font-size: 14px;
   margin-top: 20px;
   font-weight: bold;
 }
@@ -91,51 +91,114 @@ body {
 }
 
 .vis-panel {
-  position: fixed;
-  right: 0;
-  top: 0;
   height: 100%;
-  width: calc(100% - 400px);
-  overflow-y: auto;
+  width: 100%;
+}
+
+.config-button {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    cursor: pointer;
+    z-index: 999;
+}
+
+.sample-label {
+    position: absolute;
+    top: 12px;
+    left: 40px;
+    color: gray;
+    text-shadow: 0px 0px 6px white;
+    z-index: 999;
 }
 
 .vis-overview-panel {
-  width: 100%;
-  border-bottom: 1px solid lightgray;
-  background-color: #f6f6f6;
-  overflow-x: auto;
+    position: absolute;
+    width: 400px;
+    height: 100%;
+    border-right: 1px solid lightgray;
+    background-color: white;
+    box-shadow: 0px 0px 12px #00000032;
+    overflow-y: auto;
+    z-index: 999;
+    left: 0px;
+    transition: left 0.2s ease;
+}
+
+.hide {
+    left: -400px;
 }
 
 .vis-overview-panel .gosling-component {
+    cursor: pointer;
+    pointer-events: none;
+}
+
+.vis-overview-panel .title {
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.vis-overview-panel .button {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
+.vis-overview-panel .config {
+    min-height: 100px;
+    background: #F6F6F6;
+    border-top: 1px solid lightgray;
+    position: relative;
+    padding: 30px;
+}
+
+.vis-overview-panel .config .button {
+  font-size: 14px;
+  height: 30px;
+  width: calc(100% - 20px);
+  text-align: center;
+  line-height: 30px;
+  border: 1px solid black;
+  border-radius: 3px;
+  background: white;
   cursor: pointer;
-  pointer-events: none;
+  left: 10px;
 }
 
 .vis-overview-panel table {
-  border-spacing: 40px 18px;
+    width: 100%;
+    border-spacing: 0px 0px;
+    border-collapse: collapse;
 }
 
-.vis-overview-panel .overview-title {
-  position: absolute;
-    left: -10px;
-    top: 120px;
-    transform: rotate(-90deg);
-    font-family: 'Roboto Condensed';
-    font-weight: bold;
-    font-size: 18px;
-    text-shadow: 0px 0px 12px #f6f6f6
-}
-
-.vis-overview-panel tr  {
-  
+.vis-overview-panel tr /* :nth-child(even) */ {
+    border-top: 1px solid lightgray;
 }
 
 .vis-overview-panel td {
-  border-radius: 14px;
+    border-radius: 0px;
+    padding-left: 90px !important;
 }
 
+vis-overview-panel .overview-title {
+  position: absolute;
+  left: -10px;
+  top: 120px;
+  transform: rotate(-90deg);
+  font-weight: bold;
+  font-size: 18px;
+  text-shadow: 0px 0px 12px #f6f6f6
+  }
+
 .vis-overview-panel .selected-overview {
-  box-shadow:inset 0px 0px 0px 2px gray;
+    box-shadow:inset 0px 0px 0px 2px #2e94ff; 
 }
 
 .vis-overview-panel .unselected-overview {
@@ -143,7 +206,7 @@ body {
 }
 
 .vis-overview-panel .unselected-overview:hover {
-  box-shadow:inset 0px 0px 0px 2px lightgray;
+    box-shadow:inset 0px 0px 0px 2px #2e94ff; 
 }
 
 .vis-overview-panel td {
@@ -151,15 +214,13 @@ body {
 }
 
 .gosling-panel {
-  /* overflow-y: auto; */
+  overflow-y: auto;
 }
 
 .vis-panel-title {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  font-family: "Roboto Condensed", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   opacity: 30%;
 }
 
