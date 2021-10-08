@@ -74,6 +74,11 @@ function App() {
     setCnvUrl(samples[demoIdx].cnv);
     setBamUrl(samples[demoIdx].bam);
     setBaiUrl(samples[demoIdx].bai);
+    setFilteredDrivers(
+      (drivers as any).filter(
+        (d: any) => d.sample_id === sampleId && +d.chr && +d.pos
+      )
+    );
   }, [demoIdx]);
 
   // interactions
