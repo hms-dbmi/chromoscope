@@ -41,6 +41,7 @@ function generateAlignment(option: SpecOption, isLeft: boolean): GoslingSpec {
         url: "https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam",
         indexUrl:
           "https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam.bai",
+        loadMates: true,
       },
       mark: "rect",
       tracks: [
@@ -117,6 +118,7 @@ function generateAlignment(option: SpecOption, isLeft: boolean): GoslingSpec {
         url: "https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam",
         indexUrl:
           "https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam.bai",
+        loadMates: true,
       },
       dataTransform: [
         {

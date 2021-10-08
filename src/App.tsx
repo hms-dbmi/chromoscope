@@ -255,7 +255,7 @@ function App() {
       hoveredSvId,
       initInvervals,
     });
-    console.log(spec);
+    // console.log(spec);
     return (
       <GoslingComponent
         ref={gosRef}
@@ -269,6 +269,7 @@ function App() {
   }, [
     visPanelWidth,
     showOverview,
+    showDeletion,
     showPutativeDriver,
     svUrl,
     cnvUrl,
