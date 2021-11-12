@@ -4173,13 +4173,6 @@ slugid@^1.1.0:
   dependencies:
     uuid "^2.0.1"
 
-slugid@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/slugid/-/slugid-3.0.0.tgz#57cb692641a20feb4a1d774b2ad11594c9aa6125"
-  integrity sha512-MIir9SJS6BQFjFg8DHGMgPkDg21huT0+kYHiS6NkkWZXHSEdgIECo3nUVEG3GDkmecBTy+zRs6pCvPhpk4bKcg==
-  dependencies:
-    uuid "^8.3.2"
-
 source-map-js@^0.6.2:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-0.6.2.tgz#0bb5de631b41cfbda6cfba8bd05a80efdfd2385e"
@@ -4578,11 +4571,6 @@ uuid@^2.0.1:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
   integrity sha1-Z+LoY3lyFVMN/zGOW/nc6/1Hsho=
-
-uuid@^8.3.2:
-  version "8.3.2"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
-  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 v8-compile-cache@^2.0.3:
   version "2.3.0"

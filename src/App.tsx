@@ -1,9 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { GoslingComponent } from "gosling.js";
-import { debounce, uniqueId } from "lodash";
+import { debounce, isEqual, uniqueId } from "lodash";
 import generateSpec from "./spec-generator";
 import packageJson from "../package.json";
-import { CommonEventData } from "gosling.js/dist/src/core/api";
+import {
+  CommonEventData,
+  RawDataEventData,
+} from "gosling.js/dist/src/core/api";
 import "./App.css";
 
 import drivers from "./data/driver.json";
@@ -40,14 +43,12 @@ const CHROMOSOMES = [
   "chrX",
   "chrY",
 ];
-const ZOOM_PADDING = 100;
+const ZOOM_PADDING = 200;
 const ZOOM_DURATION = 1000;
 const theme = {
   base: "light",
   root: {
     background: "transparent",
-    // titleFontFamily: "Seogo UI",
-    // subtitleFontFamily: "Seogo UI",
     subtitleAlign: "middle",
     subtitleColor: "gray",
     subtitleFontSize: 10,
@@ -82,11 +83,10 @@ function App() {
   }, [demoIdx]);
 
   // interactions
-  const [showSamples, setShowSamples] = useState(true);
+  const [showSamples, setShowSamples] = useState(false);
   const [showOverview, setShowOverview] = useState(true);
-  const [showDeletion, setShowDeletion] = useState(false);
-  const [showPutativeDriver, setShowPutativeDriver] = useState(true);
-  const [svTransparency, setSvTransparency] = useState(0.6);
+  const [showPutativeDriver, setShowPutativeDriver] = useState(false);
+  const [svTransparency, setSvTransparency] = useState(0.3);
   const [visPanelWidth, setVisPanelWidth] = useState(
     INIT_VIS_PANEL_WIDTH - VIS_PADDING * 2
   );
@@ -103,6 +103,11 @@ function App() {
     [number, number, number, number]
   >([1, 100, 1, 100]);
 
+  // SV data
+  const leftReads = useRef<{ [k: string]: number | string }[]>([]);
+  const rightReads = useRef<{ [k: string]: number | string }[]>([]);
+  const [svReads, setSvReads] = useState<{ name: string; type: string }[]>([]);
+
   useEffect(() => {
     if (!gosRef.current) return;
 
@@ -112,13 +117,13 @@ function App() {
         if (selectedSvId !== "") {
           // start and end positions are already cumulative values
           gosRef.current.api.zoomTo(
-            `${sampleId}-bottom-left-coverage-view`,
+            `${sampleId}-bottom-left-coverage`,
             `chr1:${e.data.start1}-${e.data.end1}`,
             ZOOM_PADDING,
             ZOOM_DURATION
           );
           gosRef.current.api.zoomTo(
-            `${sampleId}-bottom-right-coverage-view`,
+            `${sampleId}-bottom-right-coverage`,
             `chr1:${e.data.start2}-${e.data.end2}`,
             ZOOM_PADDING,
             ZOOM_DURATION
@@ -138,6 +143,59 @@ function App() {
     );
 
     gosRef.current.api.subscribe(
+      "rawdata",
+      (type: string, e: RawDataEventData) => {
+        if (e.id.includes("bam")) {
+          if (e.id.includes("left")) {
+            leftReads.current = e.data;
+          } else {
+            rightReads.current = e.data;
+          }
+          if (
+            leftReads.current.length !== 0 &&
+            rightReads.current.length !== 0
+          ) {
+            const mates = leftReads.current
+              .filter(
+                (l) =>
+                  rightReads.current.filter(
+                    (r) => r.name === l.name && r.id !== l.id
+                  ).length !== 0
+              )
+              .map((d) => d.name as string)
+              .sort();
+
+            if (
+              mates.join() !==
+              svReads
+                .map((d) => d.name)
+                .sort()
+                .join()
+            ) {
+              const matesWithSv = mates.map((name) => {
+                const ld = leftReads.current.filter((d) => d.name === name)[0]
+                  .strand;
+                const rd = rightReads.current.filter((d) => d.name === name)[0]
+                  .strand;
+                if (ld === "+" && rd === "-")
+                  return { name, type: "deletion (+-)" };
+                else if (ld === "+" && rd === "+")
+                  return { name, type: "inversion (++)" };
+                else if (ld === "-" && rd === "-")
+                  return { name, type: "inversoin (--)" };
+                else if (ld === "-" && rd === "+")
+                  return { name, type: "duplication (-+)" };
+                else return { name, type: "unknown" };
+              });
+              // console.log("mates", matesWithSv)
+              setSvReads(matesWithSv);
+            }
+          }
+        }
+      }
+    );
+
+    gosRef.current.api.subscribe(
       "mouseover",
       (type: string, e: CommonEventData) => {
         // setHoveredSvId(e.data.sv_id + '');
@@ -147,8 +205,9 @@ function App() {
     return () => {
       gosRef.current.api.unsubscribe("click");
       gosRef.current.api.unsubscribe("mouseover");
+      gosRef.current.api.unsubscribe("rawdata");
     };
-  }, [gosRef]);
+  }, [gosRef, svReads, sampleId]);
 
   useEffect(() => {
     if (!overviewChr) return;
@@ -213,7 +272,7 @@ function App() {
         spec={spec}
         padding={0}
         margin={0}
-        theme={theme}
+        theme={theme as any}
       />,
       spec,
     ]);
@@ -247,13 +306,13 @@ function App() {
       showOverview,
       xOffset: 0,
       showPutativeDriver,
-      showDeletion,
       svTransparency,
       width: visPanelWidth,
       drivers: filteredDrivers,
       selectedSvId,
       hoveredSvId,
       initInvervals,
+      svReads,
     });
     // console.log(spec);
     return (
@@ -269,7 +328,6 @@ function App() {
   }, [
     visPanelWidth,
     showOverview,
-    showDeletion,
     showPutativeDriver,
     svUrl,
     cnvUrl,
@@ -277,6 +335,7 @@ function App() {
     hoveredSvId,
     initInvervals,
     svTransparency,
+    svReads,
   ]);
 
   return (
@@ -501,19 +560,6 @@ function App() {
                 }
               </span>
             </div>
-            <div className="config-panel-input-container">
-              <span className="config-panel-label">Highlight Deletion</span>
-              <span className="config-panel-input">
-                <input
-                  type="checkbox"
-                  checked={showDeletion}
-                  onChange={() => {
-                    setShowDeletion(!showDeletion);
-                  }}
-                />
-              </span>
-            </div>
-
             <div
               className="config-panel-button"
               onClick={() => gosRef.current?.api.exportPng()}

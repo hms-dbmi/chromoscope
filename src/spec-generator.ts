@@ -14,7 +14,6 @@ export interface SpecOption {
   subtitle: string;
   showOverview: boolean;
   showPutativeDriver: boolean;
-  showDeletion: boolean;
   xOffset: number;
   svTransparency: number;
   width: number;
@@ -26,139 +25,221 @@ export interface SpecOption {
   selectedSvId: string;
   hoveredSvId: string;
   initInvervals: [number, number, number, number];
+  svReads: { name: string; type: string }[];
 }
 
 function generateAlignment(option: SpecOption, isLeft: boolean): GoslingSpec {
-  const { sampleId, bamUrl, baiUrl, width, showDeletion } = option;
+  const { sampleId, bamUrl, baiUrl, width, svReads } = option;
 
-  if (!showDeletion)
-    return {
-      id: `${sampleId}-bottom-${isLeft ? "left" : "right"}-bam`,
-      alignment: "overlay",
-      title: "Reads",
-      data: {
-        type: "bam",
-        url: "https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam",
-        indexUrl:
-          "https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam.bai",
-        loadMates: true,
-      },
-      mark: "rect",
-      tracks: [
-        {
-          dataTransform: [
-            {
-              type: "displace",
-              method: "pile",
-              boundingBox: {
-                startField: "from",
-                endField: "to",
-                // "groupField": "strand",
-                padding: 5,
-                isPaddingBP: true,
-              },
-              newField: "pileup-row",
+  return {
+    id: `${sampleId}-bottom-${isLeft ? "left" : "right"}-bam`,
+    alignment: "overlay",
+    title: "Alignment",
+    data: {
+      type: "bam",
+      url: bamUrl,
+      indexUrl: baiUrl,
+      loadMates: true,
+    },
+    mark: "rect",
+    tracks: [
+      {
+        dataTransform: [
+          {
+            type: "displace",
+            method: "pile",
+            boundingBox: {
+              startField: "from",
+              endField: "to",
+              padding: 5,
+              isPaddingBP: true,
             },
-          ],
-          x: { field: "from", type: "genomic" },
-          xe: { field: "to", type: "genomic" },
-          stroke: { value: "white" },
-          strokeWidth: { value: 0.5 },
-        },
-        {
-          dataTransform: [
-            {
-              type: "displace",
-              method: "pile",
-              boundingBox: {
-                startField: "from",
-                endField: "to",
-                // "groupField": "strand",
-                padding: 5,
-                isPaddingBP: true,
-              },
-              newField: "pileup-row",
-            },
-            {
-              type: "subjson",
-              field: "substitutions",
-              genomicField: "pos",
-              baseGenomicField: "from",
-              genomicLengthField: "length",
-            },
-            {
-              type: "filter",
-              field: "isParsedRow",
-              oneOf: ["yes"],
-            },
-          ],
-          x: { field: "pos_start", type: "genomic" },
-          xe: { field: "pos_end", type: "genomic" },
-          color: {
-            field: "type",
-            type: "nominal",
-            legend: true,
-            domain: ["A", "T", "G", "C", "S", "H", "X", "I", "D"],
+            newField: "pileup-row",
+            maxRows: 300,
           },
-        },
-      ],
-      y: { field: "pileup-row", type: "nominal", flip: false },
-      color: { value: "#97A8B2" },
-      style: { outlineWidth: 0.5 },
-      width,
-      height: 610,
-    };
-  else
-    return {
-      id: `${sampleId}-bottom-${isLeft ? "left" : "right"}-bam`,
-      alignment: "overlay",
-      title: "Reads",
-      data: {
-        type: "bam",
-        url: "https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam",
-        indexUrl:
-          "https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam.bai",
-        loadMates: true,
-      },
-      dataTransform: [
-        {
-          type: "combineMates",
-          idField: "name",
-          maintainDuplicates: true,
-        },
-        {
-          type: "displace",
-          method: "pile",
-          boundingBox: {
-            startField: "from",
-            endField: "to",
-            padding: 5,
-            isPaddingBP: true,
+          {
+            type: "filter",
+            field: "svType",
+            oneOf: [
+              "deletion (+-)",
+              "inversion (++)",
+              "inversion (--)",
+              "duplication (-+)",
+              "clipping",
+            ],
           },
-          newField: "pileup-row",
+        ],
+        color: {
+          field: "svType",
+          type: "nominal",
+          legend: true,
+          domain: [
+            "deletion (+-)",
+            "inversion (++)",
+            "inversion (--)",
+            "duplication (-+)",
+            "clipping",
+          ],
+          range: ["#E79F00", "#029F73", "#0072B2", "#CB7AA7", "#414141"],
         },
-      ],
-
-      mark: "rect",
-      tracks: [
-        {
-          x: { field: "from", type: "genomic" },
-          xe: { field: "to", type: "genomic" },
-        },
-      ],
-      row: { field: "pileup-row", type: "nominal", flip: false },
-      color: {
-        field: "is_long",
-        type: "nominal",
-        domain: ["no", "yes"],
-        range: ["#97A8B2", "red"],
       },
-      stroke: { value: "white" },
-      strokeWidth: { value: 0.5 },
-      style: { outlineWidth: 0.5 },
-      width,
-      height: 610,
-    };
+      {
+        dataTransform: [
+          {
+            type: "displace",
+            method: "pile",
+            boundingBox: {
+              startField: "from",
+              endField: "to",
+              padding: 5,
+              isPaddingBP: true,
+            },
+            newField: "pileup-row",
+            maxRows: 300,
+          },
+          {
+            type: "filter",
+            field: "svType",
+            oneOf: [
+              "normal read",
+              "more than two mates",
+              "mates not found within chromosome",
+            ],
+          },
+        ],
+        color: { value: "#C8C8C8" },
+      },
+      {
+        dataTransform: [
+          {
+            type: "displace",
+            method: "pile",
+            boundingBox: {
+              startField: "from",
+              endField: "to",
+              padding: 5,
+              isPaddingBP: true,
+            },
+            newField: "pileup-row",
+            maxRows: 300,
+          },
+          {
+            type: "subjson",
+            field: "substitutions",
+            genomicField: "pos",
+            baseGenomicField: "from",
+            genomicLengthField: "length",
+          },
+          { type: "filter", field: "type", oneOf: ["S", "H"] },
+        ],
+        x: { field: "pos_start", type: "genomic" },
+        xe: { field: "pos_end", type: "genomic" },
+        color: { value: "#414141" },
+      },
+      {
+        dataTransform: [
+          {
+            type: "displace",
+            method: "pile",
+            boundingBox: {
+              startField: "from",
+              endField: "to",
+              padding: 5,
+              isPaddingBP: true,
+            },
+            newField: "pileup-row",
+            maxRows: 300,
+          },
+          {
+            type: "filter",
+            field: "name",
+            oneOf: svReads
+              .filter((d) => d.type === "deletion (+-)")
+              .map((d) => d.name),
+          },
+        ],
+        color: { value: "#E79F00" },
+      },
+      {
+        dataTransform: [
+          {
+            type: "displace",
+            method: "pile",
+            boundingBox: {
+              startField: "from",
+              endField: "to",
+              padding: 5,
+              isPaddingBP: true,
+            },
+            newField: "pileup-row",
+            maxRows: 300,
+          },
+          {
+            type: "filter",
+            field: "name",
+            oneOf: svReads
+              .filter((d) => d.type === "inversion (++)")
+              .map((d) => d.name),
+          },
+        ],
+        color: { value: "#029F73" },
+      },
+      {
+        dataTransform: [
+          {
+            type: "displace",
+            method: "pile",
+            boundingBox: {
+              startField: "from",
+              endField: "to",
+              padding: 5,
+              isPaddingBP: true,
+            },
+            newField: "pileup-row",
+            maxRows: 300,
+          },
+          {
+            type: "filter",
+            field: "name",
+            oneOf: svReads
+              .filter((d) => d.type === "inversion (--)")
+              .map((d) => d.name),
+          },
+        ],
+        color: { value: "#0072B2" },
+      },
+      {
+        dataTransform: [
+          {
+            type: "displace",
+            method: "pile",
+            boundingBox: {
+              startField: "from",
+              endField: "to",
+              padding: 5,
+              isPaddingBP: true,
+            },
+            newField: "pileup-row",
+            maxRows: 300,
+          },
+          {
+            type: "filter",
+            field: "name",
+            oneOf: svReads
+              .filter((d) => d.type === "duplication (-+)")
+              .map((d) => d.name),
+          },
+        ],
+        color: { value: "#CB7AA7" },
+      },
+    ],
+    x: { field: "from", type: "genomic" },
+    xe: { field: "to", type: "genomic" },
+    row: { field: "pileup-row", type: "nominal", padding: 0.2 },
+    style: { outlineWidth: 0.5 },
+    width,
+    height: 500,
+  };
 }
 
 function generateSpec(option: SpecOption): GoslingSpec {
@@ -178,6 +259,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
     selectedSvId,
     hoveredSvId,
     initInvervals,
+    svReads,
   } = option;
 
   const topViewWidth = Math.min(width, 600);
@@ -440,7 +522,8 @@ function generateSpec(option: SpecOption): GoslingSpec {
               },
               {
                 id: `${sampleId}-mid-sv`,
-                title: "Structural Variant",
+                title:
+                  "Structural Variant (Click on a SV to see alignment around breakpoints)",
                 data: {
                   url: svUrl,
                   type: "csv",
@@ -572,46 +655,46 @@ function generateSpec(option: SpecOption): GoslingSpec {
                       width: bottomViewWidth,
                       height: 80,
                     },
-                    {
-                      id: `${sampleId}-bottom-left-gene`,
-                      alignment: "overlay",
-                      title: "hg19 | Genes",
-                      template: "gene",
-                      data: {
-                        url: "https://higlass.io/api/v1/tileset_info/?d=OHJakQICQD6gTD7skx4EWA",
-                        // 'url': 'https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation',
-                        type: "beddb",
-                        genomicFields: [
-                          { index: 1, name: "start" },
-                          { index: 2, name: "end" },
-                        ],
-                        valueFields: [
-                          { index: 5, name: "strand", type: "nominal" },
-                          { index: 3, name: "name", type: "nominal" },
-                        ],
-                        exonIntervalFields: [
-                          { index: 12, name: "start" },
-                          { index: 13, name: "end" },
-                        ],
-                      },
-                      encoding: {
-                        startPosition: { field: "start" },
-                        endPosition: { field: "end" },
-                        strandColor: { field: "strand", range: ["gray"] },
-                        strandRow: { field: "strand" },
-                        opacity: { value: 0.4 },
-                        geneHeight: { value: 60 / 3.0 },
-                        geneLabel: { field: "name" },
-                        geneLabelFontSize: { value: 60 / 3.0 },
-                        geneLabelColor: { field: "strand", range: ["black"] },
-                        geneLabelStroke: { value: "white" },
-                        geneLabelStrokeThickness: { value: 4 },
-                        geneLabelOpacity: { value: 1 },
-                        type: { field: "type" },
-                      },
-                      width: bottomViewWidth,
-                      height: 60,
-                    },
+                    // {
+                    //   id: `${sampleId}-bottom-left-gene`,
+                    //   alignment: "overlay",
+                    //   title: "hg19 | Genes",
+                    //   template: "gene",
+                    //   data: {
+                    //     url: "https://higlass.io/api/v1/tileset_info/?d=OHJakQICQD6gTD7skx4EWA",
+                    //     // 'url': 'https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation',
+                    //     type: "beddb",
+                    //     genomicFields: [
+                    //       { index: 1, name: "start" },
+                    //       { index: 2, name: "end" },
+                    //     ],
+                    //     valueFields: [
+                    //       { index: 5, name: "strand", type: "nominal" },
+                    //       { index: 3, name: "name", type: "nominal" },
+                    //     ],
+                    //     exonIntervalFields: [
+                    //       { index: 12, name: "start" },
+                    //       { index: 13, name: "end" },
+                    //     ],
+                    //   },
+                    //   encoding: {
+                    //     startPosition: { field: "start" },
+                    //     endPosition: { field: "end" },
+                    //     strandColor: { field: "strand", range: ["gray"] },
+                    //     strandRow: { field: "strand" },
+                    //     opacity: { value: 0.4 },
+                    //     geneHeight: { value: 60 / 3.0 },
+                    //     geneLabel: { field: "name" },
+                    //     geneLabelFontSize: { value: 60 / 3.0 },
+                    //     geneLabelColor: { field: "strand", range: ["black"] },
+                    //     geneLabelStroke: { value: "white" },
+                    //     geneLabelStrokeThickness: { value: 4 },
+                    //     geneLabelOpacity: { value: 1 },
+                    //     type: { field: "type" },
+                    //   },
+                    //   width: bottomViewWidth,
+                    //   height: 60,
+                    // },
                     {
                       id: `${sampleId}-bottom-left-sequence`,
                       title: "Sequence",
@@ -724,45 +807,45 @@ function generateSpec(option: SpecOption): GoslingSpec {
                       width: bottomViewWidth,
                       height: 80,
                     },
-                    {
-                      id: `${sampleId}-bottom-right-gene`,
-                      alignment: "overlay",
-                      title: "hg19 | Genes",
-                      template: "gene",
-                      data: {
-                        url: "https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation",
-                        type: "beddb",
-                        genomicFields: [
-                          { index: 1, name: "start" },
-                          { index: 2, name: "end" },
-                        ],
-                        valueFields: [
-                          { index: 5, name: "strand", type: "nominal" },
-                          { index: 3, name: "name", type: "nominal" },
-                        ],
-                        exonIntervalFields: [
-                          { index: 12, name: "start" },
-                          { index: 13, name: "end" },
-                        ],
-                      },
-                      encoding: {
-                        startPosition: { field: "start" },
-                        endPosition: { field: "end" },
-                        strandColor: { field: "strand", range: ["gray"] },
-                        strandRow: { field: "strand" },
-                        opacity: { value: 0.4 },
-                        geneHeight: { value: 60 / 3.0 },
-                        geneLabel: { field: "name" },
-                        geneLabelFontSize: { value: 60 / 3.0 },
-                        geneLabelColor: { field: "strand", range: ["black"] },
-                        geneLabelStroke: { value: "white" },
-                        geneLabelStrokeThickness: { value: 4 },
-                        geneLabelOpacity: { value: 1 },
-                        type: { field: "type" },
-                      },
-                      width: bottomViewWidth,
-                      height: 60,
-                    },
+                    // {
+                    //   id: `${sampleId}-bottom-right-gene`,
+                    //   alignment: "overlay",
+                    //   title: "hg19 | Genes",
+                    //   template: "gene",
+                    //   data: {
+                    //     url: "https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation",
+                    //     type: "beddb",
+                    //     genomicFields: [
+                    //       { index: 1, name: "start" },
+                    //       { index: 2, name: "end" },
+                    //     ],
+                    //     valueFields: [
+                    //       { index: 5, name: "strand", type: "nominal" },
+                    //       { index: 3, name: "name", type: "nominal" },
+                    //     ],
+                    //     exonIntervalFields: [
+                    //       { index: 12, name: "start" },
+                    //       { index: 13, name: "end" },
+                    //     ],
+                    //   },
+                    //   encoding: {
+                    //     startPosition: { field: "start" },
+                    //     endPosition: { field: "end" },
+                    //     strandColor: { field: "strand", range: ["gray"] },
+                    //     strandRow: { field: "strand" },
+                    //     opacity: { value: 0.4 },
+                    //     geneHeight: { value: 60 / 3.0 },
+                    //     geneLabel: { field: "name" },
+                    //     geneLabelFontSize: { value: 60 / 3.0 },
+                    //     geneLabelColor: { field: "strand", range: ["black"] },
+                    //     geneLabelStroke: { value: "white" },
+                    //     geneLabelStrokeThickness: { value: 4 },
+                    //     geneLabelOpacity: { value: 1 },
+                    //     type: { field: "type" },
+                    //   },
+                    //   width: bottomViewWidth,
+                    //   height: 60,
+                    // },
                     {
                       id: `${sampleId}-bottom-right-sequence`,
                       title: "Sequence",
