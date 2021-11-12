@@ -140,6 +140,14 @@ function App() {
           ]);
         }
 
+        setTimeout(
+          () =>
+            document
+              .getElementById("gosling-panel")
+              ?.scrollTo({ top: 1000000, behavior: "smooth" }),
+          1000
+        );
+
         setSelectedSvId(e.data.sv_id + "");
       }
     );
@@ -284,7 +292,10 @@ function App() {
     return smallOverviewGoslingComponents.map(([component, spec], i) => (
       <tr key={JSON.stringify(spec)}>
         <td
-          onClick={() => setDemoIdx(i)}
+          onClick={() => {
+            setDemoIdx(i);
+            setSelectedSvId("");
+          }}
           className={
             demoIdx === i ? "selected-overview" : "unselected-overview"
           }
@@ -580,6 +591,7 @@ function App() {
         </div>
         <div
           onClick={() => setShowSamples(false)}
+          id="gosling-panel"
           className="gosling-panel"
           style={{
             width: `calc(100% - ${VIS_PADDING * 2}px)`,
