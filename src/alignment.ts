@@ -9,43 +9,14 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
         id: `${sampleId}-bottom-${isLeft ? 'left' : 'right'}-bam`,
         alignment: 'overlay',
         title: 'Alignment',
-        data: {
-            type: 'bam',
-            url: bamUrl,
-            indexUrl: baiUrl,
-            loadMates: true
-        },
+        data: { type: 'bam', url: bamUrl, indexUrl: baiUrl, loadMates: false },
         mark: 'rect',
         tracks: [
             {
-                dataTransform: [
-                    {
-                        type: 'displace',
-                        method: 'pile',
-                        boundingBox: {
-                            startField: 'from',
-                            endField: 'to',
-                            padding: 5,
-                            isPaddingBP: true
-                        },
-                        newField: 'pileup-row',
-                        maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'svType',
-                        oneOf: [
-                            // only refer to two views
-                            // "duplication (-+)",
-                            // "deletion (+-)",
-                            // "inversion (++)",
-                            // "inversion (--)",
-                            // "clipping",
-                        ]
-                    }
-                ],
+                // This is just a track to show legend as a work around.
+                dataTransform: [{ type: 'filter', field: 'start', oneOf: [] }],
                 color: {
-                    field: 'svType',
+                    field: 'start',
                     type: 'nominal',
                     legend: true,
                     domain: [
@@ -59,23 +30,19 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                 }
             },
             {
+                // Regular reads
                 dataTransform: [
                     {
                         type: 'displace',
                         method: 'pile',
                         boundingBox: {
-                            startField: 'from',
-                            endField: 'to',
+                            startField: 'start',
+                            endField: 'end',
                             padding: 5,
                             isPaddingBP: true
                         },
                         newField: 'pileup-row',
                         maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'svType',
-                        oneOf: ['normal read', 'more than two mates', 'mates not found within chromosome']
                     }
                 ],
                 color: { value: '#C8C8C8' }
@@ -86,8 +53,8 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                         type: 'displace',
                         method: 'pile',
                         boundingBox: {
-                            startField: 'from',
-                            endField: 'to',
+                            startField: 'start',
+                            endField: 'end',
                             padding: 5,
                             isPaddingBP: true
                         },
@@ -98,7 +65,7 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                         type: 'subjson',
                         field: 'substitutions',
                         genomicField: 'pos',
-                        baseGenomicField: 'from',
+                        baseGenomicField: 'start',
                         genomicLengthField: 'length'
                     },
                     { type: 'filter', field: 'type', oneOf: ['S', 'H'] }
@@ -113,8 +80,8 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                         type: 'displace',
                         method: 'pile',
                         boundingBox: {
-                            startField: 'from',
-                            endField: 'to',
+                            startField: 'start',
+                            endField: 'end',
                             padding: 5,
                             isPaddingBP: true
                         },
@@ -135,8 +102,8 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                         type: 'displace',
                         method: 'pile',
                         boundingBox: {
-                            startField: 'from',
-                            endField: 'to',
+                            startField: 'start',
+                            endField: 'end',
                             padding: 5,
                             isPaddingBP: true
                         },
@@ -157,8 +124,8 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                         type: 'displace',
                         method: 'pile',
                         boundingBox: {
-                            startField: 'from',
-                            endField: 'to',
+                            startField: 'start',
+                            endField: 'end',
                             padding: 5,
                             isPaddingBP: true
                         },
@@ -179,8 +146,8 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                         type: 'displace',
                         method: 'pile',
                         boundingBox: {
-                            startField: 'from',
-                            endField: 'to',
+                            startField: 'start',
+                            endField: 'end',
                             padding: 5,
                             isPaddingBP: true
                         },
@@ -196,14 +163,14 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                 color: { value: defaultEncodings.color.svclass['duplication (-+)'] }
             }
         ],
-        x: { field: 'from', type: 'genomic' },
-        xe: { field: 'to', type: 'genomic' },
+        x: { field: 'start', type: 'genomic' },
+        xe: { field: 'end', type: 'genomic' },
         row: { field: 'pileup-row', type: 'nominal', padding: 0.2 },
         tooltip: [
             { field: 'id', type: 'nominal' },
             { field: 'name', type: 'nominal' },
-            { field: 'from', type: 'genomic' },
-            { field: 'to', type: 'genomic' },
+            { field: 'start', type: 'genomic' },
+            { field: 'end', type: 'genomic' },
             { field: 'cigar', type: 'nominal' },
             { field: 'strand', type: 'nominal' }
         ],

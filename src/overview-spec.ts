@@ -1,11 +1,11 @@
-import defaultEncodings from './default-encoding';
 import { GoslingSpec } from 'gosling.js/dist/src/core/gosling.schema';
+import tracks from './track';
 
 type SpecOption = {
+    title: string;
+    width: number;
     cnvUrl: string;
     svUrl: string;
-    width: number;
-    title: string;
 };
 
 function getSmallOverviewSpec(option: SpecOption): GoslingSpec {
@@ -18,10 +18,7 @@ function getSmallOverviewSpec(option: SpecOption): GoslingSpec {
                 static: true,
                 layout: 'circular',
                 spacing: 1,
-                style: {
-                    // outlineWidth: 1,
-                    outline: 'lightgray'
-                },
+                style: { outline: 'lightgray' },
                 tracks: [
                     {
                         data: {
@@ -75,105 +72,9 @@ function getSmallOverviewSpec(option: SpecOption): GoslingSpec {
                         width,
                         height: 30
                     },
-                    {
-                        // title: "Gain",
-                        // style: { background: "lightgray", backgroundOpacity: 0.2 },
-                        alignment: 'overlay',
-                        data: {
-                            separator: '\t',
-                            url: cnvUrl,
-                            type: 'csv',
-                            chromosomeField: 'chromosome',
-                            genomicFields: ['start', 'end'],
-                            quantitativeFields: ['total_cn']
-                        },
-                        dataTransform: [
-                            {
-                                type: 'filter',
-                                field: 'total_cn',
-                                inRange: [4.9999, 999999999]
-                            }
-                        ],
-                        tracks: [
-                            { mark: 'rect' },
-                            {
-                                mark: 'brush',
-                                x: { linkingId: 'mid-scale' },
-                                strokeWidth: { value: 0 }
-                            }
-                        ],
-                        x: { field: 'start', type: 'genomic' },
-                        xe: { field: 'end', type: 'genomic' },
-                        color: { value: '#73C475' },
-                        width,
-                        height: 40
-                    },
-                    {
-                        // title: "LOH",
-                        // style: { background: "lightgray", backgroundOpacity: 0.2 },
-                        alignment: 'overlay',
-                        data: {
-                            separator: '\t',
-                            url: cnvUrl,
-                            type: 'csv',
-                            chromosomeField: 'chromosome',
-                            genomicFields: ['start', 'end']
-                        },
-                        dataTransform: [{ type: 'filter', field: 'minor_cn', oneOf: ['0'] }],
-                        tracks: [
-                            { mark: 'rect' },
-                            {
-                                mark: 'brush',
-                                x: { linkingId: 'mid-scale' },
-                                strokeWidth: { value: 1 },
-                                stroke: { value: '#94C2EF' },
-                                color: { value: '#AFD8FF' }
-                            }
-                        ],
-                        x: { field: 'start', type: 'genomic' },
-                        xe: { field: 'end', type: 'genomic' },
-                        color: { value: '#FB6A4B' },
-                        width,
-                        height: 40
-                    },
-                    {
-                        // title: "Structural Variant",
-                        data: {
-                            url: svUrl,
-                            type: 'csv',
-                            separator: '\t',
-                            genomicFieldsToConvert: [
-                                {
-                                    chromosomeField: 'chrom1',
-                                    genomicFields: ['start1', 'end1']
-                                },
-                                {
-                                    chromosomeField: 'chrom2',
-                                    genomicFields: ['start2', 'end2']
-                                }
-                            ]
-                        },
-                        mark: 'withinLink',
-                        x: { field: 'start1', type: 'genomic' },
-                        xe: { field: 'end2', type: 'genomic' },
-                        color: {
-                            field: 'svclass',
-                            type: 'nominal',
-                            legend: false,
-                            domain: defaultEncodings.color.svclass.domain,
-                            range: defaultEncodings.color.svclass.range
-                        },
-                        stroke: {
-                            field: 'svclass',
-                            type: 'nominal',
-                            domain: defaultEncodings.color.svclass.domain,
-                            range: defaultEncodings.color.svclass.range
-                        },
-                        strokeWidth: { value: 0.5 },
-                        opacity: { value: 0.6 },
-                        width,
-                        height: 80
-                    }
+                    tracks.gain(title, cnvUrl, width, 40, 'small'),
+                    tracks.loh(title, cnvUrl, width, 40, 'small'),
+                    tracks.sv(title, svUrl, width, 80, 'small', '')
                 ]
             }
         ]

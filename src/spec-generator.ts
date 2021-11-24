@@ -1,8 +1,8 @@
 import { GoslingSpec } from 'gosling.js';
 import { MultipleViews, OverlaidTracks, SingleTrack, SingleView, View } from 'gosling.js/dist/src/core/gosling.schema';
 import { alignment } from './alignment';
-import defaultEncodings from './default-encoding';
 import { verticalGuide } from './vertical-guide';
+import tracks from './track';
 
 export interface SpecOption {
     sampleId: string;
@@ -55,8 +55,6 @@ function generateSpec(option: SpecOption): GoslingSpec {
     const topViewXOffset = (width - topViewWidth) / 2.0;
 
     return {
-        // title,
-        // subtitle,
         layout: 'linear',
         arrangement: 'vertical',
         centerRadius: 0.5,
@@ -192,7 +190,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                             {
                                 id: `${sampleId}-mid-gene`,
                                 alignment: 'overlay',
-                                title: 'hg19 | Genes',
+                                title: 'Genes',
                                 template: 'gene',
                                 data: {
                                     url: 'https://higlass.io/api/v1/tileset_info/?d=OHJakQICQD6gTD7skx4EWA',
@@ -228,135 +226,9 @@ function generateSpec(option: SpecOption): GoslingSpec {
                                 width: midViewWidth,
                                 height: 60
                             },
-                            {
-                                id: `${sampleId}-mid-gain`,
-                                title: 'Gain',
-                                style: { background: 'lightgray', backgroundOpacity: 0.2 },
-                                data: {
-                                    separator: '\t',
-                                    url: cnvUrl,
-                                    type: 'csv',
-                                    chromosomeField: 'chromosome',
-                                    genomicFields: ['start', 'end']
-                                },
-                                dataTransform: [
-                                    {
-                                        type: 'filter',
-                                        field: 'aceseq_copy_number',
-                                        inRange: [4.5, 900]
-                                    }
-                                ],
-                                alignment: 'overlay',
-                                tracks: [{ mark: 'rect' }],
-                                x: { field: 'start', type: 'genomic' },
-                                xe: { field: 'end', type: 'genomic' },
-                                color: { value: '#73C475' },
-                                width: midViewWidth,
-                                height: 20
-                            },
-                            {
-                                id: `${sampleId}-mid-loh`,
-                                title: 'LOH',
-                                style: { background: 'lightgray', backgroundOpacity: 0.2 },
-                                data: {
-                                    separator: '\t',
-                                    url: cnvUrl,
-                                    type: 'csv',
-                                    chromosomeField: 'chromosome',
-                                    genomicFields: ['start', 'end']
-                                },
-                                dataTransform: [{ type: 'filter', field: 'minor_cn', oneOf: ['0'] }],
-                                alignment: 'overlay',
-                                tracks: [{ mark: 'rect' }],
-                                x: { field: 'start', type: 'genomic' },
-                                xe: { field: 'end', type: 'genomic' },
-                                color: { value: '#FB6A4B' },
-                                width: midViewWidth,
-                                height: 20
-                            },
-                            {
-                                id: `${sampleId}-mid-sv`,
-                                title: 'Structural Variant (Click on a SV to see alignment around breakpoints)',
-                                data: {
-                                    url: svUrl,
-                                    type: 'csv',
-                                    separator: '\t',
-                                    genomicFieldsToConvert: [
-                                        {
-                                            chromosomeField: 'chrom1',
-                                            genomicFields: ['start1', 'end1']
-                                        },
-                                        {
-                                            chromosomeField: 'chrom2',
-                                            genomicFields: ['start2', 'end2']
-                                        }
-                                    ]
-                                },
-                                alignment: 'overlay',
-                                tracks: [
-                                    {
-                                        mark: 'withinLink',
-                                        dataTransform: [
-                                            {
-                                                type: 'filter',
-                                                field: 'sv_id',
-                                                oneOf: [selectedSvId, hoveredSvId],
-                                                not: true
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        mark: 'withinLink',
-                                        dataTransform: [
-                                            { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] },
-                                            {
-                                                type: 'filter',
-                                                field: 'sv_id',
-                                                oneOf: [hoveredSvId],
-                                                not: true
-                                            }
-                                        ],
-                                        strokeWidth: { value: 3 },
-                                        opacity: { value: 1 }
-                                    },
-                                    {
-                                        mark: 'withinLink',
-                                        dataTransform: [{ type: 'filter', field: 'sv_id', oneOf: [hoveredSvId] }],
-                                        stroke: { value: 'black' },
-                                        strokeWidth: { value: 3 },
-                                        opacity: { value: 1 }
-                                    }
-                                ],
-                                x: { field: 'start1', type: 'genomic' },
-                                xe: { field: 'end2', type: 'genomic' },
-                                color: {
-                                    field: 'svclass',
-                                    type: 'nominal',
-                                    legend: true,
-                                    domain: defaultEncodings.color.svclass.domain,
-                                    range: defaultEncodings.color.svclass.range
-                                },
-                                stroke: {
-                                    field: 'svclass',
-                                    type: 'nominal',
-                                    domain: defaultEncodings.color.svclass.domain,
-                                    range: defaultEncodings.color.svclass.range
-                                },
-                                strokeWidth: { value: 1 },
-                                opacity: { value: svTransparency },
-                                size: { value: 4 },
-                                tooltip: [
-                                    { field: 'start1', type: 'genomic' },
-                                    { field: 'end2', type: 'genomic' },
-                                    { field: 'svclass', type: 'nominal' },
-                                    { field: 'sv_id', type: 'nominal' },
-                                    { field: 'svmethod', type: 'nominal' },
-                                    { field: 'pe_support', type: 'nominal' }
-                                ],
-                                style: { bazierLink: true },
-                                width: midViewWidth,
-                                height: 200
-                            }
+                            tracks.gain(sampleId, cnvUrl, midViewWidth, 20, 'mid'),
+                            tracks.loh(sampleId, cnvUrl, midViewWidth, 20, 'mid'),
+                            tracks.sv(sampleId, svUrl, midViewWidth, 200, 'mid', selectedSvId)
                         ]
                     }
                 ]
@@ -387,13 +259,13 @@ function generateSpec(option: SpecOption): GoslingSpec {
                                           dataTransform: [
                                               {
                                                   type: 'coverage',
-                                                  startField: 'from',
-                                                  endField: 'to'
+                                                  startField: 'start',
+                                                  endField: 'end'
                                               }
                                           ],
                                           mark: 'bar',
-                                          x: { field: 'from', type: 'genomic' },
-                                          xe: { field: 'to', type: 'genomic' },
+                                          x: { field: 'start', type: 'genomic' },
+                                          xe: { field: 'end', type: 'genomic' },
                                           y: {
                                               field: 'coverage',
                                               type: 'quantitative',
@@ -537,13 +409,13 @@ function generateSpec(option: SpecOption): GoslingSpec {
                                           dataTransform: [
                                               {
                                                   type: 'coverage',
-                                                  startField: 'from',
-                                                  endField: 'to'
+                                                  startField: 'start',
+                                                  endField: 'end'
                                               }
                                           ],
                                           mark: 'bar',
-                                          x: { field: 'from', type: 'genomic' },
-                                          xe: { field: 'to', type: 'genomic' },
+                                          x: { field: 'start', type: 'genomic' },
+                                          xe: { field: 'end', type: 'genomic' },
                                           y: {
                                               field: 'coverage',
                                               type: 'quantitative',
@@ -756,108 +628,9 @@ function getOverviewSpec(option: SpecOption): View[] {
                               height: 40
                           } as OverlaidTracks
                       ]),
-                {
-                    id: `${sampleId}-top-gain`,
-                    title: 'Gain',
-                    style: { background: 'lightgray', backgroundOpacity: 0.2 },
-                    alignment: 'overlay',
-                    data: {
-                        separator: '\t',
-                        url: cnvUrl,
-                        type: 'csv',
-                        chromosomeField: 'chromosome',
-                        genomicFields: ['start', 'end'],
-                        quantitativeFields: ['total_cn']
-                    },
-                    dataTransform: [
-                        {
-                            type: 'filter',
-                            field: 'total_cn',
-                            inRange: [4.9999, 999999999]
-                        }
-                    ],
-                    tracks: [
-                        { mark: 'rect' },
-                        {
-                            mark: 'brush',
-                            x: { linkingId: 'mid-scale' },
-                            strokeWidth: { value: 0 }
-                        }
-                    ],
-                    x: { field: 'start', type: 'genomic' },
-                    xe: { field: 'end', type: 'genomic' },
-                    color: { value: '#73C475' },
-                    width,
-                    height: 40
-                },
-                {
-                    id: `${sampleId}-top-loh`,
-                    title: 'LOH',
-                    style: { background: 'lightgray', backgroundOpacity: 0.2 },
-                    alignment: 'overlay',
-                    data: {
-                        separator: '\t',
-                        url: cnvUrl,
-                        type: 'csv',
-                        chromosomeField: 'chromosome',
-                        genomicFields: ['start', 'end']
-                    },
-                    dataTransform: [{ type: 'filter', field: 'minor_cn', oneOf: ['0'] }],
-                    tracks: [
-                        { mark: 'rect' },
-                        {
-                            mark: 'brush',
-                            x: { linkingId: 'mid-scale' },
-                            strokeWidth: { value: 1 },
-                            stroke: { value: '#94C2EF' },
-                            color: { value: '#AFD8FF' }
-                        }
-                    ],
-                    x: { field: 'start', type: 'genomic' },
-                    xe: { field: 'end', type: 'genomic' },
-                    color: { value: '#FB6A4B' },
-                    width,
-                    height: 40
-                },
-                {
-                    id: `${sampleId}-top-sv`,
-                    title: 'Structural Variant',
-                    data: {
-                        url: svUrl,
-                        type: 'csv',
-                        separator: '\t',
-                        genomicFieldsToConvert: [
-                            {
-                                chromosomeField: 'chrom1',
-                                genomicFields: ['start1', 'end1']
-                            },
-                            {
-                                chromosomeField: 'chrom2',
-                                genomicFields: ['start2', 'end2']
-                            }
-                        ]
-                    },
-                    mark: 'withinLink',
-                    x: { field: 'start1', type: 'genomic' },
-                    xe: { field: 'end2', type: 'genomic' },
-                    color: {
-                        field: 'svclass',
-                        type: 'nominal',
-                        legend: true,
-                        domain: defaultEncodings.color.svclass.domain,
-                        range: defaultEncodings.color.svclass.range
-                    },
-                    stroke: {
-                        field: 'svclass',
-                        type: 'nominal',
-                        domain: defaultEncodings.color.svclass.domain,
-                        range: defaultEncodings.color.svclass.range
-                    },
-                    strokeWidth: { value: 1 },
-                    opacity: { value: svTransparency },
-                    width,
-                    height: 80
-                }
+                tracks.gain(sampleId, cnvUrl, width, 40, 'top'),
+                tracks.loh(sampleId, cnvUrl, width, 40, 'top'),
+                tracks.sv(sampleId, svUrl, width, 80, 'top', '')
             ]
         }
     ];

@@ -3,7 +3,7 @@ import { GoslingComponent } from 'gosling.js';
 import { debounce, isEqual, uniqueId } from 'lodash';
 import generateSpec from './spec-generator';
 import packageJson from '../package.json';
-import { CommonEventData, RawDataEventData } from 'gosling.js/dist/src/core/api';
+import { CommonEventData } from 'gosling.js/dist/src/core/api';
 import './App.css';
 
 import drivers from './data/driver.json';
@@ -108,7 +108,7 @@ function App() {
     // interactions
     const [showSamples, setShowSamples] = useState(false);
     const [showOverview, setShowOverview] = useState(true);
-    const [showPutativeDriver, setShowPutativeDriver] = useState(false);
+    const [showPutativeDriver, setShowPutativeDriver] = useState(true);
     const [svTransparency, setSvTransparency] = useState(0.3);
     const [visPanelWidth, setVisPanelWidth] = useState(INIT_VIS_PANEL_WIDTH - VIS_PADDING * 2);
     const [overviewChr, setOverviewChr] = useState('');
@@ -163,7 +163,7 @@ function App() {
             setSelectedSvId(e.data.sv_id + '');
         });
 
-        gosRef.current.api.subscribe('rawdata', (type: string, e: RawDataEventData) => {
+        gosRef.current.api.subscribe('rawdata', (type: string, e: any) => {
             if (e.id.includes('bam')) {
                 if (e.id.includes('left')) {
                     leftReads.current = e.data;
@@ -190,8 +190,7 @@ function App() {
                             const rd = matesOnRight[0].strand;
                             if (matesOnLeft.length !== 1 || matesOnRight.length !== 1) {
                                 // split reads
-                                console.log(matesOnLeft, matesOnRight);
-
+                                // console.log(matesOnLeft, matesOnRight);
                                 // if(Array.from(new Set(matesOnLeft.map(d => d.strand))).length !== 1) {
                                 //   const pick = matesOnLeft.find(d => (JSON.parse(d.substitutions + '')).find(d => d.type !== 'H' && d.type !== 'S'))?.strand;
                                 //   console.log(pick);
@@ -218,9 +217,9 @@ function App() {
             }
         });
 
-        gosRef.current.api.subscribe('mouseover', (type: string, e: CommonEventData) => {
-            // setHoveredSvId(e.data.sv_id + '');
-        });
+        // gosRef.current.api.subscribe('mouseover', (type: string, e: CommonEventData) => {
+        // setHoveredSvId(e.data.sv_id + '');
+        // });
 
         return () => {
             gosRef.current.api.unsubscribe('click');
@@ -320,7 +319,7 @@ function App() {
             bpIntervals,
             svReads
         });
-        // console.log(spec);
+        console.log('spec', spec);
         return (
             <GoslingComponent
                 ref={gosRef}
