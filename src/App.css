@@ -108,9 +108,9 @@ body {
 .sample-label {
     position: absolute;
     top: 12px;
-    left: 40px;
-    color: gray;
+    left: 50px;
     text-shadow: 0px 0px 6px white;
+    font-weight: bold;
     z-index: 999;
 }
 

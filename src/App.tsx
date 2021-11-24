@@ -481,10 +481,7 @@ function App() {
                     d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
                 />
             </svg>
-            <div className="sample-label">
-                SAMPLE
-                {' • ' + sampleId + ' • ' + cancer.charAt(0).toUpperCase() + cancer.slice(1)}
-            </div>
+            <div className="sample-label">{cancer.charAt(0).toUpperCase() + cancer.slice(1) + ' • ' + sampleId}</div>
             <div id="vis-panel" className="vis-panel">
                 <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
                     <div className="title">
