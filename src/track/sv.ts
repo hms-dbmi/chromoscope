@@ -82,7 +82,7 @@ export default function sv(
             domain: defaults.color.svclass.domain,
             range: defaults.color.svclass.range
         },
-        strokeWidth: { value: 1 },
+        strokeWidth: { value: mode === 'small' ? 0.5 : 1 },
         opacity: { value: 0.3 },
         tooltip: [
             { field: 'start1', type: 'genomic' },

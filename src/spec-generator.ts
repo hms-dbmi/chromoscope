@@ -6,12 +6,9 @@ import tracks from './track';
 
 export interface SpecOption {
     sampleId: string;
-    title: string;
-    subtitle: string;
     showOverview: boolean;
     showPutativeDriver: boolean;
     xOffset: number;
-    svTransparency: number;
     width: number;
     svUrl: string;
     cnvUrl: string;
@@ -19,7 +16,6 @@ export interface SpecOption {
     baiUrl: string;
     drivers: { [k: string]: string | number }[];
     selectedSvId: string;
-    hoveredSvId: string;
     initInvervals: [number, number, number, number];
     svReads: { name: string; type: string }[];
     crossChr: boolean;
@@ -29,19 +25,15 @@ export interface SpecOption {
 function generateSpec(option: SpecOption): GoslingSpec {
     const {
         sampleId,
-        title,
-        subtitle,
         svUrl,
         cnvUrl,
         bamUrl,
         baiUrl,
         showPutativeDriver,
         showOverview,
-        svTransparency,
         width,
         drivers,
         selectedSvId,
-        hoveredSvId,
         initInvervals,
         crossChr,
         svReads,
@@ -547,15 +539,12 @@ function generateSpec(option: SpecOption): GoslingSpec {
 }
 
 function getOverviewSpec(option: SpecOption): View[] {
-    const { sampleId, cnvUrl, svUrl, width, svTransparency, showPutativeDriver, showOverview, xOffset, drivers } =
-        option;
+    const { sampleId, cnvUrl, svUrl, width, showPutativeDriver, showOverview, xOffset, drivers } = option;
 
     if (!showOverview) return [];
 
     return [
         {
-            // 'id': 'top-view',
-            // "static": true,
             xOffset,
             layout: 'circular',
             spacing: 1,

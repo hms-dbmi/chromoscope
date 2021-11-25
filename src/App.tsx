@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { GoslingComponent } from 'gosling.js';
-import { debounce, isEqual, uniqueId } from 'lodash';
+import { debounce } from 'lodash';
 import generateSpec from './spec-generator';
-import packageJson from '../package.json';
 import { CommonEventData } from 'gosling.js/dist/src/core/api';
 import './App.css';
 
@@ -11,8 +10,7 @@ import samples from './data/samples';
 import getSmallOverviewSpec from './overview-spec';
 
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
-const CONFIG_PANEL_WIDTH = 400;
-const OVERVIEW_PANEL_HEIGHT = 300;
+const CONFIG_PANEL_WIDTH = 800;
 const VIS_PADDING = 60;
 const CHROMOSOMES = [
     'chr1',
@@ -109,14 +107,12 @@ function App() {
     const [showSamples, setShowSamples] = useState(false);
     const [showOverview, setShowOverview] = useState(true);
     const [showPutativeDriver, setShowPutativeDriver] = useState(true);
-    const [svTransparency, setSvTransparency] = useState(0.3);
     const [visPanelWidth, setVisPanelWidth] = useState(INIT_VIS_PANEL_WIDTH - VIS_PADDING * 2);
     const [overviewChr, setOverviewChr] = useState('');
     const [genomeViewChr, setGenomeViewChr] = useState('');
     const [filteredDrivers, setFilteredDrivers] = useState(
         (drivers as any).filter((d: any) => d.sample_id === sampleId && +d.chr && +d.pos)
     );
-    const [hoveredSvId, setHoveredSvId] = useState<string>('');
     const [selectedSvId, setSelectedSvId] = useState<string>('');
     const [initInvervals, setInitInvervals] = useState<[number, number, number, number]>([1, 100, 1, 100]);
     const [bpIntervals, setBpIntervals] = useState<[number, number, number, number] | undefined>();
@@ -283,25 +279,22 @@ function App() {
 
     const smallOverviewWrapper = useMemo(() => {
         return smallOverviewGoslingComponents.map(([component, spec], i) => (
-            <tr key={JSON.stringify(spec)}>
-                <td
-                    onClick={() => {
-                        setDemoIdx(i);
-                        setSelectedSvId('');
-                    }}
-                    className={demoIdx === i ? 'selected-overview' : 'unselected-overview'}
-                >
-                    {component}
-                </td>
-            </tr>
+            <div
+                key={JSON.stringify(spec)}
+                onClick={() => {
+                    setDemoIdx(i);
+                    setSelectedSvId('');
+                }}
+                className={demoIdx === i ? 'selected-overview' : 'unselected-overview'}
+            >
+                {component}
+            </div>
         ));
     }, [demoIdx]);
 
     const goslingComponent = useMemo(() => {
         const spec = generateSpec({
             sampleId,
-            title: `Sample ID: ${sampleId}`,
-            subtitle: 'Click on a SV arc in the linear view to see alignments around two breakpoints...',
             svUrl,
             cnvUrl,
             bamUrl,
@@ -309,11 +302,9 @@ function App() {
             showOverview,
             xOffset: 0,
             showPutativeDriver,
-            svTransparency,
             width: visPanelWidth,
             drivers: filteredDrivers,
             selectedSvId,
-            hoveredSvId,
             initInvervals,
             crossChr: false,
             bpIntervals,
@@ -330,18 +321,7 @@ function App() {
                 theme={theme}
             />
         );
-    }, [
-        visPanelWidth,
-        showOverview,
-        showPutativeDriver,
-        svUrl,
-        cnvUrl,
-        selectedSvId,
-        hoveredSvId,
-        initInvervals,
-        svTransparency,
-        svReads
-    ]);
+    }, [visPanelWidth, showOverview, showPutativeDriver, svUrl, cnvUrl, selectedSvId, initInvervals, svReads]);
 
     return (
         <>
@@ -546,7 +526,7 @@ function App() {
                             Export PNG
                         </div>
                     </div>
-                    <table>{smallOverviewWrapper}</table>
+                    <div className="overview-container">{smallOverviewWrapper}</div>
                 </div>
                 <div
                     onClick={() => setShowSamples(false)}

@@ -110,13 +110,12 @@ body {
     top: 12px;
     left: 50px;
     text-shadow: 0px 0px 6px white;
-    font-weight: bold;
     z-index: 999;
 }
 
 .vis-overview-panel {
     position: absolute;
-    width: 400px;
+    width: 800px;
     height: 100%;
     border-right: 1px solid lightgray;
     background-color: white;
@@ -128,7 +127,7 @@ body {
 }
 
 .hide {
-    left: -400px;
+    left: -800px;
 }
 
 .vis-overview-panel .gosling-component {
@@ -172,6 +171,13 @@ body {
     left: 10px;
 }
 
+.vis-overview-panel .overview-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 20px;
+}
+
 .vis-overview-panel table {
     width: 100%;
     border-spacing: 0px 0px;
@@ -187,7 +193,7 @@ body {
     padding-left: 90px !important;
 }
 
-vis-overview-panel .overview-title {
+.vis-overview-panel .overview-title {
     position: absolute;
     left: -10px;
     top: 120px;
@@ -195,6 +201,10 @@ vis-overview-panel .overview-title {
     font-weight: bold;
     font-size: 18px;
     text-shadow: 0px 0px 12px #f6f6f6;
+}
+
+.overview-container > div {
+    padding: 20px;
 }
 
 .vis-overview-panel .selected-overview {
