@@ -19,14 +19,8 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                     field: 'start',
                     type: 'nominal',
                     legend: true,
-                    domain: [
-                        crossChr ? 'translocation (-+)' : 'duplication (-+)',
-                        'deletion (+-)',
-                        'inversion (++)',
-                        'inversion (--)',
-                        'clipping'
-                    ],
-                    range: ['#569C4D', '#DA5456', '#EA8A2A', '#ECC949', '#414141']
+                    domain: [...defaultEncodings.color.svclass.domain, 'Clipping'],
+                    range: [...defaultEncodings.color.svclass.range, '#414141']
                 }
             },
             {
@@ -91,10 +85,33 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                     {
                         type: 'filter',
                         field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'deletion (+-)').map(d => d.name)
+                        oneOf: svReads.filter(d => d.type === 'Translocation').map(d => d.name)
                     }
                 ],
-                color: { value: defaultEncodings.color.svclass['deletion (+-)'] }
+                color: { value: defaultEncodings.color.svclass['Translocation'] }
+            },
+
+            {
+                dataTransform: [
+                    {
+                        type: 'displace',
+                        method: 'pile',
+                        boundingBox: {
+                            startField: 'start',
+                            endField: 'end',
+                            padding: 5,
+                            isPaddingBP: true
+                        },
+                        newField: 'pileup-row',
+                        maxRows: 300
+                    },
+                    {
+                        type: 'filter',
+                        field: 'name',
+                        oneOf: svReads.filter(d => d.type === 'Deletion').map(d => d.name)
+                    }
+                ],
+                color: { value: defaultEncodings.color.svclass['Deletion'] }
             },
             {
                 dataTransform: [
@@ -113,10 +130,10 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                     {
                         type: 'filter',
                         field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'inversion (++)').map(d => d.name)
+                        oneOf: svReads.filter(d => d.type === 'Inversion (TtT)').map(d => d.name)
                     }
                 ],
-                color: { value: defaultEncodings.color.svclass['inversion (++)'] }
+                color: { value: defaultEncodings.color.svclass['Inversion (TtT)'] }
             },
             {
                 dataTransform: [
@@ -135,10 +152,10 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                     {
                         type: 'filter',
                         field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'inversion (--)').map(d => d.name)
+                        oneOf: svReads.filter(d => d.type === 'Inversion (HtH)').map(d => d.name)
                     }
                 ],
-                color: { value: defaultEncodings.color.svclass['inversion (--)'] }
+                color: { value: defaultEncodings.color.svclass['Inversion (HtH)'] }
             },
             {
                 dataTransform: [
@@ -157,10 +174,10 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                     {
                         type: 'filter',
                         field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'duplication (-+)').map(d => d.name)
+                        oneOf: svReads.filter(d => d.type === 'Duplication').map(d => d.name)
                     }
                 ],
-                color: { value: defaultEncodings.color.svclass['duplication (-+)'] }
+                color: { value: defaultEncodings.color.svclass['Duplication'] }
             }
         ],
         x: { field: 'start', type: 'genomic' },

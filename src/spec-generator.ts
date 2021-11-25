@@ -16,7 +16,7 @@ export interface SpecOption {
     baiUrl: string;
     drivers: { [k: string]: string | number }[];
     selectedSvId: string;
-    initInvervals: [number, number, number, number];
+    breakpoints: [number, number, number, number];
     svReads: { name: string; type: string }[];
     crossChr: boolean;
     bpIntervals: [number, number, number, number] | undefined;
@@ -34,7 +34,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
         width,
         drivers,
         selectedSvId,
-        initInvervals,
+        breakpoints,
         crossChr,
         svReads,
         bpIntervals
@@ -42,7 +42,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
 
     const topViewWidth = Math.min(width, 600);
     const midViewWidth = width;
-    const bottomViewGap = 20;
+    const bottomViewGap = 19;
     const bottomViewWidth = width / 2.0 - bottomViewGap / 2.0;
     const topViewXOffset = (width - topViewWidth) / 2.0;
 
@@ -236,7 +236,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                                   static: false,
                                   layout: 'linear',
                                   centerRadius: 0.05,
-                                  xDomain: { interval: [initInvervals[0], initInvervals[1]] },
+                                  xDomain: { interval: [breakpoints[0], breakpoints[1]] },
                                   spacing: 0.01,
                                   linkingId: 'detail-scale-1',
                                   tracks: [
@@ -386,7 +386,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                                   static: false,
                                   layout: 'linear',
                                   centerRadius: 0.05,
-                                  xDomain: { interval: [initInvervals[2], initInvervals[3]] },
+                                  xDomain: { interval: [breakpoints[2], breakpoints[3]] },
                                   spacing: 0.01,
                                   linkingId: 'detail-scale-2',
                                   tracks: [

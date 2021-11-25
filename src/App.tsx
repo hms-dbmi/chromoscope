@@ -51,34 +51,6 @@ const theme = {
     }
 };
 
-export const CHROM_SIZE_HG19 = {
-    chr1: 249250621,
-    chr2: 243199373,
-    chr3: 198022430,
-    chr4: 191154276,
-    chr5: 180915260,
-    chr6: 171115067,
-    chr7: 159138663,
-    chr8: 146364022,
-    chr9: 141213431,
-    chr10: 135534747,
-    chr11: 135006516,
-    chr12: 133851895,
-    chr13: 115169878,
-    chr14: 107349540,
-    chr15: 102531392,
-    chr16: 90354753,
-    chr17: 81195210,
-    chr18: 78077248,
-    chr19: 59128983,
-    chr20: 63025520,
-    chr21: 48129895,
-    chr22: 51304566,
-    chrX: 155270560,
-    chrY: 59373566,
-    chrM: 16571
-};
-
 function App() {
     const gosRef = useRef<any>();
 
@@ -101,6 +73,8 @@ function App() {
         setBamUrl(samples[demoIdx].bam);
         setBaiUrl(samples[demoIdx].bai);
         setFilteredDrivers((drivers as any).filter((d: any) => d.sample_id === sampleId && +d.chr && +d.pos));
+        leftReads.current = [];
+        rightReads.current = [];
     }, [demoIdx]);
 
     // interactions
@@ -114,7 +88,7 @@ function App() {
         (drivers as any).filter((d: any) => d.sample_id === sampleId && +d.chr && +d.pos)
     );
     const [selectedSvId, setSelectedSvId] = useState<string>('');
-    const [initInvervals, setInitInvervals] = useState<[number, number, number, number]>([1, 100, 1, 100]);
+    const [breakpoints, setBreakpoints] = useState<[number, number, number, number]>([1, 100, 1, 100]);
     const [bpIntervals, setBpIntervals] = useState<[number, number, number, number] | undefined>();
 
     // SV data
@@ -126,7 +100,8 @@ function App() {
         if (!gosRef.current) return;
 
         gosRef.current.api.subscribe('click', (type: string, e: CommonEventData) => {
-            if (selectedSvId !== '') {
+            const zoom = false;
+            if (zoom) {
                 // start and end positions are already cumulative values
                 gosRef.current.api.zoomTo(
                     `${sampleId}-bottom-left-coverage`,
@@ -142,7 +117,7 @@ function App() {
                 );
             } else {
                 // we will show the bam files, so set the initial positions
-                setInitInvervals([
+                setBreakpoints([
                     +e.data.start1 - ZOOM_PADDING,
                     +e.data.end1 + ZOOM_PADDING,
                     +e.data.start2 - ZOOM_PADDING,
@@ -150,6 +125,7 @@ function App() {
                 ]);
             }
 
+            // Move to the bottom
             setTimeout(
                 () => document.getElementById('gosling-panel')?.scrollTo({ top: 1000000, behavior: 'smooth' }),
                 1000
@@ -157,57 +133,56 @@ function App() {
 
             setBpIntervals([+e.data.start1, +e.data.end1, +e.data.start2, +e.data.end2]);
             setSelectedSvId(e.data.sv_id + '');
+            leftReads.current = [];
+            rightReads.current = [];
         });
 
         gosRef.current.api.subscribe('rawdata', (type: string, e: any) => {
-            if (e.id.includes('bam')) {
-                if (e.id.includes('left')) {
+            if (e.id.includes('bam') && (leftReads.current.length === 0 || rightReads.current.length === 0)) {
+                // This means we just received a BAM data that is just rendered
+                if (e.id.includes('left') && leftReads.current.length === 0) {
                     leftReads.current = e.data;
-                } else {
+                } else if (e.id.includes('right') && rightReads.current.length === 0) {
                     rightReads.current = e.data;
                 }
+                // Reads on both views prepared?
                 if (leftReads.current.length !== 0 && rightReads.current.length !== 0) {
                     const mates = leftReads.current
                         .filter(l => rightReads.current.filter(r => r.name === l.name && r.id !== l.id).length !== 0)
-                        .map(d => d.name as string)
-                        .sort();
+                        .map(d => d.name as string);
 
+                    const matesWithSv = mates.map(name => {
+                        const matesOnLeft = leftReads.current.filter(d => d.name === name);
+                        const matesOnRight = rightReads.current.filter(d => d.name === name);
+
+                        if (matesOnLeft.length !== 1 || matesOnRight.length !== 1) {
+                            // We do not do anything for this case for now.
+                            return { name, type: 'unknown' };
+                        }
+
+                        // console.log(matesOnLeft[0], matesOnRight[0]);
+                        const ld = matesOnLeft[0].strand;
+                        const rd = matesOnRight[0].strand;
+
+                        if (matesOnLeft[0].chrName !== matesOnRight[0].chrName) return { name, type: 'Translocation' };
+                        if (ld === '+' && rd === '-') return { name, type: 'Deletion' };
+                        if (ld === '-' && rd === '-') return { name, type: 'Inversion (TtT)' };
+                        if (ld === '+' && rd === '+') return { name, type: 'Inversion (HtH)' };
+                        if (ld === '-' && rd === '+') return { name, type: 'Duplication' };
+                        return { name, type: 'unknown' };
+                    });
+                    // console.log("mates", matesWithSv)
                     if (
-                        mates.join() !==
+                        matesWithSv
+                            .map(d => d.name)
+                            .sort()
+                            .join() !==
                         svReads
                             .map(d => d.name)
                             .sort()
                             .join()
                     ) {
-                        const matesWithSv = mates.map(name => {
-                            const matesOnLeft = leftReads.current.filter(d => d.name === name);
-                            const matesOnRight = rightReads.current.filter(d => d.name === name);
-                            const ld = matesOnLeft[0].strand;
-                            const rd = matesOnRight[0].strand;
-                            if (matesOnLeft.length !== 1 || matesOnRight.length !== 1) {
-                                // split reads
-                                // console.log(matesOnLeft, matesOnRight);
-                                // if(Array.from(new Set(matesOnLeft.map(d => d.strand))).length !== 1) {
-                                //   const pick = matesOnLeft.find(d => (JSON.parse(d.substitutions + '')).find(d => d.type !== 'H' && d.type !== 'S'))?.strand;
-                                //   console.log(pick);
-                                //   if(pick) ld = pick;
-                                // }
-                                // if(Array.from(new Set(matesOnRight.map(d => d.strand))).length !== 1) {
-                                //   const pick = matesOnRight.find(d => (JSON.parse(d.substitutions + '')).find(d => d.type !== 'H' && d.type !== 'S'))?.strand;
-                                //   console.log(pick);
-                                //   if(pick) rd = pick;
-                                // }
-                            }
-
-                            if (ld === '+' && rd === '-') return { name, type: 'deletion (+-)' };
-                            else if (ld === '+' && rd === '+') return { name, type: 'inversion (++)' };
-                            else if (ld === '-' && rd === '-') return { name, type: 'inversoin (--)' };
-                            else if (ld === '-' && rd === '+') return { name, type: 'duplication (-+)' };
-                            else return { name, type: 'unknown' };
-                        });
-                        // console.log("mates", matesWithSv)
-                        // if(matesWithSv && svReads.map(d => d.name).sort().join() !== matesWithSv.filter(d => d).map(d => d.name).sort().join())
-                        setSvReads(matesWithSv.filter(d => d));
+                        setSvReads(matesWithSv);
                     }
                 }
             }
@@ -219,8 +194,8 @@ function App() {
 
         return () => {
             gosRef.current.api.unsubscribe('click');
-            gosRef.current.api.unsubscribe('mouseover');
             gosRef.current.api.unsubscribe('rawdata');
+            // gosRef.current.api.unsubscribe('mouseover');
         };
     }, [gosRef, svReads, sampleId]);
 
@@ -305,12 +280,12 @@ function App() {
             width: visPanelWidth,
             drivers: filteredDrivers,
             selectedSvId,
-            initInvervals,
+            breakpoints: breakpoints,
             crossChr: false,
             bpIntervals,
             svReads
         });
-        console.log('spec', spec);
+        // console.log('spec', spec);
         return (
             <GoslingComponent
                 ref={gosRef}
@@ -321,7 +296,7 @@ function App() {
                 theme={theme}
             />
         );
-    }, [visPanelWidth, showOverview, showPutativeDriver, svUrl, cnvUrl, selectedSvId, initInvervals, svReads]);
+    }, [visPanelWidth, showOverview, showPutativeDriver, svUrl, cnvUrl, selectedSvId, breakpoints, svReads]);
 
     return (
         <>
