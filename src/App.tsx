@@ -293,7 +293,7 @@ function App() {
                 padding={0}
                 margin={0}
                 experimental={{ reactive: true }}
-                theme={theme}
+                theme={theme as any}
             />
         );
     }, [visPanelWidth, showOverview, showPutativeDriver, svUrl, cnvUrl, selectedSvId, breakpoints, svReads]);
