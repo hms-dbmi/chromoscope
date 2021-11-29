@@ -13,7 +13,7 @@
     },
     "dependencies": {
         "Buffer": "^0.0.0",
-        "gosling.js": "^0.9.8",
+        "gosling.js": "^0.9.10",
         "lodash": "^4.17.21",
         "path": "^0.12.7",
         "pixi.js": "^6.0.4",
