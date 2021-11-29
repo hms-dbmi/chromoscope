@@ -1,4 +1,4 @@
-import { GoslingSpec } from '../../gosling.js/dist/src';
+import { GoslingSpec } from 'gosling.js';
 import { SpecOption } from './spec-generator';
 import defaultEncodings from './default-encoding';
 

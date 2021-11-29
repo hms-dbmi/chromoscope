@@ -1,5 +1,4 @@
-import { SingleTrack } from '../../gosling.js/dist/src/core/gosling.schema';
-
+import { SingleTrack } from 'gosling.js/dist/src/core/gosling.schema';
 export function verticalGuide(start: number, end: number): Partial<SingleTrack> {
     return {
         data: {
