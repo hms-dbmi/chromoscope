@@ -5,7 +5,6 @@ import defaultEncodings from './default-encoding';
 export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
     const { sampleId, bamUrl, baiUrl, width, svReads, crossChr, bpIntervals } = option;
     return {
-        static: true,
         id: `${sampleId}-bottom-${isLeft ? 'left' : 'right'}-bam`,
         alignment: 'overlay',
         title: 'Alignment',

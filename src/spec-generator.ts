@@ -234,6 +234,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                           views: [
                               {
                                   static: false,
+                                  zoomLimits: [1, 1000],
                                   layout: 'linear',
                                   centerRadius: 0.05,
                                   xDomain: { interval: [breakpoints[0], breakpoints[1]] },
@@ -384,6 +385,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                               },
                               {
                                   static: false,
+                                  zoomLimits: [1, 1000],
                                   layout: 'linear',
                                   centerRadius: 0.05,
                                   xDomain: { interval: [breakpoints[2], breakpoints[3]] },
