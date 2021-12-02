@@ -3,6 +3,7 @@ import { GoslingComponent } from 'gosling.js';
 import { debounce } from 'lodash';
 import generateSpec from './spec-generator';
 import { CommonEventData } from 'gosling.js/dist/src/core/api';
+import { ICONS } from './icon';
 import './App.css';
 
 import drivers from './data/driver.json';
@@ -64,23 +65,11 @@ function App() {
     const [bamUrl, setBamUrl] = useState(samples[demoIdx].bam);
     const [baiUrl, setBaiUrl] = useState(samples[demoIdx].bai);
 
-    // update demo
-    useEffect(() => {
-        setSampleId(samples[demoIdx].id);
-        setCancer(samples[demoIdx].cancer);
-        setSvUrl(samples[demoIdx].sv);
-        setCnvUrl(samples[demoIdx].cnv);
-        setBamUrl(samples[demoIdx].bam);
-        setBaiUrl(samples[demoIdx].bai);
-        setFilteredDrivers((drivers as any).filter((d: any) => d.sample_id === sampleId && +d.chr && +d.pos));
-        leftReads.current = [];
-        rightReads.current = [];
-    }, [demoIdx]);
-
     // interactions
     const [showSamples, setShowSamples] = useState(false);
     const [showOverview, setShowOverview] = useState(true);
     const [showPutativeDriver, setShowPutativeDriver] = useState(true);
+    const [interactiveMode, setInteractiveMode] = useState(false);
     const [visPanelWidth, setVisPanelWidth] = useState(INIT_VIS_PANEL_WIDTH - VIS_PADDING * 2);
     const [overviewChr, setOverviewChr] = useState('');
     const [genomeViewChr, setGenomeViewChr] = useState('');
@@ -90,11 +79,27 @@ function App() {
     const [selectedSvId, setSelectedSvId] = useState<string>('');
     const [breakpoints, setBreakpoints] = useState<[number, number, number, number]>([1, 100, 1, 100]);
     const [bpIntervals, setBpIntervals] = useState<[number, number, number, number] | undefined>();
+    const [mousePosition, setMousePosiiton] = useState({ left: -100, top: -100 });
 
     // SV data
     const leftReads = useRef<{ [k: string]: number | string }[]>([]);
     const rightReads = useRef<{ [k: string]: number | string }[]>([]);
     const [svReads, setSvReads] = useState<{ name: string; type: string }[]>([]);
+
+    // update demo
+    useEffect(() => {
+        setSampleId(samples[demoIdx].id);
+        setCancer(samples[demoIdx].cancer);
+        setSvUrl(samples[demoIdx].sv);
+        setCnvUrl(samples[demoIdx].cnv);
+        setBamUrl(samples[demoIdx].bam);
+        setBaiUrl(samples[demoIdx].bai);
+        setFilteredDrivers(
+            (drivers as any).filter((d: any) => d.sample_id === samples[demoIdx].id && +d.chr && +d.pos)
+        );
+        leftReads.current = [];
+        rightReads.current = [];
+    }, [demoIdx]);
 
     useEffect(() => {
         if (!gosRef.current) return;
@@ -257,8 +262,11 @@ function App() {
             <div
                 key={JSON.stringify(spec)}
                 onClick={() => {
-                    setDemoIdx(i);
-                    setSelectedSvId('');
+                    setShowSamples(false);
+                    setTimeout(() => {
+                        setDemoIdx(i);
+                        setSelectedSvId('');
+                    }, 300);
                 }}
                 className={demoIdx === i ? 'selected-overview' : 'unselected-overview'}
             >
@@ -296,133 +304,25 @@ function App() {
                 theme={theme as any}
             />
         );
-    }, [visPanelWidth, showOverview, showPutativeDriver, svUrl, cnvUrl, selectedSvId, breakpoints, svReads]);
+    }, [
+        visPanelWidth,
+        filteredDrivers,
+        showOverview,
+        showPutativeDriver,
+        svUrl,
+        cnvUrl,
+        selectedSvId,
+        breakpoints,
+        svReads
+    ]);
 
     return (
-        <>
-            <div className="config-panel" style={{ width: CONFIG_PANEL_WIDTH - 40 }}>
-                <div className="config-panel-section-title">Sample</div>
-                <div className="config-panel-input-container">
-                    <span className="config-panel-label">
-                        ID<small></small>
-                    </span>
-                    <span className="config-panel-input">
-                        <input className="config-panel-search-box" type="text" value={sampleId} disabled={true} />
-                    </span>
-                </div>
-                <div className="config-panel-section-title">Data</div>
-                <div className="config-panel-input-container">
-                    <span className="config-panel-label">
-                        BAM<small></small>
-                    </span>
-                    <span className="config-panel-input">
-                        <input className="config-panel-search-box" type="text" value={bamUrl} disabled={true} />
-                    </span>
-                </div>
-                <div className="config-panel-input-container">
-                    <span className="config-panel-label">
-                        SV<small></small>
-                    </span>
-                    <span className="config-panel-input">
-                        <input className="config-panel-search-box" type="text" value={svUrl} disabled={true} />
-                    </span>
-                </div>
-                <div className="config-panel-input-container">
-                    <span className="config-panel-label">
-                        CNV<small></small>
-                    </span>
-                    <span className="config-panel-input">
-                        <input className="config-panel-search-box" type="text" value={cnvUrl} disabled={true} />
-                    </span>
-                </div>
-                <div className="config-panel-section-title">Navigation</div>
-                <div className="config-panel-input-container">
-                    <span className="config-panel-label">Circular Overview</span>
-                    <span className="config-panel-input">
-                        {
-                            <select
-                                className="config-panel-dropdown"
-                                onChange={e => setOverviewChr(e.currentTarget.value)}
-                                value={overviewChr}
-                                disabled={!showOverview}
-                            >
-                                {['All', ...CHROMOSOMES].map(chr => {
-                                    return (
-                                        <option key={chr} value={chr}>
-                                            {chr}
-                                        </option>
-                                    );
-                                })}
-                            </select>
-                        }
-                    </span>
-                </div>
-                <div className="config-panel-input-container">
-                    <span className="config-panel-label">Linear Genome View</span>
-                    <span className="config-panel-input">
-                        {
-                            <select
-                                className="config-panel-dropdown"
-                                onChange={e => setGenomeViewChr(e.currentTarget.value)}
-                                value={genomeViewChr}
-                            >
-                                {CHROMOSOMES.map(chr => {
-                                    return (
-                                        <option key={chr} value={chr}>
-                                            {chr}
-                                        </option>
-                                    );
-                                })}
-                            </select>
-                        }
-                    </span>
-                </div>
-                <div className="config-panel-section-title">Visibility</div>
-                <div className="config-panel-input-container">
-                    <span className="config-panel-label">Circular Overview</span>
-                    <span className="config-panel-input">
-                        <input
-                            type="checkbox"
-                            checked={showOverview}
-                            onChange={() => {
-                                setShowOverview(!showOverview);
-                            }}
-                        />
-                    </span>
-                </div>
-                <div className="config-panel-input-container">
-                    <span className="config-panel-label">Putative Driver Track</span>
-                    <span className="config-panel-input">
-                        <input
-                            type="checkbox"
-                            checked={showPutativeDriver}
-                            onChange={() => {
-                                setShowPutativeDriver(!showPutativeDriver);
-                            }}
-                        />
-                    </span>
-                </div>
-                {/* <div className="config-panel-section-title">Encoding</div>
-        <div className="config-panel-input-container">
-          <span className="config-panel-label">SV Transparency</span>
-          <span className="config-panel-input">
-            <input 
-              type="range" 
-              min={0}
-              max={1}
-              step={0.01} 
-              value={svTransparency}
-              className="slider" 
-              style={{ width: 100, display: 'inline', margin: 10}}
-              onChange={(e) => setSvTransparency(+e.currentTarget.value) }
-            />
-          </span>
-        </div> */}
-                <div className="config-panel-section-title">Export</div>
-                <div className="config-panel-button" onClick={() => gosRef.current?.api.exportPng()}>
-                    PNG
-                </div>
-            </div>
+        <div
+            style={{ width: '100%', height: '100%' }}
+            onMouseMove={e => {
+                setMousePosiiton({ top: e.clientY, left: e.clientX });
+            }}
+        >
             <svg
                 className="config-button"
                 viewBox="0 0 16 16"
@@ -437,6 +337,40 @@ function App() {
                 />
             </svg>
             <div className="sample-label">{cancer.charAt(0).toUpperCase() + cancer.slice(1) + ' • ' + sampleId}</div>
+            <span
+                className="interaction-toggle-button"
+                onClick={() => setInteractiveMode(!interactiveMode)}
+                style={{
+                    background: interactiveMode ? '#2399DB' : 'none',
+                    padding: '4px 20px'
+                }}
+            >
+                <span
+                    className="interaction-toggle-button-label"
+                    style={{
+                        color: interactiveMode ? 'white' : 'gray'
+                    }}
+                >
+                    {interactiveMode ? 'Interactive Mode' : 'Static Mode'}
+                </span>
+                <svg
+                    style={{
+                        display: 'inline-block',
+                        verticalAlign: 'middle',
+                        marginLeft: '6px'
+                    }}
+                    viewBox={interactiveMode ? ICONS.TOGGLE_ON.viewBox : ICONS.TOGGLE_OFF.viewBox}
+                    fill={interactiveMode ? 'white' : 'gray'}
+                    stroke={interactiveMode ? ICONS.TOGGLE_ON.stroke : ICONS.TOGGLE_OFF.stroke}
+                    width="30px"
+                    height="30px"
+                >
+                    <title>Interaction</title>
+                    {(interactiveMode ? ICONS.TOGGLE_ON : ICONS.TOGGLE_OFF).path.map(p => (
+                        <path key={p} d={p} />
+                    ))}
+                </svg>
+            </span>
             <div id="vis-panel" className="vis-panel">
                 <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
                     <div className="title">
@@ -462,7 +396,11 @@ function App() {
                                 {
                                     <select
                                         className="config-panel-dropdown"
-                                        onChange={e => setOverviewChr(e.currentTarget.value)}
+                                        onChange={e => {
+                                            setShowSamples(false);
+                                            const chr = e.currentTarget.value;
+                                            setTimeout(() => setOverviewChr(chr), 300);
+                                        }}
                                         value={overviewChr}
                                         disabled={!showOverview}
                                     >
@@ -483,7 +421,13 @@ function App() {
                                 {
                                     <select
                                         className="config-panel-dropdown"
-                                        onChange={e => setGenomeViewChr(e.currentTarget.value)}
+                                        onChange={e => {
+                                            setShowSamples(false);
+                                            const chr = e.currentTarget.value;
+                                            setTimeout(() => {
+                                                setGenomeViewChr(chr);
+                                            }, 300);
+                                        }}
                                         value={genomeViewChr}
                                     >
                                         {CHROMOSOMES.map(chr => {
@@ -504,7 +448,10 @@ function App() {
                     <div className="overview-container">{smallOverviewWrapper}</div>
                 </div>
                 <div
-                    onClick={() => setShowSamples(false)}
+                    onClick={() => {
+                        setShowSamples(false);
+                        if (!interactiveMode) setInteractiveMode(true);
+                    }}
                     id="gosling-panel"
                     className="gosling-panel"
                     style={{
@@ -514,9 +461,50 @@ function App() {
                     }}
                 >
                     {goslingComponent}
+                    <div
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            top: 0,
+                            left: 0,
+                            opacity: 0.1,
+                            pointerEvents: interactiveMode ? 'none' : 'auto'
+                        }}
+                    />
                 </div>
             </div>
-        </>
+            <div
+                style={{
+                    visibility: interactiveMode || showSamples ? 'collapse' : 'visible',
+                    position: 'absolute',
+                    left: `${mousePosition.left + 20}px`,
+                    top: `${mousePosition.top + 20}px`,
+                    background: '#2399DB',
+                    color: 'white',
+                    borderRadius: '6px',
+                    padding: '6px',
+                    pointerEvents: 'none',
+                    zIndex: 9999,
+                    boxShadow: '0 0 20px 2px rgba(0, 0, 0, 0.2)'
+                }}
+            >
+                ⚠️ Click to enter interactive mode...
+            </div>
+            <div
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    visibility: 'collapse',
+                    boxShadow: interactiveMode ? 'inset 0 0 4px 2px #2399DB' : 'none',
+                    zIndex: 9999,
+                    background: 'none',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    pointerEvents: 'none'
+                }}
+            />
+        </div>
     );
 }
 

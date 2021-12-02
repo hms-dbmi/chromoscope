@@ -105,6 +105,18 @@ body {
     z-index: 999;
 }
 
+.interaction-toggle-button {
+    z-index: 999;
+    cursor: pointer;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.interaction-toggle-button-label {
+    line-height: 30px;
+}
+
 .sample-label {
     position: absolute;
     top: 12px;
@@ -224,7 +236,14 @@ body {
 }
 
 .gosling-panel {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1JyBoZWlnaHQ9JzUnPgo8cmVjdCB3aWR0aD0nNScgaGVpZ2h0PSc1JyBmaWxsPScjZmZmJy8+CjxyZWN0IHdpZHRoPScxJyBoZWlnaHQ9JzEnIGZpbGw9JyNjY2MnLz4KPC9zdmc+');
+    background-repeat: repeat;
     overflow-y: auto;
+    display: grid;
+}
+
+.gosling-panel > div {
+    grid-area: 1 / 1;
 }
 
 .vis-panel-title {

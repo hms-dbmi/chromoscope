@@ -1,5 +1,6 @@
 import { GoslingSpec } from 'gosling.js';
-import { MultipleViews, OverlaidTracks, SingleTrack, SingleView, View } from 'gosling.js/dist/src/core/gosling.schema';
+import { MultipleViews, SingleTrack, SingleView, View } from 'gosling.js/dist/src/core/gosling.schema';
+import getMidView from './mid-spec';
 import { alignment } from './alignment';
 import { verticalGuide } from './vertical-guide';
 import tracks from './track';
@@ -66,163 +67,10 @@ function generateSpec(option: SpecOption): GoslingSpec {
                         width: topViewWidth,
                         xOffset: topViewXOffset
                     }),
-                    {
-                        linkingId: 'mid-scale',
-                        xDomain: { chromosome: '1' },
-                        layout: 'linear',
-                        tracks: [
-                            {
-                                id: `${sampleId}-mid-ideogram`,
-                                style: {
-                                    background: '#D7EBFF',
-                                    outline: '#8DC1F2',
-                                    outlineWidth: 5
-                                },
-                                title: 'Ideogram',
-                                alignment: 'overlay',
-                                data: {
-                                    url: 'https://raw.githubusercontent.com/sehilyi/gemini-datasets/master/data/UCSC.HG38.Human.CytoBandIdeogram.csv',
-                                    type: 'csv',
-                                    chromosomeField: 'Chromosome',
-                                    genomicFields: ['chromStart', 'chromEnd']
-                                },
-                                tracks: [
-                                    {
-                                        mark: 'rect',
-                                        dataTransform: [
-                                            {
-                                                type: 'filter',
-                                                field: 'Stain',
-                                                oneOf: ['acen'],
-                                                not: true
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        mark: 'triangleRight',
-                                        dataTransform: [
-                                            { type: 'filter', field: 'Stain', oneOf: ['acen'] },
-                                            { type: 'filter', field: 'Name', include: 'q' }
-                                        ]
-                                    },
-                                    {
-                                        mark: 'triangleLeft',
-                                        dataTransform: [
-                                            { type: 'filter', field: 'Stain', oneOf: ['acen'] },
-                                            { type: 'filter', field: 'Name', include: 'p' }
-                                        ]
-                                    },
-                                    {
-                                        mark: 'text',
-                                        dataTransform: [
-                                            {
-                                                type: 'filter',
-                                                field: 'Stain',
-                                                oneOf: ['acen'],
-                                                not: true
-                                            }
-                                        ],
-                                        size: { value: 12 },
-                                        color: {
-                                            field: 'Stain',
-                                            type: 'nominal',
-                                            domain: ['gneg', 'gpos25', 'gpos50', 'gpos75', 'gpos100', 'gvar'],
-                                            range: ['black', 'black', 'black', 'black', 'white', 'black']
-                                        },
-                                        visibility: [
-                                            {
-                                                operation: 'less-than',
-                                                measure: 'width',
-                                                threshold: '|xe-x|',
-                                                transitionPadding: 10,
-                                                target: 'mark'
-                                            }
-                                        ]
-                                    }
-                                ],
-                                color: {
-                                    field: 'Stain',
-                                    type: 'nominal',
-                                    domain: ['gneg', 'gpos25', 'gpos50', 'gpos75', 'gpos100', 'gvar', 'acen'],
-                                    range: ['white', 'lightgray', 'gray', 'gray', 'black', '#7B9CC8', '#DC4542']
-                                },
-                                size: { value: 18 },
-                                x: { field: 'chromStart', type: 'genomic' },
-                                xe: { field: 'chromEnd', type: 'genomic' },
-                                text: { field: 'Name', type: 'nominal' },
-                                stroke: { value: 'gray' },
-                                strokeWidth: { value: 0.3 },
-                                width: midViewWidth,
-                                height: 30
-                            },
-                            ...(!showPutativeDriver
-                                ? []
-                                : [
-                                      {
-                                          id: `${sampleId}-mid-driver`,
-                                          title: 'Putative Driver',
-                                          data: {
-                                              values: drivers,
-                                              type: 'json',
-                                              chromosomeField: 'chr',
-                                              genomicFields: ['pos']
-                                          },
-                                          // dataTransform: [
-                                          //   { type: 'displace', method: 'pile', boundingBox: { startField: 'pos', endField: 'pos', padding: 100} }
-                                          // ],
-                                          mark: 'text',
-                                          x: { field: 'pos', type: 'genomic' },
-                                          text: { field: 'gene', type: 'nominal' },
-                                          color: { value: 'black' },
-                                          style: { textFontWeight: 'normal', dx: -10 },
-                                          width: midViewWidth,
-                                          height: 20
-                                      } as SingleTrack
-                                  ]),
-                            {
-                                id: `${sampleId}-mid-gene`,
-                                alignment: 'overlay',
-                                title: 'Genes',
-                                template: 'gene',
-                                data: {
-                                    url: 'https://higlass.io/api/v1/tileset_info/?d=OHJakQICQD6gTD7skx4EWA',
-                                    type: 'beddb',
-                                    genomicFields: [
-                                        { index: 1, name: 'start' },
-                                        { index: 2, name: 'end' }
-                                    ],
-                                    valueFields: [
-                                        { index: 5, name: 'strand', type: 'nominal' },
-                                        { index: 3, name: 'name', type: 'nominal' }
-                                    ],
-                                    exonIntervalFields: [
-                                        { index: 12, name: 'start' },
-                                        { index: 13, name: 'end' }
-                                    ]
-                                },
-                                encoding: {
-                                    startPosition: { field: 'start' },
-                                    endPosition: { field: 'end' },
-                                    strandColor: { field: 'strand', range: ['gray'] },
-                                    strandRow: { field: 'strand' },
-                                    opacity: { value: 0.4 },
-                                    geneHeight: { value: 60 / 3.0 },
-                                    geneLabel: { field: 'name' },
-                                    geneLabelFontSize: { value: 60 / 3.0 },
-                                    geneLabelColor: { field: 'strand', range: ['black'] },
-                                    geneLabelStroke: { value: 'white' },
-                                    geneLabelStrokeThickness: { value: 4 },
-                                    geneLabelOpacity: { value: 1 },
-                                    type: { field: 'type' }
-                                },
-                                width: midViewWidth,
-                                height: 60
-                            },
-                            tracks.gain(sampleId, cnvUrl, midViewWidth, 20, 'mid'),
-                            tracks.loh(sampleId, cnvUrl, midViewWidth, 20, 'mid'),
-                            tracks.sv(sampleId, svUrl, midViewWidth, 200, 'mid', selectedSvId)
-                        ]
-                    }
+                    ...getMidView({
+                        ...option,
+                        width: midViewWidth
+                    })
                 ]
             },
             ...(selectedSvId === ''
@@ -570,7 +418,7 @@ function getOverviewSpec(option: SpecOption): View[] {
                         {
                             mark: 'brush',
                             x: { linkingId: 'mid-scale' },
-                            strokeWidth: { value: 2 },
+                            strokeWidth: { value: 1 },
                             stroke: { value: '#0070DC' },
                             color: { value: '#AFD8FF' },
                             opacity: { value: 0.5 }
@@ -596,17 +444,15 @@ function getOverviewSpec(option: SpecOption): View[] {
                           {
                               id: `${sampleId}-top-driver`,
                               title: 'Putative Driver',
-                              alignment: 'overlay',
                               data: {
                                   values: drivers,
                                   type: 'json',
                                   chromosomeField: 'chr',
                                   genomicFields: ['pos']
                               },
-                              tracks: [
-                                  { mark: 'text', size: { value: 6 } }
-                                  // {'mark': 'triangleBottom', 'size': {'value': 5}}
-                              ],
+                              dataTransform: [],
+                              mark: 'text',
+                              size: { value: 10 },
                               x: { field: 'pos', type: 'genomic' },
                               text: { field: 'gene', type: 'nominal' },
                               color: { value: 'black' },
@@ -617,7 +463,7 @@ function getOverviewSpec(option: SpecOption): View[] {
                               },
                               width,
                               height: 40
-                          } as OverlaidTracks
+                          } as SingleTrack
                       ]),
                 tracks.gain(sampleId, cnvUrl, width, 40, 'top'),
                 tracks.loh(sampleId, cnvUrl, width, 40, 'top'),

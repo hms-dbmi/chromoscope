@@ -7,20 +7,20 @@ const samples: {
     bai: string; // URL of bai
 }[] = [
     {
-        id: '84ca6ab0-9edc-4636-9d27-55cdba334d7d',
-        cancer: 'ovarian',
-        sv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/84ca6ab0-9edc-4636-9d27-55cdba334d7d.pcawg_consensus_1.6.161022.somatic.sv.bedpe',
-        cnv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/84ca6ab0-9edc-4636-9d27-55cdba334d7d.consensus.20170119.somatic.cna.annotated.txt',
-        bam: 'https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam',
-        bai: 'https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam.bai'
-    },
-    {
         id: '7a921087-8e62-4a93-a757-fd8cdbe1eb8f',
         cancer: 'ovarian',
         sv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.pcawg_consensus_1.6.161022.somatic.sv.bedpe',
         cnv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.consensus.20170119.somatic.cna.annotated.txt',
         bam: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/PCAWG.47ec48d1-bb40-4404-9fb3-a563b969b51d.bam',
         bai: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/PCAWG.47ec48d1-bb40-4404-9fb3-a563b969b51d.bam.bai'
+    },
+    {
+        id: '84ca6ab0-9edc-4636-9d27-55cdba334d7d',
+        cancer: 'ovarian',
+        sv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/84ca6ab0-9edc-4636-9d27-55cdba334d7d.pcawg_consensus_1.6.161022.somatic.sv.bedpe',
+        cnv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/84ca6ab0-9edc-4636-9d27-55cdba334d7d.consensus.20170119.somatic.cna.annotated.txt',
+        bam: 'https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam',
+        bai: 'https://s3.amazonaws.com/gosling-lang.org/data/PCAWG.00e7f3bd-5c87-40c2-aeb6-4e4ca4a8e720.bam.bai'
     },
     {
         id: '7d332cb1-ba25-47e4-8bf8-d25e14f40d59',
