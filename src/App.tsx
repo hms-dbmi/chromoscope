@@ -317,7 +317,12 @@ function App() {
     ]);
 
     return (
-        <>
+        <div
+            style={{ width: '100%', height: '100%' }}
+            onMouseMove={e => {
+                setMousePosiiton({ top: e.clientY, left: e.clientX });
+            }}
+        >
             <svg
                 className="config-button"
                 viewBox="0 0 16 16"
@@ -454,9 +459,6 @@ function App() {
                         height: `calc(100% - ${VIS_PADDING * 2}px)`,
                         padding: VIS_PADDING
                     }}
-                    onMouseMove={e => {
-                        setMousePosiiton({ top: e.clientY, left: e.clientX });
-                    }}
                 >
                     {goslingComponent}
                     <div
@@ -502,7 +504,7 @@ function App() {
                     pointerEvents: 'none'
                 }}
             />
-        </>
+        </div>
     );
 }
 
