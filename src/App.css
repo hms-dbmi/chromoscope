@@ -105,6 +105,18 @@ body {
     z-index: 999;
 }
 
+.interaction-toggle-button {
+    z-index: 999;
+    cursor: pointer;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.interaction-toggle-button-label {
+    line-height: 30px;
+}
+
 .sample-label {
     position: absolute;
     top: 12px;
@@ -225,6 +237,11 @@ body {
 
 .gosling-panel {
     overflow-y: auto;
+    display: grid;
+}
+
+.gosling-panel > div {
+    grid-area: 1 / 1;
 }
 
 .vis-panel-title {
