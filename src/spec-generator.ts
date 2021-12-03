@@ -396,6 +396,7 @@ function getOverviewSpec(option: SpecOption): View[] {
     return [
         {
             xOffset,
+            static: true,
             layout: 'circular',
             spacing: 1,
             style: {

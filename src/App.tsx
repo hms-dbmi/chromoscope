@@ -208,7 +208,7 @@ function App() {
         if (!overviewChr) return;
 
         if (overviewChr.includes('chr')) {
-            gosRef.current?.api.zoomTo(`${sampleId}-top-ideogram`, overviewChr, 0, ZOOM_DURATION);
+            gosRef.current?.api.zoomTo(`${sampleId}-top-ideogram`, overviewChr, 0, 0); // ZOOM_DURATION);
             setGenomeViewChr(overviewChr);
         } else {
             gosRef.current?.api.zoomToExtent(`${sampleId}-top-ideogram`, ZOOM_DURATION);
