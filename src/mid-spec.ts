@@ -8,7 +8,7 @@ export default function getMidView(option: SpecOption): View[] {
     return [
         {
             linkingId: 'mid-scale',
-            xDomain: { chromosome: '1' },
+            xDomain: { chromosome: '3' },
             layout: 'linear',
             tracks: [
                 {
