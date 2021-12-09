@@ -228,7 +228,7 @@ body {
 }
 
 .vis-overview-panel .unselected-overview:hover {
-    box-shadow: inset 0px 0px 0px 2px #2e94ff;
+    box-shadow: inset 0px 0px 0px 2px lightgray;
 }
 
 .vis-overview-panel td {

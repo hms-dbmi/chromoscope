@@ -3,16 +3,18 @@ import tracks from './track';
 
 type SpecOption = {
     title: string;
+    subtitle: string;
     width: number;
     cnvUrl: string;
     svUrl: string;
 };
 
 function getSmallOverviewSpec(option: SpecOption): GoslingSpec {
-    const { title, cnvUrl, svUrl, width } = option;
+    const { title, subtitle, cnvUrl, svUrl, width } = option;
 
     return {
-        subtitle: title,
+        title,
+        subtitle,
         views: [
             {
                 static: true,
