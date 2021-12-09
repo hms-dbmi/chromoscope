@@ -130,7 +130,7 @@ function App() {
                     `${sampleId}-mid-ideogram`,
                     `chr1:${e.data.start1}-${e.data.end2}`,
                     ZOOM_PADDING,
-                    100
+                    1000
                 );
                 // we will show the bam files, so set the initial positions
                 setBreakpoints([
@@ -144,7 +144,7 @@ function App() {
             // Move to the bottom
             setTimeout(
                 () => document.getElementById('gosling-panel')?.scrollTo({ top: 1000000, behavior: 'smooth' }),
-                1000
+                2000
             );
 
             setBpIntervals([+e.data.start1, +e.data.end1, +e.data.start2, +e.data.end2]);
@@ -367,7 +367,12 @@ function App() {
                 />
             </svg>
             <div className="sample-label">{cancer.charAt(0).toUpperCase() + cancer.slice(1) + ' • ' + sampleId}</div>
-            <div className="help-label">Click on a SV to see alginemt around breakpoints</div>
+            <div className="help-label">
+                <span style={{ border: '2px solid gray', borderRadius: 10, padding: '0px 4px', margin: '6px' }}>
+                    {'?'}
+                </span>
+                {'Click on a SV to see alignemt around breakpoints'}
+            </div>
             <div id="vis-panel" className="vis-panel">
                 <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
                     <div className="title">
