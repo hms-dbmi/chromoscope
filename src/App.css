@@ -131,6 +131,7 @@ body {
     right: 20px;
     text-shadow: 0px 0px 6px white;
     z-index: 999;
+    color: gray;
 }
 
 .vis-overview-panel {
