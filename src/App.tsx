@@ -246,7 +246,7 @@ function App() {
                 cnvUrl: d.cnv,
                 svUrl: d.sv,
                 width: 200,
-                title: d.cancer.toUpperCase(),
+                title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
                 subtitle: '' + d.id.slice(0, 20) + '...'
             })
         );
@@ -361,6 +361,7 @@ function App() {
                 />
             </svg>
             <div className="sample-label">{cancer.charAt(0).toUpperCase() + cancer.slice(1) + ' • ' + sampleId}</div>
+            <div className="help-label">💁 Click on a SV to see alginemt around breakpoints</div>
             <div id="vis-panel" className="vis-panel">
                 <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
                     <div className="title">

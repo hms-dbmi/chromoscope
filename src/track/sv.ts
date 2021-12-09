@@ -24,10 +24,7 @@ export default function sv(
 ): OverlaidTracks {
     return {
         id: `${sampleId}-${mode}-sv`,
-        title:
-            mode === 'small'
-                ? ''
-                : 'Structural Variant' + (mode === 'mid' ? ' (Click on a SV to see alignment around breakpoints)' : ''),
+        title: mode === 'small' ? '' : 'Structural Variant',
         alignment: 'overlay',
         data: {
             url,
