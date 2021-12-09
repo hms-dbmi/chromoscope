@@ -3,7 +3,7 @@ import { GoslingComponent } from 'gosling.js';
 import { debounce } from 'lodash';
 import generateSpec from './spec-generator';
 import { CommonEventData } from 'gosling.js/dist/src/core/api';
-import { ICONS } from './icon';
+import ErrorBoundary from './error';
 import './App.css';
 
 import drivers from './data/driver.json';
@@ -329,193 +329,197 @@ function App() {
     ]);
 
     return (
-        <div
-            style={{ width: '100%', height: '100%' }}
-            onMouseMove={e => {
-                const top = e.clientY;
-                const left = e.clientX;
-                const width = window.innerWidth;
-                const height = window.innerHeight;
-                if (
-                    VIS_PADDING < top &&
-                    top < height - VIS_PADDING &&
-                    VIS_PADDING < left &&
-                    left < width - VIS_PADDING
-                ) {
-                    setMouseOnVis(true);
-                } else {
-                    setMouseOnVis(false);
-                }
-                setMousePosiiton({ top: e.clientY, left: e.clientX });
-            }}
-            onClick={() => {
-                if (!mouseOnVis && interactiveMode) setInteractiveMode(false);
-                else if (mouseOnVis && !interactiveMode) setInteractiveMode(true);
-            }}
-        >
-            <svg
-                className="config-button"
-                viewBox="0 0 16 16"
+        <ErrorBoundary>
+            <div
+                style={{ width: '100%', height: '100%' }}
+                onMouseMove={e => {
+                    const top = e.clientY;
+                    const left = e.clientX;
+                    const width = window.innerWidth;
+                    const height = window.innerHeight;
+                    if (
+                        VIS_PADDING < top &&
+                        top < height - VIS_PADDING &&
+                        VIS_PADDING < left &&
+                        left < width - VIS_PADDING
+                    ) {
+                        setMouseOnVis(true);
+                    } else {
+                        setMouseOnVis(false);
+                    }
+                    setMousePosiiton({ top: e.clientY, left: e.clientX });
+                }}
                 onClick={() => {
-                    setShowSamples(true);
+                    if (!mouseOnVis && interactiveMode) setInteractiveMode(false);
+                    else if (mouseOnVis && !interactiveMode) setInteractiveMode(true);
                 }}
             >
-                <title>Menu</title>
-                <path
-                    fillRule="evenodd"
-                    d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
-                />
-            </svg>
-            <div className="sample-label">{cancer.charAt(0).toUpperCase() + cancer.slice(1) + ' • ' + sampleId}</div>
-            <div className="help-label">
-                <span style={{ border: '2px solid gray', borderRadius: 10, padding: '0px 4px', margin: '6px' }}>
-                    {'?'}
-                </span>
-                {'Click on a SV to see alignemt around breakpoints'}
-            </div>
-            <div id="vis-panel" className="vis-panel">
-                <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
-                    <div className="title">
-                        Samples
-                        <svg
-                            className="button"
-                            viewBox="0 0 16 16"
-                            onClick={() => {
-                                setShowSamples(false);
-                            }}
-                        >
-                            <title>Close</title>
-                            <path
-                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
-                                fill="currentColor"
-                            ></path>
-                        </svg>
-                    </div>
-                    <div className="config">
-                        <div className="config-panel-input-container">
-                            <span className="config-panel-label">Circular Overview</span>
-                            <span className="config-panel-input">
-                                {
-                                    <select
-                                        className="config-panel-dropdown"
-                                        onChange={e => {
-                                            setShowSamples(false);
-                                            const chr = e.currentTarget.value;
-                                            setTimeout(() => setOverviewChr(chr), 300);
-                                        }}
-                                        value={overviewChr}
-                                        disabled={!showOverview}
-                                    >
-                                        {['All', ...CHROMOSOMES].map(chr => {
-                                            return (
-                                                <option key={chr} value={chr}>
-                                                    {chr}
-                                                </option>
-                                            );
-                                        })}
-                                    </select>
-                                }
-                            </span>
-                        </div>
-                        <div className="config-panel-input-container">
-                            <span className="config-panel-label">Linear Genome View</span>
-                            <span className="config-panel-input">
-                                {
-                                    <select
-                                        className="config-panel-dropdown"
-                                        onChange={e => {
-                                            setShowSamples(false);
-                                            const chr = e.currentTarget.value;
-                                            setTimeout(() => {
-                                                setGenomeViewChr(chr);
-                                            }, 300);
-                                        }}
-                                        value={genomeViewChr}
-                                    >
-                                        {CHROMOSOMES.map(chr => {
-                                            return (
-                                                <option key={chr} value={chr}>
-                                                    {chr}
-                                                </option>
-                                            );
-                                        })}
-                                    </select>
-                                }
-                            </span>
-                        </div>
-                        <div className="config-panel-button" onClick={() => gosRef.current?.api.exportPng()}>
-                            Export PNG
-                        </div>
-                    </div>
-                    <div className="overview-container">{smallOverviewWrapper}</div>
-                </div>
-                <div
-                    id="gosling-panel"
-                    className="gosling-panel"
-                    style={{
-                        width: `calc(100% - ${VIS_PADDING * 2}px)`,
-                        height: `calc(100% - ${VIS_PADDING * 2}px)`,
-                        padding: VIS_PADDING
+                <svg
+                    className="config-button"
+                    viewBox="0 0 16 16"
+                    onClick={() => {
+                        setShowSamples(true);
                     }}
                 >
-                    {goslingComponent}
-                    <div
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            boxShadow: `inset 0 0 0 3px ${
-                                interactiveMode && mouseOnVis
-                                    ? '#2399DB'
-                                    : !interactiveMode && mouseOnVis
-                                    ? 'lightgray'
-                                    : !interactiveMode && !mouseOnVis
-                                    ? '#00000000'
-                                    : 'lightgray'
-                            }`,
-                            top: VIS_PADDING,
-                            left: VIS_PADDING,
-                            opacity: 0.9,
-                            pointerEvents: interactiveMode ? 'none' : 'auto'
-                        }}
+                    <title>Menu</title>
+                    <path
+                        fillRule="evenodd"
+                        d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
                     />
+                </svg>
+                <div className="sample-label">
+                    {cancer.charAt(0).toUpperCase() + cancer.slice(1) + ' • ' + sampleId}
                 </div>
+                <div className="help-label">
+                    <span style={{ border: '2px solid gray', borderRadius: 10, padding: '0px 4px', margin: '6px' }}>
+                        {'?'}
+                    </span>
+                    {'Click on a SV to see alignemt around breakpoints'}
+                </div>
+                <div id="vis-panel" className="vis-panel">
+                    <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
+                        <div className="title">
+                            Samples
+                            <svg
+                                className="button"
+                                viewBox="0 0 16 16"
+                                onClick={() => {
+                                    setShowSamples(false);
+                                }}
+                            >
+                                <title>Close</title>
+                                <path
+                                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+                                    fill="currentColor"
+                                ></path>
+                            </svg>
+                        </div>
+                        <div className="config">
+                            <div className="config-panel-input-container">
+                                <span className="config-panel-label">Circular Overview</span>
+                                <span className="config-panel-input">
+                                    {
+                                        <select
+                                            className="config-panel-dropdown"
+                                            onChange={e => {
+                                                setShowSamples(false);
+                                                const chr = e.currentTarget.value;
+                                                setTimeout(() => setOverviewChr(chr), 300);
+                                            }}
+                                            value={overviewChr}
+                                            disabled={!showOverview}
+                                        >
+                                            {['All', ...CHROMOSOMES].map(chr => {
+                                                return (
+                                                    <option key={chr} value={chr}>
+                                                        {chr}
+                                                    </option>
+                                                );
+                                            })}
+                                        </select>
+                                    }
+                                </span>
+                            </div>
+                            <div className="config-panel-input-container">
+                                <span className="config-panel-label">Linear Genome View</span>
+                                <span className="config-panel-input">
+                                    {
+                                        <select
+                                            className="config-panel-dropdown"
+                                            onChange={e => {
+                                                setShowSamples(false);
+                                                const chr = e.currentTarget.value;
+                                                setTimeout(() => {
+                                                    setGenomeViewChr(chr);
+                                                }, 300);
+                                            }}
+                                            value={genomeViewChr}
+                                        >
+                                            {CHROMOSOMES.map(chr => {
+                                                return (
+                                                    <option key={chr} value={chr}>
+                                                        {chr}
+                                                    </option>
+                                                );
+                                            })}
+                                        </select>
+                                    }
+                                </span>
+                            </div>
+                            <div className="config-panel-button" onClick={() => gosRef.current?.api.exportPng()}>
+                                Export PNG
+                            </div>
+                        </div>
+                        <div className="overview-container">{smallOverviewWrapper}</div>
+                    </div>
+                    <div
+                        id="gosling-panel"
+                        className="gosling-panel"
+                        style={{
+                            width: `calc(100% - ${VIS_PADDING * 2}px)`,
+                            height: `calc(100% - ${VIS_PADDING * 2}px)`,
+                            padding: VIS_PADDING
+                        }}
+                    >
+                        {goslingComponent}
+                        <div
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                boxShadow: `inset 0 0 0 3px ${
+                                    interactiveMode && mouseOnVis
+                                        ? '#2399DB'
+                                        : !interactiveMode && mouseOnVis
+                                        ? 'lightgray'
+                                        : !interactiveMode && !mouseOnVis
+                                        ? '#00000000'
+                                        : 'lightgray'
+                                }`,
+                                top: VIS_PADDING,
+                                left: VIS_PADDING,
+                                opacity: 0.9,
+                                pointerEvents: interactiveMode ? 'none' : 'auto'
+                            }}
+                        />
+                    </div>
+                </div>
+                <div
+                    style={{
+                        visibility:
+                            ((!interactiveMode && mouseOnVis) || (interactiveMode && !mouseOnVis)) && !showSamples
+                                ? 'visible'
+                                : 'collapse',
+                        position: 'absolute',
+                        left: `${VIS_PADDING}px`,
+                        top: '60px', // `${mousePosition.top + 20}px`,
+                        background: 'lightgray',
+                        color: 'black',
+                        padding: '6px',
+                        pointerEvents: 'none',
+                        zIndex: 9999,
+                        boxShadow: '0 0 20px 2px rgba(0, 0, 0, 0.2)'
+                    }}
+                >
+                    {!interactiveMode
+                        ? 'Click inside to use interactions on visualizations'
+                        : 'Click outside to deactivate interactions'}
+                </div>
+                <div
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        visibility: 'collapse',
+                        boxShadow: interactiveMode ? 'inset 0 0 4px 2px #2399DB' : 'none',
+                        zIndex: 9999,
+                        background: 'none',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        pointerEvents: 'none'
+                    }}
+                />
             </div>
-            <div
-                style={{
-                    visibility:
-                        ((!interactiveMode && mouseOnVis) || (interactiveMode && !mouseOnVis)) && !showSamples
-                            ? 'visible'
-                            : 'collapse',
-                    position: 'absolute',
-                    left: `${VIS_PADDING}px`,
-                    top: '60px', // `${mousePosition.top + 20}px`,
-                    background: 'lightgray',
-                    color: 'black',
-                    padding: '6px',
-                    pointerEvents: 'none',
-                    zIndex: 9999,
-                    boxShadow: '0 0 20px 2px rgba(0, 0, 0, 0.2)'
-                }}
-            >
-                {!interactiveMode
-                    ? 'Click inside to use interactions on visualizations'
-                    : 'Click outside to deactivate interactions'}
-            </div>
-            <div
-                style={{
-                    width: '100%',
-                    height: '100%',
-                    visibility: 'collapse',
-                    boxShadow: interactiveMode ? 'inset 0 0 4px 2px #2399DB' : 'none',
-                    zIndex: 9999,
-                    background: 'none',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    pointerEvents: 'none'
-                }}
-            />
-        </div>
+        </ErrorBoundary>
     );
 }
 
