@@ -80,6 +80,7 @@ function App() {
     const [breakpoints, setBreakpoints] = useState<[number, number, number, number]>([1, 100, 1, 100]);
     const [bpIntervals, setBpIntervals] = useState<[number, number, number, number] | undefined>();
     const [mousePosition, setMousePosiiton] = useState({ left: -100, top: -100 });
+    const [mouseOnVis, setMouseOnVis] = useState(false);
 
     // SV data
     const leftReads = useRef<{ [k: string]: number | string }[]>([]);
@@ -320,7 +321,25 @@ function App() {
         <div
             style={{ width: '100%', height: '100%' }}
             onMouseMove={e => {
+                const top = e.clientY;
+                const left = e.clientX;
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+                if (
+                    VIS_PADDING < top &&
+                    top < height - VIS_PADDING &&
+                    VIS_PADDING < left &&
+                    left < width - VIS_PADDING
+                ) {
+                    setMouseOnVis(true);
+                } else {
+                    setMouseOnVis(false);
+                }
                 setMousePosiiton({ top: e.clientY, left: e.clientX });
+            }}
+            onClick={() => {
+                if (!mouseOnVis && interactiveMode) setInteractiveMode(false);
+                else if (mouseOnVis && !interactiveMode) setInteractiveMode(true);
             }}
         >
             <svg
@@ -337,40 +356,6 @@ function App() {
                 />
             </svg>
             <div className="sample-label">{cancer.charAt(0).toUpperCase() + cancer.slice(1) + ' • ' + sampleId}</div>
-            <span
-                className="interaction-toggle-button"
-                onClick={() => setInteractiveMode(!interactiveMode)}
-                style={{
-                    background: interactiveMode ? '#2399DB' : 'none',
-                    padding: '4px 20px'
-                }}
-            >
-                <span
-                    className="interaction-toggle-button-label"
-                    style={{
-                        color: interactiveMode ? 'white' : 'gray'
-                    }}
-                >
-                    {interactiveMode ? 'Interactive Mode' : 'Static Mode'}
-                </span>
-                <svg
-                    style={{
-                        display: 'inline-block',
-                        verticalAlign: 'middle',
-                        marginLeft: '6px'
-                    }}
-                    viewBox={interactiveMode ? ICONS.TOGGLE_ON.viewBox : ICONS.TOGGLE_OFF.viewBox}
-                    fill={interactiveMode ? 'white' : 'gray'}
-                    stroke={interactiveMode ? ICONS.TOGGLE_ON.stroke : ICONS.TOGGLE_OFF.stroke}
-                    width="30px"
-                    height="30px"
-                >
-                    <title>Interaction</title>
-                    {(interactiveMode ? ICONS.TOGGLE_ON : ICONS.TOGGLE_OFF).path.map(p => (
-                        <path key={p} d={p} />
-                    ))}
-                </svg>
-            </span>
             <div id="vis-panel" className="vis-panel">
                 <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
                     <div className="title">
@@ -448,10 +433,6 @@ function App() {
                     <div className="overview-container">{smallOverviewWrapper}</div>
                 </div>
                 <div
-                    onClick={() => {
-                        setShowSamples(false);
-                        if (!interactiveMode) setInteractiveMode(true);
-                    }}
                     id="gosling-panel"
                     className="gosling-panel"
                     style={{
@@ -465,9 +446,18 @@ function App() {
                         style={{
                             width: '100%',
                             height: '100%',
-                            top: 0,
-                            left: 0,
-                            opacity: 0.1,
+                            boxShadow: `inset 0 0 0 3px ${
+                                interactiveMode && mouseOnVis
+                                    ? '#2399DB'
+                                    : !interactiveMode && mouseOnVis
+                                    ? 'lightgray'
+                                    : !interactiveMode && !mouseOnVis
+                                    ? '#00000000'
+                                    : 'lightgray'
+                            }`,
+                            top: VIS_PADDING,
+                            left: VIS_PADDING,
+                            opacity: 0.9,
                             pointerEvents: interactiveMode ? 'none' : 'auto'
                         }}
                     />
@@ -475,20 +465,22 @@ function App() {
             </div>
             <div
                 style={{
-                    visibility: interactiveMode || showSamples ? 'collapse' : 'visible',
+                    visibility:
+                        (!interactiveMode && mouseOnVis) || (interactiveMode && !mouseOnVis) ? 'visible' : 'collapse',
                     position: 'absolute',
-                    left: `${mousePosition.left + 20}px`,
-                    top: `${mousePosition.top + 20}px`,
-                    background: '#2399DB',
-                    color: 'white',
-                    borderRadius: '6px',
+                    left: `${VIS_PADDING}px`,
+                    top: '60px', // `${mousePosition.top + 20}px`,
+                    background: 'lightgray',
+                    color: 'black',
                     padding: '6px',
                     pointerEvents: 'none',
                     zIndex: 9999,
                     boxShadow: '0 0 20px 2px rgba(0, 0, 0, 0.2)'
                 }}
             >
-                ⚠️ Click to enter interactive mode...
+                {!interactiveMode
+                    ? 'Click inside to use interactions on visualizations'
+                    : 'Click outside to deactivate interactions'}
             </div>
             <div
                 style={{
