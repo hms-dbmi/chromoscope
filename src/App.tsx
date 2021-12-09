@@ -45,10 +45,14 @@ const theme = {
     base: 'light',
     root: {
         background: 'white',
+        titleAlign: 'middle',
+        titleColor: 'black',
+        titleFontSize: 14,
+        titleFontWeight: 'normal',
         subtitleAlign: 'middle',
         subtitleColor: 'gray',
         subtitleFontSize: 10,
-        subtitleFontWeight: 'bold'
+        subtitleFontWeight: 'normal'
     }
 };
 
@@ -242,7 +246,8 @@ function App() {
                 cnvUrl: d.cnv,
                 svUrl: d.sv,
                 width: 200,
-                title: d.id.slice(0, 20) + '... (' + d.cancer + ')'
+                title: d.cancer.toUpperCase(),
+                subtitle: '' + d.id.slice(0, 20) + '...'
             })
         );
         return specs.map(spec => [
@@ -466,7 +471,9 @@ function App() {
             <div
                 style={{
                     visibility:
-                        (!interactiveMode && mouseOnVis) || (interactiveMode && !mouseOnVis) ? 'visible' : 'collapse',
+                        ((!interactiveMode && mouseOnVis) || (interactiveMode && !mouseOnVis)) && !showSamples
+                            ? 'visible'
+                            : 'collapse',
                     position: 'absolute',
                     left: `${VIS_PADDING}px`,
                     top: '60px', // `${mousePosition.top + 20}px`,
