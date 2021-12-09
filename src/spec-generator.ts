@@ -389,7 +389,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
 }
 
 function getOverviewSpec(option: SpecOption): View[] {
-    const { sampleId, cnvUrl, svUrl, width, showPutativeDriver, showOverview, xOffset, drivers } = option;
+    const { sampleId, cnvUrl, svUrl, width, showPutativeDriver, showOverview, selectedSvId, xOffset, drivers } = option;
 
     if (!showOverview) return [];
 
@@ -468,7 +468,7 @@ function getOverviewSpec(option: SpecOption): View[] {
                       ]),
                 tracks.gain(sampleId, cnvUrl, width, 40, 'top'),
                 tracks.loh(sampleId, cnvUrl, width, 40, 'top'),
-                tracks.sv(sampleId, svUrl, width, 80, 'top', '')
+                tracks.sv(sampleId, svUrl, width, 80, 'top', selectedSvId)
             ]
         }
     ];

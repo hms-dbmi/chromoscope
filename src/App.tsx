@@ -126,6 +126,12 @@ function App() {
                     ZOOM_DURATION
                 );
             } else {
+                gosRef.current.api.zoomTo(
+                    `${sampleId}-mid-ideogram`,
+                    `chr1:${e.data.start1}-${e.data.end2}`,
+                    ZOOM_PADDING,
+                    100
+                );
                 // we will show the bam files, so set the initial positions
                 setBreakpoints([
                     +e.data.start1 - ZOOM_PADDING,

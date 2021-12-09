@@ -41,29 +41,25 @@ export default function sv(
                 }
             ]
         },
-        tracks:
-            mode !== 'mid'
-                ? [{ mark: 'withinLink', dataTransform: [replace] }]
-                : [
-                      {
-                          mark: 'withinLink',
-                          dataTransform: [
-                              replace,
-                              {
-                                  type: 'filter',
-                                  field: 'sv_id',
-                                  oneOf: [selectedSvId],
-                                  not: true
-                              }
-                          ]
-                      },
-                      {
-                          mark: 'withinLink',
-                          dataTransform: [replace, { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] }],
-                          strokeWidth: { value: 3 },
-                          opacity: { value: 1 }
-                      }
-                  ],
+        mark: 'withinLink',
+        tracks: [
+            {
+                dataTransform: [
+                    replace,
+                    {
+                        type: 'filter',
+                        field: 'sv_id',
+                        oneOf: [selectedSvId],
+                        not: true
+                    }
+                ]
+            },
+            {
+                dataTransform: [replace, { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] }],
+                strokeWidth: { value: 3 },
+                opacity: { value: 1 }
+            }
+        ],
         x: { field: 'start1', type: 'genomic' },
         xe: { field: 'end2', type: 'genomic' },
         color: {
