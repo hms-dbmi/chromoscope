@@ -1,21 +1,24 @@
 import { SingleTrack } from 'gosling.js/dist/src/core/gosling.schema';
 export function verticalGuide(start: number, end: number): Partial<SingleTrack> {
     return {
+        style: { dashed: [3, 3] },
         data: {
             type: 'json',
             values: [
                 {
                     chr: 'chr1',
-                    from: start,
-                    to: end
+                    p: start
+                },
+                {
+                    chr: 'chr1',
+                    p: end
                 }
             ],
             chromosomeField: 'chr',
             genomicFields: ['from', 'to']
         },
-        mark: 'rect',
-        x: { field: 'from', type: 'genomic' },
-        xe: { field: 'to', type: 'genomic' },
+        mark: 'rule',
+        x: { field: 'p', type: 'genomic' },
         color: { value: 'none' },
         stroke: { value: 'gray' },
         strokeWidth: { value: 1 },

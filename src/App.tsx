@@ -126,20 +126,24 @@ function App() {
                     ZOOM_DURATION
                 );
             } else {
-                const padding = (+e.data.end2 - +e.data.start1) / 4.0;
-                gosRef.current.api.zoomTo(
-                    `${sampleId}-mid-ideogram`,
-                    `chr1:${e.data.start1}-${e.data.end2}`,
-                    padding,
-                    500
-                );
+                let x = +e.data.start1;
+                let xe = +e.data.end1;
+                let x1 = +e.data.start2;
+                let x1e = +e.data.end2;
+
+                // safetly swap
+                if (x > x1) {
+                    x = +e.data.start2;
+                    xe = +e.data.end2;
+                    x1 = +e.data.start1;
+                    x1e = +e.data.end1;
+                }
+
+                const padding = (x1e - x) / 4.0;
+                gosRef.current.api.zoomTo(`${sampleId}-mid-ideogram`, `chr1:${x}-${x1e}`, padding, 500);
+
                 // we will show the bam files, so set the initial positions
-                setBreakpoints([
-                    +e.data.start1 - ZOOM_PADDING,
-                    +e.data.end1 + ZOOM_PADDING,
-                    +e.data.start2 - ZOOM_PADDING,
-                    +e.data.end2 + ZOOM_PADDING
-                ]);
+                setBreakpoints([+x - ZOOM_PADDING, +xe + ZOOM_PADDING, +x1 - ZOOM_PADDING, +x1e + ZOOM_PADDING]);
             }
 
             // Move to the bottom
