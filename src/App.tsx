@@ -374,7 +374,7 @@ function App() {
                     <span style={{ border: '2px solid gray', borderRadius: 10, padding: '0px 4px', margin: '6px' }}>
                         {'?'}
                     </span>
-                    {'Click on a SV to see alignemt around breakpoints'}
+                    {'Click on a SV to see alignment around breakpoints'}
                 </div>
                 <div id="vis-panel" className="vis-panel">
                     <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
