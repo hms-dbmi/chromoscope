@@ -144,6 +144,7 @@ function App() {
 
                 // we will show the bam files, so set the initial positions
                 setBreakpoints([+x - ZOOM_PADDING, +xe + ZOOM_PADDING, +x1 - ZOOM_PADDING, +x1e + ZOOM_PADDING]);
+                setBpIntervals([x, xe, x1, x1e]);
             }
 
             // Move to the bottom
@@ -152,7 +153,6 @@ function App() {
                 2000
             );
 
-            setBpIntervals([+e.data.start1, +e.data.end1, +e.data.start2, +e.data.end2]);
             setSelectedSvId(e.data.sv_id + '');
             leftReads.current = [];
             rightReads.current = [];

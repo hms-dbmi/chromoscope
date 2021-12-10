@@ -15,12 +15,11 @@ export function verticalGuide(start: number, end: number): Partial<SingleTrack> 
                 }
             ],
             chromosomeField: 'chr',
-            genomicFields: ['from', 'to']
+            genomicFields: ['p']
         },
         mark: 'rule',
         x: { field: 'p', type: 'genomic' },
-        color: { value: 'none' },
-        stroke: { value: 'gray' },
+        color: { value: 'black' },
         strokeWidth: { value: 1 },
         overlayOnPreviousTrack: true
     } as Partial<SingleTrack>;
