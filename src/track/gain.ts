@@ -17,13 +17,15 @@ export default function gain(
             url: cnvUrl,
             type: 'csv',
             chromosomeField: 'chromosome',
-            genomicFields: ['start', 'end']
+            genomicFields: ['start', 'end'],
+            quantitativeFields: ['total_cn']
         },
         dataTransform: [
+            // https://cancer.sanger.ac.uk/cosmic/help/cnv/overview
             {
                 type: 'filter',
-                field: 'aceseq_copy_number',
-                inRange: [4.5, 900]
+                field: 'total_cn',
+                inRange: [5, 999]
             }
         ],
         mark: 'rect',
