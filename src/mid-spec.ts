@@ -46,33 +46,6 @@ export default function getMidView(option: SpecOption): View[] {
                                 { type: 'filter', field: 'Stain', oneOf: ['acen'] },
                                 { type: 'filter', field: 'Name', include: 'p' }
                             ]
-                        },
-                        {
-                            mark: 'text',
-                            dataTransform: [
-                                {
-                                    type: 'filter',
-                                    field: 'Stain',
-                                    oneOf: ['acen'],
-                                    not: true
-                                }
-                            ],
-                            size: { value: 12 },
-                            color: {
-                                field: 'Stain',
-                                type: 'nominal',
-                                domain: ['gneg', 'gpos25', 'gpos50', 'gpos75', 'gpos100', 'gvar'],
-                                range: ['black', 'black', 'black', 'black', 'white', 'black']
-                            },
-                            visibility: [
-                                {
-                                    operation: 'less-than',
-                                    measure: 'width',
-                                    threshold: '|xe-x|',
-                                    transitionPadding: 10,
-                                    target: 'mark'
-                                }
-                            ]
                         }
                     ],
                     color: {
@@ -84,11 +57,9 @@ export default function getMidView(option: SpecOption): View[] {
                     size: { value: 18 },
                     x: { field: 'chromStart', type: 'genomic' },
                     xe: { field: 'chromEnd', type: 'genomic' },
-                    text: { field: 'Name', type: 'nominal' },
-                    stroke: { value: 'gray' },
-                    strokeWidth: { value: 0.3 },
+                    strokeWidth: { value: 0 },
                     width,
-                    height: 30
+                    height: 18
                 },
                 ...(!showPutativeDriver
                     ? []

@@ -85,7 +85,7 @@ export default function sv(
             { field: 'svmethod', type: 'nominal' },
             { field: 'pe_support', type: 'nominal' }
         ],
-        style: { bazierLink: true },
+        style: { bezierLink: true },
         width,
         height
     };
