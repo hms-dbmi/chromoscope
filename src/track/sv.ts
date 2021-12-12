@@ -76,7 +76,7 @@ export default function sv(
             range: defaults.color.svclass.range
         },
         strokeWidth: { value: mode === 'small' ? 0.5 : 1 },
-        opacity: { value: 0.7 },
+        opacity: { value: 0.5 },
         tooltip: [
             { field: 'start1', type: 'genomic' },
             { field: 'end2', type: 'genomic' },
