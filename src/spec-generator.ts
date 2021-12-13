@@ -465,11 +465,11 @@ function getOverviewSpec(option: SpecOption): View[] {
                               height: 40
                           } as SingleTrack
                       ]),
-                tracks.boundary(),
+                tracks.boundary('driver', 'top'),
                 tracks.gain(sampleId, cnvUrl, width, 40, 'top'),
-                tracks.boundary(),
+                tracks.boundary('gain', 'top'),
                 tracks.loh(sampleId, cnvUrl, width, 40, 'top'),
-                tracks.boundary(),
+                tracks.boundary('loh', 'top'),
                 tracks.sv(sampleId, svUrl, width, 80, 'top', selectedSvId)
             ]
         }

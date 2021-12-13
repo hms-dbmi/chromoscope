@@ -110,6 +110,7 @@ function App() {
         if (!gosRef.current) return;
 
         gosRef.current.api.subscribe('click', (type: string, e: CommonEventData) => {
+            console.log('clicked');
             const zoom = false;
             if (zoom) {
                 // start and end positions are already cumulative values

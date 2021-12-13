@@ -3,8 +3,9 @@ import { TrackMode } from '.';
 
 const hex = 'lightgray';
 
-export default function boundary(mode: TrackMode = 'top'): SingleTrack {
+export default function boundary(parent: string, mode: TrackMode): Partial<SingleTrack> {
     return {
+        id: `${parent}-${mode}-boundary`,
         data: {
             type: 'json',
             chromosomeField: 'c',
@@ -38,8 +39,6 @@ export default function boundary(mode: TrackMode = 'top'): SingleTrack {
         x: { field: 'p', type: 'genomic' },
         color: { value: hex },
         opacity: { value: 0.5 },
-        height: 20,
-        width: 400,
         overlayOnPreviousTrack: true
     };
 }
