@@ -85,6 +85,7 @@ export default function getMidView(option: SpecOption): View[] {
                               height: 20
                           } as SingleTrack
                       ]),
+                tracks.boundary('mid'),
                 {
                     id: `${sampleId}-mid-gene`,
                     alignment: 'overlay',
@@ -125,7 +126,9 @@ export default function getMidView(option: SpecOption): View[] {
                     height: 60
                 },
                 tracks.gain(sampleId, cnvUrl, width, 20, 'mid'),
+                tracks.boundary('mid'),
                 tracks.loh(sampleId, cnvUrl, width, 20, 'mid'),
+                tracks.boundary('mid'),
                 tracks.sv(sampleId, svUrl, width, 200, 'mid', selectedSvId)
             ]
         }
