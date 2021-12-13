@@ -126,7 +126,8 @@ export default function getMidView(option: SpecOption): View[] {
                 },
                 tracks.gain(sampleId, cnvUrl, width, 20, 'mid'),
                 tracks.loh(sampleId, cnvUrl, width, 20, 'mid'),
-                tracks.sv(sampleId, svUrl, width, 200, 'mid', selectedSvId)
+                tracks.sv(sampleId, svUrl, width, 200, 'mid', selectedSvId),
+                tracks.boundary('mid')
             ]
         }
     ];

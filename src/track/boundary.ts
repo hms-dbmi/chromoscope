@@ -1,8 +1,9 @@
 import { SingleTrack } from 'gosling.js/dist/src/core/gosling.schema';
+import { TrackMode } from '.';
 
 const hex = 'lightgray';
 
-export default function boundary(): SingleTrack {
+export default function boundary(mode: TrackMode = 'top'): SingleTrack {
     return {
         data: {
             type: 'json',
@@ -33,7 +34,7 @@ export default function boundary(): SingleTrack {
                 { c: 'chrY', p: 0 }
             ]
         },
-        mark: 'rect',
+        mark: mode === 'mid' ? 'rule' : 'rect',
         x: { field: 'p', type: 'genomic' },
         color: { value: hex },
         opacity: { value: 0.5 },
