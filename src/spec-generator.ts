@@ -434,8 +434,7 @@ function getOverviewSpec(option: SpecOption): View[] {
                     size: { value: 18 },
                     x: { field: 'chromStart', type: 'genomic' },
                     xe: { field: 'chromEnd', type: 'genomic' },
-                    stroke: { value: 'gray' },
-                    strokeWidth: { value: 0.3 },
+                    strokeWidth: { value: 0 },
                     width,
                     height: 100
                 },
