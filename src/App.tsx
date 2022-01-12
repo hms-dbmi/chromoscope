@@ -375,6 +375,15 @@ function App() {
                 </svg>
                 <div className="sample-label">
                     {cancer.charAt(0).toUpperCase() + cancer.slice(1) + ' • ' + sampleId}
+                    <span className="title-btn" onClick={() => gosRef.current?.api.exportPng()}>
+                        <svg className="button" viewBox="0 0 16 16">
+                            <title>Export Image</title>
+                            <path
+                                fill="currentColor"
+                                d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8zm5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707l-4.096 4.096z"
+                            />
+                        </svg>
+                    </span>
                 </div>
                 <div className="help-label">
                     <span style={{ border: '2px solid gray', borderRadius: 10, padding: '0px 4px', margin: '6px' }}>
@@ -399,62 +408,6 @@ function App() {
                                     fill="currentColor"
                                 ></path>
                             </svg>
-                        </div>
-                        <div className="config">
-                            <div className="config-panel-input-container">
-                                <span className="config-panel-label">Circular Overview</span>
-                                <span className="config-panel-input">
-                                    {
-                                        <select
-                                            className="config-panel-dropdown"
-                                            onChange={e => {
-                                                setShowSamples(false);
-                                                const chr = e.currentTarget.value;
-                                                setTimeout(() => setOverviewChr(chr), 300);
-                                            }}
-                                            value={overviewChr}
-                                            disabled={!showOverview}
-                                        >
-                                            {['All', ...CHROMOSOMES].map(chr => {
-                                                return (
-                                                    <option key={chr} value={chr}>
-                                                        {chr}
-                                                    </option>
-                                                );
-                                            })}
-                                        </select>
-                                    }
-                                </span>
-                            </div>
-                            <div className="config-panel-input-container">
-                                <span className="config-panel-label">Linear Genome View</span>
-                                <span className="config-panel-input">
-                                    {
-                                        <select
-                                            className="config-panel-dropdown"
-                                            onChange={e => {
-                                                setShowSamples(false);
-                                                const chr = e.currentTarget.value;
-                                                setTimeout(() => {
-                                                    setGenomeViewChr(chr);
-                                                }, 300);
-                                            }}
-                                            value={genomeViewChr}
-                                        >
-                                            {CHROMOSOMES.map(chr => {
-                                                return (
-                                                    <option key={chr} value={chr}>
-                                                        {chr}
-                                                    </option>
-                                                );
-                                            })}
-                                        </select>
-                                    }
-                                </span>
-                            </div>
-                            <div className="config-panel-button" onClick={() => gosRef.current?.api.exportPng()}>
-                                Export PNG
-                            </div>
                         </div>
                         <div className="overview-container">{smallOverviewWrapper}</div>
                     </div>
@@ -487,6 +440,61 @@ function App() {
                                 pointerEvents: interactiveMode ? 'none' : 'auto'
                             }}
                         />
+                        <div
+                            style={{
+                                pointerEvents: 'none',
+                                width: '100%',
+                                height: '100%',
+                                position: 'relative',
+                                zIndex: 998
+                            }}
+                        >
+                            <select
+                                style={{
+                                    pointerEvents: 'auto',
+                                    top: '3px'
+                                }}
+                                className="nav-dropdown"
+                                onChange={e => {
+                                    setShowSamples(false);
+                                    const chr = e.currentTarget.value;
+                                    setTimeout(() => setOverviewChr(chr), 300);
+                                }}
+                                value={overviewChr}
+                                disabled={!showOverview}
+                            >
+                                {['Whole Genome', ...CHROMOSOMES].map(chr => {
+                                    return (
+                                        <option key={chr} value={chr}>
+                                            {chr}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                            <select
+                                style={{
+                                    pointerEvents: 'auto',
+                                    // !! This should be identical to how the height of circos determined.
+                                    top: `${Math.min(visPanelWidth, 600)}px`
+                                }}
+                                className="nav-dropdown"
+                                onChange={e => {
+                                    setShowSamples(false);
+                                    const chr = e.currentTarget.value;
+                                    setTimeout(() => setGenomeViewChr(chr), 300);
+                                }}
+                                value={genomeViewChr}
+                                disabled={!showOverview}
+                            >
+                                {CHROMOSOMES.map(chr => {
+                                    return (
+                                        <option key={chr} value={chr}>
+                                            {chr}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div
@@ -496,7 +504,7 @@ function App() {
                                 ? 'visible'
                                 : 'collapse',
                         position: 'absolute',
-                        left: `${VIS_PADDING}px`,
+                        right: `${VIS_PADDING}px`,
                         top: '60px', // `${mousePosition.top + 20}px`,
                         background: 'lightgray',
                         color: 'black',

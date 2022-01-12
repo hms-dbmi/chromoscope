@@ -66,6 +66,20 @@ body {
     width: 100%;
 }
 
+.nav-dropdown {
+    font-size: 14px;
+    width: 150px;
+    height: 30px;
+    border-radius: 0px;
+    border: 1px solid grey;
+    position: absolute;
+    left: 3px;
+}
+
+.nav-dropdown:focus {
+    border-radius: 0px;
+}
+
 .config-panel-search-box {
     font-size: 14px;
     height: calc(30px - 6px);
@@ -93,6 +107,19 @@ body {
 .vis-panel {
     height: 100%;
     width: 100%;
+}
+
+.title-btn {
+    font-size: 14px;
+    margin-left: 10px;
+    text-align: center;
+    line-height: 30px;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    z-index: 999;
+    color: #333333;
 }
 
 .config-button {
@@ -160,6 +187,8 @@ body {
     padding: 10px;
     font-size: 20px;
     font-weight: bold;
+    border-bottom: 1px solid lightgray;
+    background: #f6f6f6;
 }
 
 .vis-overview-panel .button {
