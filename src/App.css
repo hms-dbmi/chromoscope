@@ -132,6 +132,23 @@ body {
     z-index: 999;
 }
 
+.move-to-top-btn {
+    width: 30px;
+    height: 30px;
+    color: #a9a9a9;
+    position: absolute;
+    box-shadow: 0 0 10px 0px #00000032;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 999;
+    opacity: 0.5;
+}
+
+.move-to-top-btn:hover {
+    opacity: 1;
+}
+
 .interaction-toggle-button {
     z-index: 999;
     cursor: pointer;
