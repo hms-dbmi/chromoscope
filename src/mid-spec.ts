@@ -125,6 +125,8 @@ export default function getMidView(option: SpecOption): View[] {
                     width,
                     height: 60
                 },
+                tracks.cnv(sampleId, cnvUrl, width, 60, 'mid'),
+                tracks.boundary('cnv', 'mid'),
                 tracks.gain(sampleId, cnvUrl, width, 20, 'mid'),
                 tracks.boundary('gain', 'mid'),
                 tracks.loh(sampleId, cnvUrl, width, 20, 'mid'),

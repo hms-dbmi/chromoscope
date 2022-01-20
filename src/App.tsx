@@ -10,6 +10,7 @@ import drivers from './data/driver.json';
 import samples from './data/samples';
 import getSmallOverviewSpec from './overview-spec';
 
+const WHOLE_CHROMOSOME_STR = 'Whole Genome';
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
 const CONFIG_PANEL_WIDTH = 800;
 const VIS_PADDING = 60;
@@ -102,6 +103,8 @@ function App() {
         setFilteredDrivers(
             (drivers as any).filter((d: any) => d.sample_id === samples[demoIdx].id && +d.chr && +d.pos)
         );
+        setOverviewChr('');
+        setGenomeViewChr('');
         leftReads.current = [];
         rightReads.current = [];
     }, [demoIdx]);
@@ -160,6 +163,10 @@ function App() {
         });
 
         gosRef.current.api.subscribe('rawdata', (type: string, e: any) => {
+            /// DEBUG
+            // console.log(e.data);
+            ///
+
             if (e.id.includes('bam') && (leftReads.current.length === 0 || rightReads.current.length === 0)) {
                 // This means we just received a BAM data that is just rendered
                 if (e.id.includes('left') && leftReads.current.length === 0) {
@@ -463,7 +470,7 @@ function App() {
                                 value={overviewChr}
                                 disabled={!showOverview}
                             >
-                                {['Whole Genome', ...CHROMOSOMES].map(chr => {
+                                {[WHOLE_CHROMOSOME_STR, ...CHROMOSOMES].map(chr => {
                                     return (
                                         <option key={chr} value={chr}>
                                             {chr}
@@ -532,6 +539,23 @@ function App() {
                         pointerEvents: 'none'
                     }}
                 />
+                <div
+                    className="move-to-top-btn"
+                    onClick={() => {
+                        setTimeout(
+                            () => document.getElementById('gosling-panel')?.scrollTo({ top: 0, behavior: 'smooth' }),
+                            0
+                        );
+                    }}
+                >
+                    <svg className="button" viewBox="0 0 16 16">
+                        <title>Scroll To Top</title>
+                        <path
+                            fill="currentColor"
+                            d="M2 16a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2zm6.5-4.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 1 0z"
+                        />
+                    </svg>
+                </div>
             </div>
         </ErrorBoundary>
     );
