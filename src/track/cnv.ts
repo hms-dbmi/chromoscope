@@ -26,7 +26,7 @@ export default function cnv(
         alignment: 'overlay',
         tracks: [
             {
-                y: { field: 'major_cn', type: 'quantitative', axis: 'right', grid: true },
+                y: { field: 'total_cn', type: 'quantitative', axis: 'right', grid: true },
                 color: { value: 'darkgray' }
             }
             // {
@@ -35,6 +35,7 @@ export default function cnv(
             // }
         ],
         tooltip: [
+            { field: 'total_cn', type: 'quantitative' },
             { field: 'major_cn', type: 'quantitative' },
             { field: 'minor_cn', type: 'quantitative' }
         ],
