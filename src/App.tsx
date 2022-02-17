@@ -48,11 +48,11 @@ const theme = {
         background: 'white',
         titleAlign: 'middle',
         titleColor: 'black',
-        titleFontSize: 14,
+        titleFontSize: 18,
         titleFontWeight: 'normal',
         subtitleAlign: 'middle',
         subtitleColor: 'gray',
-        subtitleFontSize: 10,
+        subtitleFontSize: 14,
         subtitleFontWeight: 'normal'
     }
 };
@@ -264,7 +264,7 @@ function App() {
             getSmallOverviewSpec({
                 cnvUrl: d.cnv,
                 svUrl: d.sv,
-                width: 200,
+                width: 300,
                 title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
                 subtitle: '' + d.id.slice(0, 20) + '...'
             })

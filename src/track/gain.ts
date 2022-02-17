@@ -17,8 +17,7 @@ export default function gain(
             url: cnvUrl,
             type: 'csv',
             chromosomeField: 'chromosome',
-            genomicFields: ['start', 'end'],
-            quantitativeFields: ['total_cn']
+            genomicFields: ['start', 'end']
         },
         dataTransform: [
             // https://cancer.sanger.ac.uk/cosmic/help/cnv/overview
