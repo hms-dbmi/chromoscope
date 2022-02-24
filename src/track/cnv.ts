@@ -17,8 +17,7 @@ export default function cnv(
             url: cnvUrl,
             type: 'csv',
             chromosomeField: 'chromosome',
-            genomicFields: ['start', 'end'],
-            quantitativeFields: ['major_cn', 'minor_cn']
+            genomicFields: ['start', 'end']
         },
         mark: 'rect',
         x: { field: 'start', type: 'genomic' },

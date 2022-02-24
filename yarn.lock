@@ -1402,7 +1402,7 @@ cross-spawn@^7.0.2:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-"css-element-queries@github:marcj/css-element-queries":
+css-element-queries@^1.2.3, "css-element-queries@github:marcj/css-element-queries":
   version "1.2.3"
   resolved "https://codeload.github.com/marcj/css-element-queries/tar.gz/4eae4654f4683923153d8dd8f5c0d1bc2067b2a8"
 
@@ -2539,10 +2539,10 @@ gosling-theme@^0.0.10:
   resolved "https://registry.yarnpkg.com/gosling-theme/-/gosling-theme-0.0.10.tgz#5a4c2d0d24f90fe47c293335cd67832be6cf4d54"
   integrity sha512-GRm+XGeSGhKBjM/bNyeUkwp6tjnFKpNbywr58WzzA2qSA4RFPOoitS03R7xpYxqLXBGMFgahkyYd9Mostd2Csw==
 
-gosling.js@^0.9.14:
-  version "0.9.14"
-  resolved "https://registry.yarnpkg.com/gosling.js/-/gosling.js-0.9.14.tgz#ee1a8936659c7ad8f0d1bb24a1c70c8034f384c0"
-  integrity sha512-plWjVt4IEdHOEaZ2FPxNwQRjuBKPfn6uvKHl4/Nr6kJx5VvS7cSktHWQMSjeyAJddxJf8Fj+nMA9nqIV4uP0rw==
+gosling.js@^0.9.17:
+  version "0.9.17"
+  resolved "https://registry.yarnpkg.com/gosling.js/-/gosling.js-0.9.17.tgz#184bfd0f2cc1a652b3238cd9f323b1b864c0d19b"
+  integrity sha512-ZMgJFGTsUKgqF8CCdcbaYmHBkABumpDr/NAaffozP6E/CVYZnI3EBkGicI8HaaOo9ORQbvIG2c81IGLghiRxOg==
   dependencies:
     "@gmod/bam" "^1.1.8"
     "@gmod/bbi" "^1.0.30"
@@ -2554,6 +2554,7 @@ gosling.js@^0.9.14:
     "@types/uuid" "^8.3.1"
     bezier-js "4.0.3"
     buffer "^6.0.3"
+    css-element-queries "^1.2.3"
     d3-array "^2.5.1"
     d3-color "^2.0.0"
     d3-dsv "^2.0.0"
