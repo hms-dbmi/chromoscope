@@ -131,7 +131,7 @@ export default function getMidView(option: SpecOption): View[] {
                 tracks.boundary('gain', 'mid'),
                 tracks.loh(sampleId, cnvUrl, width, 20, 'mid'),
                 tracks.boundary('loh', 'mid'),
-                tracks.sv(sampleId, svUrl, width, 200, 'mid', selectedSvId)
+                tracks.sv(sampleId, svUrl, width, 250, 'mid', selectedSvId)
             ]
         }
     ];
