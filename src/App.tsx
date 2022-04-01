@@ -65,6 +65,7 @@ function App() {
     const [demoIdx, setDemoIdx] = useState(0);
     const [sampleId, setSampleId] = useState(samples[demoIdx].id);
     const [cancer, setCancer] = useState(samples[demoIdx].cancer);
+    const [assembly, setAssembly] = useState(samples[demoIdx].assembly);
     const [svUrl, setSvUrl] = useState(samples[demoIdx].sv);
     const [cnvUrl, setCnvUrl] = useState(samples[demoIdx].cnv);
     const [bamUrl, setBamUrl] = useState(samples[demoIdx].bam);
@@ -96,6 +97,7 @@ function App() {
     useEffect(() => {
         setSampleId(samples[demoIdx].id);
         setCancer(samples[demoIdx].cancer);
+        setAssembly(samples[demoIdx].assembly);
         setSvUrl(samples[demoIdx].sv);
         setCnvUrl(samples[demoIdx].cnv);
         setBamUrl(samples[demoIdx].bam);
@@ -302,6 +304,7 @@ function App() {
 
     const goslingComponent = useMemo(() => {
         const spec = generateSpec({
+            assembly,
             sampleId,
             svUrl,
             cnvUrl,

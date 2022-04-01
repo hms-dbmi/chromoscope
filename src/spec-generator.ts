@@ -6,6 +6,7 @@ import { verticalGuide } from './vertical-guide';
 import tracks from './track';
 
 export interface SpecOption {
+    assembly: string;
     sampleId: string;
     showOverview: boolean;
     showPutativeDriver: boolean;
@@ -25,6 +26,7 @@ export interface SpecOption {
 
 function generateSpec(option: SpecOption): GoslingSpec {
     const {
+        assembly,
         sampleId,
         svUrl,
         cnvUrl,
@@ -51,7 +53,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
         layout: 'linear',
         arrangement: 'vertical',
         centerRadius: 0.5,
-        assembly: 'hg19',
+        assembly,
         spacing: 40,
         style: {
             outlineWidth: 1,
