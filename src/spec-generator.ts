@@ -1,12 +1,12 @@
 import { GoslingSpec } from 'gosling.js';
-import { MultipleViews, SingleTrack, SingleView, View } from 'gosling.js/dist/src/core/gosling.schema';
+import { Assembly, MultipleViews, SingleTrack, SingleView, View } from 'gosling.js/dist/src/core/gosling.schema';
 import getMidView from './mid-spec';
 import { alignment } from './alignment';
 import { verticalGuide } from './vertical-guide';
 import tracks from './track';
 
 export interface SpecOption {
-    assembly: string;
+    assembly: Assembly;
     sampleId: string;
     showOverview: boolean;
     showPutativeDriver: boolean;

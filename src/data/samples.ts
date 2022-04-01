@@ -1,7 +1,9 @@
+import { Assembly } from 'gosling.js/dist/src/core/gosling.schema';
+
 const samples: {
     id: string; // "aliquot ID"
     cancer: string; // cancer type
-    assembly: string; // hg19 or 38
+    assembly: Assembly; // hg19 or 38
     sv: string; // URL of bedpe
     cnv: string; // URL of txt
     bam: string; // URL of bam
