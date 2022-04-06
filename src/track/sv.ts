@@ -63,26 +63,26 @@ export default function sv(
                 xe: { field: 'end2', type: 'genomic' },
                 baselineY: height / 2.0
             },
-            {
-                dataTransform: [
-                    replace,
-                    {
-                        type: 'filter',
-                        field: 'sv_id',
-                        oneOf: [selectedSvId],
-                        not: true
-                    },
-                    {
-                        type: 'filter',
-                        field: 'svclass',
-                        oneOf: ['Translocation'],
-                        not: false
-                    }
-                ],
-                x: { field: 'start1', type: 'genomic' },
-                xe: { field: 'end2', type: 'genomic' },
-                baselineY: height / 2.0
-            },
+            // {
+            //     dataTransform: [
+            //         replace,
+            //         {
+            //             type: 'filter',
+            //             field: 'sv_id',
+            //             oneOf: [selectedSvId],
+            //             not: true
+            //         },
+            //         {
+            //             type: 'filter',
+            //             field: 'svclass',
+            //             oneOf: ['Translocation'],
+            //             not: false
+            //         }
+            //     ],
+            //     x: { field: 'start1', type: 'genomic' },
+            //     xe: { field: 'end2', type: 'genomic' },
+            //     baselineY: height / 2.0
+            // },
             ...((mode !== 'mid'
                 ? []
                 : [
@@ -90,12 +90,12 @@ export default function sv(
                           mark: 'bar',
                           dataTransform: [
                               replace,
-                              {
-                                  type: 'filter',
-                                  field: 'sv_id',
-                                  oneOf: [selectedSvId],
-                                  not: true
-                              },
+                              //   {
+                              //       type: 'filter',
+                              //       field: 'sv_id',
+                              //       oneOf: [selectedSvId],
+                              //       not: true
+                              //   },
                               {
                                   type: 'filter',
                                   field: 'svclass',
@@ -110,12 +110,12 @@ export default function sv(
                           mark: 'bar',
                           dataTransform: [
                               replace,
-                              {
-                                  type: 'filter',
-                                  field: 'sv_id',
-                                  oneOf: [selectedSvId],
-                                  not: true
-                              },
+                              //   {
+                              //       type: 'filter',
+                              //       field: 'sv_id',
+                              //       oneOf: [selectedSvId],
+                              //       not: true
+                              //   },
                               {
                                   type: 'filter',
                                   field: 'svclass',
@@ -147,7 +147,32 @@ export default function sv(
                 xe: { field: 'end2', type: 'genomic' }
             },
             {
-                dataTransform: [replace, { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] }],
+                dataTransform: [
+                    replace,
+                    { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] },
+                    {
+                        type: 'filter',
+                        field: 'svclass',
+                        oneOf: ['Translocation']
+                    }
+                ],
+                x: { field: 'start1', type: 'genomic' },
+                xe: { field: 'end2', type: 'genomic' },
+                strokeWidth: { value: 3 },
+                opacity: { value: 1 },
+                baselineY: height / 2.0
+            },
+            {
+                dataTransform: [
+                    replace,
+                    { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] },
+                    {
+                        type: 'filter',
+                        field: 'svclass',
+                        oneOf: ['Translocation'],
+                        not: true
+                    }
+                ],
                 x: { field: 'start1', type: 'genomic' },
                 xe: { field: 'end2', type: 'genomic' },
                 strokeWidth: { value: 3 },

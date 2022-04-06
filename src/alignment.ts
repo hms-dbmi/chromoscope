@@ -1,10 +1,100 @@
 import { GoslingSpec } from 'gosling.js';
 import { SpecOption } from './spec-generator';
 import defaultEncodings from './default-encoding';
+import { SingleTrack } from 'gosling.js/dist/src/core/gosling.schema';
+
+function drawSvReads(option: SpecOption, sv: string): Partial<SingleTrack>[] {
+    const { svReads } = option;
+    return [
+        {
+            dataTransform: [
+                {
+                    type: 'displace',
+                    method: 'pile',
+                    boundingBox: {
+                        startField: 'start',
+                        endField: 'end',
+                        padding: 5,
+                        isPaddingBP: true
+                    },
+                    newField: 'pileup-row',
+                    maxRows: 300
+                },
+                {
+                    type: 'filter',
+                    field: 'name',
+                    oneOf: svReads.filter(d => d.type === sv).map(d => d.name)
+                }
+            ],
+            color: { value: defaultEncodings.color.svclass[sv] },
+            x: { field: 'start', type: 'genomic' },
+            xe: { field: 'end', type: 'genomic' }
+        },
+        {
+            dataTransform: [
+                {
+                    type: 'displace',
+                    method: 'pile',
+                    boundingBox: {
+                        startField: 'start',
+                        endField: 'end',
+                        padding: 5,
+                        isPaddingBP: true
+                    },
+                    newField: 'pileup-row',
+                    maxRows: 300
+                },
+                {
+                    type: 'filter',
+                    field: 'name',
+                    oneOf: svReads.filter(d => d.type === sv).map(d => d.name)
+                },
+                {
+                    type: 'filter',
+                    field: 'strand',
+                    oneOf: ['+']
+                }
+            ],
+            mark: 'triangleRight',
+            color: { value: defaultEncodings.color.svclass[sv] },
+            x: { field: 'end', type: 'genomic' }
+        },
+        {
+            dataTransform: [
+                {
+                    type: 'displace',
+                    method: 'pile',
+                    boundingBox: {
+                        startField: 'start',
+                        endField: 'end',
+                        padding: 5,
+                        isPaddingBP: true
+                    },
+                    newField: 'pileup-row',
+                    maxRows: 300
+                },
+                {
+                    type: 'filter',
+                    field: 'name',
+                    oneOf: svReads.filter(d => d.type === sv).map(d => d.name)
+                },
+                {
+                    type: 'filter',
+                    field: 'strand',
+                    oneOf: ['-']
+                }
+            ],
+            mark: 'triangleLeft',
+            color: { value: defaultEncodings.color.svclass[sv] },
+            x: { field: 'start', type: 'genomic' },
+            style: { align: 'right' }
+        }
+    ];
+}
 
 export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
     const { sampleId, bamUrl, baiUrl, width, svReads, crossChr, bpIntervals } = option;
-    console.log('svReads', svReads);
+
     return {
         id: `${sampleId}-bottom-${isLeft ? 'left' : 'right'}-bam`,
         alignment: 'overlay',
@@ -114,434 +204,11 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                 color: { value: '#414141' },
                 opacity: { value: 0.8 }
             },
-            /**
-             * Translocation
-             */
-            {
-                dataTransform: [
-                    {
-                        type: 'displace',
-                        method: 'pile',
-                        boundingBox: {
-                            startField: 'start',
-                            endField: 'end',
-                            padding: 5,
-                            isPaddingBP: true
-                        },
-                        newField: 'pileup-row',
-                        maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'Translocation').map(d => d.name)
-                    }
-                ],
-                color: { value: defaultEncodings.color.svclass['Translocation'] },
-                x: { field: 'start', type: 'genomic' },
-                xe: { field: 'end', type: 'genomic' }
-            },
-            {
-                dataTransform: [
-                    {
-                        type: 'displace',
-                        method: 'pile',
-                        boundingBox: {
-                            startField: 'start',
-                            endField: 'end',
-                            padding: 5,
-                            isPaddingBP: true
-                        },
-                        newField: 'pileup-row',
-                        maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'Translocation').map(d => d.name)
-                    },
-                    {
-                        type: 'filter',
-                        field: 'strand',
-                        oneOf: ['+']
-                    }
-                ],
-                mark: 'triangleRight',
-                color: { value: defaultEncodings.color.svclass['Translocation'] },
-                x: { field: 'end', type: 'genomic' }
-            },
-            {
-                dataTransform: [
-                    {
-                        type: 'displace',
-                        method: 'pile',
-                        boundingBox: {
-                            startField: 'start',
-                            endField: 'end',
-                            padding: 5,
-                            isPaddingBP: true
-                        },
-                        newField: 'pileup-row',
-                        maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'Translocation').map(d => d.name)
-                    },
-                    {
-                        type: 'filter',
-                        field: 'strand',
-                        oneOf: ['-']
-                    }
-                ],
-                mark: 'triangleLeft',
-                color: { value: defaultEncodings.color.svclass['Translocation'] },
-                x: { field: 'start', type: 'genomic' },
-                style: { align: 'right' }
-            },
-            /**
-             * Deletion
-             */
-            {
-                dataTransform: [
-                    {
-                        type: 'displace',
-                        method: 'pile',
-                        boundingBox: {
-                            startField: 'start',
-                            endField: 'end',
-                            padding: 5,
-                            isPaddingBP: true
-                        },
-                        newField: 'pileup-row',
-                        maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'Deletion').map(d => d.name)
-                    }
-                ],
-                color: { value: defaultEncodings.color.svclass['Deletion'] },
-                x: { field: 'start', type: 'genomic' },
-                xe: { field: 'end', type: 'genomic' }
-            },
-            {
-                dataTransform: [
-                    {
-                        type: 'displace',
-                        method: 'pile',
-                        boundingBox: {
-                            startField: 'start',
-                            endField: 'end',
-                            padding: 5,
-                            isPaddingBP: true
-                        },
-                        newField: 'pileup-row',
-                        maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'Deletion').map(d => d.name)
-                    },
-                    {
-                        type: 'filter',
-                        field: 'strand',
-                        oneOf: ['-']
-                    }
-                ],
-                mark: 'triangleLeft',
-                color: { value: defaultEncodings.color.svclass['Deletion'] },
-                x: { field: 'start', type: 'genomic' },
-                style: { align: 'right' }
-            },
-            {
-                dataTransform: [
-                    {
-                        type: 'displace',
-                        method: 'pile',
-                        boundingBox: {
-                            startField: 'start',
-                            endField: 'end',
-                            padding: 5,
-                            isPaddingBP: true
-                        },
-                        newField: 'pileup-row',
-                        maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'Deletion').map(d => d.name)
-                    },
-                    {
-                        type: 'filter',
-                        field: 'strand',
-                        oneOf: ['-']
-                    }
-                ],
-                mark: 'triangleLeft',
-                color: { value: defaultEncodings.color.svclass['Deletion'] },
-                x: { field: 'start', type: 'genomic' },
-                style: { align: 'right' }
-            },
-            /**
-             * Inversion (TtT)
-             */
-            {
-                dataTransform: [
-                    {
-                        type: 'displace',
-                        method: 'pile',
-                        boundingBox: {
-                            startField: 'start',
-                            endField: 'end',
-                            padding: 5,
-                            isPaddingBP: true
-                        },
-                        newField: 'pileup-row',
-                        maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'Inversion (TtT)').map(d => d.name)
-                    }
-                ],
-                color: { value: defaultEncodings.color.svclass['Inversion (TtT)'] },
-                x: { field: 'start', type: 'genomic' },
-                xe: { field: 'end', type: 'genomic' }
-            },
-            {
-                dataTransform: [
-                    {
-                        type: 'displace',
-                        method: 'pile',
-                        boundingBox: {
-                            startField: 'start',
-                            endField: 'end',
-                            padding: 5,
-                            isPaddingBP: true
-                        },
-                        newField: 'pileup-row',
-                        maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'Inversion (TtT)').map(d => d.name)
-                    },
-                    {
-                        type: 'filter',
-                        field: 'strand',
-                        oneOf: ['-']
-                    }
-                ],
-                mark: 'triangleLeft',
-                color: { value: defaultEncodings.color.svclass['Inversion (TtT)'] },
-                x: { field: 'start', type: 'genomic' },
-                style: { align: 'right' }
-            },
-            {
-                dataTransform: [
-                    {
-                        type: 'displace',
-                        method: 'pile',
-                        boundingBox: {
-                            startField: 'start',
-                            endField: 'end',
-                            padding: 5,
-                            isPaddingBP: true
-                        },
-                        newField: 'pileup-row',
-                        maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'Inversion (TtT)').map(d => d.name)
-                    },
-                    {
-                        type: 'filter',
-                        field: 'strand',
-                        oneOf: ['-']
-                    }
-                ],
-                mark: 'triangleLeft',
-                color: { value: defaultEncodings.color.svclass['Inversion (TtT)'] },
-                x: { field: 'start', type: 'genomic' },
-                style: { align: 'right' }
-            },
-            {
-                dataTransform: [
-                    {
-                        type: 'displace',
-                        method: 'pile',
-                        boundingBox: {
-                            startField: 'start',
-                            endField: 'end',
-                            padding: 5,
-                            isPaddingBP: true
-                        },
-                        newField: 'pileup-row',
-                        maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'Inversion (HtH)').map(d => d.name)
-                    }
-                ],
-                color: { value: defaultEncodings.color.svclass['Inversion (HtH)'] },
-                x: { field: 'start', type: 'genomic' },
-                xe: { field: 'end', type: 'genomic' }
-            },
-            {
-                dataTransform: [
-                    {
-                        type: 'displace',
-                        method: 'pile',
-                        boundingBox: {
-                            startField: 'start',
-                            endField: 'end',
-                            padding: 5,
-                            isPaddingBP: true
-                        },
-                        newField: 'pileup-row',
-                        maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'Inversion (HtH)').map(d => d.name)
-                    },
-                    {
-                        type: 'filter',
-                        field: 'strand',
-                        oneOf: ['-']
-                    }
-                ],
-                mark: 'triangleLeft',
-                color: { value: defaultEncodings.color.svclass['Inversion (HtH)'] },
-                x: { field: 'start', type: 'genomic' },
-                style: { align: 'right' }
-            },
-            {
-                dataTransform: [
-                    {
-                        type: 'displace',
-                        method: 'pile',
-                        boundingBox: {
-                            startField: 'start',
-                            endField: 'end',
-                            padding: 5,
-                            isPaddingBP: true
-                        },
-                        newField: 'pileup-row',
-                        maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'Inversion (HtH)').map(d => d.name)
-                    },
-                    {
-                        type: 'filter',
-                        field: 'strand',
-                        oneOf: ['-']
-                    }
-                ],
-                mark: 'triangleLeft',
-                color: { value: defaultEncodings.color.svclass['Inversion (HtH)'] },
-                x: { field: 'start', type: 'genomic' },
-                style: { align: 'right' }
-            },
-            {
-                dataTransform: [
-                    {
-                        type: 'displace',
-                        method: 'pile',
-                        boundingBox: {
-                            startField: 'start',
-                            endField: 'end',
-                            padding: 5,
-                            isPaddingBP: true
-                        },
-                        newField: 'pileup-row',
-                        maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'Duplication').map(d => d.name)
-                    }
-                ],
-                color: { value: defaultEncodings.color.svclass['Duplication'] },
-                x: { field: 'start', type: 'genomic' },
-                xe: { field: 'end', type: 'genomic' }
-            },
-            {
-                dataTransform: [
-                    {
-                        type: 'displace',
-                        method: 'pile',
-                        boundingBox: {
-                            startField: 'start',
-                            endField: 'end',
-                            padding: 5,
-                            isPaddingBP: true
-                        },
-                        newField: 'pileup-row',
-                        maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'Duplication').map(d => d.name)
-                    },
-                    {
-                        type: 'filter',
-                        field: 'strand',
-                        oneOf: ['-']
-                    }
-                ],
-                mark: 'triangleLeft',
-                color: { value: defaultEncodings.color.svclass['Duplication'] },
-                x: { field: 'start', type: 'genomic' },
-                style: { align: 'right' }
-            },
-            {
-                dataTransform: [
-                    {
-                        type: 'displace',
-                        method: 'pile',
-                        boundingBox: {
-                            startField: 'start',
-                            endField: 'end',
-                            padding: 5,
-                            isPaddingBP: true
-                        },
-                        newField: 'pileup-row',
-                        maxRows: 300
-                    },
-                    {
-                        type: 'filter',
-                        field: 'name',
-                        oneOf: svReads.filter(d => d.type === 'Duplication').map(d => d.name)
-                    },
-                    {
-                        type: 'filter',
-                        field: 'strand',
-                        oneOf: ['-']
-                    }
-                ],
-                mark: 'triangleLeft',
-                color: { value: defaultEncodings.color.svclass['Duplication'] },
-                x: { field: 'start', type: 'genomic' },
-                style: { align: 'right' }
-            }
+            ...drawSvReads(option, 'Translocation'),
+            ...drawSvReads(option, 'Deletion'),
+            ...drawSvReads(option, 'Inversion (TtT)'),
+            ...drawSvReads(option, 'Inversion (HtH)'),
+            ...drawSvReads(option, 'Duplication')
         ],
         row: { field: 'pileup-row', type: 'nominal', padding: 0.2 },
         tooltip: [
