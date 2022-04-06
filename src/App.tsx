@@ -176,6 +176,16 @@ function App() {
                 } else if (e.id.includes('right') && rightReads.current.length === 0) {
                     rightReads.current = e.data;
                 }
+
+                // !! This is to drop duplicated data records.
+                // Multiple tracks overlaid on alignment tracks makes duplicated data records.
+                leftReads.current = Array.from(new Set(leftReads.current.map(d => JSON.stringify(d)))).map(d =>
+                    JSON.parse(d)
+                );
+                rightReads.current = Array.from(new Set(rightReads.current.map(d => JSON.stringify(d)))).map(d =>
+                    JSON.parse(d)
+                );
+
                 // Reads on both views prepared?
                 if (leftReads.current.length !== 0 && rightReads.current.length !== 0) {
                     const mates = leftReads.current
@@ -201,7 +211,7 @@ function App() {
                         if (ld === '+' && rd === '+') return { name, type: 'Inversion (HtH)' };
                         if (ld === '-' && rd === '+') return { name, type: 'Duplication' };
                         return { name, type: 'unknown' };
-                    });
+                    }); //.filter(d => d.type !== 'unknown');
                     // console.log("mates", matesWithSv)
                     if (
                         matesWithSv
