@@ -27,7 +27,10 @@ export default function getMidView(option: SpecOption): View[] {
                     title: 'Ideogram',
                     alignment: 'overlay',
                     data: {
-                        url: 'https://raw.githubusercontent.com/sehilyi/gemini-datasets/master/data/UCSC.HG38.Human.CytoBandIdeogram.csv',
+                        url:
+                            assembly === 'hg38'
+                                ? 'https://raw.githubusercontent.com/sehilyi/gemini-datasets/master/data/UCSC.HG38.Human.CytoBandIdeogram.csv'
+                                : 'https://raw.githubusercontent.com/sehilyi/gemini-datasets/master/data/UCSC.HG19.Human.CytoBandIdeogram.csv',
                         type: 'csv',
                         chromosomeField: 'Chromosome',
                         genomicFields: ['chromStart', 'chromEnd']
