@@ -4,7 +4,18 @@ import { MultipleViews, SingleTrack, SingleView, View } from 'gosling.js/dist/sr
 import tracks from './track';
 
 export default function getMidView(option: SpecOption): View[] {
-    const { sampleId, cnvUrl, svUrl, width, showPutativeDriver, showOverview, xOffset, selectedSvId, drivers } = option;
+    const {
+        sampleId,
+        assembly,
+        cnvUrl,
+        svUrl,
+        width,
+        showPutativeDriver,
+        showOverview,
+        xOffset,
+        selectedSvId,
+        drivers
+    } = option;
     return [
         {
             linkingId: 'mid-scale',
@@ -92,7 +103,10 @@ export default function getMidView(option: SpecOption): View[] {
                     title: 'Genes',
                     template: 'gene',
                     data: {
-                        url: 'https://higlass.io/api/v1/tileset_info/?d=OHJakQICQD6gTD7skx4EWA',
+                        url:
+                            assembly === 'hg19'
+                                ? 'https://higlass.io/api/v1/tileset_info/?d=OHJakQICQD6gTD7skx4EWA'
+                                : 'https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation',
                         type: 'beddb',
                         genomicFields: [
                             { index: 1, name: 'start' },

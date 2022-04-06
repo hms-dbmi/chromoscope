@@ -80,6 +80,34 @@ body {
     border-radius: 0px;
 }
 
+.gene-search {
+    position: absolute;
+    font-size: 14px;
+    left: 158px;
+    height: 28px;
+    width: 160px;
+    /* border-radius: 10px; */
+    margin-left: 20px;
+    padding-left: 29px;
+    padding-right: 10px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    line-height: 30px;
+    border: 1px solid grey;
+}
+
+.gene-search-icon {
+    margin-top: 1px;
+    margin-left: 22px;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    left: 164px;
+    cursor: pointer;
+    z-index: 999;
+    fill: grey;
+}
+
 .config-panel-search-box {
     font-size: 14px;
     height: calc(30px - 6px);
