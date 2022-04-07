@@ -62,7 +62,7 @@ function App() {
 
     // TODO: We could just use sampleId to get detailed info. not to update all info as states.
     // demo
-    const [demoIdx, setDemoIdx] = useState(0);
+    const [demoIdx, setDemoIdx] = useState(samples.length - 1);
     const [sampleId, setSampleId] = useState(samples[demoIdx].id);
     const [cancer, setCancer] = useState(samples[demoIdx].cancer);
     const [assembly, setAssembly] = useState(samples[demoIdx].assembly);
@@ -115,7 +115,6 @@ function App() {
         if (!gosRef.current) return;
 
         gosRef.current.api.subscribe('click', (type: string, e: CommonEventData) => {
-            console.log('clicked');
             const zoom = false;
             if (zoom) {
                 // start and end positions are already cumulative values
@@ -176,6 +175,16 @@ function App() {
                 } else if (e.id.includes('right') && rightReads.current.length === 0) {
                     rightReads.current = e.data;
                 }
+
+                // !! This is to drop duplicated data records.
+                // Multiple tracks overlaid on alignment tracks makes duplicated data records.
+                leftReads.current = Array.from(new Set(leftReads.current.map(d => JSON.stringify(d)))).map(d =>
+                    JSON.parse(d)
+                );
+                rightReads.current = Array.from(new Set(rightReads.current.map(d => JSON.stringify(d)))).map(d =>
+                    JSON.parse(d)
+                );
+
                 // Reads on both views prepared?
                 if (leftReads.current.length !== 0 && rightReads.current.length !== 0) {
                     const mates = leftReads.current
@@ -201,7 +210,7 @@ function App() {
                         if (ld === '+' && rd === '+') return { name, type: 'Inversion (HtH)' };
                         if (ld === '-' && rd === '+') return { name, type: 'Duplication' };
                         return { name, type: 'unknown' };
-                    });
+                    }); //.filter(d => d.type !== 'unknown');
                     // console.log("mates", matesWithSv)
                     if (
                         matesWithSv
@@ -504,6 +513,64 @@ function App() {
                                     );
                                 })}
                             </select>
+                            <svg
+                                className="gene-search-icon"
+                                viewBox="0 0 16 16"
+                                style={{
+                                    top: `${Math.min(visPanelWidth, 600) + 6}px`
+                                }}
+                            >
+                                <path
+                                    fillRule="evenodd"
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+                                />
+                            </svg>
+                            <input
+                                type="text"
+                                className="gene-search"
+                                placeholder="Search Gene (e.g., MYC)"
+                                style={{
+                                    pointerEvents: 'auto',
+                                    top: `${Math.min(visPanelWidth, 600)}px`,
+                                    visibility: assembly === 'hg38' ? 'visible' : 'collapse'
+                                }}
+                                // onChange={(e) => {
+                                //     const keyword = e.target.value;
+                                //     if(keyword !== "" && !keyword.startsWith("c")) {
+                                //         gosRef.current.api.suggestGene(keyword, (suggestions) => {
+                                //             setGeneSuggestions(suggestions);
+                                //         });
+                                //         setSuggestionPosition({
+                                //             left: searchBoxRef.current.getBoundingClientRect().left,
+                                //             top: searchBoxRef.current.getBoundingClientRect().top + searchBoxRef.current.getBoundingClientRect().height,
+                                //         });
+                                //     } else {
+                                //         setGeneSuggestions([]);
+                                //     }
+                                //     setSearchKeyword(keyword);
+                                // }}
+                                onKeyDown={e => {
+                                    const keyword = (e.target as HTMLTextAreaElement).value;
+                                    switch (e.key) {
+                                        case 'ArrowUp':
+                                            break;
+                                        case 'ArrowDown':
+                                            break;
+                                        case 'Enter':
+                                            // https://github.com/gosling-lang/gosling.js/blob/7555ab711023a0c3e2076a448756a9ba3eeb04f7/src/core/api.ts#L156
+                                            gosRef.current.api.zoomToGene(
+                                                `${sampleId}-mid-ideogram`,
+                                                keyword,
+                                                10000,
+                                                1000
+                                            );
+                                            break;
+                                        case 'Esc':
+                                        case 'Escape':
+                                            break;
+                                    }
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
