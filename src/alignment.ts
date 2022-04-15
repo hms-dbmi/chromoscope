@@ -202,7 +202,87 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                 x: { field: 'pos_start', type: 'genomic' },
                 xe: { field: 'pos_end', type: 'genomic' },
                 color: { value: '#414141' },
-                opacity: { value: 0.8 }
+                opacity: { value: 1 }
+            },
+            {
+                dataTransform: [
+                    {
+                        type: 'displace',
+                        method: 'pile',
+                        boundingBox: {
+                            startField: 'start',
+                            endField: 'end',
+                            padding: 5,
+                            isPaddingBP: true
+                        },
+                        newField: 'pileup-row',
+                        maxRows: 300
+                    },
+                    {
+                        type: 'subjson',
+                        field: 'substitutions',
+                        genomicField: 'pos',
+                        baseGenomicField: 'start',
+                        genomicLengthField: 'length'
+                    },
+                    { type: 'filter', field: 'type', oneOf: ['S', 'H'] },
+                    {
+                        type: 'filter',
+                        field: 'substitutions',
+                        include: '-',
+                        // !! TODO: not seems to be working oposite way?
+                        not: true
+                    },
+                    {
+                        type: 'filter',
+                        field: 'strand',
+                        oneOf: ['-']
+                    }
+                ],
+                mark: 'triangleLeft',
+                x: { field: 'pos_start', type: 'genomic' },
+                color: { value: '#414141' },
+                opacity: { value: 1 },
+                style: { align: 'right' }
+            },
+            {
+                dataTransform: [
+                    {
+                        type: 'displace',
+                        method: 'pile',
+                        boundingBox: {
+                            startField: 'start',
+                            endField: 'end',
+                            padding: 5,
+                            isPaddingBP: true
+                        },
+                        newField: 'pileup-row',
+                        maxRows: 300
+                    },
+                    {
+                        type: 'subjson',
+                        field: 'substitutions',
+                        genomicField: 'pos',
+                        baseGenomicField: 'start',
+                        genomicLengthField: 'length'
+                    },
+                    { type: 'filter', field: 'type', oneOf: ['S', 'H'] },
+                    {
+                        type: 'filter',
+                        field: 'substitutions',
+                        include: '-',
+                        not: false
+                    },
+                    {
+                        type: 'filter',
+                        field: 'strand',
+                        oneOf: ['+']
+                    }
+                ],
+                mark: 'triangleRight',
+                x: { field: 'pos_end', type: 'genomic' },
+                color: { value: '#414141' },
+                opacity: { value: 1 }
             },
             ...drawSvReads(option, 'Translocation'),
             ...drawSvReads(option, 'Deletion'),

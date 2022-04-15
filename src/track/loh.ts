@@ -19,7 +19,10 @@ export default function loh(
             chromosomeField: 'chromosome',
             genomicFields: ['start', 'end']
         },
-        dataTransform: [{ type: 'filter', field: 'minor_cn', oneOf: ['0'] }],
+        dataTransform: [
+            { type: 'filter', field: 'minor_cn', oneOf: ['0'] },
+            { type: 'filter', field: 'total_cn', oneOf: ['0'], not: true }
+        ],
         mark: 'rect',
         x: { field: 'start', type: 'genomic' },
         xe: { field: 'end', type: 'genomic' },
