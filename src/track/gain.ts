@@ -6,8 +6,10 @@ export default function gain(
     cnvUrl: string,
     width: number,
     height: number,
-    mode: TrackMode
+    mode: TrackMode,
+    cnFields: [string, string, string]
 ): SingleTrack {
+    const [total_cn, major_cn, minor_cn] = cnFields;
     return {
         id: `${sampleId}-${mode}-gain`,
         title: mode === 'small' ? '' : 'Gain',
@@ -23,7 +25,7 @@ export default function gain(
             // https://cancer.sanger.ac.uk/cosmic/help/cnv/overview
             {
                 type: 'filter',
-                field: 'total_cn',
+                field: total_cn,
                 inRange: [5, 999]
             }
         ],

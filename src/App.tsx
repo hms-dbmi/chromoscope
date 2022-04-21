@@ -70,6 +70,9 @@ function App() {
     const [cnvUrl, setCnvUrl] = useState(samples[demoIdx].cnv);
     const [bamUrl, setBamUrl] = useState(samples[demoIdx].bam);
     const [baiUrl, setBaiUrl] = useState(samples[demoIdx].bai);
+    const [cnFields, setCnFields] = useState<[string, string, string]>(
+        samples[demoIdx].cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
+    );
 
     // interactions
     const [showSamples, setShowSamples] = useState(false);
@@ -102,6 +105,7 @@ function App() {
         setCnvUrl(samples[demoIdx].cnv);
         setBamUrl(samples[demoIdx].bam);
         setBaiUrl(samples[demoIdx].bai);
+        setCnFields(samples[demoIdx].cnFields ?? ['total_cn', 'major_cn', 'minor_cn']);
         setFilteredDrivers(
             (drivers as any).filter((d: any) => d.sample_id === samples[demoIdx].id && +d.chr && +d.pos)
         );
@@ -112,7 +116,7 @@ function App() {
     }, [demoIdx]);
 
     useEffect(() => {
-        if (!gosRef.current) return;
+        if (!gosRef.current && baiUrl && bamUrl) return;
 
         gosRef.current.api.subscribe('click', (type: string, e: CommonEventData) => {
             const zoom = false;
@@ -277,7 +281,8 @@ function App() {
                 svUrl: d.sv,
                 width: 300,
                 title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
-                subtitle: '' + d.id.slice(0, 20) + '...'
+                subtitle: '' + d.id.slice(0, 20) + '...',
+                cnFields
             })
         );
         return specs.map(spec => [
@@ -328,7 +333,8 @@ function App() {
             breakpoints: breakpoints,
             crossChr: false,
             bpIntervals,
-            svReads
+            svReads,
+            cnFields
         });
         // console.log('spec', spec);
         return (

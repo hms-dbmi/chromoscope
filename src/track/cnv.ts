@@ -6,8 +6,10 @@ export default function cnv(
     cnvUrl: string,
     width: number,
     height: number,
-    mode: TrackMode
+    mode: TrackMode,
+    cnFields: [string, string, string]
 ): OverlaidTracks {
+    const [total_cn, major_cn, minor_cn] = cnFields;
     return {
         id: `${sampleId}-${mode}-cnv`,
         title: mode === 'small' ? '' : 'CNV',
@@ -25,7 +27,7 @@ export default function cnv(
         alignment: 'overlay',
         tracks: [
             {
-                y: { field: 'total_cn', type: 'quantitative', axis: 'right', grid: true },
+                y: { field: total_cn, type: 'quantitative', axis: 'right', grid: true },
                 color: { value: 'darkgray' }
             }
             // {
@@ -34,9 +36,9 @@ export default function cnv(
             // }
         ],
         tooltip: [
-            { field: 'total_cn', type: 'quantitative' },
-            { field: 'major_cn', type: 'quantitative' },
-            { field: 'minor_cn', type: 'quantitative' }
+            { field: total_cn, type: 'quantitative' },
+            { field: major_cn, type: 'quantitative' },
+            { field: minor_cn, type: 'quantitative' }
         ],
         size: { value: 3 },
         opacity: { value: 0.8 },

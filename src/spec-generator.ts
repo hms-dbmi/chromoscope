@@ -22,6 +22,7 @@ export interface SpecOption {
     svReads: { name: string; type: string }[];
     crossChr: boolean;
     bpIntervals: [number, number, number, number] | undefined;
+    cnFields: [string, string, string];
 }
 
 function generateSpec(option: SpecOption): GoslingSpec {
@@ -40,7 +41,8 @@ function generateSpec(option: SpecOption): GoslingSpec {
         breakpoints,
         crossChr,
         svReads,
-        bpIntervals
+        bpIntervals,
+        cnFields
     } = option;
 
     const topViewWidth = Math.min(width, 600);
@@ -227,9 +229,13 @@ function generateSpec(option: SpecOption): GoslingSpec {
                                           width: bottomViewWidth,
                                           height: 40
                                       },
-                                      {
-                                          ...alignment({ ...option, width: bottomViewWidth }, true)
-                                      },
+                                      ...(option.bamUrl && option.baiUrl
+                                          ? [
+                                                {
+                                                    ...alignment({ ...option, width: bottomViewWidth }, true)
+                                                }
+                                            ]
+                                          : []),
                                       ...(bpIntervals ? [verticalGuide(bpIntervals[0], bpIntervals[1])] : [])
                                   ]
                               },
@@ -377,9 +383,13 @@ function generateSpec(option: SpecOption): GoslingSpec {
                                           width: bottomViewWidth,
                                           height: 40
                                       },
-                                      {
-                                          ...alignment({ ...option, width: bottomViewWidth }, false)
-                                      },
+                                      ...(option.bamUrl && option.baiUrl
+                                          ? [
+                                                {
+                                                    ...alignment({ ...option, width: bottomViewWidth }, false)
+                                                }
+                                            ]
+                                          : []),
                                       ...(bpIntervals ? [verticalGuide(bpIntervals[2], bpIntervals[3])] : [])
                                   ]
                               }
@@ -401,7 +411,8 @@ function getOverviewSpec(option: SpecOption): View[] {
         showOverview,
         selectedSvId,
         xOffset,
-        drivers
+        drivers,
+        cnFields
     } = option;
 
     if (!showOverview) return [];
@@ -482,9 +493,9 @@ function getOverviewSpec(option: SpecOption): View[] {
                           } as SingleTrack
                       ]),
                 tracks.boundary('driver', 'top'),
-                tracks.gain(sampleId, cnvUrl, width, 40, 'top'),
+                tracks.gain(sampleId, cnvUrl, width, 40, 'top', cnFields),
                 tracks.boundary('gain', 'top'),
-                tracks.loh(sampleId, cnvUrl, width, 40, 'top'),
+                tracks.loh(sampleId, cnvUrl, width, 40, 'top', cnFields),
                 tracks.boundary('loh', 'top'),
                 tracks.sv(sampleId, svUrl, width, 80, 'top', selectedSvId)
             ]

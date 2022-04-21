@@ -7,10 +7,11 @@ type SpecOption = {
     width: number;
     cnvUrl: string;
     svUrl: string;
+    cnFields: [string, string, string];
 };
 
 function getSmallOverviewSpec(option: SpecOption): GoslingSpec {
-    const { title, subtitle, cnvUrl, svUrl, width } = option;
+    const { title, subtitle, cnvUrl, svUrl, width, cnFields } = option;
 
     return {
         title,
@@ -74,8 +75,8 @@ function getSmallOverviewSpec(option: SpecOption): GoslingSpec {
                         width,
                         height: 30
                     },
-                    tracks.gain(title, cnvUrl, width, 40, 'small'),
-                    tracks.loh(title, cnvUrl, width, 40, 'small'),
+                    tracks.gain(title, cnvUrl, width, 40, 'small', cnFields),
+                    tracks.loh(title, cnvUrl, width, 40, 'small', cnFields),
                     tracks.sv(title, svUrl, width, 80, 'small', '')
                 ]
             }

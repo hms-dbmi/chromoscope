@@ -6,9 +6,20 @@ const samples: {
     assembly: Assembly; // hg19 or 38
     sv: string; // URL of bedpe
     cnv: string; // URL of txt
-    bam: string; // URL of bam
-    bai: string; // URL of bai
+    bam?: string; // URL of bam
+    bai?: string; // URL of bai
+    cnFields?: [string, string, string];
 }[] = [
+    {
+        id: 'sample_1',
+        cancer: 'cancer type unspecified',
+        assembly: 'hg19',
+        sv: 'https://genomebrowserdata.s3.amazonaws.com/sv/sample_1.bedpe',
+        cnv: 'https://genomebrowserdata.s3.amazonaws.com/cnv/sample_1.tsv',
+        // svFields: ['']
+        // http://gosling-lang.org/docs/data
+        cnFields: ['cn', 'cn1', 'cn2']
+    },
     {
         id: '7a921087-8e62-4a93-a757-fd8cdbe1eb8f',
         cancer: 'ovarian',
