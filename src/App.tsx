@@ -116,7 +116,7 @@ function App() {
     }, [demoIdx]);
 
     useEffect(() => {
-        if (!gosRef.current && baiUrl && bamUrl) return;
+        if (!gosRef.current || !baiUrl || !bamUrl) return;
 
         gosRef.current.api.subscribe('click', (type: string, e: CommonEventData) => {
             const zoom = false;
@@ -274,29 +274,30 @@ function App() {
         );
     }, []);
 
-    // const smallOverviewGoslingComponents = useMemo(() => {
-    //     const specs = samples.map(d =>
-    //         getSmallOverviewSpec({
-    //             cnvUrl: d.cnv,
-    //             svUrl: d.sv,
-    //             width: 300,
-    //             title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
-    //             subtitle: '' + d.id.slice(0, 20) + '...',
-    //             cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
-    //         })
-    //     );
-    //     return specs.map(spec => [
-    //         <GoslingComponent
-    //             key={JSON.stringify(spec)}
-    //             ref={gosRef}
-    //             spec={spec}
-    //             padding={0}
-    //             margin={0}
-    //             theme={theme as any}
-    //         />,
-    //         spec
-    //     ]);
-    // }, []);
+    const smallOverviewGoslingComponents = useMemo(() => {
+        const specs = samples.map(d =>
+            getSmallOverviewSpec({
+                cnvUrl: d.cnv,
+                svUrl: d.sv,
+                width: 300,
+                title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
+                subtitle: '' + d.id.slice(0, 20) + '...',
+                cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
+            })
+        );
+        console.log(specs);
+        return specs.map(spec => [
+            <GoslingComponent
+                key={JSON.stringify(spec)}
+                ref={gosRef}
+                spec={spec}
+                padding={0}
+                margin={0}
+                theme={theme as any}
+            />,
+            spec
+        ]);
+    }, []);
 
     const smallOverviewWrapper = useMemo(() => {
         return samples.map((d, i) => (
@@ -311,7 +312,7 @@ function App() {
                 }}
                 className={demoIdx === i ? 'selected-overview' : 'unselected-overview'}
             >
-                <img src={d.thumbnail} style={{ width: `${420 / 1.2}px`, height: `${470 / 1.2}px` }} />
+                <img src={d.thumbnail} style={{ width: `${420}px`, height: `${470}px` }} />
             </div>
         ));
         // smallOverviewGoslingComponents.map(([component, spec], i) => (
@@ -425,12 +426,14 @@ function App() {
                         </svg>
                     </span>
                 </div>
-                <div className="help-label">
-                    <span style={{ border: '2px solid gray', borderRadius: 10, padding: '0px 4px', margin: '6px' }}>
-                        {'?'}
-                    </span>
-                    {'Click on a SV to see alignment around breakpoints'}
-                </div>
+                {bamUrl && baiUrl ? (
+                    <div className="help-label">
+                        <span style={{ border: '2px solid gray', borderRadius: 10, padding: '0px 4px', margin: '6px' }}>
+                            {'?'}
+                        </span>
+                        {'Click on a SV to see alignment around breakpoints'}
+                    </div>
+                ) : null}
                 <div id="vis-panel" className="vis-panel">
                     <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
                         <div className="title">
@@ -538,7 +541,8 @@ function App() {
                                 className="gene-search-icon"
                                 viewBox="0 0 16 16"
                                 style={{
-                                    top: `${Math.min(visPanelWidth, 600) + 6}px`
+                                    top: `${Math.min(visPanelWidth, 600) + 6}px`,
+                                    visibility: assembly === 'hg38' ? 'visible' : 'collapse'
                                 }}
                             >
                                 <path

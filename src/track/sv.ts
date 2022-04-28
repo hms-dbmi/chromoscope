@@ -1,5 +1,10 @@
-import { OverlaidTracks, StrConcatTransform, StrReplaceTransform } from 'gosling.js/dist/src/core/gosling.schema';
-import { consistentSv } from '../sanitize';
+import {
+    FilterTransform,
+    OverlaidTracks,
+    StrConcatTransform,
+    StrReplaceTransform
+} from 'gosling.js/dist/src/core/gosling.schema';
+import { consistentSv, translocationChrPairs } from '../sanitize';
 import defaults from '../default-encoding';
 import { TrackMode } from '.';
 
@@ -22,6 +27,23 @@ const svInfer = [
         newField: 'svclass'
     }
 ] as [StrConcatTransform, StrReplaceTransform];
+
+// TODO: work-around to infer translocation
+const isTranslocation = (not: boolean) =>
+    [
+        {
+            type: 'concat',
+            fields: ['chrom1', 'chrom2'],
+            separator: '-',
+            newField: 'isTranslocation'
+        },
+        {
+            type: 'filter',
+            field: 'isTranslocation',
+            oneOf: translocationChrPairs,
+            not: !not
+        }
+    ] as [StrConcatTransform, FilterTransform];
 
 const replace = {
     type: 'replace',
@@ -85,80 +107,30 @@ export default function sv(
                         oneOf: [selectedSvId],
                         not: true
                     },
-                    {
-                        type: 'filter',
-                        field: 'svclass',
-                        oneOf: ['Translocation'],
-                        not: false
-                    }
+                    ...isTranslocation(false)
                 ],
                 x: { field: 'start1', type: 'genomic' },
                 xe: { field: 'end2', type: 'genomic' },
+                stroke: { value: defaults.color.svclass.Translocation },
                 baselineY: height / 2.0
             },
-            // {
-            //     dataTransform: [
-            //         replace,
-            //         {
-            //             type: 'filter',
-            //             field: 'sv_id',
-            //             oneOf: [selectedSvId],
-            //             not: true
-            //         },
-            //         {
-            //             type: 'filter',
-            //             field: 'svclass',
-            //             oneOf: ['Translocation'],
-            //             not: false
-            //         }
-            //     ],
-            //     x: { field: 'start1', type: 'genomic' },
-            //     xe: { field: 'end2', type: 'genomic' },
-            //     baselineY: height / 2.0
-            // },
             ...((mode !== 'mid'
                 ? []
                 : [
                       {
                           mark: 'bar',
-                          dataTransform: [
-                              ...svInfer,
-                              replace,
-                              //   {
-                              //       type: 'filter',
-                              //       field: 'sv_id',
-                              //       oneOf: [selectedSvId],
-                              //       not: true
-                              //   },
-                              {
-                                  type: 'filter',
-                                  field: 'svclass',
-                                  oneOf: ['Translocation'],
-                                  not: false
-                              }
-                          ],
+                          dataTransform: [...svInfer, replace, ...isTranslocation(false)],
                           x: { field: 'start1', type: 'genomic' },
+                          color: { value: defaults.color.svclass.Translocation },
+                          stroke: { value: defaults.color.svclass.Translocation },
                           size: { value: 2 }
                       },
                       {
                           mark: 'bar',
-                          dataTransform: [
-                              ...svInfer,
-                              replace,
-                              //   {
-                              //       type: 'filter',
-                              //       field: 'sv_id',
-                              //       oneOf: [selectedSvId],
-                              //       not: true
-                              //   },
-                              {
-                                  type: 'filter',
-                                  field: 'svclass',
-                                  oneOf: ['Translocation'],
-                                  not: false
-                              }
-                          ],
+                          dataTransform: [...svInfer, replace, ...isTranslocation(false)],
                           x: { field: 'end2', type: 'genomic' },
+                          color: { value: defaults.color.svclass.Translocation },
+                          stroke: { value: defaults.color.svclass.Translocation },
                           size: { value: 2 }
                       }
                   ]) as OverlaidTracks[]),
@@ -172,12 +144,7 @@ export default function sv(
                         oneOf: [selectedSvId],
                         not: true
                     },
-                    {
-                        type: 'filter',
-                        field: 'svclass',
-                        oneOf: ['Translocation'],
-                        not: true
-                    }
+                    ...isTranslocation(true)
                 ],
                 x: { field: 'start1', type: 'genomic' },
                 xe: { field: 'end2', type: 'genomic' }
@@ -187,14 +154,11 @@ export default function sv(
                     ...svInfer,
                     replace,
                     { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] },
-                    {
-                        type: 'filter',
-                        field: 'svclass',
-                        oneOf: ['Translocation']
-                    }
+                    ...isTranslocation(false)
                 ],
                 x: { field: 'start1', type: 'genomic' },
                 xe: { field: 'end2', type: 'genomic' },
+                stroke: { value: defaults.color.svclass.Translocation },
                 strokeWidth: { value: 3 },
                 opacity: { value: 1 },
                 baselineY: height / 2.0
@@ -204,12 +168,7 @@ export default function sv(
                     ...svInfer,
                     replace,
                     { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] },
-                    {
-                        type: 'filter',
-                        field: 'svclass',
-                        oneOf: ['Translocation'],
-                        not: true
-                    }
+                    ...isTranslocation(true)
                 ],
                 x: { field: 'start1', type: 'genomic' },
                 xe: { field: 'end2', type: 'genomic' },
