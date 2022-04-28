@@ -14,7 +14,8 @@ export default function getMidView(option: SpecOption): View[] {
         showOverview,
         xOffset,
         selectedSvId,
-        drivers
+        drivers,
+        cnFields
     } = option;
     return [
         {
@@ -142,11 +143,11 @@ export default function getMidView(option: SpecOption): View[] {
                     width,
                     height: 60
                 },
-                tracks.cnv(sampleId, cnvUrl, width, 60, 'mid'),
+                tracks.cnv(sampleId, cnvUrl, width, 60, 'mid', cnFields),
                 tracks.boundary('cnv', 'mid'),
-                tracks.gain(sampleId, cnvUrl, width, 20, 'mid'),
+                tracks.gain(sampleId, cnvUrl, width, 20, 'mid', cnFields),
                 tracks.boundary('gain', 'mid'),
-                tracks.loh(sampleId, cnvUrl, width, 20, 'mid'),
+                tracks.loh(sampleId, cnvUrl, width, 20, 'mid', cnFields),
                 tracks.boundary('loh', 'mid'),
                 tracks.sv(sampleId, svUrl, width, 250, 'mid', selectedSvId)
             ]

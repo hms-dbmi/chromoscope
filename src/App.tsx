@@ -70,6 +70,9 @@ function App() {
     const [cnvUrl, setCnvUrl] = useState(samples[demoIdx].cnv);
     const [bamUrl, setBamUrl] = useState(samples[demoIdx].bam);
     const [baiUrl, setBaiUrl] = useState(samples[demoIdx].bai);
+    const [cnFields, setCnFields] = useState<[string, string, string]>(
+        samples[demoIdx].cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
+    );
 
     // interactions
     const [showSamples, setShowSamples] = useState(false);
@@ -102,6 +105,7 @@ function App() {
         setCnvUrl(samples[demoIdx].cnv);
         setBamUrl(samples[demoIdx].bam);
         setBaiUrl(samples[demoIdx].bai);
+        setCnFields(samples[demoIdx].cnFields ?? ['total_cn', 'major_cn', 'minor_cn']);
         setFilteredDrivers(
             (drivers as any).filter((d: any) => d.sample_id === samples[demoIdx].id && +d.chr && +d.pos)
         );
@@ -112,7 +116,7 @@ function App() {
     }, [demoIdx]);
 
     useEffect(() => {
-        if (!gosRef.current) return;
+        if (!gosRef.current || !baiUrl || !bamUrl) return;
 
         gosRef.current.api.subscribe('click', (type: string, e: CommonEventData) => {
             const zoom = false;
@@ -277,9 +281,11 @@ function App() {
                 svUrl: d.sv,
                 width: 300,
                 title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
-                subtitle: '' + d.id.slice(0, 20) + '...'
+                subtitle: '' + d.id.slice(0, 20) + '...',
+                cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
             })
         );
+        console.log(specs);
         return specs.map(spec => [
             <GoslingComponent
                 key={JSON.stringify(spec)}
@@ -294,9 +300,9 @@ function App() {
     }, []);
 
     const smallOverviewWrapper = useMemo(() => {
-        return smallOverviewGoslingComponents.map(([component, spec], i) => (
+        return samples.map((d, i) => (
             <div
-                key={JSON.stringify(spec)}
+                key={JSON.stringify(d.id)}
                 onClick={() => {
                     setShowSamples(false);
                     setTimeout(() => {
@@ -306,9 +312,24 @@ function App() {
                 }}
                 className={demoIdx === i ? 'selected-overview' : 'unselected-overview'}
             >
-                {component}
+                <img src={d.thumbnail} style={{ width: `${420 / 1.2}px`, height: `${470 / 1.2}px` }} />
             </div>
         ));
+        // smallOverviewGoslingComponents.map(([component, spec], i) => (
+        //     <div
+        //         key={JSON.stringify(spec)}
+        //         onClick={() => {
+        //             setShowSamples(false);
+        //             setTimeout(() => {
+        //                 setDemoIdx(i);
+        //                 setSelectedSvId('');
+        //             }, 300);
+        //         }}
+        //         className={demoIdx === i ? 'selected-overview' : 'unselected-overview'}
+        //     >
+        //         {component}
+        //     </div>
+        // ));
     }, [demoIdx]);
 
     const goslingComponent = useMemo(() => {
@@ -328,7 +349,8 @@ function App() {
             breakpoints: breakpoints,
             crossChr: false,
             bpIntervals,
-            svReads
+            svReads,
+            cnFields
         });
         // console.log('spec', spec);
         return (
@@ -404,12 +426,14 @@ function App() {
                         </svg>
                     </span>
                 </div>
-                <div className="help-label">
-                    <span style={{ border: '2px solid gray', borderRadius: 10, padding: '0px 4px', margin: '6px' }}>
-                        {'?'}
-                    </span>
-                    {'Click on a SV to see alignment around breakpoints'}
-                </div>
+                {bamUrl && baiUrl ? (
+                    <div className="help-label">
+                        <span style={{ border: '2px solid gray', borderRadius: 10, padding: '0px 4px', margin: '6px' }}>
+                            {'?'}
+                        </span>
+                        {'Click on a SV to see alignment around breakpoints'}
+                    </div>
+                ) : null}
                 <div id="vis-panel" className="vis-panel">
                     <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
                         <div className="title">
@@ -517,7 +541,8 @@ function App() {
                                 className="gene-search-icon"
                                 viewBox="0 0 16 16"
                                 style={{
-                                    top: `${Math.min(visPanelWidth, 600) + 6}px`
+                                    top: `${Math.min(visPanelWidth, 600) + 6}px`,
+                                    visibility: assembly === 'hg38' ? 'visible' : 'collapse'
                                 }}
                             >
                                 <path

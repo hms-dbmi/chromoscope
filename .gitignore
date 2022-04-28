@@ -6,3 +6,4 @@ dist-ssr
 *.swp
 *.swo
 *~
+**/gosling-screenshot

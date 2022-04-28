@@ -6,8 +6,10 @@ export default function loh(
     cnvUrl: string,
     width: number,
     height: number,
-    mode: TrackMode
+    mode: TrackMode,
+    cnFields: [string, string, string]
 ): SingleTrack {
+    const [total_cn, major_cn, minor_cn] = cnFields;
     return {
         id: `${sampleId}-${mode}-loh`,
         title: mode !== 'small' ? 'LOH' : '',
@@ -20,8 +22,8 @@ export default function loh(
             genomicFields: ['start', 'end']
         },
         dataTransform: [
-            { type: 'filter', field: 'minor_cn', oneOf: ['0'] },
-            { type: 'filter', field: 'total_cn', oneOf: ['0'], not: true }
+            { type: 'filter', field: minor_cn, oneOf: ['0'] },
+            { type: 'filter', field: total_cn, oneOf: ['0'], not: true }
         ],
         mark: 'rect',
         x: { field: 'start', type: 'genomic' },
