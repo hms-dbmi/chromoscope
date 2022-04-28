@@ -10,7 +10,7 @@ export default function loh(
     cnFields: [string, string, string]
 ): SingleTrack {
     const [total_cn, major_cn, minor_cn] = cnFields;
-    const a = {
+    return {
         id: `${sampleId}-${mode}-loh`,
         title: mode !== 'small' ? 'LOH' : '',
         style: { background: '#F6F6F6' },
@@ -32,6 +32,4 @@ export default function loh(
         width,
         height
     };
-    console.log(a);
-    return a;
 }

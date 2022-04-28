@@ -274,34 +274,34 @@ function App() {
         );
     }, []);
 
-    const smallOverviewGoslingComponents = useMemo(() => {
-        const specs = samples.map(d =>
-            getSmallOverviewSpec({
-                cnvUrl: d.cnv,
-                svUrl: d.sv,
-                width: 300,
-                title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
-                subtitle: '' + d.id.slice(0, 20) + '...',
-                cnFields
-            })
-        );
-        return specs.map(spec => [
-            <GoslingComponent
-                key={JSON.stringify(spec)}
-                ref={gosRef}
-                spec={spec}
-                padding={0}
-                margin={0}
-                theme={theme as any}
-            />,
-            spec
-        ]);
-    }, []);
+    // const smallOverviewGoslingComponents = useMemo(() => {
+    //     const specs = samples.map(d =>
+    //         getSmallOverviewSpec({
+    //             cnvUrl: d.cnv,
+    //             svUrl: d.sv,
+    //             width: 300,
+    //             title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
+    //             subtitle: '' + d.id.slice(0, 20) + '...',
+    //             cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
+    //         })
+    //     );
+    //     return specs.map(spec => [
+    //         <GoslingComponent
+    //             key={JSON.stringify(spec)}
+    //             ref={gosRef}
+    //             spec={spec}
+    //             padding={0}
+    //             margin={0}
+    //             theme={theme as any}
+    //         />,
+    //         spec
+    //     ]);
+    // }, []);
 
     const smallOverviewWrapper = useMemo(() => {
-        return smallOverviewGoslingComponents.map(([component, spec], i) => (
+        return samples.map((d, i) => (
             <div
-                key={JSON.stringify(spec)}
+                key={JSON.stringify(d.id)}
                 onClick={() => {
                     setShowSamples(false);
                     setTimeout(() => {
@@ -311,9 +311,24 @@ function App() {
                 }}
                 className={demoIdx === i ? 'selected-overview' : 'unselected-overview'}
             >
-                {component}
+                <img src={d.thumbnail} style={{ width: `${420 / 1.2}px`, height: `${470 / 1.2}px` }} />
             </div>
         ));
+        // smallOverviewGoslingComponents.map(([component, spec], i) => (
+        //     <div
+        //         key={JSON.stringify(spec)}
+        //         onClick={() => {
+        //             setShowSamples(false);
+        //             setTimeout(() => {
+        //                 setDemoIdx(i);
+        //                 setSelectedSvId('');
+        //             }, 300);
+        //         }}
+        //         className={demoIdx === i ? 'selected-overview' : 'unselected-overview'}
+        //     >
+        //         {component}
+        //     </div>
+        // ));
     }, [demoIdx]);
 
     const goslingComponent = useMemo(() => {

@@ -1,7 +1,27 @@
-import { OverlaidTracks, StrReplaceTransform } from 'gosling.js/dist/src/core/gosling.schema';
+import { OverlaidTracks, StrConcatTransform, StrReplaceTransform } from 'gosling.js/dist/src/core/gosling.schema';
 import { consistentSv } from '../sanitize';
 import defaults from '../default-encoding';
 import { TrackMode } from '.';
+
+const svInfer = [
+    {
+        type: 'concat',
+        separator: ',',
+        fields: ['strand1', 'strand2'],
+        newField: 'svclass'
+    },
+    {
+        type: 'replace',
+        field: 'svclass',
+        replace: [
+            { from: '+,-', to: 'Deletion' },
+            { from: '-,-', to: 'Inversion (TtT)' },
+            { from: '+,+', to: 'Inversion (HtH)' },
+            { from: '-,+', to: 'Duplication' }
+        ],
+        newField: 'svclass'
+    }
+] as [StrConcatTransform, StrReplaceTransform];
 
 const replace = {
     type: 'replace',
@@ -30,6 +50,18 @@ export default function sv(
             url,
             type: 'csv',
             separator: '\t',
+            headerNames: [
+                'chrom1',
+                'start1',
+                'end1',
+                'chrom2',
+                'start2',
+                'end2',
+                'sv_id',
+                'pe_support',
+                'strand1',
+                'strand2'
+            ],
             genomicFieldsToConvert: [
                 {
                     chromosomeField: 'chrom1',
@@ -45,6 +77,7 @@ export default function sv(
         tracks: [
             {
                 dataTransform: [
+                    ...svInfer,
                     replace,
                     {
                         type: 'filter',
@@ -89,6 +122,7 @@ export default function sv(
                       {
                           mark: 'bar',
                           dataTransform: [
+                              ...svInfer,
                               replace,
                               //   {
                               //       type: 'filter',
@@ -109,6 +143,7 @@ export default function sv(
                       {
                           mark: 'bar',
                           dataTransform: [
+                              ...svInfer,
                               replace,
                               //   {
                               //       type: 'filter',
@@ -129,6 +164,7 @@ export default function sv(
                   ]) as OverlaidTracks[]),
             {
                 dataTransform: [
+                    ...svInfer,
                     replace,
                     {
                         type: 'filter',
@@ -148,6 +184,7 @@ export default function sv(
             },
             {
                 dataTransform: [
+                    ...svInfer,
                     replace,
                     { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] },
                     {
@@ -164,6 +201,7 @@ export default function sv(
             },
             {
                 dataTransform: [
+                    ...svInfer,
                     replace,
                     { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] },
                     {
@@ -198,9 +236,11 @@ export default function sv(
         tooltip: [
             { field: 'start1', type: 'genomic' },
             { field: 'end2', type: 'genomic' },
+            { field: 'strand1', type: 'nominal' },
+            { field: 'strand2', type: 'nominal' },
             { field: 'svclass', type: 'nominal' },
             { field: 'sv_id', type: 'nominal' },
-            { field: 'svmethod', type: 'nominal' },
+            // { field: 'svmethod', type: 'nominal' },
             { field: 'pe_support', type: 'nominal' }
         ],
         style: { linkStyle: 'elliptical', linkMinHeight: 0.7 },
