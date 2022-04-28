@@ -312,7 +312,7 @@ function App() {
                 }}
                 className={demoIdx === i ? 'selected-overview' : 'unselected-overview'}
             >
-                <img src={d.thumbnail} style={{ width: `${420}px`, height: `${470}px` }} />
+                <img src={d.thumbnail} style={{ width: `${420 / 1.2}px`, height: `${470 / 1.2}px` }} />
             </div>
         ));
         // smallOverviewGoslingComponents.map(([component, spec], i) => (
