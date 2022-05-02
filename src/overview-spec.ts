@@ -14,8 +14,8 @@ function getSmallOverviewSpec(option: SpecOption): GoslingSpec {
     const { title, subtitle, cnvUrl, svUrl, width, cnFields } = option;
 
     return {
-        title,
-        subtitle,
+        // title,
+        // subtitle,
         views: [
             {
                 static: true,
