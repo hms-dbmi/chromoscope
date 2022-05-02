@@ -123,46 +123,6 @@ function generateSpec(option: SpecOption): GoslingSpec {
                                           height: 80
                                       },
                                       ...(bpIntervals ? [verticalGuide(bpIntervals[0], bpIntervals[1])] : []),
-                                      // {
-                                      //   id: `${sampleId}-bottom-left-gene`,
-                                      //   alignment: "overlay",
-                                      //   title: "hg19 | Genes",
-                                      //   template: "gene",
-                                      //   data: {
-                                      //     url: "https://higlass.io/api/v1/tileset_info/?d=OHJakQICQD6gTD7skx4EWA",
-                                      //     // 'url': 'https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation',
-                                      //     type: "beddb",
-                                      //     genomicFields: [
-                                      //       { index: 1, name: "start" },
-                                      //       { index: 2, name: "end" },
-                                      //     ],
-                                      //     valueFields: [
-                                      //       { index: 5, name: "strand", type: "nominal" },
-                                      //       { index: 3, name: "name", type: "nominal" },
-                                      //     ],
-                                      //     exonIntervalFields: [
-                                      //       { index: 12, name: "start" },
-                                      //       { index: 13, name: "end" },
-                                      //     ],
-                                      //   },
-                                      //   encoding: {
-                                      //     startPosition: { field: "start" },
-                                      //     endPosition: { field: "end" },
-                                      //     strandColor: { field: "strand", range: ["gray"] },
-                                      //     strandRow: { field: "strand" },
-                                      //     opacity: { value: 0.4 },
-                                      //     geneHeight: { value: 60 / 3.0 },
-                                      //     geneLabel: { field: "name" },
-                                      //     geneLabelFontSize: { value: 60 / 3.0 },
-                                      //     geneLabelColor: { field: "strand", range: ["black"] },
-                                      //     geneLabelStroke: { value: "white" },
-                                      //     geneLabelStrokeThickness: { value: 4 },
-                                      //     geneLabelOpacity: { value: 1 },
-                                      //     type: { field: "type" },
-                                      //   },
-                                      //   width: bottomViewWidth,
-                                      //   height: 60,
-                                      // },
                                       {
                                           id: `${sampleId}-bottom-left-sequence`,
                                           title: 'Sequence',
@@ -278,45 +238,6 @@ function generateSpec(option: SpecOption): GoslingSpec {
                                           height: 80
                                       },
                                       ...(bpIntervals ? [verticalGuide(bpIntervals[2], bpIntervals[3])] : []),
-                                      // {
-                                      //   id: `${sampleId}-bottom-right-gene`,
-                                      //   alignment: "overlay",
-                                      //   title: "hg19 | Genes",
-                                      //   template: "gene",
-                                      //   data: {
-                                      //     url: "https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation",
-                                      //     type: "beddb",
-                                      //     genomicFields: [
-                                      //       { index: 1, name: "start" },
-                                      //       { index: 2, name: "end" },
-                                      //     ],
-                                      //     valueFields: [
-                                      //       { index: 5, name: "strand", type: "nominal" },
-                                      //       { index: 3, name: "name", type: "nominal" },
-                                      //     ],
-                                      //     exonIntervalFields: [
-                                      //       { index: 12, name: "start" },
-                                      //       { index: 13, name: "end" },
-                                      //     ],
-                                      //   },
-                                      //   encoding: {
-                                      //     startPosition: { field: "start" },
-                                      //     endPosition: { field: "end" },
-                                      //     strandColor: { field: "strand", range: ["gray"] },
-                                      //     strandRow: { field: "strand" },
-                                      //     opacity: { value: 0.4 },
-                                      //     geneHeight: { value: 60 / 3.0 },
-                                      //     geneLabel: { field: "name" },
-                                      //     geneLabelFontSize: { value: 60 / 3.0 },
-                                      //     geneLabelColor: { field: "strand", range: ["black"] },
-                                      //     geneLabelStroke: { value: "white" },
-                                      //     geneLabelStrokeThickness: { value: 4 },
-                                      //     geneLabelOpacity: { value: 1 },
-                                      //     type: { field: "type" },
-                                      //   },
-                                      //   width: bottomViewWidth,
-                                      //   height: 60,
-                                      // },
                                       {
                                           id: `${sampleId}-bottom-right-sequence`,
                                           title: 'Sequence',
@@ -430,7 +351,6 @@ function getOverviewSpec(option: SpecOption): View[] {
             tracks: [
                 {
                     id: `${sampleId}-top-ideogram`,
-                    title: 'Ideogram',
                     alignment: 'overlay',
                     data: {
                         url:
@@ -470,7 +390,6 @@ function getOverviewSpec(option: SpecOption): View[] {
                     : [
                           {
                               id: `${sampleId}-top-driver`,
-                              title: 'Putative Driver',
                               data: {
                                   values: drivers,
                                   type: 'json',
@@ -485,7 +404,6 @@ function getOverviewSpec(option: SpecOption): View[] {
                               color: { value: 'black' },
                               style: {
                                   textFontWeight: 'normal',
-                                  dx: -10,
                                   outlineWidth: 0
                               },
                               width,

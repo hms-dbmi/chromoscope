@@ -169,7 +169,7 @@ body {
     bottom: 20px;
     right: 20px;
     cursor: pointer;
-    z-index: 999;
+    z-index: 998;
     opacity: 0.5;
 }
 
@@ -187,6 +187,11 @@ body {
 
 .interaction-toggle-button-label {
     line-height: 30px;
+}
+
+.sample-text-box {
+    margin-left: 20px;
+    line-height: 20px;
 }
 
 .sample-label {
@@ -234,6 +239,10 @@ body {
     font-weight: bold;
     border-bottom: 1px solid lightgray;
     background: #f6f6f6;
+}
+
+.vis-overview-panel .title small {
+    font-weight: normal;
 }
 
 .vis-overview-panel .button {
@@ -300,6 +309,13 @@ body {
 
 .overview-container > div {
     padding: 4px;
+}
+
+.vis-overview-panel .selected-overview,
+.vis-overview-panel .unselected-overview {
+    display: block;
+    text-align: center;
+    flex: 1;
 }
 
 .vis-overview-panel .selected-overview {

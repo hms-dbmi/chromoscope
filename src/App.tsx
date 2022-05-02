@@ -8,11 +8,9 @@ import './App.css';
 
 import drivers from './data/driver.json';
 import samples from './data/samples';
-import getSmallOverviewSpec from './overview-spec';
 
 const WHOLE_CHROMOSOME_STR = 'Whole Genome';
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
-const CONFIG_PANEL_WIDTH = 800;
 const VIS_PADDING = 60;
 const CHROMOSOMES = [
     'chr1',
@@ -76,6 +74,8 @@ function App() {
 
     // interactions
     const [showSamples, setShowSamples] = useState(false);
+    const [filterSampleBy, setFilterSampleBy] = useState('');
+    const [filteredSamples, setFilteredSamples] = useState(samples);
     const [showOverview, setShowOverview] = useState(true);
     const [showPutativeDriver, setShowPutativeDriver] = useState(true);
     const [interactiveMode, setInteractiveMode] = useState(false);
@@ -114,6 +114,10 @@ function App() {
         leftReads.current = [];
         rightReads.current = [];
     }, [demoIdx]);
+
+    useEffect(() => {
+        setFilteredSamples(filterSampleBy === '' ? samples : samples.filter(d => d.id.includes(filterSampleBy)));
+    }, [filterSampleBy]);
 
     useEffect(() => {
         if (!gosRef.current) return;
@@ -281,39 +285,14 @@ function App() {
         );
     }, []);
 
-    const smallOverviewGoslingComponents = useMemo(() => {
-        const specs = samples.map(d =>
-            getSmallOverviewSpec({
-                cnvUrl: d.cnv,
-                svUrl: d.sv,
-                width: 300,
-                title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
-                subtitle: '' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : ''),
-                cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
-            })
-        );
-        // console.log(specs);
-        return specs.map(spec => [
-            <GoslingComponent
-                key={JSON.stringify(spec)}
-                ref={gosRef}
-                spec={spec}
-                padding={0}
-                margin={0}
-                theme={theme as any}
-            />,
-            spec
-        ]);
-    }, []);
-
     const smallOverviewWrapper = useMemo(() => {
-        return samples.map((d, i) => (
+        return filteredSamples.map((d, i) => (
             <div
                 key={JSON.stringify(d.id)}
                 onClick={() => {
                     setShowSamples(false);
                     setTimeout(() => {
-                        setDemoIdx(i);
+                        setDemoIdx(samples.indexOf(d));
                         setSelectedSvId('');
                     }, 300);
                 }}
@@ -337,7 +316,7 @@ function App() {
         //         {component}
         //     </div>
         // ));
-    }, [demoIdx]);
+    }, [demoIdx, filteredSamples]);
 
     const goslingComponent = useMemo(() => {
         const spec = generateSpec({
@@ -445,6 +424,13 @@ function App() {
                     <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
                         <div className="title">
                             Samples
+                            <small>{` (${filteredSamples.length} out of ${samples.length} shown)`}</small>
+                            <input
+                                type="text"
+                                className="sample-text-box"
+                                placeholder="Search samples by ID"
+                                onChange={e => setFilterSampleBy(e.target.value)}
+                            />
                             <svg
                                 className="button"
                                 viewBox="0 0 16 16"
