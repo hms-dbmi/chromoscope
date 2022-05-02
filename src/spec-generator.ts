@@ -77,7 +77,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                     })
                 ]
             },
-            ...(selectedSvId === ''
+            ...(selectedSvId === '' || !bamUrl || !baiUrl
                 ? []
                 : ([
                       {

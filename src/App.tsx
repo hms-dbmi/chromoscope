@@ -116,7 +116,7 @@ function App() {
     }, [demoIdx]);
 
     useEffect(() => {
-        if (!gosRef.current || !baiUrl || !bamUrl) return;
+        if (!gosRef.current) return;
 
         gosRef.current.api.subscribe('click', (type: string, e: CommonEventData) => {
             const zoom = false;
@@ -167,6 +167,19 @@ function App() {
             rightReads.current = [];
         });
 
+        // gosRef.current.api.subscribe('mouseover', (type: string, e: CommonEventData) => {
+        // setHoveredSvId(e.data.sv_id + '');
+        // });
+
+        return () => {
+            gosRef.current.api.unsubscribe('click');
+            // gosRef.current.api.unsubscribe('mouseover');
+        };
+    }, [gosRef, svReads, sampleId]);
+
+    useEffect(() => {
+        if (!gosRef.current || !baiUrl || !bamUrl) return;
+
         gosRef.current.api.subscribe('rawdata', (type: string, e: any) => {
             /// DEBUG
             // console.log(e.data);
@@ -214,8 +227,8 @@ function App() {
                         if (ld === '+' && rd === '+') return { name, type: 'Inversion (HtH)' };
                         if (ld === '-' && rd === '+') return { name, type: 'Duplication' };
                         return { name, type: 'unknown' };
-                    }); //.filter(d => d.type !== 'unknown');
-                    // console.log("mates", matesWithSv)
+                    });
+
                     if (
                         matesWithSv
                             .map(d => d.name)
@@ -232,16 +245,10 @@ function App() {
             }
         });
 
-        // gosRef.current.api.subscribe('mouseover', (type: string, e: CommonEventData) => {
-        // setHoveredSvId(e.data.sv_id + '');
-        // });
-
         return () => {
-            gosRef.current.api.unsubscribe('click');
             gosRef.current.api.unsubscribe('rawdata');
-            // gosRef.current.api.unsubscribe('mouseover');
         };
-    }, [gosRef, svReads, sampleId]);
+    }, [gosRef, svReads, sampleId, baiUrl, bamUrl]);
 
     useEffect(() => {
         if (!overviewChr) return;
@@ -281,11 +288,11 @@ function App() {
                 svUrl: d.sv,
                 width: 300,
                 title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
-                subtitle: '' + d.id.slice(0, 20) + '...',
+                subtitle: '' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : ''),
                 cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
             })
         );
-        console.log(specs);
+        // console.log(specs);
         return specs.map(spec => [
             <GoslingComponent
                 key={JSON.stringify(spec)}
@@ -352,7 +359,7 @@ function App() {
             svReads,
             cnFields
         });
-        // console.log('spec', spec);
+        console.log('spec', spec);
         return (
             <GoslingComponent
                 ref={gosRef}
