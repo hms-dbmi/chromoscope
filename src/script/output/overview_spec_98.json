@@ -1,6 +1,6 @@
 {
     "title": "Breast",
-    "subtitle": "SRR7890905...",
+    "subtitle": "SRR7890905 (V3)...",
     "views": [
         {
             "static": true,
@@ -79,8 +79,8 @@
                         "background": "#F6F6F6"
                     },
                     "data": {
-                        "separator": "\\t",
-                        "url": "https://gist.githubusercontent.com/sehilyi/e3e19907a3d00638e8d3d0b0ddb56a26/raw/1ab8177946ec91394cb697621497acd7b9a513ff/SRR7890943.ascat.cnv.tsv",
+                        "separator": "\t",
+                        "url": "https://gist.githubusercontent.com/sehilyi/6fbceae35756b13472332d6b81b10803/raw/596428a8b0ebc00e7f8cbc52b050db0fbd6e19a5/SRR7890943.ascat.v3.cnv.tsv",
                         "type": "csv",
                         "chromosomeField": "chromosome",
                         "genomicFields": ["start", "end"]
@@ -114,8 +114,8 @@
                         "background": "#F6F6F6"
                     },
                     "data": {
-                        "separator": "\\t",
-                        "url": "https://gist.githubusercontent.com/sehilyi/e3e19907a3d00638e8d3d0b0ddb56a26/raw/1ab8177946ec91394cb697621497acd7b9a513ff/SRR7890943.ascat.cnv.tsv",
+                        "separator": "\t",
+                        "url": "https://gist.githubusercontent.com/sehilyi/6fbceae35756b13472332d6b81b10803/raw/596428a8b0ebc00e7f8cbc52b050db0fbd6e19a5/SRR7890943.ascat.v3.cnv.tsv",
                         "type": "csv",
                         "chromosomeField": "chromosome",
                         "genomicFields": ["start", "end"]
@@ -155,7 +155,7 @@
                     "data": {
                         "url": "https://somatic-browser-test.s3.amazonaws.com/SVTYPE_SV_test_tumor_normal_with_panel.bedpe",
                         "type": "csv",
-                        "separator": "\\t",
+                        "separator": "\t",
                         "headerNames": [
                             "chrom1",
                             "start1",

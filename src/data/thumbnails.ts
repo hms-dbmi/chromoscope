@@ -97,6 +97,7 @@ import THUMBNAIL95 from '../script/img/overview_95.jpeg';
 import THUMBNAIL96 from '../script/img/overview_96.jpeg';
 import THUMBNAIL97 from '../script/img/overview_97.jpeg';
 import THUMBNAIL98 from '../script/img/overview_98.jpeg';
+import THUMBNAIL99 from '../script/img/overview_99.jpeg';
 
 export const THUMBNAILS = [
     THUMBNAIL0,
@@ -197,5 +198,6 @@ export const THUMBNAILS = [
     THUMBNAIL95,
     THUMBNAIL96,
     THUMBNAIL97,
-    THUMBNAIL98
+    THUMBNAIL98,
+    THUMBNAIL99
 ];
