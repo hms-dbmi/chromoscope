@@ -2,7 +2,8 @@ import {
     FilterTransform,
     OverlaidTracks,
     StrConcatTransform,
-    StrReplaceTransform
+    StrReplaceTransform,
+    SvTypeTransform
 } from 'gosling.js/dist/src/core/gosling.schema';
 import { consistentSv, translocationChrPairs } from '../sanitize';
 import defaults from '../default-encoding';
@@ -10,23 +11,20 @@ import { TrackMode } from '.';
 
 const svInfer = [
     {
-        type: 'concat',
-        separator: ',',
-        fields: ['strand1', 'strand2'],
-        newField: 'svclass'
-    },
-    {
-        type: 'replace',
-        field: 'svclass',
-        replace: [
-            { from: '+,-', to: 'Deletion' },
-            { from: '-,-', to: 'Inversion (TtT)' },
-            { from: '+,+', to: 'Inversion (HtH)' },
-            { from: '-,+', to: 'Duplication' }
-        ],
+        type: 'svType',
+        firstBp: {
+            chrField: 'chrom1',
+            posField: 'start1',
+            strandField: 'strand1'
+        },
+        secondBp: {
+            chrField: 'chrom2',
+            posField: 'start2',
+            strandField: 'strand2'
+        },
         newField: 'svclass'
     }
-] as [StrConcatTransform, StrReplaceTransform];
+] as [SvTypeTransform];
 
 // TODO: work-around to infer translocation
 const isTranslocation = (not: boolean) =>
@@ -123,7 +121,8 @@ export default function sv(
                           x: { field: 'start1', type: 'genomic' },
                           color: { value: defaults.color.svclass.Translocation },
                           stroke: { value: defaults.color.svclass.Translocation },
-                          size: { value: 2 }
+                          size: { value: 2 },
+                          flipY: false
                       },
                       {
                           mark: 'bar',
@@ -131,7 +130,8 @@ export default function sv(
                           x: { field: 'end2', type: 'genomic' },
                           color: { value: defaults.color.svclass.Translocation },
                           stroke: { value: defaults.color.svclass.Translocation },
-                          size: { value: 2 }
+                          size: { value: 2 },
+                          flipY: false
                       }
                   ]) as OverlaidTracks[]),
             {
