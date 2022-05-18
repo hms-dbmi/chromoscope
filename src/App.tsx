@@ -1,46 +1,19 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { GoslingComponent } from 'gosling.js';
+import { CommonEventData } from 'gosling.js/dist/src/core/api';
 import { debounce } from 'lodash';
 import generateSpec from './spec-generator';
-import { CommonEventData } from 'gosling.js/dist/src/core/api';
 import ErrorBoundary from './error';
-import './App.css';
-
 import drivers from './data/driver.json';
 import samples from './data/samples';
+import { CHROMOSOMES } from './utils/chromosome';
 
 const WHOLE_CHROMOSOME_STR = 'Whole Genome';
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
 const VIS_PADDING = 60;
-const CHROMOSOMES = [
-    'chr1',
-    'chr2',
-    'chr3',
-    'chr4',
-    'chr5',
-    'chr6',
-    'chr7',
-    'chr8',
-    'chr9',
-    'chr10',
-    'chr11',
-    'chr12',
-    'chr13',
-    'chr14',
-    'chr15',
-    'chr16',
-    'chr17',
-    'chr18',
-    'chr19',
-    'chr20',
-    'chr21',
-    'chr22',
-    'chrX',
-    'chrY'
-];
 const ZOOM_PADDING = 200;
 const ZOOM_DURATION = 1000;
-const theme = {
+const THEME = {
     base: 'light',
     root: {
         background: 'white',
@@ -346,7 +319,7 @@ function App() {
                 padding={0}
                 margin={0}
                 experimental={{ reactive: true }}
-                theme={theme as any}
+                theme={THEME as any}
             />
         );
     }, [
