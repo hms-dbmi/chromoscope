@@ -9,6 +9,8 @@ type SampleType = {
     cnv: string; // URL of txt
     bam?: string; // URL of bam
     bai?: string; // URL of bai
+    vcf?: string;
+    vci?: string;
     cnFields?: [string, string, string];
     thumbnail?: string;
 };
@@ -92,6 +94,8 @@ const samples: SampleType[] = [
         assembly: 'hg38',
         sv: 'https://somatic-browser-test.s3.amazonaws.com/SVTYPE_SV_test_tumor_normal_with_panel.bedpe',
         cnv: 'https://gist.githubusercontent.com/sehilyi/6fbceae35756b13472332d6b81b10803/raw/596428a8b0ebc00e7f8cbc52b050db0fbd6e19a5/SRR7890943.ascat.v3.cnv.tsv',
+        vcf: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/SNV_test_tumor_normal_with_panel.vcf.gz',
+        vci: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/SNV_test_tumor_normal_with_panel.vcf.gz.tbi',
         bam: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam',
         bai: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam.bai',
         thumbnail: THUMBNAILS[99]

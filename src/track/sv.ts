@@ -202,6 +202,7 @@ export default function sv(
             // { field: 'svmethod', type: 'nominal' },
             { field: 'pe_support', type: 'nominal' }
         ],
+        experimental: { mouseEvents: { click: true } },
         style: { linkStyle: 'elliptical', linkMinHeight: 0.7 },
         width,
         height

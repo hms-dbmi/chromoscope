@@ -66,6 +66,8 @@ function App() {
     const [assembly, setAssembly] = useState(samples[demoIdx].assembly);
     const [svUrl, setSvUrl] = useState(samples[demoIdx].sv);
     const [cnvUrl, setCnvUrl] = useState(samples[demoIdx].cnv);
+    const [vcfUrl, setVcfUrl] = useState(samples[demoIdx].vcf);
+    const [vciUrl, setVciUrl] = useState(samples[demoIdx].vci);
     const [bamUrl, setBamUrl] = useState(samples[demoIdx].bam);
     const [baiUrl, setBaiUrl] = useState(samples[demoIdx].bai);
     const [cnFields, setCnFields] = useState<[string, string, string]>(
@@ -139,17 +141,18 @@ function App() {
                     ZOOM_DURATION
                 );
             } else {
-                let x = +e.data.start1;
-                let xe = +e.data.end1;
-                let x1 = +e.data.start2;
-                let x1e = +e.data.end2;
+                const data = e.data[0];
+                let x = +data.start1;
+                let xe = +data.end1;
+                let x1 = +data.start2;
+                let x1e = +data.end2;
 
                 // safetly swap
                 if (x > x1) {
-                    x = +e.data.start2;
-                    xe = +e.data.end2;
-                    x1 = +e.data.start1;
-                    x1e = +e.data.end1;
+                    x = +data.start2;
+                    xe = +data.end2;
+                    x1 = +data.start1;
+                    x1e = +data.end1;
                 }
 
                 const padding = (x1e - x) / 4.0;
@@ -166,7 +169,7 @@ function App() {
                 2000
             );
 
-            setSelectedSvId(e.data.sv_id + '');
+            setSelectedSvId(e.data[0].sv_id + '');
             leftReads.current = [];
             rightReads.current = [];
         });
@@ -184,12 +187,13 @@ function App() {
     useEffect(() => {
         if (!gosRef.current || !baiUrl || !bamUrl) return;
 
-        gosRef.current.api.subscribe('rawdata', (type: string, e: any) => {
+        gosRef.current.api.subscribe('rawData', (type: string, e: any) => {
             /// DEBUG
-            // console.log(e.data);
+            // console.log(e);
             ///
-
+            console.log(e);
             if (e.id.includes('bam') && (leftReads.current.length === 0 || rightReads.current.length === 0)) {
+                console.log(e);
                 // This means we just received a BAM data that is just rendered
                 if (e.id.includes('left') && leftReads.current.length === 0) {
                     leftReads.current = e.data;
@@ -250,7 +254,7 @@ function App() {
         });
 
         return () => {
-            gosRef.current.api.unsubscribe('rawdata');
+            gosRef.current.api.unsubscribe('rawData');
         };
     }, [gosRef, svReads, sampleId, baiUrl, bamUrl]);
 
@@ -324,6 +328,8 @@ function App() {
             sampleId,
             svUrl,
             cnvUrl,
+            vcfUrl,
+            vciUrl,
             bamUrl,
             baiUrl,
             showOverview,
@@ -356,6 +362,8 @@ function App() {
         showPutativeDriver,
         svUrl,
         cnvUrl,
+        vcfUrl,
+        vciUrl,
         selectedSvId,
         breakpoints,
         svReads

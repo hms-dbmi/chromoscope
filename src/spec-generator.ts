@@ -14,6 +14,8 @@ export interface SpecOption {
     width: number;
     svUrl: string;
     cnvUrl: string;
+    vcfUrl?: string;
+    vciUrl?: string;
     bamUrl: string;
     baiUrl: string;
     drivers: { [k: string]: string | number }[];

@@ -1,4 +1,3 @@
-import { GoslingSpec } from 'gosling.js';
 import { SpecOption } from './spec-generator';
 import { MultipleViews, SingleTrack, SingleView, View } from 'gosling.js/dist/src/core/gosling.schema';
 import tracks from './track';
@@ -9,6 +8,8 @@ export default function getMidView(option: SpecOption): View[] {
         assembly,
         cnvUrl,
         svUrl,
+        vcfUrl,
+        vciUrl,
         width,
         showPutativeDriver,
         showOverview,
@@ -143,6 +144,9 @@ export default function getMidView(option: SpecOption): View[] {
                     width,
                     height: 60
                 },
+                ...(vcfUrl && vciUrl
+                    ? [tracks.vcf(sampleId, vcfUrl, vciUrl, width, 130, 'mid'), tracks.boundary('vcf', 'mid')]
+                    : []),
                 tracks.cnv(sampleId, cnvUrl, width, 60, 'mid', cnFields),
                 tracks.boundary('cnv', 'mid'),
                 tracks.gain(sampleId, cnvUrl, width, 20, 'mid', cnFields),
