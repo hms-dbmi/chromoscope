@@ -109,7 +109,8 @@ export default function getMidView(option: SpecOption): View[] {
                     data: {
                         url:
                             assembly === 'hg19'
-                                ? 'https://higlass.io/api/v1/tileset_info/?d=OHJakQICQD6gTD7skx4EWA'
+                                ? // TODO: change to gosling's one
+                                  'https://resgen.io/api/v1/tileset_info/?d=NCifnbrKQu6j-ohVWJLoJw'
                                 : 'https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation',
                         type: 'beddb',
                         genomicFields: [

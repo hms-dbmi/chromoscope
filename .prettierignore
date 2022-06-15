@@ -4,3 +4,4 @@ node_modules/
 *.lock
 LICENSE
 *.md
+gosling-screenshot.js

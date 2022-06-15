@@ -16,6 +16,7 @@ function getSmallOverviewSpec(option: SpecOption): GoslingSpec {
     return {
         // title,
         // subtitle,
+        description: subtitle,
         views: [
             {
                 static: true,
