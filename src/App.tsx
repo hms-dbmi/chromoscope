@@ -8,6 +8,7 @@ import './App.css';
 
 import drivers from './data/driver.json';
 import samples from './data/samples';
+import getSmallOverviewSpec from './overview-spec';
 
 const WHOLE_CHROMOSOME_STR = 'Whole Genome';
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
@@ -60,7 +61,7 @@ function App() {
 
     // TODO: We could just use sampleId to get detailed info. not to update all info as states.
     // demo
-    const [demoIdx, setDemoIdx] = useState(samples.length - 1);
+    const [demoIdx, setDemoIdx] = useState(0);
     const [sampleId, setSampleId] = useState(samples[demoIdx].id);
     const [cancer, setCancer] = useState(samples[demoIdx].cancer);
     const [assembly, setAssembly] = useState(samples[demoIdx].assembly);
@@ -286,6 +287,20 @@ function App() {
     }, []);
 
     const smallOverviewWrapper = useMemo(() => {
+        // console.log(
+        //     'overviewSpec',
+        //     filteredSamples.map(d =>
+        //         getSmallOverviewSpec({
+        //             cnvUrl: d.cnv,
+        //             svUrl: d.sv,
+        //             width: 100,
+        //             title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
+        //             subtitle: d.id, // '' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : ''),
+        //             cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
+        //         })
+        //     ),
+        //     filteredSamples.map(d => `node gosling-screenshot.js output/${d.id}.json img/${d.id}.jpeg`).join('\n')
+        // );
         return filteredSamples.map((d, i) => (
             <div
                 key={JSON.stringify(d.id)}
@@ -298,7 +313,13 @@ function App() {
                 }}
                 className={demoIdx === i ? 'selected-overview' : 'unselected-overview'}
             >
-                <img src={d.thumbnail} style={{ width: `${420 / 1.2}px`, height: `${470 / 1.2}px` }} />
+                <div style={{}}>
+                    <b>{d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1).split(' ')[0]}</b>
+                </div>
+                <div style={{ color: 'grey', fontSize: '12px' }}>
+                    {'' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : '')}
+                </div>
+                <img src={d.thumbnail} style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }} />
             </div>
         ));
         // smallOverviewGoslingComponents.map(([component, spec], i) => (
@@ -338,7 +359,7 @@ function App() {
             svReads,
             cnFields
         });
-        console.log('spec', spec);
+        // console.log('spec', spec);
         return (
             <GoslingComponent
                 ref={gosRef}

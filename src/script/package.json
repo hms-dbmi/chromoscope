@@ -1,0 +1,12 @@
+{
+    "name": "gosling-screenshot",
+    "version": "1.0.0",
+    "type": "module",
+    "main": "gosling-screenshot.js",
+    "keywords": [],
+    "author": "Trevor Manz",
+    "license": "MIT",
+    "dependencies": {
+        "puppeteer": "^13.5.2"
+    }
+}
