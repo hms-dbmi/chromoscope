@@ -179,19 +179,19 @@ export default function sv(
                 dataTransform: [...svInfer, replace, { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] }],
                 mark: 'rule',
                 x: { field: 'start1', type: 'genomic' },
-                strokeWidth: { value: 2 },
-                opacity: { value: 0.3 },
-                color: { value: 'red' },
-                style: { dashed: [6, 3] }
+                color: { value: 'black' },
+                strokeWidth: { value: 1 },
+                opacity: { value: 1 },
+                style: { dashed: [3, 3] }
             },
             {
                 dataTransform: [...svInfer, replace, { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] }],
                 mark: 'rule',
                 x: { field: 'end2', type: 'genomic' },
-                strokeWidth: { value: 2 },
-                opacity: { value: 0.3 },
-                color: { value: 'red' },
-                style: { dashed: [6, 3] }
+                color: { value: 'black' },
+                strokeWidth: { value: 1 },
+                opacity: { value: 1 },
+                style: { dashed: [3, 3] }
             }
         ],
         y: { value: height / 2.0 },
