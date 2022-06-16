@@ -86,7 +86,7 @@ const samples: SampleType[] = [
         thumbnail: _SRR7890905
     },
     {
-        id: 'GACA-CN-bc0dee07-de20-44d6-be65-05af7e63ac96',
+        id: 'bc0dee07-de20-44d6-be65-05af7e63ac96', // GACA-CN-
         cancer: 'gastric',
         assembly: 'hg19',
         sv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/bc0dee07-de20-44d6-be65-05af7e63ac96.pcawg_consensus_1.6.161116.somatic.sv.bedpe',
@@ -94,7 +94,7 @@ const samples: SampleType[] = [
         thumbnail: _bc0dee07
     },
     {
-        id: 'OV-AU-f1504811-8363-41e6-b43c-62452b1262d3',
+        id: 'f1504811-8363-41e6-b43c-62452b1262d3', // OV-AU-
         cancer: 'ovarian',
         assembly: 'hg19',
         sv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/f1504811-8363-41e6-b43c-62452b1262d3.pcawg_consensus_1.6.161116.somatic.sv.bedpe',
@@ -102,7 +102,7 @@ const samples: SampleType[] = [
         thumbnail: _f1504811
     },
     {
-        id: 'OV-AU-89dad92e-5b3f-479a-a6da-a94ee7df7f8a',
+        id: '89dad92e-5b3f-479a-a6da-a94ee7df7f8a', // OV-AU-
         cancer: 'ovarian',
         assembly: 'hg19',
         sv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/89dad92e-5b3f-479a-a6da-a94ee7df7f8a.pcawg_consensus_1.6.161116.somatic.sv.bedpe',
@@ -110,23 +110,23 @@ const samples: SampleType[] = [
         thumbnail: _89dad92e
     },
     {
-        id: 'OV-US-b243adb4-b3e7-4e0e-bc0d-625aa8dbb1be',
+        id: 'b243adb4-b3e7-4e0e-bc0d-625aa8dbb1be', // OV-US-
         cancer: 'ovarian serous cystadenocarcinoma',
         assembly: 'hg19',
         sv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/b243adb4-b3e7-4e0e-bc0d-625aa8dbb1be.pcawg_consensus_1.6.161116.somatic.sv.bedpe',
         cnv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/b243adb4-b3e7-4e0e-bc0d-625aa8dbb1be.consensus.20170119.somatic.cna.txt',
         thumbnail: _b243adb4
     },
+    // {
+    //     id: '84ca6ab0-9edc-4636-9d27-55cdba334d7d', // OV-US-
+    //     cancer: 'ovarian serous cystadenocarcinoma',
+    //     assembly: 'hg19',
+    //     sv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/84ca6ab0-9edc-4636-9d27-55cdba334d7d.pcawg_consensus_1.6.161116.somatic.sv.bedpe',
+    //     cnv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/84ca6ab0-9edc-4636-9d27-55cdba334d7d.consensus.20170119.somatic.cna.txt',
+    //     thumbnail: _84ca6ab0_OV
+    // },
     {
-        id: 'OV-US-84ca6ab0-9edc-4636-9d27-55cdba334d7d',
-        cancer: 'ovarian serous cystadenocarcinoma',
-        assembly: 'hg19',
-        sv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/84ca6ab0-9edc-4636-9d27-55cdba334d7d.pcawg_consensus_1.6.161116.somatic.sv.bedpe',
-        cnv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/84ca6ab0-9edc-4636-9d27-55cdba334d7d.consensus.20170119.somatic.cna.txt',
-        thumbnail: _84ca6ab0_OV
-    },
-    {
-        id: 'OV-US-0bfd1043-816e-e3e4-e050-11ac0c4860c5',
+        id: '0bfd1043-816e-e3e4-e050-11ac0c4860c5', // OV-US-
         cancer: 'prostate adenocarcinoma',
         assembly: 'hg19',
         sv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/0bfd1043-816e-e3e4-e050-11ac0c4860c5.pcawg_consensus_1.6.161116.somatic.sv.bedpe',

@@ -174,6 +174,24 @@ export default function sv(
                 xe: { field: 'end2', type: 'genomic' },
                 strokeWidth: { value: 3 },
                 opacity: { value: 1 }
+            },
+            {
+                dataTransform: [...svInfer, replace, { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] }],
+                mark: 'rule',
+                x: { field: 'start1', type: 'genomic' },
+                strokeWidth: { value: 2 },
+                opacity: { value: 0.3 },
+                color: { value: 'red' },
+                style: { dashed: [6, 3] }
+            },
+            {
+                dataTransform: [...svInfer, replace, { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] }],
+                mark: 'rule',
+                x: { field: 'end2', type: 'genomic' },
+                strokeWidth: { value: 2 },
+                opacity: { value: 0.3 },
+                color: { value: 'red' },
+                style: { dashed: [6, 3] }
             }
         ],
         y: { value: height / 2.0 },
