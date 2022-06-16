@@ -406,6 +406,14 @@ function getOverviewSpec(option: SpecOption): View[] {
                                   textFontWeight: 'normal',
                                   outlineWidth: 0
                               },
+                              tooltip: [
+                                  { field: 'pos', alt: 'Position', type: 'genomic' },
+                                  { field: 'ref', alt: 'REF', type: 'nominal' },
+                                  { field: 'alt', alt: 'ALT', type: 'nominal' },
+                                  { field: 'category', alt: 'Category', type: 'nominal' },
+                                  { field: 'top_category', alt: 'Top Category', type: 'nominal' },
+                                  { field: 'biallelic', alt: 'Biallelic', type: 'nominal' }
+                              ],
                               width,
                               height: 40
                           } as SingleTrack
