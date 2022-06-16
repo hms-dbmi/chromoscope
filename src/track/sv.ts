@@ -66,6 +66,13 @@ export default function sv(
         id: `${sampleId}-${mode}-sv`,
         title: mode === 'small' ? '' : 'Structural Variant',
         alignment: 'overlay',
+        experimental: {
+            mouseEvents: {
+                click: true,
+                mouseOver: true,
+                groupMarksByField: 'sv_id'
+            }
+        },
         data: {
             url,
             type: 'csv',
@@ -121,7 +128,9 @@ export default function sv(
                           x: { field: 'start1', type: 'genomic' },
                           color: { value: defaults.color.svclass.Translocation },
                           stroke: { value: defaults.color.svclass.Translocation },
+                          strokeWidth: { value: 0 },
                           size: { value: 2 },
+                          style: { mouseOver: { color: 'black', strokeWidth: 0 } },
                           flipY: false
                       },
                       {
@@ -130,7 +139,9 @@ export default function sv(
                           x: { field: 'end2', type: 'genomic' },
                           color: { value: defaults.color.svclass.Translocation },
                           stroke: { value: defaults.color.svclass.Translocation },
+                          strokeWidth: { value: 0 },
                           size: { value: 2 },
+                          style: { mouseOver: { color: 'black', strokeWidth: 0 } },
                           flipY: false
                       },
                       {
@@ -256,7 +267,7 @@ export default function sv(
             // { field: 'svmethod', type: 'nominal' },
             { field: 'pe_support', type: 'nominal' }
         ],
-        style: { linkStyle: 'elliptical', linkMinHeight: 0.7 },
+        style: { linkStyle: 'elliptical', linkMinHeight: 0.7, mouseOver: { stroke: 'black', strokeWidth: 2 } },
         width,
         height
     };

@@ -140,17 +140,17 @@ function App() {
                     ZOOM_DURATION
                 );
             } else {
-                let x = +e.data.start1;
-                let xe = +e.data.end1;
-                let x1 = +e.data.start2;
-                let x1e = +e.data.end2;
+                let x = +e.data[0].start1;
+                let xe = +e.data[0].end1;
+                let x1 = +e.data[0].start2;
+                let x1e = +e.data[0].end2;
 
                 // safetly swap
                 if (x > x1) {
-                    x = +e.data.start2;
-                    xe = +e.data.end2;
-                    x1 = +e.data.start1;
-                    x1e = +e.data.end1;
+                    x = +e.data[0].start2;
+                    xe = +e.data[0].end2;
+                    x1 = +e.data[0].start1;
+                    x1e = +e.data[0].end1;
                 }
 
                 const padding = (x1e - x) / 4.0;
@@ -167,7 +167,7 @@ function App() {
                 2000
             );
 
-            setSelectedSvId(e.data.sv_id + '');
+            setSelectedSvId(e.data[0].sv_id + '');
             leftReads.current = [];
             rightReads.current = [];
         });
@@ -185,12 +185,17 @@ function App() {
     useEffect(() => {
         if (!gosRef.current || !baiUrl || !bamUrl) return;
 
-        gosRef.current.api.subscribe('rawdata', (type: string, e: any) => {
-            /// DEBUG
-            // console.log(e.data);
-            ///
-
+        gosRef.current.api.subscribe('rawData', (type: string, e: any) => {
             if (e.id.includes('bam') && (leftReads.current.length === 0 || rightReads.current.length === 0)) {
+                const isThisPotentiallyJsonRuleData = typeof e.data[0]?.name === 'undefined';
+                if (isThisPotentiallyJsonRuleData) {
+                    return;
+                }
+
+                /// DEBUG
+                // console.log(e.id, e.data);
+                ///
+
                 // This means we just received a BAM data that is just rendered
                 if (e.id.includes('left') && leftReads.current.length === 0) {
                     leftReads.current = e.data;
