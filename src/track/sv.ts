@@ -132,6 +132,42 @@ export default function sv(
                           stroke: { value: defaults.color.svclass.Translocation },
                           size: { value: 2 },
                           flipY: false
+                      },
+                      {
+                          mark: 'bar',
+                          dataTransform: [
+                              ...svInfer,
+                              replace,
+                              {
+                                  type: 'filter',
+                                  field: 'sv_id',
+                                  oneOf: [selectedSvId]
+                              },
+                              ...isTranslocation(false)
+                          ],
+                          x: { field: 'start1', type: 'genomic' },
+                          color: { value: 'grey' },
+                          stroke: { value: 'grey' },
+                          size: { value: 3 },
+                          flipY: false
+                      },
+                      {
+                          mark: 'bar',
+                          dataTransform: [
+                              ...svInfer,
+                              replace,
+                              {
+                                  type: 'filter',
+                                  field: 'sv_id',
+                                  oneOf: [selectedSvId]
+                              },
+                              ...isTranslocation(false)
+                          ],
+                          x: { field: 'end2', type: 'genomic' },
+                          color: { value: 'grey' },
+                          stroke: { value: 'grey' },
+                          size: { value: 3 },
+                          flipY: false
                       }
                   ]) as OverlaidTracks[]),
             {
@@ -158,7 +194,7 @@ export default function sv(
                 ],
                 x: { field: 'start1', type: 'genomic' },
                 xe: { field: 'end2', type: 'genomic' },
-                stroke: { value: defaults.color.svclass.Translocation },
+                stroke: { value: 'grey' }, // defaults.color.svclass.Translocation
                 strokeWidth: { value: 3 },
                 opacity: { value: 1 },
                 baselineY: height / 2.0
@@ -174,6 +210,24 @@ export default function sv(
                 xe: { field: 'end2', type: 'genomic' },
                 strokeWidth: { value: 3 },
                 opacity: { value: 1 }
+            },
+            {
+                dataTransform: [...svInfer, replace, { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] }],
+                mark: 'rule',
+                x: { field: 'start1', type: 'genomic' },
+                color: { value: 'black' },
+                strokeWidth: { value: 1 },
+                opacity: { value: 1 },
+                style: { dashed: [3, 3] }
+            },
+            {
+                dataTransform: [...svInfer, replace, { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] }],
+                mark: 'rule',
+                x: { field: 'end2', type: 'genomic' },
+                color: { value: 'black' },
+                strokeWidth: { value: 1 },
+                opacity: { value: 1 },
+                style: { dashed: [3, 3] }
             }
         ],
         y: { value: height / 2.0 },
