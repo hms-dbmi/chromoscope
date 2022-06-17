@@ -96,6 +96,14 @@ export default function getMidView(option: SpecOption): View[] {
                               text: { field: 'gene', type: 'nominal' },
                               color: { value: 'black' },
                               style: { textFontWeight: 'normal', dx: -10 },
+                              tooltip: [
+                                  { field: 'pos', alt: 'Position', type: 'genomic' },
+                                  { field: 'ref', alt: 'REF', type: 'nominal' },
+                                  { field: 'alt', alt: 'ALT', type: 'nominal' },
+                                  { field: 'category', alt: 'Category', type: 'nominal' },
+                                  { field: 'top_category', alt: 'Top Category', type: 'nominal' },
+                                  { field: 'biallelic', alt: 'Biallelic', type: 'nominal' }
+                              ],
                               width,
                               height: 20
                           } as SingleTrack
