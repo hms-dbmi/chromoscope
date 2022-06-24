@@ -117,14 +117,6 @@ const samples: SampleType[] = [
         cnv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/b243adb4-b3e7-4e0e-bc0d-625aa8dbb1be.consensus.20170119.somatic.cna.txt',
         thumbnail: _b243adb4
     },
-    // {
-    //     id: '84ca6ab0-9edc-4636-9d27-55cdba334d7d', // OV-US-
-    //     cancer: 'ovarian serous cystadenocarcinoma',
-    //     assembly: 'hg19',
-    //     sv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/84ca6ab0-9edc-4636-9d27-55cdba334d7d.pcawg_consensus_1.6.161116.somatic.sv.bedpe',
-    //     cnv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/84ca6ab0-9edc-4636-9d27-55cdba334d7d.consensus.20170119.somatic.cna.txt',
-    //     thumbnail: _84ca6ab0_OV
-    // },
     {
         id: '0bfd1043-816e-e3e4-e050-11ac0c4860c5', // OV-US-
         cancer: 'prostate adenocarcinoma',
