@@ -12,7 +12,7 @@ type SpecOption = {
 
 function getSmallOverviewSpec(option: SpecOption): GoslingSpec {
     const { title, subtitle, cnvUrl, svUrl, width, cnFields } = option;
-
+    const screenshotWidth = 1200;
     return {
         // title,
         // subtitle,
@@ -73,12 +73,12 @@ function getSmallOverviewSpec(option: SpecOption): GoslingSpec {
                         stroke: { value: 'gray' },
                         strokeWidth: { value: 0.5 },
                         style: { outline: 'black' },
-                        width,
+                        width: screenshotWidth,
                         height: 30
                     },
-                    tracks.gain(title, cnvUrl, width, 40, 'small', cnFields),
-                    tracks.loh(title, cnvUrl, width, 40, 'small', cnFields),
-                    tracks.sv(title, svUrl, width, 80, 'small', '')
+                    tracks.gain(title, cnvUrl, screenshotWidth, 40, 'small', cnFields),
+                    tracks.loh(title, cnvUrl, screenshotWidth, 40, 'small', cnFields),
+                    tracks.sv(title, svUrl, screenshotWidth, 80, 'small', '')
                 ]
             }
         ]
