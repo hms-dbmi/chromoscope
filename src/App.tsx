@@ -3,6 +3,7 @@ import { GoslingComponent } from 'gosling.js';
 import { debounce } from 'lodash';
 import generateSpec from './spec-generator';
 import { CommonEventData } from 'gosling.js/dist/src/core/api';
+import type { RouteComponentProps } from 'react-router-dom';
 import ErrorBoundary from './error';
 import './App.css';
 
@@ -56,27 +57,36 @@ const theme = {
     }
 };
 
-function App() {
+function App(props: RouteComponentProps) {
+    // URL parameters
+    const urlParams = new URLSearchParams(props.location.search);
+    const exampleId = urlParams.get('example');
+    const selectedSamples = useMemo(
+        () =>
+            exampleId === 'doga' ? samples.filter(d => d.group === 'doga') : samples.filter(d => d.group === 'default'),
+        [exampleId]
+    );
+
     const gosRef = useRef<any>();
 
     // TODO: We could just use sampleId to get detailed info. not to update all info as states.
     // demo
     const [demoIdx, setDemoIdx] = useState(0);
-    const [sampleId, setSampleId] = useState(samples[demoIdx].id);
-    const [cancer, setCancer] = useState(samples[demoIdx].cancer);
-    const [assembly, setAssembly] = useState(samples[demoIdx].assembly);
-    const [svUrl, setSvUrl] = useState(samples[demoIdx].sv);
-    const [cnvUrl, setCnvUrl] = useState(samples[demoIdx].cnv);
-    const [bamUrl, setBamUrl] = useState(samples[demoIdx].bam);
-    const [baiUrl, setBaiUrl] = useState(samples[demoIdx].bai);
+    const [sampleId, setSampleId] = useState(selectedSamples[demoIdx].id);
+    const [cancer, setCancer] = useState(selectedSamples[demoIdx].cancer);
+    const [assembly, setAssembly] = useState(selectedSamples[demoIdx].assembly);
+    const [svUrl, setSvUrl] = useState(selectedSamples[demoIdx].sv);
+    const [cnvUrl, setCnvUrl] = useState(selectedSamples[demoIdx].cnv);
+    const [bamUrl, setBamUrl] = useState(selectedSamples[demoIdx].bam);
+    const [baiUrl, setBaiUrl] = useState(selectedSamples[demoIdx].bai);
     const [cnFields, setCnFields] = useState<[string, string, string]>(
-        samples[demoIdx].cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
+        selectedSamples[demoIdx].cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
     );
 
     // interactions
     const [showSamples, setShowSamples] = useState(false);
     const [filterSampleBy, setFilterSampleBy] = useState('');
-    const [filteredSamples, setFilteredSamples] = useState(samples);
+    const [filteredSamples, setFilteredSamples] = useState(selectedSamples);
     const [showOverview, setShowOverview] = useState(true);
     const [showPutativeDriver, setShowPutativeDriver] = useState(true);
     const [interactiveMode, setInteractiveMode] = useState(false);
@@ -99,16 +109,16 @@ function App() {
 
     // update demo
     useEffect(() => {
-        setSampleId(samples[demoIdx].id);
-        setCancer(samples[demoIdx].cancer);
-        setAssembly(samples[demoIdx].assembly);
-        setSvUrl(samples[demoIdx].sv);
-        setCnvUrl(samples[demoIdx].cnv);
-        setBamUrl(samples[demoIdx].bam);
-        setBaiUrl(samples[demoIdx].bai);
-        setCnFields(samples[demoIdx].cnFields ?? ['total_cn', 'major_cn', 'minor_cn']);
+        setSampleId(selectedSamples[demoIdx].id);
+        setCancer(selectedSamples[demoIdx].cancer);
+        setAssembly(selectedSamples[demoIdx].assembly);
+        setSvUrl(selectedSamples[demoIdx].sv);
+        setCnvUrl(selectedSamples[demoIdx].cnv);
+        setBamUrl(selectedSamples[demoIdx].bam);
+        setBaiUrl(selectedSamples[demoIdx].bai);
+        setCnFields(selectedSamples[demoIdx].cnFields ?? ['total_cn', 'major_cn', 'minor_cn']);
         setFilteredDrivers(
-            (drivers as any).filter((d: any) => d.sample_id === samples[demoIdx].id && +d.chr && +d.pos)
+            (drivers as any).filter((d: any) => d.sample_id === selectedSamples[demoIdx].id && +d.chr && +d.pos)
         );
         setOverviewChr('');
         setGenomeViewChr('');
@@ -117,7 +127,9 @@ function App() {
     }, [demoIdx]);
 
     useEffect(() => {
-        setFilteredSamples(filterSampleBy === '' ? samples : samples.filter(d => d.id.includes(filterSampleBy)));
+        setFilteredSamples(
+            filterSampleBy === '' ? selectedSamples : selectedSamples.filter(d => d.id.includes(filterSampleBy))
+        );
     }, [filterSampleBy]);
 
     useEffect(() => {
@@ -312,7 +324,7 @@ function App() {
                 onClick={() => {
                     setShowSamples(false);
                     setTimeout(() => {
-                        setDemoIdx(samples.indexOf(d));
+                        setDemoIdx(selectedSamples.indexOf(d));
                         setSelectedSvId('');
                     }, 300);
                 }}
@@ -450,7 +462,7 @@ function App() {
                     <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
                         <div className="title">
                             Samples
-                            <small>{` (${filteredSamples.length} out of ${samples.length} shown)`}</small>
+                            <small>{` (${filteredSamples.length} out of ${selectedSamples.length} shown)`}</small>
                             <input
                                 type="text"
                                 className="sample-text-box"
