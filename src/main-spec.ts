@@ -50,7 +50,11 @@ function generateSpec(option: SpecOption): GoslingSpec {
     const bottomViewGap = 19;
     const bottomViewWidth = width / 2.0 - bottomViewGap / 2.0;
     const topViewXOffset = (width - topViewWidth) / 2.0;
-
+    // console.log(getOverviewSpec({
+    //     ...option,
+    //     width: topViewWidth,
+    //     xOffset: topViewXOffset
+    // }));
     return {
         layout: 'linear',
         arrangement: 'vertical',

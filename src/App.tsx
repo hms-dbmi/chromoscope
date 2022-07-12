@@ -1,15 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { GoslingComponent } from 'gosling.js';
 import { debounce } from 'lodash';
-import generateSpec from './spec-generator';
-import { CommonEventData } from 'gosling.js/dist/src/core/api';
+import generateSpec from './main-spec';
 import type { RouteComponentProps } from 'react-router-dom';
 import ErrorBoundary from './error';
-import './App.css';
-
 import drivers from './data/driver.json';
 import samples from './data/samples';
-import getSmallOverviewSpec from './overview-spec';
+import getOneOfSmallMultiplesSpec from './small-multiples-spec';
+import './App.css';
 
 const WHOLE_CHROMOSOME_STR = 'Whole Genome';
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
@@ -55,15 +53,14 @@ const theme = {
         subtitleFontSize: 14,
         subtitleFontWeight: 'normal'
     }
-};
+} as const;
 
 function App(props: RouteComponentProps) {
     // URL parameters
     const urlParams = new URLSearchParams(props.location.search);
     const exampleId = urlParams.get('example');
     const selectedSamples = useMemo(
-        () =>
-            exampleId === 'doga' ? samples.filter(d => d.group === 'doga') : samples.filter(d => d.group === 'default'),
+        () => (!exampleId ? samples.filter(d => d.group === 'default') : samples.filter(d => d.group === exampleId)),
         [exampleId]
     );
 
@@ -99,7 +96,6 @@ function App(props: RouteComponentProps) {
     const [selectedSvId, setSelectedSvId] = useState<string>('');
     const [breakpoints, setBreakpoints] = useState<[number, number, number, number]>([1, 100, 1, 100]);
     const [bpIntervals, setBpIntervals] = useState<[number, number, number, number] | undefined>();
-    const [mousePosition, setMousePosiiton] = useState({ left: -100, top: -100 });
     const [mouseOnVis, setMouseOnVis] = useState(false);
 
     // SV data
@@ -135,7 +131,7 @@ function App(props: RouteComponentProps) {
     useEffect(() => {
         if (!gosRef.current) return;
 
-        gosRef.current.api.subscribe('click', (type: string, e: CommonEventData) => {
+        gosRef.current.api.subscribe('click', (type, e) => {
             const zoom = false;
             if (zoom) {
                 // start and end positions are already cumulative values
@@ -384,7 +380,7 @@ function App(props: RouteComponentProps) {
                 padding={0}
                 margin={0}
                 experimental={{ reactive: true }}
-                theme={theme as any}
+                theme={theme}
             />
         );
     }, [
@@ -418,7 +414,6 @@ function App(props: RouteComponentProps) {
                     } else {
                         setMouseOnVis(false);
                     }
-                    setMousePosiiton({ top: e.clientY, left: e.clientX });
                 }}
                 onClick={() => {
                     if (!mouseOnVis && interactiveMode) setInteractiveMode(false);
@@ -638,7 +633,7 @@ function App(props: RouteComponentProps) {
                                 : 'collapse',
                         position: 'absolute',
                         right: `${VIS_PADDING}px`,
-                        top: '60px', // `${mousePosition.top + 20}px`,
+                        top: '60px',
                         background: 'lightgray',
                         color: 'black',
                         padding: '6px',

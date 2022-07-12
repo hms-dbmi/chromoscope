@@ -15,7 +15,7 @@ import _84ca6ab0_OV from '../script/img/OV-US-84ca6ab0-9edc-4636-9d27-55cdba334d
 import _0bfd1043 from '../script/img/OV-US-0bfd1043-816e-e3e4-e050-11ac0c4860c5.jpeg';
 
 type SampleType = {
-    group: 'default' | 'doga';
+    group: 'default' | 'doga' | 'vcf';
     id: string; // "aliquot ID"
     cancer: string; // cancer type
     assembly: Assembly; // hg19 or 38
@@ -23,6 +23,8 @@ type SampleType = {
     cnv: string; // URL of txt
     bam?: string; // URL of bam
     bai?: string; // URL of bai
+    vcf?: string;
+    vcfIndex?: string;
     cnFields?: [string, string, string];
     thumbnail?: string;
 };
@@ -106,6 +108,19 @@ const samples: SampleType[] = [
         cnv: 'https://gist.githubusercontent.com/sehilyi/6fbceae35756b13472332d6b81b10803/raw/596428a8b0ebc00e7f8cbc52b050db0fbd6e19a5/SRR7890943.ascat.v3.cnv.tsv',
         bam: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam',
         bai: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam.bai',
+        thumbnail: _SRR7890905
+    },
+    {
+        group: 'vcf',
+        id: 'SRR7890905-vcf-test',
+        cancer: 'breast',
+        assembly: 'hg38',
+        sv: 'https://somatic-browser-test.s3.amazonaws.com/SVTYPE_SV_test_tumor_normal_with_panel.bedpe',
+        cnv: 'https://gist.githubusercontent.com/sehilyi/6fbceae35756b13472332d6b81b10803/raw/596428a8b0ebc00e7f8cbc52b050db0fbd6e19a5/SRR7890943.ascat.v3.cnv.tsv',
+        bam: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam',
+        bai: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam.bai',
+        vcf: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/SNV_test_tumor_normal_with_panel.vcf.gz',
+        vcfIndex: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/SNV_test_tumor_normal_with_panel.vcf.gz.tbi',
         thumbnail: _SRR7890905
     },
     {

@@ -1,6 +1,5 @@
-import { GoslingSpec } from 'gosling.js';
-import { SpecOption } from './spec-generator';
-import { MultipleViews, SingleTrack, SingleView, View } from 'gosling.js/dist/src/core/gosling.schema';
+import { SpecOption } from './main-spec';
+import { SingleTrack, View } from 'gosling.js/dist/src/core/gosling.schema';
 import tracks from './track';
 
 export default function getMidView(option: SpecOption): View[] {
