@@ -9,7 +9,7 @@ import samples from './data/samples';
 import getOneOfSmallMultiplesSpec from './small-multiples-spec';
 import { CHROMOSOMES, THEME, WHOLE_CHROMOSOME_STR } from './constants';
 import { ICONS } from './icon';
-import './app.css';
+import './App.css';
 
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
 const VIS_PADDING = 60;
