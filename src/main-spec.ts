@@ -16,6 +16,7 @@ export interface SpecOption {
     cnvUrl: string;
     bamUrl: string;
     baiUrl: string;
+    vcfUrl: string;
     drivers: { [k: string]: string | number }[];
     selectedSvId: string;
     breakpoints: [number, number, number, number];

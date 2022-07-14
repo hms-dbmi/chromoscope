@@ -6,6 +6,7 @@ export default function getMidView(option: SpecOption): View[] {
     const {
         sampleId,
         assembly,
+        vcfUrl,
         cnvUrl,
         svUrl,
         width,
@@ -151,7 +152,14 @@ export default function getMidView(option: SpecOption): View[] {
                     width,
                     height: 60
                 },
-                tracks.mutation(sampleId, width, 60, 'mid'),
+                ...(!vcfUrl
+                    ? []
+                    : [
+                          tracks.mutation(sampleId, width, 60, 'mid'),
+                          tracks.boundary('mutation', 'mid'),
+                          tracks.indel(sampleId, width, 40, 'mid'),
+                          tracks.boundary('indel', 'mid')
+                      ]),
                 tracks.cnv(sampleId, cnvUrl, width, 60, 'mid', cnFields),
                 tracks.boundary('cnv', 'mid'),
                 tracks.gain(sampleId, cnvUrl, width, 20, 'mid', cnFields),

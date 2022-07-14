@@ -40,7 +40,9 @@ export default function cnv(
             { field: major_cn, type: 'quantitative' },
             { field: minor_cn, type: 'quantitative' }
         ],
-        size: { value: 3 },
+        size: { value: 4 },
+        stroke: { value: 'darkgray' },
+        strokeWidth: { value: 1 },
         opacity: { value: 0.8 },
         width,
         height

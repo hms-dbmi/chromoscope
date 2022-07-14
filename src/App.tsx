@@ -76,6 +76,7 @@ function App(props: RouteComponentProps) {
     const [cnvUrl, setCnvUrl] = useState(selectedSamples[demoIdx].cnv);
     const [bamUrl, setBamUrl] = useState(selectedSamples[demoIdx].bam);
     const [baiUrl, setBaiUrl] = useState(selectedSamples[demoIdx].bai);
+    const [vcfUrl, setVcfUrl] = useState(selectedSamples[demoIdx].vcf);
     const [cnFields, setCnFields] = useState<[string, string, string]>(
         selectedSamples[demoIdx].cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
     );
@@ -112,6 +113,7 @@ function App(props: RouteComponentProps) {
         setCnvUrl(selectedSamples[demoIdx].cnv);
         setBamUrl(selectedSamples[demoIdx].bam);
         setBaiUrl(selectedSamples[demoIdx].bai);
+        setVcfUrl(selectedSamples[demoIdx].vcf);
         setCnFields(selectedSamples[demoIdx].cnFields ?? ['total_cn', 'major_cn', 'minor_cn']);
         setFilteredDrivers(
             (drivers as any).filter((d: any) => d.sample_id === selectedSamples[demoIdx].id && +d.chr && +d.pos)
@@ -272,8 +274,8 @@ function App(props: RouteComponentProps) {
         if (!overviewChr) return;
 
         if (overviewChr.includes('chr')) {
-            gosRef.current?.api.zoomTo(`${sampleId}-top-ideogram`, overviewChr, 0, 0); // ZOOM_DURATION);
-            setGenomeViewChr(overviewChr);
+            gosRef.current?.api.zoomTo(`${sampleId}-top-ideogram`, overviewChr, 0, 0);
+            setTimeout(() => setGenomeViewChr(overviewChr), 0);
         } else {
             gosRef.current?.api.zoomToExtent(`${sampleId}-top-ideogram`, ZOOM_DURATION);
         }
@@ -360,6 +362,7 @@ function App(props: RouteComponentProps) {
             cnvUrl,
             bamUrl,
             baiUrl,
+            vcfUrl,
             showOverview,
             xOffset: 0,
             showPutativeDriver,
