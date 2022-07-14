@@ -14,7 +14,7 @@ import _b243adb4 from '../script/img/OV-US-b243adb4-b3e7-4e0e-bc0d-625aa8dbb1be.
 import _84ca6ab0_OV from '../script/img/OV-US-84ca6ab0-9edc-4636-9d27-55cdba334d7d.jpeg';
 import _0bfd1043 from '../script/img/OV-US-0bfd1043-816e-e3e4-e050-11ac0c4860c5.jpeg';
 
-type SampleType = {
+export type SampleType = {
     group: 'default' | 'doga' | 'vcf';
     id: string; // "aliquot ID"
     cancer: string; // cancer type

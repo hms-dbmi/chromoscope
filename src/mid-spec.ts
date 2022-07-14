@@ -4,11 +4,11 @@ import tracks from './track';
 
 export default function getMidView(option: SpecOption): View[] {
     const {
-        sampleId,
+        id,
         assembly,
-        vcfUrl,
-        cnvUrl,
-        svUrl,
+        vcf,
+        cnv,
+        sv,
         width,
         showPutativeDriver,
         showOverview,
@@ -24,8 +24,7 @@ export default function getMidView(option: SpecOption): View[] {
             layout: 'linear',
             tracks: [
                 {
-                    id: `${sampleId}-mid-ideogram`,
-                    title: 'Ideogram',
+                    id: `${id}-mid-ideogram`,
                     alignment: 'overlay',
                     data: {
                         url:
@@ -80,7 +79,7 @@ export default function getMidView(option: SpecOption): View[] {
                     ? []
                     : [
                           {
-                              id: `${sampleId}-mid-driver`,
+                              id: `${id}-mid-driver`,
                               title: 'Putative Driver',
                               data: {
                                   values: drivers,
@@ -110,9 +109,8 @@ export default function getMidView(option: SpecOption): View[] {
                       ]),
                 tracks.boundary('driver', 'mid'),
                 {
-                    id: `${sampleId}-mid-gene`,
+                    id: `${id}-mid-gene`,
                     alignment: 'overlay',
-                    title: 'Genes',
                     template: 'gene',
                     data: {
                         url:
@@ -156,21 +154,21 @@ export default function getMidView(option: SpecOption): View[] {
                     width,
                     height: 60
                 },
-                ...(!vcfUrl
+                ...(!vcf
                     ? []
                     : [
-                          tracks.mutation(sampleId, width, 60, 'mid'),
+                          tracks.mutation(id, width, 60, 'mid'),
                           tracks.boundary('mutation', 'mid'),
-                          tracks.indel(sampleId, width, 40, 'mid'),
+                          tracks.indel(id, width, 40, 'mid'),
                           tracks.boundary('indel', 'mid')
                       ]),
-                tracks.cnv(sampleId, cnvUrl, width, 60, 'mid', cnFields),
+                tracks.cnv(id, cnv, width, 60, 'mid', cnFields),
                 tracks.boundary('cnv', 'mid'),
-                tracks.gain(sampleId, cnvUrl, width, 20, 'mid', cnFields),
+                tracks.gain(id, cnv, width, 20, 'mid', cnFields),
                 tracks.boundary('gain', 'mid'),
-                tracks.loh(sampleId, cnvUrl, width, 20, 'mid', cnFields),
+                tracks.loh(id, cnv, width, 20, 'mid', cnFields),
                 tracks.boundary('loh', 'mid'),
-                tracks.sv(sampleId, svUrl, width, 250, 'mid', selectedSvId)
+                tracks.sv(id, sv, width, 250, 'mid', selectedSvId)
             ]
         }
     ];

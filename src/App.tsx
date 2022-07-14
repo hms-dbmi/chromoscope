@@ -1,59 +1,20 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { GoslingComponent } from 'gosling.js';
 import { debounce } from 'lodash';
-import generateSpec from './main-spec';
 import type { RouteComponentProps } from 'react-router-dom';
+import generateSpec from './main-spec';
 import ErrorBoundary from './error';
-import drivers from './data/driver.json';
+import allDrivers from './data/driver.json';
 import samples from './data/samples';
 import getOneOfSmallMultiplesSpec from './small-multiples-spec';
+import { CHROMOSOMES, THEME, WHOLE_CHROMOSOME_STR } from './constants';
+import { ICONS } from './icon';
 import './App.css';
 
-const WHOLE_CHROMOSOME_STR = 'Whole Genome';
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
 const VIS_PADDING = 60;
-const CHROMOSOMES = [
-    'chr1',
-    'chr2',
-    'chr3',
-    'chr4',
-    'chr5',
-    'chr6',
-    'chr7',
-    'chr8',
-    'chr9',
-    'chr10',
-    'chr11',
-    'chr12',
-    'chr13',
-    'chr14',
-    'chr15',
-    'chr16',
-    'chr17',
-    'chr18',
-    'chr19',
-    'chr20',
-    'chr21',
-    'chr22',
-    'chrX',
-    'chrY'
-];
 const ZOOM_PADDING = 200;
 const ZOOM_DURATION = 1000;
-const theme = {
-    base: 'light',
-    root: {
-        background: 'white',
-        titleAlign: 'middle',
-        titleColor: 'black',
-        titleFontSize: 18,
-        titleFontWeight: 'normal',
-        subtitleAlign: 'middle',
-        subtitleColor: 'gray',
-        subtitleFontSize: 14,
-        subtitleFontWeight: 'normal'
-    }
-} as const;
 
 function App(props: RouteComponentProps) {
     // URL parameters
@@ -66,20 +27,8 @@ function App(props: RouteComponentProps) {
 
     const gosRef = useRef<any>();
 
-    // TODO: We could just use sampleId to get detailed info. not to update all info as states.
     // demo
-    const [demoIdx, setDemoIdx] = useState(0);
-    const [sampleId, setSampleId] = useState(selectedSamples[demoIdx].id);
-    const [cancer, setCancer] = useState(selectedSamples[demoIdx].cancer);
-    const [assembly, setAssembly] = useState(selectedSamples[demoIdx].assembly);
-    const [svUrl, setSvUrl] = useState(selectedSamples[demoIdx].sv);
-    const [cnvUrl, setCnvUrl] = useState(selectedSamples[demoIdx].cnv);
-    const [bamUrl, setBamUrl] = useState(selectedSamples[demoIdx].bam);
-    const [baiUrl, setBaiUrl] = useState(selectedSamples[demoIdx].bai);
-    const [vcfUrl, setVcfUrl] = useState(selectedSamples[demoIdx].vcf);
-    const [cnFields, setCnFields] = useState<[string, string, string]>(
-        selectedSamples[demoIdx].cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
-    );
+    const [demo, setDemo] = useState(selectedSamples[0]);
 
     // interactions
     const [showSamples, setShowSamples] = useState(false);
@@ -91,8 +40,8 @@ function App(props: RouteComponentProps) {
     const [visPanelWidth, setVisPanelWidth] = useState(INIT_VIS_PANEL_WIDTH - VIS_PADDING * 2);
     const [overviewChr, setOverviewChr] = useState('');
     const [genomeViewChr, setGenomeViewChr] = useState('');
-    const [filteredDrivers, setFilteredDrivers] = useState(
-        (drivers as any).filter((d: any) => d.sample_id === sampleId && +d.chr && +d.pos)
+    const [drivers, setDrivers] = useState(
+        (allDrivers as any).filter((d: any) => d.sample_id === demo.id && +d.chr && +d.pos)
     );
     const [selectedSvId, setSelectedSvId] = useState<string>('');
     const [breakpoints, setBreakpoints] = useState<[number, number, number, number]>([1, 100, 1, 100]);
@@ -106,23 +55,12 @@ function App(props: RouteComponentProps) {
 
     // update demo
     useEffect(() => {
-        setSampleId(selectedSamples[demoIdx].id);
-        setCancer(selectedSamples[demoIdx].cancer);
-        setAssembly(selectedSamples[demoIdx].assembly);
-        setSvUrl(selectedSamples[demoIdx].sv);
-        setCnvUrl(selectedSamples[demoIdx].cnv);
-        setBamUrl(selectedSamples[demoIdx].bam);
-        setBaiUrl(selectedSamples[demoIdx].bai);
-        setVcfUrl(selectedSamples[demoIdx].vcf);
-        setCnFields(selectedSamples[demoIdx].cnFields ?? ['total_cn', 'major_cn', 'minor_cn']);
-        setFilteredDrivers(
-            (drivers as any).filter((d: any) => d.sample_id === selectedSamples[demoIdx].id && +d.chr && +d.pos)
-        );
+        setDrivers((allDrivers as any).filter((d: any) => d.sample_id === demo.id && +d.chr && +d.pos));
         setOverviewChr('');
         setGenomeViewChr('');
         leftReads.current = [];
         rightReads.current = [];
-    }, [demoIdx]);
+    }, [demo]);
 
     useEffect(() => {
         setFilteredSamples(
@@ -133,7 +71,7 @@ function App(props: RouteComponentProps) {
     useEffect(() => {
         if (!gosRef.current) return;
 
-        gosRef.current.api.subscribe('click', (type, e) => {
+        gosRef.current.api.subscribe('click', (_, e) => {
             let x = +e.data[0].start1;
             let xe = +e.data[0].end1;
             let x1 = +e.data[0].start2;
@@ -148,13 +86,13 @@ function App(props: RouteComponentProps) {
             }
 
             const padding = (x1e - x) / 4.0;
-            gosRef.current.api.zoomTo(`${sampleId}-mid-ideogram`, `chr1:${x}-${x1e}`, padding, 500);
+            gosRef.current.api.zoomTo(`${demo.id}-mid-ideogram`, `chr1:${x}-${x1e}`, padding, 500);
 
             // we will show the bam files, so set the initial positions
             setBreakpoints([+x - ZOOM_PADDING, +xe + ZOOM_PADDING, +x1 - ZOOM_PADDING, +x1e + ZOOM_PADDING]);
             setBpIntervals([x, xe, x1, x1e]);
 
-            // Move to the bottom
+            // move to the bottom
             setTimeout(
                 () => document.getElementById('gosling-panel')?.scrollTo({ top: 1000000, behavior: 'smooth' }),
                 2000
@@ -165,18 +103,13 @@ function App(props: RouteComponentProps) {
             rightReads.current = [];
         });
 
-        // gosRef.current.api.subscribe('mouseover', (type: string, e: CommonEventData) => {
-        // setHoveredSvId(e.data.sv_id + '');
-        // });
-
         return () => {
             gosRef.current.api.unsubscribe('click');
-            // gosRef.current.api.unsubscribe('mouseover');
         };
-    }, [gosRef, svReads, sampleId]);
+    }, [gosRef, svReads, demo]);
 
     useEffect(() => {
-        if (!gosRef.current || !baiUrl || !bamUrl) return;
+        if (!gosRef.current || !demo.bai || !demo.bam) return;
 
         gosRef.current.api.subscribe('rawData', (type: string, e: any) => {
             if (e.id.includes('bam') && (leftReads.current.length === 0 || rightReads.current.length === 0)) {
@@ -251,16 +184,16 @@ function App(props: RouteComponentProps) {
         return () => {
             gosRef.current.api.unsubscribe('rawdata');
         };
-    }, [gosRef, svReads, sampleId, baiUrl, bamUrl]);
+    }, [gosRef, svReads, demo]);
 
     useEffect(() => {
         if (!overviewChr) return;
 
         if (overviewChr.includes('chr')) {
-            gosRef.current?.api.zoomTo(`${sampleId}-top-ideogram`, overviewChr, 0, 0);
+            gosRef.current?.api.zoomTo(`${demo.id}-top-ideogram`, overviewChr, 0, 0);
             setTimeout(() => setGenomeViewChr(overviewChr), 0);
         } else {
-            gosRef.current?.api.zoomToExtent(`${sampleId}-top-ideogram`, ZOOM_DURATION);
+            gosRef.current?.api.zoomToExtent(`${demo.id}-top-ideogram`, ZOOM_DURATION);
         }
     }, [overviewChr]);
 
@@ -268,13 +201,13 @@ function App(props: RouteComponentProps) {
         if (!genomeViewChr) return;
 
         if (genomeViewChr.includes('chr')) {
-            gosRef.current?.api.zoomTo(`${sampleId}-mid-ideogram`, genomeViewChr, 0, ZOOM_DURATION);
+            gosRef.current?.api.zoomTo(`${demo.id}-mid-ideogram`, genomeViewChr, 0, ZOOM_DURATION);
         } else {
-            gosRef.current?.api.zoomToExtent(`${sampleId}-mid-ideogram`, ZOOM_DURATION);
+            gosRef.current?.api.zoomToExtent(`${demo.id}-mid-ideogram`, ZOOM_DURATION);
         }
     }, [genomeViewChr]);
 
-    // Change the width of the visualization panel
+    // change the width of the visualization panel
     useEffect(() => {
         window.addEventListener(
             'resize',
@@ -305,11 +238,11 @@ function App(props: RouteComponentProps) {
                 onClick={() => {
                     setShowSamples(false);
                     setTimeout(() => {
-                        setDemoIdx(selectedSamples.indexOf(d));
+                        setDemo(d);
                         setSelectedSvId('');
                     }, 300);
                 }}
-                className={demoIdx === i ? 'selected-overview' : 'unselected-overview'}
+                className={demo === d ? 'selected-overview' : 'unselected-overview'}
             >
                 <div style={{}}>
                     <b>{d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1).split(' ')[0]}</b>
@@ -335,30 +268,23 @@ function App(props: RouteComponentProps) {
         //         {component}
         //     </div>
         // ));
-    }, [demoIdx, filteredSamples]);
+    }, [demo, filteredSamples]);
 
     const goslingComponent = useMemo(() => {
         const spec = generateSpec({
-            assembly,
-            sampleId,
-            svUrl,
-            cnvUrl,
-            bamUrl,
-            baiUrl,
-            vcfUrl,
+            ...demo,
             showOverview,
             xOffset: 0,
             showPutativeDriver,
             width: visPanelWidth,
-            drivers: filteredDrivers.map(d => {
+            drivers: drivers.map(d => {
                 return { ...d, gene: `${d['biallelic'] === 'yes' ? '⊙' : ''} ${d.gene}` };
             }),
             selectedSvId,
             breakpoints: breakpoints,
             crossChr: false,
             bpIntervals,
-            svReads,
-            cnFields
+            svReads
         });
         // console.log('spec', spec);
         return (
@@ -368,20 +294,10 @@ function App(props: RouteComponentProps) {
                 padding={0}
                 margin={0}
                 experimental={{ reactive: true }}
-                theme={theme}
+                theme={THEME}
             />
         );
-    }, [
-        visPanelWidth,
-        filteredDrivers,
-        showOverview,
-        showPutativeDriver,
-        svUrl,
-        cnvUrl,
-        selectedSvId,
-        breakpoints,
-        svReads
-    ]);
+    }, [visPanelWidth, drivers, showOverview, showPutativeDriver, demo, selectedSvId, breakpoints, svReads]);
 
     return (
         <ErrorBoundary>
@@ -422,7 +338,7 @@ function App(props: RouteComponentProps) {
                     />
                 </svg>
                 <div className="sample-label">
-                    {cancer.charAt(0).toUpperCase() + cancer.slice(1) + ' • ' + sampleId}
+                    {demo.cancer.charAt(0).toUpperCase() + demo.cancer.slice(1) + ' • ' + demo.id}
                     <span className="title-btn" onClick={() => gosRef.current?.api.exportPng()}>
                         <svg className="button" viewBox="0 0 16 16">
                             <title>Export Image</title>
@@ -433,9 +349,11 @@ function App(props: RouteComponentProps) {
                         </svg>
                     </span>
                 </div>
-                {bamUrl && baiUrl ? (
+                {demo.bam && demo.bai ? (
                     <div className="help-label">
-                        <span style={{ border: '2px solid gray', borderRadius: 10, padding: '0px 4px', margin: '6px' }}>
+                        <span
+                            style={{ border: '1.4px solid gray', borderRadius: 10, padding: '0px 6px', margin: '6px' }}
+                        >
                             {'?'}
                         </span>
                         {'Click on a SV to see alignment around breakpoints'}
@@ -556,7 +474,7 @@ function App(props: RouteComponentProps) {
                                 viewBox="0 0 16 16"
                                 style={{
                                     top: `${Math.min(visPanelWidth, 600) + 6}px`,
-                                    visibility: assembly === 'hg38' ? 'visible' : 'collapse'
+                                    visibility: demo.assembly === 'hg38' ? 'visible' : 'collapse'
                                 }}
                             >
                                 <path
@@ -571,7 +489,7 @@ function App(props: RouteComponentProps) {
                                 style={{
                                     pointerEvents: 'auto',
                                     top: `${Math.min(visPanelWidth, 600)}px`,
-                                    visibility: assembly === 'hg38' ? 'visible' : 'collapse'
+                                    visibility: demo.assembly === 'hg38' ? 'visible' : 'collapse'
                                 }}
                                 // onChange={(e) => {
                                 //     const keyword = e.target.value;
@@ -598,7 +516,7 @@ function App(props: RouteComponentProps) {
                                         case 'Enter':
                                             // https://github.com/gosling-lang/gosling.js/blob/7555ab711023a0c3e2076a448756a9ba3eeb04f7/src/core/api.ts#L156
                                             gosRef.current.api.zoomToGene(
-                                                `${sampleId}-mid-ideogram`,
+                                                `${demo.id}-mid-ideogram`,
                                                 keyword,
                                                 10000,
                                                 1000
@@ -657,12 +575,9 @@ function App(props: RouteComponentProps) {
                         );
                     }}
                 >
-                    <svg className="button" viewBox="0 0 16 16">
+                    <svg className="button" viewBox={ICONS.ARROW_UP.viewBox}>
                         <title>Scroll To Top</title>
-                        <path
-                            fill="currentColor"
-                            d="M2 16a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2zm6.5-4.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 1 0z"
-                        />
+                        <path fill="currentColor" d={ICONS.ARROW_UP.path[0]} />
                     </svg>
                 </div>
             </div>

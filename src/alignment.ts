@@ -93,13 +93,13 @@ function drawSvReads(option: SpecOption, sv: string): Partial<SingleTrack>[] {
 }
 
 export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
-    const { sampleId, bamUrl, baiUrl, width, svReads, crossChr, bpIntervals } = option;
+    const { id, bam, bai, width, svReads, crossChr, bpIntervals } = option;
 
     return {
-        id: `${sampleId}-bottom-${isLeft ? 'left' : 'right'}-bam`,
+        id: `${id}-bottom-${isLeft ? 'left' : 'right'}-bam`,
         alignment: 'overlay',
         title: 'Alignment',
-        data: { type: 'bam', url: bamUrl, indexUrl: baiUrl, loadMates: false },
+        data: { type: 'bam', url: bam, indexUrl: bai, loadMates: false },
         mark: 'rect',
         tracks: [
             /**

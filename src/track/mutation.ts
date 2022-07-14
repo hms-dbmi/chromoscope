@@ -4,7 +4,6 @@ import { TrackMode } from './index';
 export default function mutation(sampleId: string, width: number, height: number, mode: TrackMode): SingleTrack {
     return {
         id: `${sampleId}-${mode}-mutation`,
-        title: 'Point Mutation',
         style: { background: '#FFFFFF', inlineLegend: true },
         data: {
             type: 'vcf',

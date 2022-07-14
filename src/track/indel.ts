@@ -17,6 +17,15 @@ export default function indel(sampleId: string, width: number, height: number, m
                 fields: ['REF', 'ALT'],
                 separator: ' → ',
                 newField: 'LAB'
+            },
+            {
+                type: 'replace',
+                field: 'MUTTYPE',
+                replace: [
+                    { from: 'insertion', to: 'Insertion' },
+                    { from: 'deletion', to: 'Deletion' }
+                ],
+                newField: 'MUTTYPE'
             }
         ],
         alignment: 'overlay',
@@ -67,20 +76,20 @@ export default function indel(sampleId: string, width: number, height: number, m
             field: 'MUTTYPE',
             type: 'nominal',
             legend: true,
-            domain: ['insertion', 'deletion']
+            domain: ['Insertion', 'Deletion']
         },
         strokeWidth: { value: 1 },
         color: {
             field: 'MUTTYPE',
             type: 'nominal',
             legend: true,
-            domain: ['insertion', 'deletion']
+            domain: ['Insertion', 'Deletion']
         },
         row: {
             field: 'MUTTYPE',
             type: 'nominal',
             legend: true,
-            domain: ['insertion', 'deletion']
+            domain: ['Insertion', 'Deletion']
         },
         tooltip: [
             { field: 'POS', type: 'genomic' },

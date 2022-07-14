@@ -4,47 +4,23 @@ import getMidView from './mid-spec';
 import { alignment } from './alignment';
 import { verticalGuide } from './vertical-guide';
 import tracks from './track';
+import { SampleType } from './data/samples';
 
-export interface SpecOption {
-    assembly: Assembly;
-    sampleId: string;
+export interface SpecOption extends SampleType {
     showOverview: boolean;
     showPutativeDriver: boolean;
     xOffset: number;
     width: number;
-    svUrl: string;
-    cnvUrl: string;
-    bamUrl: string;
-    baiUrl: string;
-    vcfUrl: string;
     drivers: { [k: string]: string | number }[];
     selectedSvId: string;
     breakpoints: [number, number, number, number];
     svReads: { name: string; type: string }[];
     crossChr: boolean;
     bpIntervals: [number, number, number, number] | undefined;
-    cnFields: [string, string, string];
 }
 
-function generateSpec(option: SpecOption): GoslingSpec {
-    const {
-        assembly,
-        sampleId,
-        svUrl,
-        cnvUrl,
-        bamUrl,
-        baiUrl,
-        showPutativeDriver,
-        showOverview,
-        width,
-        drivers,
-        selectedSvId,
-        breakpoints,
-        crossChr,
-        svReads,
-        bpIntervals,
-        cnFields
-    } = option;
+function generateSpec(opt: SpecOption): GoslingSpec {
+    const { assembly, id, bam, bai, width, selectedSvId, breakpoints, bpIntervals } = opt;
 
     const topViewWidth = Math.min(width, 600);
     const midViewWidth = width;
@@ -72,17 +48,17 @@ function generateSpec(option: SpecOption): GoslingSpec {
                 arrangement: 'vertical',
                 views: [
                     ...getOverviewSpec({
-                        ...option,
+                        ...opt,
                         width: topViewWidth,
                         xOffset: topViewXOffset
                     }),
                     ...getMidView({
-                        ...option,
+                        ...opt,
                         width: midViewWidth
                     })
                 ]
             },
-            ...(selectedSvId === '' || !bamUrl || !baiUrl
+            ...(selectedSvId === '' || !bam || !bai
                 ? []
                 : ([
                       {
@@ -99,12 +75,12 @@ function generateSpec(option: SpecOption): GoslingSpec {
                                   linkingId: 'detail-scale-1',
                                   tracks: [
                                       {
-                                          id: `${sampleId}-bottom-left-coverage`,
+                                          id: `${id}-bottom-left-coverage`,
                                           title: 'Coverage',
                                           data: {
                                               type: 'bam',
-                                              url: bamUrl,
-                                              indexUrl: baiUrl
+                                              url: bam,
+                                              indexUrl: bai
                                           },
                                           dataTransform: [
                                               {
@@ -129,7 +105,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                                       },
                                       ...(bpIntervals ? [verticalGuide(bpIntervals[0], bpIntervals[1])] : []),
                                       {
-                                          id: `${sampleId}-bottom-left-sequence`,
+                                          id: `${id}-bottom-left-sequence`,
                                           title: 'Sequence',
                                           alignment: 'overlay',
                                           data: {
@@ -194,10 +170,10 @@ function generateSpec(option: SpecOption): GoslingSpec {
                                           width: bottomViewWidth,
                                           height: 40
                                       },
-                                      ...(option.bamUrl && option.baiUrl
+                                      ...(opt.bam && opt.bai
                                           ? [
                                                 {
-                                                    ...alignment({ ...option, width: bottomViewWidth }, true)
+                                                    ...alignment({ ...opt, width: bottomViewWidth }, true)
                                                 }
                                             ]
                                           : []),
@@ -214,12 +190,12 @@ function generateSpec(option: SpecOption): GoslingSpec {
                                   linkingId: 'detail-scale-2',
                                   tracks: [
                                       {
-                                          id: `${sampleId}-bottom-right-coverage`,
+                                          id: `${id}-bottom-right-coverage`,
                                           title: 'Coverage',
                                           data: {
                                               type: 'bam',
-                                              url: bamUrl,
-                                              indexUrl: baiUrl
+                                              url: bam,
+                                              indexUrl: bai
                                           },
                                           dataTransform: [
                                               {
@@ -244,7 +220,7 @@ function generateSpec(option: SpecOption): GoslingSpec {
                                       },
                                       ...(bpIntervals ? [verticalGuide(bpIntervals[2], bpIntervals[3])] : []),
                                       {
-                                          id: `${sampleId}-bottom-right-sequence`,
+                                          id: `${id}-bottom-right-sequence`,
                                           title: 'Sequence',
                                           alignment: 'overlay',
                                           data: {
@@ -309,10 +285,10 @@ function generateSpec(option: SpecOption): GoslingSpec {
                                           width: bottomViewWidth,
                                           height: 40
                                       },
-                                      ...(option.bamUrl && option.baiUrl
+                                      ...(opt.bam && opt.bai
                                           ? [
                                                 {
-                                                    ...alignment({ ...option, width: bottomViewWidth }, false)
+                                                    ...alignment({ ...opt, width: bottomViewWidth }, false)
                                                 }
                                             ]
                                           : []),
@@ -327,19 +303,8 @@ function generateSpec(option: SpecOption): GoslingSpec {
 }
 
 function getOverviewSpec(option: SpecOption): View[] {
-    const {
-        assembly,
-        sampleId,
-        cnvUrl,
-        svUrl,
-        width,
-        showPutativeDriver,
-        showOverview,
-        selectedSvId,
-        xOffset,
-        drivers,
-        cnFields
-    } = option;
+    const { assembly, id, cnv, sv, width, showPutativeDriver, showOverview, selectedSvId, xOffset, drivers, cnFields } =
+        option;
 
     if (!showOverview) return [];
 
@@ -355,7 +320,7 @@ function getOverviewSpec(option: SpecOption): View[] {
             },
             tracks: [
                 {
-                    id: `${sampleId}-top-ideogram`,
+                    id: `${id}-top-ideogram`,
                     alignment: 'overlay',
                     data: {
                         url:
@@ -394,7 +359,7 @@ function getOverviewSpec(option: SpecOption): View[] {
                     ? []
                     : [
                           {
-                              id: `${sampleId}-top-driver`,
+                              id: `${id}-top-driver`,
                               data: {
                                   values: drivers,
                                   type: 'json',
@@ -424,11 +389,11 @@ function getOverviewSpec(option: SpecOption): View[] {
                           } as SingleTrack
                       ]),
                 tracks.boundary('driver', 'top'),
-                tracks.gain(sampleId, cnvUrl, width, 40, 'top', cnFields),
+                tracks.gain(id, cnv, width, 40, 'top', cnFields),
                 tracks.boundary('gain', 'top'),
-                tracks.loh(sampleId, cnvUrl, width, 40, 'top', cnFields),
+                tracks.loh(id, cnv, width, 40, 'top', cnFields),
                 tracks.boundary('loh', 'top'),
-                tracks.sv(sampleId, svUrl, width, 80, 'top', selectedSvId)
+                tracks.sv(id, sv, width, 80, 'top', selectedSvId)
             ]
         }
     ];

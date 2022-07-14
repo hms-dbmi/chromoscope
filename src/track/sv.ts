@@ -1,11 +1,10 @@
 import {
     FilterTransform,
     OverlaidTracks,
-    StrConcatTransform,
     StrReplaceTransform,
     SvTypeTransform
 } from 'gosling.js/dist/src/core/gosling.schema';
-import { consistentSv, translocationChrPairs } from '../sanitize';
+import { consistentSv } from '../constants';
 import defaults from '../default-encoding';
 import { TrackMode } from '.';
 
@@ -26,22 +25,14 @@ const svInfer = [
     }
 ] as [SvTypeTransform];
 
-// TODO: work-around to infer translocation
-const isTranslocation = (not: boolean) =>
-    [
-        {
-            type: 'concat',
-            fields: ['chrom1', 'chrom2'],
-            separator: '-',
-            newField: 'isTranslocation'
-        },
-        {
-            type: 'filter',
-            field: 'isTranslocation',
-            oneOf: translocationChrPairs,
-            not: !not
-        }
-    ] as [StrConcatTransform, FilterTransform];
+const filterTranslocation: (boolean) => FilterTransform = (not: boolean) => {
+    return {
+        type: 'filter',
+        field: 'svclass',
+        oneOf: ['Translocation'],
+        not
+    };
+};
 
 const replace = {
     type: 'replace',
@@ -64,7 +55,6 @@ export default function sv(
 ): OverlaidTracks {
     return {
         id: `${sampleId}-${mode}-sv`,
-        title: mode === 'small' ? '' : 'Structural Variant',
         alignment: 'overlay',
         experimental: {
             mouseEvents: {
@@ -112,7 +102,7 @@ export default function sv(
                         oneOf: [selectedSvId],
                         not: true
                     },
-                    ...isTranslocation(false)
+                    filterTranslocation(false)
                 ],
                 x: { field: 'start1', type: 'genomic' },
                 xe: { field: 'end2', type: 'genomic' },
@@ -124,7 +114,7 @@ export default function sv(
                 : [
                       {
                           mark: 'bar',
-                          dataTransform: [...svInfer, replace, ...isTranslocation(false)],
+                          dataTransform: [...svInfer, replace, filterTranslocation(false)],
                           x: { field: 'start1', type: 'genomic' },
                           color: { value: defaults.color.svclass.Translocation },
                           stroke: { value: defaults.color.svclass.Translocation },
@@ -135,7 +125,7 @@ export default function sv(
                       },
                       {
                           mark: 'bar',
-                          dataTransform: [...svInfer, replace, ...isTranslocation(false)],
+                          dataTransform: [...svInfer, replace, filterTranslocation(false)],
                           x: { field: 'end2', type: 'genomic' },
                           color: { value: defaults.color.svclass.Translocation },
                           stroke: { value: defaults.color.svclass.Translocation },
@@ -154,7 +144,7 @@ export default function sv(
                                   field: 'sv_id',
                                   oneOf: [selectedSvId]
                               },
-                              ...isTranslocation(false)
+                              filterTranslocation(false)
                           ],
                           x: { field: 'start1', type: 'genomic' },
                           color: { value: 'grey' },
@@ -172,7 +162,7 @@ export default function sv(
                                   field: 'sv_id',
                                   oneOf: [selectedSvId]
                               },
-                              ...isTranslocation(false)
+                              filterTranslocation(false)
                           ],
                           x: { field: 'end2', type: 'genomic' },
                           color: { value: 'grey' },
@@ -191,7 +181,7 @@ export default function sv(
                         oneOf: [selectedSvId],
                         not: true
                     },
-                    ...isTranslocation(true)
+                    filterTranslocation(true)
                 ],
                 x: { field: 'start1', type: 'genomic' },
                 xe: { field: 'end2', type: 'genomic' }
@@ -201,7 +191,7 @@ export default function sv(
                     ...svInfer,
                     replace,
                     { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] },
-                    ...isTranslocation(false)
+                    filterTranslocation(false)
                 ],
                 x: { field: 'start1', type: 'genomic' },
                 xe: { field: 'end2', type: 'genomic' },
@@ -215,7 +205,7 @@ export default function sv(
                     ...svInfer,
                     replace,
                     { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] },
-                    ...isTranslocation(true)
+                    filterTranslocation(true)
                 ],
                 x: { field: 'start1', type: 'genomic' },
                 xe: { field: 'end2', type: 'genomic' },
