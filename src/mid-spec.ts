@@ -95,7 +95,7 @@ export default function getMidView(option: SpecOption): View[] {
                               x: { field: 'pos', type: 'genomic' },
                               text: { field: 'gene', type: 'nominal' },
                               color: { value: 'black' },
-                              style: { textFontWeight: 'normal', dx: -10 },
+                              style: { textFontWeight: 'normal' },
                               tooltip: [
                                   { field: 'pos', alt: 'Position', type: 'genomic' },
                                   { field: 'ref', alt: 'REF', type: 'nominal' },
@@ -149,6 +149,10 @@ export default function getMidView(option: SpecOption): View[] {
                         geneLabelOpacity: { value: 1 },
                         type: { field: 'type' }
                     },
+                    tooltip: [
+                        { field: 'name', type: 'nominal' },
+                        { field: 'strand', type: 'nominal' }
+                    ],
                     width,
                     height: 60
                 },
