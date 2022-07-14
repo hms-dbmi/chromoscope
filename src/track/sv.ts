@@ -222,24 +222,36 @@ export default function sv(
                 strokeWidth: { value: 3 },
                 opacity: { value: 1 }
             },
-            {
-                dataTransform: [...svInfer, replace, { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] }],
-                mark: 'rule',
-                x: { field: 'start1', type: 'genomic' },
-                color: { value: 'black' },
-                strokeWidth: { value: 1 },
-                opacity: { value: 1 },
-                style: { dashed: [3, 3] }
-            },
-            {
-                dataTransform: [...svInfer, replace, { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] }],
-                mark: 'rule',
-                x: { field: 'end2', type: 'genomic' },
-                color: { value: 'black' },
-                strokeWidth: { value: 1 },
-                opacity: { value: 1 },
-                style: { dashed: [3, 3] }
-            }
+            ...((mode !== 'mid'
+                ? []
+                : [
+                      {
+                          dataTransform: [
+                              ...svInfer,
+                              replace,
+                              { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] }
+                          ],
+                          mark: 'rule',
+                          x: { field: 'start1', type: 'genomic' },
+                          color: { value: 'black' },
+                          strokeWidth: { value: 1 },
+                          opacity: { value: 1 },
+                          style: { dashed: [3, 3] }
+                      },
+                      {
+                          dataTransform: [
+                              ...svInfer,
+                              replace,
+                              { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] }
+                          ],
+                          mark: 'rule',
+                          x: { field: 'end2', type: 'genomic' },
+                          color: { value: 'black' },
+                          strokeWidth: { value: 1 },
+                          opacity: { value: 1 },
+                          style: { dashed: [3, 3] }
+                      }
+                  ]) as OverlaidTracks[])
         ],
         y: { value: height / 2.0 },
         color: {

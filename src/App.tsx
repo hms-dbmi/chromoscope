@@ -1,15 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { GoslingComponent } from 'gosling.js';
 import { debounce } from 'lodash';
-import generateSpec from './spec-generator';
-import { CommonEventData } from 'gosling.js/dist/src/core/api';
+import generateSpec from './main-spec';
 import type { RouteComponentProps } from 'react-router-dom';
 import ErrorBoundary from './error';
-import './App.css';
-
 import drivers from './data/driver.json';
 import samples from './data/samples';
-import getSmallOverviewSpec from './overview-spec';
+import getOneOfSmallMultiplesSpec from './small-multiples-spec';
+import './App.css';
 
 const WHOLE_CHROMOSOME_STR = 'Whole Genome';
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
@@ -55,15 +53,14 @@ const theme = {
         subtitleFontSize: 14,
         subtitleFontWeight: 'normal'
     }
-};
+} as const;
 
 function App(props: RouteComponentProps) {
     // URL parameters
     const urlParams = new URLSearchParams(props.location.search);
     const exampleId = urlParams.get('example');
     const selectedSamples = useMemo(
-        () =>
-            exampleId === 'doga' ? samples.filter(d => d.group === 'doga') : samples.filter(d => d.group === 'default'),
+        () => (!exampleId ? samples.filter(d => d.group === 'default') : samples.filter(d => d.group === exampleId)),
         [exampleId]
     );
 
@@ -79,6 +76,7 @@ function App(props: RouteComponentProps) {
     const [cnvUrl, setCnvUrl] = useState(selectedSamples[demoIdx].cnv);
     const [bamUrl, setBamUrl] = useState(selectedSamples[demoIdx].bam);
     const [baiUrl, setBaiUrl] = useState(selectedSamples[demoIdx].bai);
+    const [vcfUrl, setVcfUrl] = useState(selectedSamples[demoIdx].vcf);
     const [cnFields, setCnFields] = useState<[string, string, string]>(
         selectedSamples[demoIdx].cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
     );
@@ -99,7 +97,6 @@ function App(props: RouteComponentProps) {
     const [selectedSvId, setSelectedSvId] = useState<string>('');
     const [breakpoints, setBreakpoints] = useState<[number, number, number, number]>([1, 100, 1, 100]);
     const [bpIntervals, setBpIntervals] = useState<[number, number, number, number] | undefined>();
-    const [mousePosition, setMousePosiiton] = useState({ left: -100, top: -100 });
     const [mouseOnVis, setMouseOnVis] = useState(false);
 
     // SV data
@@ -116,6 +113,7 @@ function App(props: RouteComponentProps) {
         setCnvUrl(selectedSamples[demoIdx].cnv);
         setBamUrl(selectedSamples[demoIdx].bam);
         setBaiUrl(selectedSamples[demoIdx].bai);
+        setVcfUrl(selectedSamples[demoIdx].vcf);
         setCnFields(selectedSamples[demoIdx].cnFields ?? ['total_cn', 'major_cn', 'minor_cn']);
         setFilteredDrivers(
             (drivers as any).filter((d: any) => d.sample_id === selectedSamples[demoIdx].id && +d.chr && +d.pos)
@@ -135,43 +133,26 @@ function App(props: RouteComponentProps) {
     useEffect(() => {
         if (!gosRef.current) return;
 
-        gosRef.current.api.subscribe('click', (type: string, e: CommonEventData) => {
-            const zoom = false;
-            if (zoom) {
-                // start and end positions are already cumulative values
-                gosRef.current.api.zoomTo(
-                    `${sampleId}-bottom-left-coverage`,
-                    `chr1:${e.data.start1}-${e.data.end1}`,
-                    ZOOM_PADDING,
-                    ZOOM_DURATION
-                );
-                gosRef.current.api.zoomTo(
-                    `${sampleId}-bottom-right-coverage`,
-                    `chr1:${e.data.start2}-${e.data.end2}`,
-                    ZOOM_PADDING,
-                    ZOOM_DURATION
-                );
-            } else {
-                let x = +e.data[0].start1;
-                let xe = +e.data[0].end1;
-                let x1 = +e.data[0].start2;
-                let x1e = +e.data[0].end2;
+        gosRef.current.api.subscribe('click', (type, e) => {
+            let x = +e.data[0].start1;
+            let xe = +e.data[0].end1;
+            let x1 = +e.data[0].start2;
+            let x1e = +e.data[0].end2;
 
-                // safetly swap
-                if (x > x1) {
-                    x = +e.data[0].start2;
-                    xe = +e.data[0].end2;
-                    x1 = +e.data[0].start1;
-                    x1e = +e.data[0].end1;
-                }
-
-                const padding = (x1e - x) / 4.0;
-                gosRef.current.api.zoomTo(`${sampleId}-mid-ideogram`, `chr1:${x}-${x1e}`, padding, 500);
-
-                // we will show the bam files, so set the initial positions
-                setBreakpoints([+x - ZOOM_PADDING, +xe + ZOOM_PADDING, +x1 - ZOOM_PADDING, +x1e + ZOOM_PADDING]);
-                setBpIntervals([x, xe, x1, x1e]);
+            // safetly swap
+            if (x > x1) {
+                x = +e.data[0].start2;
+                xe = +e.data[0].end2;
+                x1 = +e.data[0].start1;
+                x1e = +e.data[0].end1;
             }
+
+            const padding = (x1e - x) / 4.0;
+            gosRef.current.api.zoomTo(`${sampleId}-mid-ideogram`, `chr1:${x}-${x1e}`, padding, 500);
+
+            // we will show the bam files, so set the initial positions
+            setBreakpoints([+x - ZOOM_PADDING, +xe + ZOOM_PADDING, +x1 - ZOOM_PADDING, +x1e + ZOOM_PADDING]);
+            setBpIntervals([x, xe, x1, x1e]);
 
             // Move to the bottom
             setTimeout(
@@ -276,8 +257,8 @@ function App(props: RouteComponentProps) {
         if (!overviewChr) return;
 
         if (overviewChr.includes('chr')) {
-            gosRef.current?.api.zoomTo(`${sampleId}-top-ideogram`, overviewChr, 0, 0); // ZOOM_DURATION);
-            setGenomeViewChr(overviewChr);
+            gosRef.current?.api.zoomTo(`${sampleId}-top-ideogram`, overviewChr, 0, 0);
+            setTimeout(() => setGenomeViewChr(overviewChr), 0);
         } else {
             gosRef.current?.api.zoomToExtent(`${sampleId}-top-ideogram`, ZOOM_DURATION);
         }
@@ -364,11 +345,14 @@ function App(props: RouteComponentProps) {
             cnvUrl,
             bamUrl,
             baiUrl,
+            vcfUrl,
             showOverview,
             xOffset: 0,
             showPutativeDriver,
             width: visPanelWidth,
-            drivers: filteredDrivers,
+            drivers: filteredDrivers.map(d => {
+                return { ...d, gene: `${d['biallelic'] === 'yes' ? '⊙' : ''} ${d.gene}` };
+            }),
             selectedSvId,
             breakpoints: breakpoints,
             crossChr: false,
@@ -384,7 +368,7 @@ function App(props: RouteComponentProps) {
                 padding={0}
                 margin={0}
                 experimental={{ reactive: true }}
-                theme={theme as any}
+                theme={theme}
             />
         );
     }, [
@@ -418,7 +402,6 @@ function App(props: RouteComponentProps) {
                     } else {
                         setMouseOnVis(false);
                     }
-                    setMousePosiiton({ top: e.clientY, left: e.clientX });
                 }}
                 onClick={() => {
                     if (!mouseOnVis && interactiveMode) setInteractiveMode(false);
@@ -638,7 +621,7 @@ function App(props: RouteComponentProps) {
                                 : 'collapse',
                         position: 'absolute',
                         right: `${VIS_PADDING}px`,
-                        top: '60px', // `${mousePosition.top + 20}px`,
+                        top: '60px',
                         background: 'lightgray',
                         color: 'black',
                         padding: '6px',

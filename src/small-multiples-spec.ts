@@ -10,7 +10,7 @@ type SpecOption = {
     cnFields: [string, string, string];
 };
 
-function getSmallOverviewSpec(option: SpecOption): GoslingSpec {
+function getOneOfSmallMultiplesSpec(option: SpecOption): GoslingSpec {
     const { title, subtitle, cnvUrl, svUrl, width, cnFields } = option;
     const screenshotWidth = 1200;
     return {
@@ -85,4 +85,4 @@ function getSmallOverviewSpec(option: SpecOption): GoslingSpec {
     };
 }
 
-export default getSmallOverviewSpec;
+export default getOneOfSmallMultiplesSpec;

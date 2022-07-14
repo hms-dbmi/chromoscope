@@ -2506,6 +2506,15 @@ genbank-parser@^1.0.0:
   resolved "https://registry.yarnpkg.com/genbank-parser/-/genbank-parser-1.2.4.tgz#ee2f9c32f66875024af0c09ee0ec5e10fb231802"
   integrity sha512-r3pTgKHZx/rol90v2cezrNhfMhq3yHWCnBYyETNIJkvnJk+cwx/D/ZVgAy1SX8zwtnfvYQmFbqlpbh2f4t0h2w==
 
+generic-filehandle@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/generic-filehandle/-/generic-filehandle-2.2.1.tgz#395ecf5e44113ec33472df86e1c0a4f64fbb1012"
+  integrity sha512-aI1uusDj0zrAvz8t7DfWKn2hjWEZBXhqW063MJB8gsvgCt8LOBJkuNOPXhWik237NMqI2m/ffQ4oKbaO+32vqg==
+  dependencies:
+    "@babel/runtime" "^7.9.6"
+    es6-promisify "^6.1.1"
+    file-uri-to-path "^2.0.0"
+
 generic-filehandle@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/generic-filehandle/-/generic-filehandle-2.1.0.tgz#3a6210bcd9332f3022e10c83c720a11152725f14"
@@ -2520,15 +2529,6 @@ generic-filehandle@^2.0.1:
   resolved "https://registry.yarnpkg.com/generic-filehandle/-/generic-filehandle-2.2.3.tgz#1383c72721ff7d0887508e770fe2aef41d15d0b7"
   integrity sha512-sF8SglBUoWnYp+4ZhTbNczHmwd8ybxSj/xe2veXlmd+UM0W9VRd16alg7haoyvSfqseQcNx8wFt8zBmfR8wLhQ==
   dependencies:
-    es6-promisify "^6.1.1"
-    file-uri-to-path "^2.0.0"
-
-generic-filehandle@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/generic-filehandle/-/generic-filehandle-2.2.1.tgz#395ecf5e44113ec33472df86e1c0a4f64fbb1012"
-  integrity sha512-aI1uusDj0zrAvz8t7DfWKn2hjWEZBXhqW063MJB8gsvgCt8LOBJkuNOPXhWik237NMqI2m/ffQ4oKbaO+32vqg==
-  dependencies:
-    "@babel/runtime" "^7.9.6"
     es6-promisify "^6.1.1"
     file-uri-to-path "^2.0.0"
 
@@ -2618,10 +2618,10 @@ gosling-theme@^0.0.10:
   resolved "https://registry.yarnpkg.com/gosling-theme/-/gosling-theme-0.0.10.tgz#5a4c2d0d24f90fe47c293335cd67832be6cf4d54"
   integrity sha512-GRm+XGeSGhKBjM/bNyeUkwp6tjnFKpNbywr58WzzA2qSA4RFPOoitS03R7xpYxqLXBGMFgahkyYd9Mostd2Csw==
 
-gosling.js@^0.9.19:
-  version "0.9.19"
-  resolved "https://registry.yarnpkg.com/gosling.js/-/gosling.js-0.9.19.tgz#548e69c5d83ca9220aa349d6d38142937913dd39"
-  integrity sha512-ElZh+quPcqEbdudPpPsfhwaV8AHhaLl6ZwhcmSHvn42ZvyDbSmoCNzdKr4i9xMb3UrFQoduVD841aRu6OWD1Ng==
+gosling.js@^0.9.21:
+  version "0.9.21"
+  resolved "https://registry.yarnpkg.com/gosling.js/-/gosling.js-0.9.21.tgz#46e0b4c0fda2592af440192b008143eb1d4765d8"
+  integrity sha512-GCk8wL0hFi218eGpDCPCeD/mBXq1O3oYGkGPixtPQIPrZd246X3StZn+Td3PGVnc5WozBLSdXVyrHWE4GMD99Q==
   dependencies:
     "@gmod/bam" "^1.1.8"
     "@gmod/bbi" "^1.0.30"
@@ -2643,7 +2643,7 @@ gosling.js@^0.9.19:
     d3-scale-chromatic "^2.0.0"
     d3-shape "^2.0.0"
     fflate "^0.7.1"
-    generic-filehandle "^2.2.1"
+    generic-filehandle "2.2.1"
     gosling-theme "^0.0.10"
     higlass "^1.11.8"
     higlass-register "^0.3.0"
@@ -2653,6 +2653,7 @@ gosling.js@^0.9.19:
     lodash-es "^4.17.21"
     mixwith "^0.1.1"
     pubsub-js "^1.9.3"
+    quick-lru "^6.1.1"
     rbush "^3.0.1"
     react-grid-layout "^1.2.5"
     threads "^1.6.4"
@@ -3851,6 +3852,11 @@ quick-lru@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-4.0.1.tgz#5b8878f113a58217848c6482026c73e1ba57727f"
   integrity sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==
+
+quick-lru@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-6.1.1.tgz#f8e5bf9010376c126c80c1a62827a526c0e60adf"
+  integrity sha512-S27GBT+F0NTRiehtbrgaSE1idUAJ5bX8dPAQTdylEyNlrdcH5X4Lz7Edz3DYzecbsCluD5zO8ZNEe04z3D3u6Q==
 
 quickselect@^2.0.0:
   version "2.0.0"

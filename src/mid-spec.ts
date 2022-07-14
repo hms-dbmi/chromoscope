@@ -1,12 +1,12 @@
-import { GoslingSpec } from 'gosling.js';
-import { SpecOption } from './spec-generator';
-import { MultipleViews, SingleTrack, SingleView, View } from 'gosling.js/dist/src/core/gosling.schema';
+import { SpecOption } from './main-spec';
+import { SingleTrack, View } from 'gosling.js/dist/src/core/gosling.schema';
 import tracks from './track';
 
 export default function getMidView(option: SpecOption): View[] {
     const {
         sampleId,
         assembly,
+        vcfUrl,
         cnvUrl,
         svUrl,
         width,
@@ -95,7 +95,7 @@ export default function getMidView(option: SpecOption): View[] {
                               x: { field: 'pos', type: 'genomic' },
                               text: { field: 'gene', type: 'nominal' },
                               color: { value: 'black' },
-                              style: { textFontWeight: 'normal', dx: -10 },
+                              style: { textFontWeight: 'normal' },
                               tooltip: [
                                   { field: 'pos', alt: 'Position', type: 'genomic' },
                                   { field: 'ref', alt: 'REF', type: 'nominal' },
@@ -149,9 +149,21 @@ export default function getMidView(option: SpecOption): View[] {
                         geneLabelOpacity: { value: 1 },
                         type: { field: 'type' }
                     },
+                    tooltip: [
+                        { field: 'name', type: 'nominal' },
+                        { field: 'strand', type: 'nominal' }
+                    ],
                     width,
                     height: 60
                 },
+                ...(!vcfUrl
+                    ? []
+                    : [
+                          tracks.mutation(sampleId, width, 60, 'mid'),
+                          tracks.boundary('mutation', 'mid'),
+                          tracks.indel(sampleId, width, 40, 'mid'),
+                          tracks.boundary('indel', 'mid')
+                      ]),
                 tracks.cnv(sampleId, cnvUrl, width, 60, 'mid', cnFields),
                 tracks.boundary('cnv', 'mid'),
                 tracks.gain(sampleId, cnvUrl, width, 20, 'mid', cnFields),

@@ -1,5 +1,5 @@
 import { GoslingSpec } from 'gosling.js';
-import { SpecOption } from './spec-generator';
+import { SpecOption } from './main-spec';
 import defaultEncodings from './default-encoding';
 import { SingleTrack } from 'gosling.js/dist/src/core/gosling.schema';
 
