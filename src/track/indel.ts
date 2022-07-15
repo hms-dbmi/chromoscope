@@ -1,13 +1,20 @@
 import { OverlaidTracks } from 'gosling.js/dist/src/core/gosling.schema';
 import { TrackMode } from './index';
 
-export default function indel(sampleId: string, width: number, height: number, mode: TrackMode): OverlaidTracks {
+export default function indel(
+    sampleId: string,
+    url: string,
+    indexUrl: string,
+    width: number,
+    height: number,
+    mode: TrackMode
+): OverlaidTracks {
     return {
         id: `${sampleId}-${mode}-indel`,
         style: { background: '#F6F6F6' },
         data: {
-            url: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/INDEL_test_tumor_normal_with_panel.vcf.gz',
-            indexUrl: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/INDEL_test_tumor_normal_with_panel.vcf.gz.tbi',
+            url,
+            indexUrl,
             type: 'vcf',
             sampleLength: 5000
         },

@@ -7,6 +7,9 @@ export default function getMidView(option: SpecOption): View[] {
         id,
         assembly,
         vcf,
+        vcfIndex,
+        vcf2,
+        vcf2Index,
         cnv,
         sv,
         width,
@@ -157,9 +160,9 @@ export default function getMidView(option: SpecOption): View[] {
                 ...(!vcf
                     ? []
                     : [
-                          tracks.mutation(id, width, 60, 'mid'),
+                          tracks.mutation(id, vcf, vcfIndex, width, 60, 'mid'),
                           tracks.boundary('mutation', 'mid'),
-                          tracks.indel(id, width, 40, 'mid'),
+                          tracks.indel(id, vcf2, vcf2Index, width, 40, 'mid'),
                           tracks.boundary('indel', 'mid')
                       ]),
                 tracks.cnv(id, cnv, width, 60, 'mid', cnFields),

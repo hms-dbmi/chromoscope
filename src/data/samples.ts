@@ -25,6 +25,8 @@ export type SampleType = {
     bai?: string; // URL of bai
     vcf?: string;
     vcfIndex?: string;
+    vcf2?: string;
+    vcf2Index?: string;
     cnFields?: [string, string, string];
     thumbnail?: string;
 };
@@ -111,19 +113,6 @@ const samples: SampleType[] = [
         thumbnail: _SRR7890905
     },
     {
-        group: 'vcf',
-        id: 'SRR7890905-vcf-test',
-        cancer: 'breast',
-        assembly: 'hg38',
-        sv: 'https://somatic-browser-test.s3.amazonaws.com/SVTYPE_SV_test_tumor_normal_with_panel.bedpe',
-        cnv: 'https://gist.githubusercontent.com/sehilyi/6fbceae35756b13472332d6b81b10803/raw/596428a8b0ebc00e7f8cbc52b050db0fbd6e19a5/SRR7890943.ascat.v3.cnv.tsv',
-        bam: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam',
-        bai: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam.bai',
-        vcf: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/SNV_test_tumor_normal_with_panel.vcf.gz',
-        vcfIndex: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/SNV_test_tumor_normal_with_panel.vcf.gz.tbi',
-        thumbnail: _SRR7890905
-    },
-    {
         group: 'default',
         id: 'bc0dee07-de20-44d6-be65-05af7e63ac96', // GACA-CN-
         cancer: 'gastric',
@@ -167,6 +156,21 @@ const samples: SampleType[] = [
         sv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/0bfd1043-816e-e3e4-e050-11ac0c4860c5.pcawg_consensus_1.6.161116.somatic.sv.bedpe',
         cnv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/0bfd1043-816e-e3e4-e050-11ac0c4860c5.consensus.20170119.somatic.cna.txt',
         thumbnail: _0bfd1043
+    },
+    {
+        group: 'vcf',
+        id: 'SRR7890905-demo',
+        cancer: 'breast',
+        assembly: 'hg38',
+        sv: 'https://somatic-browser-test.s3.amazonaws.com/SVTYPE_SV_test_tumor_normal_with_panel.bedpe',
+        cnv: 'https://gist.githubusercontent.com/sehilyi/6fbceae35756b13472332d6b81b10803/raw/596428a8b0ebc00e7f8cbc52b050db0fbd6e19a5/SRR7890943.ascat.v3.cnv.tsv',
+        bam: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam',
+        bai: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam.bai',
+        vcf: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/SNV_test_tumor_normal_with_panel.vcf.gz',
+        vcfIndex: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/SNV_test_tumor_normal_with_panel.vcf.gz.tbi',
+        vcf2: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/INDEL_test_tumor_normal_with_panel.vcf.gz',
+        vcf2Index: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/INDEL_test_tumor_normal_with_panel.vcf.gz.tbi',
+        thumbnail: _SRR7890905
     }
 ];
 
