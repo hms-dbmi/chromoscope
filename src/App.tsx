@@ -20,6 +20,12 @@ function App(props: RouteComponentProps) {
     // URL parameters
     const urlParams = new URLSearchParams(props.location.search);
     const exampleId = urlParams.get('example');
+    const externalUrl = urlParams.get('external');
+    const showSmallMultiples = externalUrl ? false : true;
+    useEffect(() => {
+        fetch(externalUrl).then(response => response.text().then(d => setDemo(JSON.parse(d))));
+    }, []);
+
     const selectedSamples = useMemo(
         () => (!exampleId ? samples.filter(d => d.group === 'default') : samples.filter(d => d.group === exampleId)),
         [exampleId]
@@ -327,6 +333,7 @@ function App(props: RouteComponentProps) {
                 <svg
                     className="config-button"
                     viewBox="0 0 16 16"
+                    visibility={showSmallMultiples ? 'visible' : 'collapse'}
                     onClick={() => {
                         setShowSamples(true);
                     }}
