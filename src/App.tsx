@@ -22,9 +22,6 @@ function App(props: RouteComponentProps) {
     const exampleId = urlParams.get('example');
     const externalUrl = urlParams.get('external');
     const showSmallMultiples = externalUrl ? false : true;
-    useEffect(() => {
-        fetch(externalUrl).then(response => response.text().then(d => setDemo(JSON.parse(d))));
-    }, []);
 
     const selectedSamples = useMemo(
         () => (!exampleId ? samples.filter(d => d.group === 'default') : samples.filter(d => d.group === exampleId)),
@@ -67,6 +64,10 @@ function App(props: RouteComponentProps) {
         leftReads.current = [];
         rightReads.current = [];
     }, [demo]);
+
+    useEffect(() => {
+        fetch(externalUrl).then(response => response.text().then(d => setDemo(JSON.parse(d))));
+    }, []);
 
     useEffect(() => {
         setFilteredSamples(
