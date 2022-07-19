@@ -58,15 +58,6 @@ const samples: SampleType[] = [
     },
     {
         group: 'default',
-        id: '84ca6ab0-9edc-4636-9d27-55cdba334d7d',
-        cancer: 'ovarian',
-        assembly: 'hg19',
-        sv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/84ca6ab0-9edc-4636-9d27-55cdba334d7d.pcawg_consensus_1.6.161022.somatic.sv.bedpe',
-        cnv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/84ca6ab0-9edc-4636-9d27-55cdba334d7d.consensus.20170119.somatic.cna.annotated.txt',
-        thumbnail: _84ca6ab0
-    },
-    {
-        group: 'default',
         id: '7d332cb1-ba25-47e4-8bf8-d25e14f40d59',
         cancer: 'sarcoma',
         assembly: 'hg19',
@@ -119,6 +110,12 @@ const samples: SampleType[] = [
         assembly: 'hg19',
         sv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/bc0dee07-de20-44d6-be65-05af7e63ac96.pcawg_consensus_1.6.161116.somatic.sv.bedpe',
         cnv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/bc0dee07-de20-44d6-be65-05af7e63ac96.consensus.20170119.somatic.cna.txt',
+        vcf: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/bc0dee07-de20-44d6-be65-05af7e63ac96.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz',
+        vcfIndex:
+            'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/bc0dee07-de20-44d6-be65-05af7e63ac96.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz.tbi',
+        vcf2: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/bc0dee07-de20-44d6-be65-05af7e63ac96.consensus.20161006.somatic.indel.sorted.vcf.gz',
+        vcf2Index:
+            'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/bc0dee07-de20-44d6-be65-05af7e63ac96.consensus.20161006.somatic.indel.sorted.vcf.gz.tbi',
         thumbnail: _bc0dee07
     },
     {
@@ -128,6 +125,12 @@ const samples: SampleType[] = [
         assembly: 'hg19',
         sv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/f1504811-8363-41e6-b43c-62452b1262d3.pcawg_consensus_1.6.161116.somatic.sv.bedpe',
         cnv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/f1504811-8363-41e6-b43c-62452b1262d3.consensus.20170119.somatic.cna.txt',
+        vcf: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/f1504811-8363-41e6-b43c-62452b1262d3.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz',
+        vcfIndex:
+            'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/f1504811-8363-41e6-b43c-62452b1262d3.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz.tbi',
+        vcf2: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/f1504811-8363-41e6-b43c-62452b1262d3.consensus.20161006.somatic.indel.sorted.vcf.gz',
+        vcf2Index:
+            'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/f1504811-8363-41e6-b43c-62452b1262d3.consensus.20161006.somatic.indel.sorted.vcf.gz.tbi',
         thumbnail: _f1504811
     },
     {
@@ -137,6 +140,12 @@ const samples: SampleType[] = [
         assembly: 'hg19',
         sv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/89dad92e-5b3f-479a-a6da-a94ee7df7f8a.pcawg_consensus_1.6.161116.somatic.sv.bedpe',
         cnv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/89dad92e-5b3f-479a-a6da-a94ee7df7f8a.consensus.20170119.somatic.cna.txt',
+        vcf: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/89dad92e-5b3f-479a-a6da-a94ee7df7f8a.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz',
+        vcfIndex:
+            'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/89dad92e-5b3f-479a-a6da-a94ee7df7f8a.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz.tbi',
+        vcf2: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/89dad92e-5b3f-479a-a6da-a94ee7df7f8a.consensus.20161006.somatic.indel.sorted.vcf.gz',
+        vcf2Index:
+            'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/89dad92e-5b3f-479a-a6da-a94ee7df7f8a.consensus.20161006.somatic.indel.sorted.vcf.gz.tbi',
         thumbnail: _89dad92e
     },
     {
@@ -146,7 +155,28 @@ const samples: SampleType[] = [
         assembly: 'hg19',
         sv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/b243adb4-b3e7-4e0e-bc0d-625aa8dbb1be.pcawg_consensus_1.6.161116.somatic.sv.bedpe',
         cnv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/b243adb4-b3e7-4e0e-bc0d-625aa8dbb1be.consensus.20170119.somatic.cna.txt',
+        vcf: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/b243adb4-b3e7-4e0e-bc0d-625aa8dbb1be.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz',
+        vcfIndex:
+            'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/b243adb4-b3e7-4e0e-bc0d-625aa8dbb1be.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz.tbi',
+        vcf2: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/b243adb4-b3e7-4e0e-bc0d-625aa8dbb1be.consensus.20161006.somatic.indel.sorted.vcf.gz',
+        vcf2Index:
+            'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/b243adb4-b3e7-4e0e-bc0d-625aa8dbb1be.consensus.20161006.somatic.indel.sorted.vcf.gz.tbi',
         thumbnail: _b243adb4
+    },
+    {
+        group: 'default',
+        id: '84ca6ab0-9edc-4636-9d27-55cdba334d7d',
+        cancer: 'ovarian',
+        assembly: 'hg19',
+        sv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/84ca6ab0-9edc-4636-9d27-55cdba334d7d.pcawg_consensus_1.6.161022.somatic.sv.bedpe',
+        cnv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/84ca6ab0-9edc-4636-9d27-55cdba334d7d.consensus.20170119.somatic.cna.annotated.txt',
+        vcf: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/84ca6ab0-9edc-4636-9d27-55cdba334d7d.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz',
+        vcfIndex:
+            'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/84ca6ab0-9edc-4636-9d27-55cdba334d7d.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz.tbi',
+        vcf2: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/84ca6ab0-9edc-4636-9d27-55cdba334d7d.consensus.20161006.somatic.indel.sorted.vcf.gz',
+        vcf2Index:
+            'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/84ca6ab0-9edc-4636-9d27-55cdba334d7d.consensus.20161006.somatic.indel.sorted.vcf.gz.tbi',
+        thumbnail: _84ca6ab0
     },
     {
         group: 'default',
@@ -155,22 +185,13 @@ const samples: SampleType[] = [
         assembly: 'hg19',
         sv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/0bfd1043-816e-e3e4-e050-11ac0c4860c5.pcawg_consensus_1.6.161116.somatic.sv.bedpe',
         cnv: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/0bfd1043-816e-e3e4-e050-11ac0c4860c5.consensus.20170119.somatic.cna.txt',
+        vcf: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/0bfd1043-816e-e3e4-e050-11ac0c4860c5.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz',
+        vcfIndex:
+            'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/0bfd1043-816e-e3e4-e050-11ac0c4860c5.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz.tbi',
+        vcf2: 'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/0bfd1043-816e-e3e4-e050-11ac0c4860c5.consensus.20161006.somatic.indel.sorted.vcf.gz',
+        vcf2Index:
+            'https://somatic-browser-test.s3.amazonaws.com/cdk12cancers/0bfd1043-816e-e3e4-e050-11ac0c4860c5.consensus.20161006.somatic.indel.sorted.vcf.gz.tbi',
         thumbnail: _0bfd1043
-    },
-    {
-        group: 'vcf',
-        id: 'SRR7890905-demo',
-        cancer: 'breast',
-        assembly: 'hg38',
-        sv: 'https://somatic-browser-test.s3.amazonaws.com/SVTYPE_SV_test_tumor_normal_with_panel.bedpe',
-        cnv: 'https://gist.githubusercontent.com/sehilyi/6fbceae35756b13472332d6b81b10803/raw/596428a8b0ebc00e7f8cbc52b050db0fbd6e19a5/SRR7890943.ascat.v3.cnv.tsv',
-        bam: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam',
-        bai: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam.bai',
-        vcf: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/SNV_test_tumor_normal_with_panel.vcf.gz',
-        vcfIndex: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/SNV_test_tumor_normal_with_panel.vcf.gz.tbi',
-        vcf2: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/INDEL_test_tumor_normal_with_panel.vcf.gz',
-        vcf2Index: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/INDEL_test_tumor_normal_with_panel.vcf.gz.tbi',
-        thumbnail: _SRR7890905
     }
 ];
 
