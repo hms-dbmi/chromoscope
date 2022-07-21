@@ -28,7 +28,7 @@ export default function cnv(
         tracks: [
             {
                 y: { field: total_cn, type: 'quantitative', axis: 'right', grid: true },
-                color: { value: 'darkgray' }
+                color: { value: '#808080' }
             }
             // {
             //     y: { field: 'minor_cn', type: 'quantitative', axis: 'right', grid: true },
@@ -40,9 +40,9 @@ export default function cnv(
             { field: major_cn, type: 'quantitative' },
             { field: minor_cn, type: 'quantitative' }
         ],
-        size: { value: 4 },
-        stroke: { value: 'darkgray' },
-        strokeWidth: { value: 1 },
+        size: { value: 5 },
+        stroke: { value: '#808080' },
+        strokeWidth: { value: 2 },
         opacity: { value: 0.8 },
         width,
         height
