@@ -298,6 +298,9 @@ function App(props: RouteComponentProps) {
             <GoslingComponent
                 ref={gosRef}
                 spec={spec}
+                compiled={(a, b) => {
+                    console.log(b);
+                }}
                 padding={0}
                 margin={0}
                 experimental={{ reactive: true }}
@@ -481,8 +484,7 @@ function App(props: RouteComponentProps) {
                                 className="gene-search-icon"
                                 viewBox="0 0 16 16"
                                 style={{
-                                    top: `${Math.min(visPanelWidth, 600) + 6}px`,
-                                    visibility: demo.assembly === 'hg38' ? 'visible' : 'collapse'
+                                    top: `${Math.min(visPanelWidth, 600) + 6}px`
                                 }}
                             >
                                 <path
@@ -496,8 +498,7 @@ function App(props: RouteComponentProps) {
                                 placeholder="Search Gene (e.g., MYC)"
                                 style={{
                                     pointerEvents: 'auto',
-                                    top: `${Math.min(visPanelWidth, 600)}px`,
-                                    visibility: demo.assembly === 'hg38' ? 'visible' : 'collapse'
+                                    top: `${Math.min(visPanelWidth, 600)}px`
                                 }}
                                 // onChange={(e) => {
                                 //     const keyword = e.target.value;
