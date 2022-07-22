@@ -21,7 +21,7 @@ function App(props: RouteComponentProps) {
     const urlParams = new URLSearchParams(props.location.search);
     const exampleId = urlParams.get('example');
     const externalUrl = urlParams.get('external');
-    const showSmallMultiples = externalUrl ? false : true;
+    const showSmallMultiples = true; // externalUrl ? false : true;
 
     const selectedSamples = useMemo(
         () => (!exampleId ? samples.filter(d => d.group === 'default') : samples.filter(d => d.group === exampleId)),
@@ -66,7 +66,20 @@ function App(props: RouteComponentProps) {
     }, [demo]);
 
     useEffect(() => {
-        fetch(externalUrl).then(response => response.text().then(d => setDemo(JSON.parse(d))));
+        if (externalUrl) {
+            fetch(externalUrl).then(response =>
+                response.text().then(d => {
+                    let externalDemo = JSON.parse(d);
+                    if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
+                        setFilteredSamples(externalDemo);
+                        externalDemo = externalDemo[0];
+                    }
+                    if (externalDemo) {
+                        setDemo(externalDemo);
+                    }
+                })
+            );
+        }
     }, []);
 
     useEffect(() => {
@@ -257,7 +270,22 @@ function App(props: RouteComponentProps) {
                 <div style={{ color: 'grey', fontSize: '14px' }}>
                     {'' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : '')}
                 </div>
-                <img src={d.thumbnail} style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }} />
+                {d.thumbnail ? (
+                    <img src={d.thumbnail} style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }} />
+                ) : (
+                    <div style={{ marginLeft: 'calc(50% - 165px)' }}>
+                        <GoslingComponent
+                            spec={getOneOfSmallMultiplesSpec({
+                                cnvUrl: d.cnv,
+                                svUrl: d.sv,
+                                width: 210,
+                                title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
+                                subtitle: d.id, // '' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : ''),
+                                cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
+                            })}
+                        />
+                    </div>
+                )}
                 <div className="tag-parent">
                     <div className={'tag-sv'}>SV</div>
                     <div className={d.vcf && d.vcfIndex ? 'tag-pm' : 'tag-disabled'}>Point Mutation</div>

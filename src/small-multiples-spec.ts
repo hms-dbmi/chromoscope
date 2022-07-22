@@ -12,7 +12,7 @@ type SpecOption = {
 
 function getOneOfSmallMultiplesSpec(option: SpecOption): GoslingSpec {
     const { title, subtitle, cnvUrl, svUrl, width, cnFields } = option;
-    const screenshotWidth = 1200;
+    const screenshotWidth = width; // 1200;
     return {
         // title,
         // subtitle,

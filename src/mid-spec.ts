@@ -82,7 +82,7 @@ export default function getMidView(option: SpecOption): View[] {
                     ? []
                     : [
                           {
-                              id: `${id}-mid-driver`,
+                              //   id: `${id}-mid-driver`,
                               title: 'Putative Driver',
                               data: {
                                   values: drivers,
