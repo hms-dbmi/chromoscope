@@ -163,6 +163,48 @@ body {
     color: #333333;
 }
 
+.tag-parent {
+    margin: 4px;
+    max-width: 200px;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+.tag-ra,
+.tag-id,
+.tag-pm,
+.tag-sv,
+.tag-disabled {
+    /* border-radius: 4px; */
+    padding: 2px;
+    /* margin: 2px; */
+    border: 1px solid rgb(234, 234, 234);
+    font-weight: bold;
+}
+
+.tag-disabled {
+    color: lightgrey;
+}
+
+.tag-sv {
+    color: #3275b4;
+}
+
+.tag-ra {
+    color: #d6641e;
+    /* color: white; */
+}
+
+.tag-id {
+    color: #cc7daa;
+    /* color: black; */
+}
+
+.tag-pm {
+    color: #e6a01b;
+    /* color: black; */
+}
+
 .config-button {
     width: 30px;
     height: 30px;

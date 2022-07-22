@@ -54,6 +54,12 @@ const samples: SampleType[] = [
         assembly: 'hg19',
         sv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.pcawg_consensus_1.6.161022.somatic.sv.bedpe',
         cnv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.consensus.20170119.somatic.cna.annotated.txt',
+        vcf: 'https://somatic-browser-test.s3.amazonaws.com/browserExamples/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz',
+        vcfIndex:
+            'https://somatic-browser-test.s3.amazonaws.com/browserExamples/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz.tbi',
+        vcf2: 'https://somatic-browser-test.s3.amazonaws.com/browserExamples/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.consensus.20161006.somatic.indel.sorted.vcf.gz',
+        vcf2Index:
+            'https://somatic-browser-test.s3.amazonaws.com/browserExamples/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.consensus.20161006.somatic.indel.sorted.vcf.gz.tbi',
         thumbnail: _7a921087
     },
     {
@@ -63,6 +69,12 @@ const samples: SampleType[] = [
         assembly: 'hg19',
         sv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/7d332cb1-ba25-47e4-8bf8-d25e14f40d59.pcawg_consensus_1.6.161022.somatic.sv.bedpe',
         cnv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/7d332cb1-ba25-47e4-8bf8-d25e14f40d59.consensus.20170119.somatic.cna.annotated.txt',
+        vcf: 'https://somatic-browser-test.s3.amazonaws.com/browserExamples/7d332cb1-ba25-47e4-8bf8-d25e14f40d59.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz',
+        vcfIndex:
+            'https://somatic-browser-test.s3.amazonaws.com/browserExamples/7d332cb1-ba25-47e4-8bf8-d25e14f40d59.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz.tbi',
+        vcf2: 'https://somatic-browser-test.s3.amazonaws.com/browserExamples/7d332cb1-ba25-47e4-8bf8-d25e14f40d59.consensus.20161006.somatic.indel.sorted.vcf.gz',
+        vcf2Index:
+            'https://somatic-browser-test.s3.amazonaws.com/browserExamples/7d332cb1-ba25-47e4-8bf8-d25e14f40d59.consensus.20161006.somatic.indel.sorted.vcf.gz.tbi',
         thumbnail: _7d332cb1
     },
     {
@@ -72,6 +84,12 @@ const samples: SampleType[] = [
         assembly: 'hg19',
         sv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/9ae0744a-9bc1-4cd7-b7cf-c6569ed9e4aa.pcawg_consensus_1.6.161022.somatic.sv.bedpe',
         cnv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/9ae0744a-9bc1-4cd7-b7cf-c6569ed9e4aa.consensus.20170119.somatic.cna.annotated.txt',
+        vcf: 'https://somatic-browser-test.s3.amazonaws.com/browserExamples/9ae0744a-9bc1-4cd7-b7cf-c6569ed9e4aa.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz',
+        vcfIndex:
+            'https://somatic-browser-test.s3.amazonaws.com/browserExamples/9ae0744a-9bc1-4cd7-b7cf-c6569ed9e4aa.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz.tbi',
+        vcf2: 'https://somatic-browser-test.s3.amazonaws.com/browserExamples/9ae0744a-9bc1-4cd7-b7cf-c6569ed9e4aa.consensus.20161006.somatic.indel.sorted.vcf.gz',
+        vcf2Index:
+            'https://somatic-browser-test.s3.amazonaws.com/browserExamples/9ae0744a-9bc1-4cd7-b7cf-c6569ed9e4aa.consensus.20161006.somatic.indel.sorted.vcf.gz.tbi',
         thumbnail: _9ae0744a
     },
     {
@@ -81,6 +99,12 @@ const samples: SampleType[] = [
         assembly: 'hg19',
         sv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/b27d75ba-5989-4200-bfe9-f1b7d7cf8008.pcawg_consensus_1.6.161022.somatic.sv.bedpe',
         cnv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/b27d75ba-5989-4200-bfe9-f1b7d7cf8008.consensus.20170119.somatic.cna.annotated.txt',
+        vcf: 'https://somatic-browser-test.s3.amazonaws.com/browserExamples/b27d75ba-5989-4200-bfe9-f1b7d7cf8008.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz',
+        vcfIndex:
+            'https://somatic-browser-test.s3.amazonaws.com/browserExamples/b27d75ba-5989-4200-bfe9-f1b7d7cf8008.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz.tbi',
+        vcf2: 'https://somatic-browser-test.s3.amazonaws.com/browserExamples/b27d75ba-5989-4200-bfe9-f1b7d7cf8008.consensus.20161006.somatic.indel.sorted.vcf.gz',
+        vcf2Index:
+            'https://somatic-browser-test.s3.amazonaws.com/browserExamples/b27d75ba-5989-4200-bfe9-f1b7d7cf8008.consensus.20161006.somatic.indel.sorted.vcf.gz.tbi',
         thumbnail: _b27d75ba
     },
     {
@@ -90,6 +114,12 @@ const samples: SampleType[] = [
         assembly: 'hg19',
         sv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/fc8edf46-2005-1af4-e040-11ac0d481414.pcawg_consensus_1.6.161022.somatic.sv.bedpe',
         cnv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/fc8edf46-2005-1af4-e040-11ac0d481414.consensus.20170119.somatic.cna.annotated.txt',
+        vcf: 'https://somatic-browser-test.s3.amazonaws.com/browserExamples/fc8edf46-2005-1af4-e040-11ac0d481414.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz',
+        vcfIndex:
+            'https://somatic-browser-test.s3.amazonaws.com/browserExamples/fc8edf46-2005-1af4-e040-11ac0d481414.consensus.20160830.somatic.snv_mnv.sorted.vcf.gz.tbi',
+        vcf2: 'https://somatic-browser-test.s3.amazonaws.com/browserExamples/fc8edf46-2005-1af4-e040-11ac0d481414.consensus.20161006.somatic.indel.sorted.vcf.gz',
+        vcf2Index:
+            'https://somatic-browser-test.s3.amazonaws.com/browserExamples/fc8edf46-2005-1af4-e040-11ac0d481414.consensus.20161006.somatic.indel.sorted.vcf.gz.tbi',
         thumbnail: _fc8edf46
     },
     {

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { GoslingComponent } from 'gosling.js';
+import { GoslingComponent, GoslingRef } from 'gosling.js';
 import { debounce } from 'lodash';
 import type { RouteComponentProps } from 'react-router-dom';
 import generateSpec from './main-spec';
@@ -28,7 +28,7 @@ function App(props: RouteComponentProps) {
         [exampleId]
     );
 
-    const gosRef = useRef<any>();
+    const gosRef = useRef<GoslingRef>();
 
     // demo
     const [demo, setDemo] = useState(selectedSamples[0]);
@@ -189,7 +189,7 @@ function App(props: RouteComponentProps) {
         });
 
         return () => {
-            gosRef.current.api.unsubscribe('rawdata');
+            gosRef.current.api.unsubscribe('rawData');
         };
     }, [gosRef, svReads, demo]);
 
@@ -254,10 +254,16 @@ function App(props: RouteComponentProps) {
                 <div style={{}}>
                     <b>{d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1).split(' ')[0]}</b>
                 </div>
-                <div style={{ color: 'grey', fontSize: '12px' }}>
+                <div style={{ color: 'grey', fontSize: '14px' }}>
                     {'' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : '')}
                 </div>
                 <img src={d.thumbnail} style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }} />
+                <div className="tag-parent">
+                    <div className={'tag-sv'}>SV</div>
+                    <div className={d.vcf && d.vcfIndex ? 'tag-pm' : 'tag-disabled'}>Point Mutation</div>
+                    <div className={d.vcf2 && d.vcf2Index ? 'tag-id' : 'tag-disabled'}>Indel</div>
+                    <div className={d.bam && d.bai ? 'tag-ra' : 'tag-disabled'}>Read Alignment</div>
+                </div>
             </div>
         ));
         // smallOverviewGoslingComponents.map(([component, spec], i) => (
@@ -298,9 +304,6 @@ function App(props: RouteComponentProps) {
             <GoslingComponent
                 ref={gosRef}
                 spec={spec}
-                compiled={(a, b) => {
-                    console.log(b);
-                }}
                 padding={0}
                 margin={0}
                 experimental={{ reactive: true }}
@@ -524,7 +527,7 @@ function App(props: RouteComponentProps) {
                                             break;
                                         case 'Enter':
                                             // https://github.com/gosling-lang/gosling.js/blob/7555ab711023a0c3e2076a448756a9ba3eeb04f7/src/core/api.ts#L156
-                                            gosRef.current.api.zoomToGene(
+                                            gosRef.current.hgApi.api.zoomToGene(
                                                 `${demo.id}-mid-ideogram`,
                                                 keyword,
                                                 10000,
