@@ -107,7 +107,10 @@ function App(props: RouteComponentProps) {
             }
 
             const padding = (x1e - x) / 4.0;
-            gosRef.current.api.zoomTo(`${demo.id}-mid-ideogram`, `chr1:${x}-${x1e}`, padding, 500);
+            setTimeout(
+                () => gosRef.current.api.zoomTo(`${demo.id}-mid-ideogram`, `chr1:${x}-${x1e}`, padding, 500),
+                2000
+            );
 
             // we will show the bam files, so set the initial positions
             setBreakpoints([+x - ZOOM_PADDING, +xe + ZOOM_PADDING, +x1 - ZOOM_PADDING, +x1e + ZOOM_PADDING]);
