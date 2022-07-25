@@ -21,6 +21,12 @@ function App(props: RouteComponentProps) {
     const urlParams = new URLSearchParams(props.location.search);
     const exampleId = urlParams.get('example');
     const externalUrl = urlParams.get('external');
+    const xDomain = urlParams.get('domain')
+        ? urlParams
+              .get('domain')
+              .split('-')
+              .map(d => +d)
+        : null;
     const [showSmallMultiples, setShowSmallMultiples] = useState(externalUrl === null);
 
     const selectedSamples = useMemo(
@@ -109,7 +115,7 @@ function App(props: RouteComponentProps) {
             const padding = (x1e - x) / 4.0;
             setTimeout(
                 () => gosRef.current.api.zoomTo(`${demo.id}-mid-ideogram`, `chr1:${x}-${x1e}`, padding, 500),
-                2000
+                1000
             );
 
             // we will show the bam files, so set the initial positions
@@ -322,6 +328,7 @@ function App(props: RouteComponentProps) {
         const spec = generateSpec({
             ...demo,
             showOverview,
+            xDomain: xDomain as [number, number],
             xOffset: 0,
             showPutativeDriver,
             width: visPanelWidth,
@@ -391,10 +398,34 @@ function App(props: RouteComponentProps) {
                     <span className="title-btn" onClick={() => gosRef.current?.api.exportPng()}>
                         <svg className="button" viewBox="0 0 16 16">
                             <title>Export Image</title>
-                            <path
-                                fill="currentColor"
-                                d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8zm5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707l-4.096 4.096z"
-                            />
+                            {ICONS.IMAGE.path.map(p => (
+                                <path fill="currentColor" key={p} d={p} />
+                            ))}
+                        </svg>
+                    </span>
+                    <span
+                        className="title-btn"
+                        onClick={() => {
+                            const { xDomain } = gosRef.current.hgApi.api.getLocation(`${demo.id}-mid-ideogram`);
+                            if (xDomain) {
+                                urlParams.set('domain', xDomain.join('-'));
+                                const newUrl =
+                                    window.location.origin + window.location.pathname + '?' + urlParams.toString();
+                                navigator.clipboard
+                                    .writeText(newUrl)
+                                    .then(() =>
+                                        alert(
+                                            'Experimental!: The URL of the current session has been copied to your clipboard.'
+                                        )
+                                    );
+                            }
+                        }}
+                        style={{ marginLeft: 40 }}
+                    >
+                        <svg className="button" viewBox="0 0 16 16">
+                            <title>Export Link</title>
+                            <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
+                            <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z" />
                         </svg>
                     </span>
                 </div>

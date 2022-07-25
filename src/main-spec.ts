@@ -9,6 +9,7 @@ import { SampleType } from './data/samples';
 export interface SpecOption extends SampleType {
     showOverview: boolean;
     showPutativeDriver: boolean;
+    xDomain?: [number, number];
     xOffset: number;
     width: number;
     drivers: { [k: string]: string | number }[];

@@ -6,6 +6,7 @@ export default function getMidView(option: SpecOption): View[] {
     const {
         id,
         assembly,
+        xDomain,
         vcf,
         vcfIndex,
         vcf2,
@@ -23,7 +24,7 @@ export default function getMidView(option: SpecOption): View[] {
     return [
         {
             linkingId: 'mid-scale',
-            xDomain: { chromosome: '3' },
+            xDomain: xDomain ? { interval: xDomain } : { chromosome: '3' },
             layout: 'linear',
             tracks: [
                 {
