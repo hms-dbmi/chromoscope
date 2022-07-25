@@ -29,6 +29,7 @@ export type SampleType = {
     vcf2Index?: string;
     cnFields?: [string, string, string];
     thumbnail?: string;
+    note?: string;
 };
 
 const samples: SampleType[] = [

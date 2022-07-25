@@ -170,6 +170,14 @@ body {
     margin-bottom: 10px;
 }
 
+.tag-note {
+    padding: 4px;
+    margin-top: 6px;
+    background-color: rgb(239, 239, 239);
+    border-radius: 10px;
+    color: grey;
+}
+
 .tag-ra,
 .tag-id,
 .tag-pm,

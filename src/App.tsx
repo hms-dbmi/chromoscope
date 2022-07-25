@@ -21,7 +21,7 @@ function App(props: RouteComponentProps) {
     const urlParams = new URLSearchParams(props.location.search);
     const exampleId = urlParams.get('example');
     const externalUrl = urlParams.get('external');
-    const showSmallMultiples = true; // externalUrl ? false : true;
+    const [showSmallMultiples, setShowSmallMultiples] = useState(externalUrl === null);
 
     const selectedSamples = useMemo(
         () => (!exampleId ? samples.filter(d => d.group === 'default') : samples.filter(d => d.group === exampleId)),
@@ -73,6 +73,7 @@ function App(props: RouteComponentProps) {
                     if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
                         setFilteredSamples(externalDemo);
                         externalDemo = externalDemo[0];
+                        setShowSmallMultiples(true);
                     }
                     if (externalDemo) {
                         setDemo(externalDemo);
@@ -273,8 +274,10 @@ function App(props: RouteComponentProps) {
                 {d.thumbnail ? (
                     <img src={d.thumbnail} style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }} />
                 ) : (
-                    <div style={{ marginLeft: 'calc(50% - 165px)' }}>
+                    <div style={{ marginLeft: 'calc(50% - 105px - 10px)' }}>
                         <GoslingComponent
+                            padding={0}
+                            margin={10}
                             spec={getOneOfSmallMultiplesSpec({
                                 cnvUrl: d.cnv,
                                 svUrl: d.sv,
@@ -291,6 +294,7 @@ function App(props: RouteComponentProps) {
                     <div className={d.vcf && d.vcfIndex ? 'tag-pm' : 'tag-disabled'}>Point Mutation</div>
                     <div className={d.vcf2 && d.vcf2Index ? 'tag-id' : 'tag-disabled'}>Indel</div>
                     <div className={d.bam && d.bai ? 'tag-ra' : 'tag-disabled'}>Read Alignment</div>
+                    {d.note ? <div className="tag-note">{d.note}</div> : null}
                 </div>
             </div>
         ));
