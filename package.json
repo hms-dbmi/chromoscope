@@ -1,8 +1,8 @@
 {
-    "name": "gosling-app-sv",
+    "name": "goscan",
     "version": "0.0.0",
     "license": "MIT",
-    "homepage": "https://sehilyi.github.io/gosling-app-sv/",
+    "homepage": "https://sehilyi.github.io/goscan/",
     "scripts": {
         "start": "vite",
         "build": "vite build",
