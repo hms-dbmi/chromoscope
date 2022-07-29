@@ -27,6 +27,7 @@ function App(props: RouteComponentProps) {
               .split('-')
               .map(d => +d)
         : null;
+    const demoIndex = useRef(+urlParams.get('demoIndex') ?? 0);
     const [showSmallMultiples, setShowSmallMultiples] = useState(externalUrl === null);
 
     const selectedSamples = useMemo(
@@ -37,7 +38,9 @@ function App(props: RouteComponentProps) {
     const gosRef = useRef<GoslingRef>();
 
     // demo
-    const [demo, setDemo] = useState(selectedSamples[0]);
+    const [demo, setDemo] = useState(
+        selectedSamples[demoIndex.current < selectedSamples.length ? demoIndex.current : 0]
+    );
 
     // interactions
     const [showSamples, setShowSamples] = useState(false);
@@ -78,7 +81,7 @@ function App(props: RouteComponentProps) {
                     let externalDemo = JSON.parse(d);
                     if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
                         setFilteredSamples(externalDemo);
-                        externalDemo = externalDemo[0];
+                        externalDemo = externalDemo[demoIndex.current < externalDemo.length ? demoIndex.current : 0];
                         setShowSmallMultiples(true);
                     }
                     if (externalDemo) {
@@ -266,6 +269,7 @@ function App(props: RouteComponentProps) {
             <div
                 key={JSON.stringify(d.id)}
                 onClick={() => {
+                    demoIndex.current = i;
                     setShowSamples(false);
                     setTimeout(() => {
                         setDemo(d);
@@ -408,15 +412,14 @@ function App(props: RouteComponentProps) {
                         onClick={() => {
                             const { xDomain } = gosRef.current.hgApi.api.getLocation(`${demo.id}-mid-ideogram`);
                             if (xDomain) {
+                                urlParams.set('demoIndex', demoIndex.current + '');
                                 urlParams.set('domain', xDomain.join('-'));
                                 const newUrl =
                                     window.location.origin + window.location.pathname + '?' + urlParams.toString();
                                 navigator.clipboard
                                     .writeText(newUrl)
                                     .then(() =>
-                                        alert(
-                                            'Experimental!: The URL of the current session has been copied to your clipboard.'
-                                        )
+                                        alert('The URL of the current session has been copied to your clipboard.')
                                     );
                             }
                         }}
