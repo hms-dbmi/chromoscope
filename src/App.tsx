@@ -10,6 +10,7 @@ import getOneOfSmallMultiplesSpec from './small-multiples-spec';
 import { CHROMOSOMES, THEME, WHOLE_CHROMOSOME_STR } from './constants';
 import { ICONS } from './icon';
 import './App.css';
+import { INTERNAL_SAVED_THUMBNAILS } from './data/external-thumbnails';
 
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
 const VIS_PADDING = 60;
@@ -254,7 +255,7 @@ function App(props: RouteComponentProps) {
         // console.log(
         //     'overviewSpec',
         //     filteredSamples.map(d =>
-        //         getSmallOverviewSpec({
+        //         getOneOfSmallMultiplesSpec({
         //             cnvUrl: d.cnv,
         //             svUrl: d.sv,
         //             width: 100,
@@ -284,8 +285,11 @@ function App(props: RouteComponentProps) {
                 <div style={{ color: 'grey', fontSize: '14px' }}>
                     {'' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : '')}
                 </div>
-                {d.thumbnail ? (
-                    <img src={d.thumbnail} style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }} />
+                {d.thumbnail || INTERNAL_SAVED_THUMBNAILS[d.id] ? (
+                    <img
+                        src={d.thumbnail || INTERNAL_SAVED_THUMBNAILS[d.id]}
+                        style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }}
+                    />
                 ) : (
                     <div style={{ marginLeft: 'calc(50% - 105px - 10px)' }}>
                         <GoslingComponent
@@ -667,3 +671,13 @@ function App(props: RouteComponentProps) {
 }
 
 export default App;
+function getSmallOverviewSpec(arg0: {
+    cnvUrl: string;
+    svUrl: string;
+    width: number;
+    title: string;
+    subtitle: string; // '' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : ''),
+    cnFields: [string, string, string];
+}): any {
+    throw new Error('Function not implemented.');
+}
