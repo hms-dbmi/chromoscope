@@ -450,7 +450,7 @@ function App(props: RouteComponentProps) {
                     <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
                         <div className="title">
                             Samples
-                            <small>{` (${filteredSamples.length} out of ${selectedSamples.length} shown)`}</small>
+                            <small>{` (Total of ${filteredSamples.length})`}</small>
                             <input
                                 type="text"
                                 className="sample-text-box"
