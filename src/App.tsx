@@ -285,27 +285,30 @@ function App(props: RouteComponentProps) {
                 <div style={{ color: 'grey', fontSize: '14px' }}>
                     {'' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : '')}
                 </div>
-                {d.thumbnail || INTERNAL_SAVED_THUMBNAILS[d.id] ? (
-                    <img
-                        src={d.thumbnail || INTERNAL_SAVED_THUMBNAILS[d.id]}
-                        style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }}
-                    />
-                ) : (
-                    <div style={{ marginLeft: 'calc(50% - 105px - 10px)' }}>
-                        <GoslingComponent
-                            padding={0}
-                            margin={10}
-                            spec={getOneOfSmallMultiplesSpec({
-                                cnvUrl: d.cnv,
-                                svUrl: d.sv,
-                                width: 210,
-                                title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
-                                subtitle: d.id, // '' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : ''),
-                                cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
-                            })}
+                <div style={{ position: 'relative' }}>
+                    {d.thumbnail || INTERNAL_SAVED_THUMBNAILS[d.id] ? (
+                        <img
+                            src={d.thumbnail || INTERNAL_SAVED_THUMBNAILS[d.id]}
+                            style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }}
                         />
-                    </div>
-                )}
+                    ) : (
+                        <div style={{ marginLeft: 'calc(50% - 105px - 10px)' }}>
+                            <GoslingComponent
+                                padding={0}
+                                margin={10}
+                                spec={getOneOfSmallMultiplesSpec({
+                                    cnvUrl: d.cnv,
+                                    svUrl: d.sv,
+                                    width: 210,
+                                    title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
+                                    subtitle: d.id, // '' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : ''),
+                                    cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
+                                })}
+                            />
+                        </div>
+                    )}
+                    <span className="tag-assembly">{d.assembly ?? 'hg38'}</span>
+                </div>
                 <div className="tag-parent">
                     <div className={'tag-sv'}>SV</div>
                     <div className={d.vcf && d.vcfIndex ? 'tag-pm' : 'tag-disabled'}>Point Mutation</div>

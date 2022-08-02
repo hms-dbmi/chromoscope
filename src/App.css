@@ -178,6 +178,15 @@ body {
     color: grey;
 }
 
+.tag-assembly {
+    position: absolute;
+    color: rgb(195, 195, 195);
+    font-weight: bold;
+    font-size: small;
+    bottom: 14px;
+    right: calc(50% - 95px);
+}
+
 .tag-ra,
 .tag-id,
 .tag-pm,
