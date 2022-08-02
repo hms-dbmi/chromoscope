@@ -360,7 +360,7 @@ function getOverviewSpec(option: SpecOption): View[] {
                     ? []
                     : [
                           {
-                              //   id: `${id}-top-driver`,
+                              id: `${id}-top-driver`,
                               data: {
                                   values: drivers,
                                   type: 'json',

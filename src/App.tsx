@@ -30,6 +30,7 @@ function App(props: RouteComponentProps) {
         : null;
     const demoIndex = useRef(+urlParams.get('demoIndex') ?? 0);
     const [showSmallMultiples, setShowSmallMultiples] = useState(externalUrl === null);
+    const [ready, setReady] = useState(externalUrl === null);
 
     const selectedSamples = useMemo(
         () => (!exampleId ? samples.filter(d => d.group === 'default') : samples.filter(d => d.group === exampleId)),
@@ -68,9 +69,12 @@ function App(props: RouteComponentProps) {
 
     // update demo
     useEffect(() => {
-        setDrivers((allDrivers as any).filter((d: any) => d.sample_id === demo.id && +d.chr && +d.pos));
+        const filteredDrivers = (allDrivers as any).filter((d: any) => d.sample_id === demo.id && +d.chr && +d.pos);
+        console.log(demo, filteredDrivers);
+        setDrivers(filteredDrivers);
         setOverviewChr('');
         setGenomeViewChr('');
+        setSelectedSvId('');
         leftReads.current = [];
         rightReads.current = [];
     }, [demo]);
@@ -88,6 +92,7 @@ function App(props: RouteComponentProps) {
                     if (externalDemo) {
                         setDemo(externalDemo);
                     }
+                    setReady(true);
                 })
             );
         }
@@ -117,14 +122,12 @@ function App(props: RouteComponentProps) {
             }
 
             const padding = (x1e - x) / 4.0;
-            setTimeout(
-                () => gosRef.current.api.zoomTo(`${demo.id}-mid-ideogram`, `chr1:${x}-${x1e}`, padding, 500),
-                1000
-            );
+            gosRef.current.api.zoomTo(`${demo.id}-mid-mutation`, `chr1:${x}-${x1e}`, padding, 10);
 
             // we will show the bam files, so set the initial positions
             setBreakpoints([+x - ZOOM_PADDING, +xe + ZOOM_PADDING, +x1 - ZOOM_PADDING, +x1e + ZOOM_PADDING]);
             setBpIntervals([x, xe, x1, x1e]);
+            setSelectedSvId(e.data[0].sv_id + '');
 
             // move to the bottom
             setTimeout(
@@ -132,7 +135,6 @@ function App(props: RouteComponentProps) {
                 2000
             );
 
-            setSelectedSvId(e.data[0].sv_id + '');
             leftReads.current = [];
             rightReads.current = [];
         });
@@ -274,7 +276,6 @@ function App(props: RouteComponentProps) {
                     setShowSamples(false);
                     setTimeout(() => {
                         setDemo(d);
-                        setSelectedSvId('');
                     }, 300);
                 }}
                 className={demo === d ? 'selected-overview' : 'unselected-overview'}
@@ -336,6 +337,9 @@ function App(props: RouteComponentProps) {
     }, [demo, filteredSamples]);
 
     const goslingComponent = useMemo(() => {
+        if (!ready) return null;
+        // console.log(demo.id, drivers.length);
+
         const spec = generateSpec({
             ...demo,
             showOverview,
@@ -363,7 +367,8 @@ function App(props: RouteComponentProps) {
                 theme={THEME}
             />
         );
-    }, [visPanelWidth, drivers, showOverview, showPutativeDriver, demo, selectedSvId, breakpoints, svReads]);
+        // !! Removed `demo` not to update twice since `drivers` are updated right after a demo update.
+    }, [ready, xDomain, visPanelWidth, drivers, showOverview, showPutativeDriver, selectedSvId, breakpoints, svReads]);
 
     return (
         <ErrorBoundary>
@@ -563,7 +568,8 @@ function App(props: RouteComponentProps) {
                                 className="gene-search-icon"
                                 viewBox="0 0 16 16"
                                 style={{
-                                    top: `${Math.min(visPanelWidth, 600) + 6}px`
+                                    top: `${Math.min(visPanelWidth, 600) + 6}px`,
+                                    visibility: demo.assembly === 'hg38' ? 'visible' : 'hidden'
                                 }}
                             >
                                 <path
@@ -575,10 +581,14 @@ function App(props: RouteComponentProps) {
                                 type="text"
                                 className="gene-search"
                                 placeholder="Search Gene (e.g., MYC)"
+                                // alt={demo.assembly === 'hg38' ? 'Search Gene' : 'Not currently available for this assembly.'}
                                 style={{
                                     pointerEvents: 'auto',
-                                    top: `${Math.min(visPanelWidth, 600)}px`
+                                    top: `${Math.min(visPanelWidth, 600)}px`,
+                                    cursor: demo.assembly === 'hg38' ? 'auto' : 'not-allowed',
+                                    visibility: demo.assembly === 'hg38' ? 'visible' : 'hidden'
                                 }}
+                                disabled={demo.assembly === 'hg38' ? false : true}
                                 // onChange={(e) => {
                                 //     const keyword = e.target.value;
                                 //     if(keyword !== "" && !keyword.startsWith("c")) {
