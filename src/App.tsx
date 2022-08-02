@@ -70,7 +70,7 @@ function App(props: RouteComponentProps) {
     // update demo
     useEffect(() => {
         const filteredDrivers = (allDrivers as any).filter((d: any) => d.sample_id === demo.id && +d.chr && +d.pos);
-        console.log(demo, filteredDrivers);
+        // console.log(demo, filteredDrivers);
         setDrivers(filteredDrivers);
         setOverviewChr('');
         setGenomeViewChr('');
@@ -122,7 +122,7 @@ function App(props: RouteComponentProps) {
             }
 
             const padding = (x1e - x) / 4.0;
-            gosRef.current.api.zoomTo(`${demo.id}-mid-mutation`, `chr1:${x}-${x1e}`, padding, 10);
+            gosRef.current.api.zoomTo(`${demo.id}-mid-ideogram`, `chr1:${x}-${x1e}`, padding, 10);
 
             // we will show the bam files, so set the initial positions
             setBreakpoints([+x - ZOOM_PADDING, +xe + ZOOM_PADDING, +x1 - ZOOM_PADDING, +x1e + ZOOM_PADDING]);

@@ -44,19 +44,19 @@ export const THEME: ThemeDeep = {
         titleAlign: 'middle',
         titleColor: 'black',
         titleFontSize: 18,
-        titleFontFamily: 'Roboto Condensed',
+        titleFontFamily: 'Arial',
         titleFontWeight: 'normal',
         subtitleAlign: 'middle',
         subtitleColor: 'gray',
         subtitleFontSize: 14,
         subtitleFontWeight: 'normal',
-        subtitleFontFamily: 'Roboto Condensed'
+        subtitleFontFamily: 'Arial'
     },
     legend: {
-        labelFontFamily: 'Roboto Condensed'
+        labelFontFamily: 'Arial'
     },
     axis: {
-        labelFontFamily: 'Roboto Condensed',
+        labelFontFamily: 'Arial',
         labelFontSize: 14
     }
 } as const;
