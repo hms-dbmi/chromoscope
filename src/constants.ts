@@ -44,11 +44,13 @@ export const THEME: ThemeDeep = {
         titleAlign: 'middle',
         titleColor: 'black',
         titleFontSize: 18,
+        titleFontFamily: 'Roboto Condensed',
         titleFontWeight: 'normal',
         subtitleAlign: 'middle',
         subtitleColor: 'gray',
         subtitleFontSize: 14,
-        subtitleFontWeight: 'normal'
+        subtitleFontWeight: 'normal',
+        subtitleFontFamily: 'Roboto Condensed'
     },
     legend: {
         labelFontFamily: 'Roboto Condensed'
