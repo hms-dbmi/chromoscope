@@ -464,6 +464,7 @@ function App(props: RouteComponentProps) {
                                 className="sample-text-box"
                                 placeholder="Search samples by ID"
                                 onChange={e => setFilterSampleBy(e.target.value)}
+                                hidden
                             />
                             <svg
                                 className="button"
