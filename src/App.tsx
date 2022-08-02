@@ -142,7 +142,7 @@ function App(props: RouteComponentProps) {
         return () => {
             gosRef.current.api.unsubscribe('click');
         };
-    }, [gosRef, svReads, demo]);
+    }, [gosRef, drivers]); // !! instead of `[demo]`, we use drivers which are updated as a side effect of a demo
 
     useEffect(() => {
         if (!gosRef.current || !demo.bai || !demo.bam) return;
