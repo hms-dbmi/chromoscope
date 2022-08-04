@@ -15,7 +15,7 @@ import { INTERNAL_SAVED_THUMBNAILS } from './data/external-thumbnails';
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
 const VIS_PADDING = 60;
 const ZOOM_PADDING = 200;
-const ZOOM_DURATION = 1000;
+const ZOOM_DURATION = 500;
 
 function App(props: RouteComponentProps) {
     // URL parameters
@@ -61,6 +61,9 @@ function App(props: RouteComponentProps) {
     const [breakpoints, setBreakpoints] = useState<[number, number, number, number]>([1, 100, 1, 100]);
     const [bpIntervals, setBpIntervals] = useState<[number, number, number, number] | undefined>();
     const [mouseOnVis, setMouseOnVis] = useState(false);
+    const [jumpButtonInfo, setJumpButtonInfo] =
+        useState<{ id: string; x: number; y: number; direction: 'leftward' | 'rightward'; zoomTo: () => void }>();
+    const mousePos = useRef({ x: -100, y: -100 });
 
     // SV data
     const leftReads = useRef<{ [k: string]: number | string }[]>([]);
@@ -122,7 +125,7 @@ function App(props: RouteComponentProps) {
             }
 
             const padding = (x1e - x) / 4.0;
-            gosRef.current.api.zoomTo(`${demo.id}-mid-ideogram`, `chr1:${x}-${x1e}`, padding, 10);
+            gosRef.current.api.zoomTo(`${demo.id}-mid-ideogram`, `chr1:${x}-${x1e}`, padding, ZOOM_DURATION);
 
             // we will show the bam files, so set the initial positions
             setBreakpoints([+x - ZOOM_PADDING, +xe + ZOOM_PADDING, +x1 - ZOOM_PADDING, +x1e + ZOOM_PADDING]);
@@ -139,8 +142,56 @@ function App(props: RouteComponentProps) {
             rightReads.current = [];
         });
 
+        gosRef.current.api.subscribe('mouseOver', (_, e) => {
+            const sanitizedChr = (c: string | number) => {
+                return `${c}`.replace('chr', '');
+            };
+            const calDir = (c1: string | number, c2: string | number) => {
+                c1 = sanitizedChr(c1);
+                c2 = sanitizedChr(c2);
+                if (+c1 && +c1 <= 9) {
+                    c1 = '0' + c1;
+                }
+                if (+c2 && +c2 <= 9) {
+                    c2 = '0' + c2;
+                }
+                return c1 < c2 ? 'rightward' : 'leftward';
+            };
+            if (e.id.includes('-mid-sv') && e.data[0].svclass === 'Translocation') {
+                console.log(e);
+                const { chromosome: c, position: p } = e.genomicPosition;
+                const padding = 1000;
+                if (sanitizedChr(c) === sanitizedChr(e.data[0].chrom1)) {
+                    const direction = calDir(c, e.data[0].chrom2);
+                    const id = e.data[0].sv_id + '-' + direction;
+                    // if(id === jumpButtonInfo?.id) return;
+                    const { start2, end2 } = e.data[0];
+                    setJumpButtonInfo({
+                        id,
+                        x: mousePos.current.x,
+                        y: mousePos.current.y,
+                        direction,
+                        zoomTo: () => gosRef.current.api.zoomTo(e.id, `chr1:${start2}-${end2}`, padding, ZOOM_DURATION)
+                    });
+                } else {
+                    const direction = calDir(c, e.data[0].chrom1);
+                    const id = e.data[0].sv_id + '-' + direction;
+                    // if(id === jumpButtonInfo?.id) return;
+                    const { start1, end1 } = e.data[0];
+                    setJumpButtonInfo({
+                        id,
+                        x: mousePos.current.x,
+                        y: mousePos.current.y,
+                        direction,
+                        zoomTo: () => gosRef.current.api.zoomTo(e.id, `chr1:${start1}-${end1}`, padding, ZOOM_DURATION)
+                    });
+                }
+            }
+        });
+
         return () => {
             gosRef.current.api.unsubscribe('click');
+            gosRef.current.api.unsubscribe('mouseOver');
         };
     }, [gosRef, drivers]); // !! instead of `[demo]`, we use drivers which are updated as a side effect of a demo
 
@@ -389,10 +440,13 @@ function App(props: RouteComponentProps) {
                     } else {
                         setMouseOnVis(false);
                     }
+                    mousePos.current = { x: left, y: top };
                 }}
+                onWheel={() => setJumpButtonInfo(undefined)}
                 onClick={() => {
                     if (!mouseOnVis && interactiveMode) setInteractiveMode(false);
                     else if (mouseOnVis && !interactiveMode) setInteractiveMode(true);
+                    setJumpButtonInfo(undefined);
                 }}
             >
                 <svg
@@ -492,6 +546,21 @@ function App(props: RouteComponentProps) {
                         }}
                     >
                         {goslingComponent}
+                        {jumpButtonInfo ? (
+                            <button
+                                className="jump-to-bp-btn"
+                                style={{
+                                    position: 'fixed',
+                                    left: `${
+                                        jumpButtonInfo.x + 20 + (jumpButtonInfo.direction === 'leftward' ? -60 : 0)
+                                    }px`,
+                                    top: `${jumpButtonInfo.y}px`
+                                }}
+                                onClick={() => jumpButtonInfo.zoomTo()}
+                            >
+                                {jumpButtonInfo.direction === 'leftward' ? '←' : '→'}
+                            </button>
+                        ) : null}
                         <div
                             style={{
                                 width: '100%',

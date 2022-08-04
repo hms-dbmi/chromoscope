@@ -232,6 +232,22 @@ body {
     z-index: 999;
 }
 
+.jump-to-bp-btn {
+    font-weight: bold;
+    color: black;
+    background-color: lightgrey;
+    box-shadow: 0 0 10px 0px #00000032;
+    border: 2px solid grey;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 998;
+    opacity: 0.5;
+}
+
+.jump-to-bp-btn:hover {
+    opacity: 1;
+}
+
 .move-to-top-btn {
     width: 30px;
     height: 30px;
