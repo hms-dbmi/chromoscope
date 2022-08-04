@@ -172,7 +172,27 @@ export default function getMidView(option: SpecOption): View[] {
                 tracks.boundary('gain', 'mid'),
                 tracks.loh(id, cnv, width, 20, 'mid', cnFields),
                 tracks.boundary('loh', 'mid'),
-                tracks.sv(id, sv, width, 250, 'mid', selectedSvId)
+                tracks.sv(id, sv, width, 250, 'mid', selectedSvId),
+                {
+                    data: {
+                        type: 'json',
+                        values: [
+                            { c: 'chr1', p1: 1, p2: 4000000000, v: 250 / 4 },
+                            { c: 'chr1', p1: 1, p2: 4000000000, v: (250 / 4) * 2 },
+                            { c: 'chr1', p1: 1, p2: 4000000000, v: (250 / 4) * 3 }
+                        ],
+                        chromosomeField: 'c',
+                        genomicFields: ['p1', 'p2']
+                    },
+                    mark: 'rule',
+                    x: { field: 'p1', type: 'genomic' },
+                    xe: { field: 'p2', type: 'genomic' },
+                    y: { field: 'v', type: 'quantitative', domain: [0, 250], axis: 'none' },
+                    strokeWidth: { value: 1 },
+                    color: { value: 'lightgrey' },
+                    style: { dashed: [3, 3] },
+                    overlayOnPreviousTrack: true
+                }
             ]
         }
     ];
