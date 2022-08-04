@@ -188,9 +188,8 @@ export default function getMidView(option: SpecOption): View[] {
                     x: { field: 'p1', type: 'genomic' },
                     xe: { field: 'p2', type: 'genomic' },
                     y: { field: 'v', type: 'quantitative', domain: [0, 250], axis: 'none' },
-                    strokeWidth: { value: 1 },
-                    color: { value: 'lightgrey' },
-                    style: { dashed: [3, 3] },
+                    strokeWidth: { value: 0.5 },
+                    color: { value: '#E3E3E3' },
                     overlayOnPreviousTrack: true
                 }
             ]
