@@ -158,7 +158,6 @@ function App(props: RouteComponentProps) {
                 return c1 < c2 ? 'rightward' : 'leftward';
             };
             if (e.id.includes('-mid-sv') && e.data[0].svclass === 'Translocation') {
-                console.log(e);
                 const { chromosome: c, position: p } = e.genomicPosition;
                 const padding = 1000;
                 if (sanitizedChr(c) === sanitizedChr(e.data[0].chrom1)) {
