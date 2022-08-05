@@ -92,10 +92,10 @@ export default function sv(
         };
     };
     const verticalBars = (sv: SvType, selected: boolean): Partial<SingleTrack>[] => {
-        const y = { value: height / 2.0 + height - _baselineYMap[sv] };
+        const ye = { value: height - _baselineYMap[sv] };
         return [
             {
-                mark: 'rect',
+                mark: 'bar',
                 dataTransform: [
                     ...svInfer,
                     {
@@ -107,13 +107,14 @@ export default function sv(
                     filterSv([sv], false)
                 ],
                 x: { field: 'start1', type: 'genomic' },
-                xe: { field: 'start1', type: 'genomic' },
-                y,
-                strokeWidth: { value: 1 },
+                y: { value: height },
+                ye,
+                strokeWidth: { value: selected ? 1 : 0 },
+                size: { value: 1 },
                 flipY: false
             },
             {
-                mark: 'rect',
+                mark: 'bar',
                 dataTransform: [
                     ...svInfer,
                     {
@@ -125,9 +126,10 @@ export default function sv(
                     filterSv([sv], false)
                 ],
                 x: { field: 'end2', type: 'genomic' },
-                xe: { field: 'end2', type: 'genomic' },
-                y,
-                strokeWidth: { value: 1 },
+                y: { value: height },
+                ye,
+                size: { value: 1 },
+                strokeWidth: { value: selected ? 1 : 0 },
                 flipY: false
             }
         ];
@@ -171,8 +173,8 @@ export default function sv(
         },
         mark: 'withinLink',
         tracks: [
-            ...(mode !== 'mid' ? [] : defaults.color.svclass.domain.map(d => verticalBars(d as any, false)).flat()),
             ...defaults.color.svclass.domain.map(d => arcs(d as any, false)),
+            ...(mode !== 'mid' ? [] : defaults.color.svclass.domain.map(d => verticalBars(d as any, false)).flat()),
             ...(mode !== 'mid' ? [] : defaults.color.svclass.domain.map(d => verticalBars(d as any, true)).flat()),
             ...defaults.color.svclass.domain.map(d => arcs(d as any, true)),
             ...((mode !== 'mid'
