@@ -174,6 +174,7 @@ export default function getMidView(option: SpecOption): View[] {
                 tracks.boundary('loh', 'mid'),
                 tracks.sv(id, sv, width, 250, 'mid', selectedSvId)
                 // {
+                //     id: `${id}-${'mid'}-sv`,
                 //     data: {
                 //         type: 'json',
                 //         values: [
@@ -190,8 +191,9 @@ export default function getMidView(option: SpecOption): View[] {
                 //     y: { field: 'v', type: 'quantitative', domain: [0, 250], axis: 'none' },
                 //     strokeWidth: { value: 0.5 },
                 //     color: { value: '#E3E3E3' },
-                //     overlayOnPreviousTrack: true
-                // }
+                //     width,
+                //     height: 250
+                // },
             ]
         }
     ];

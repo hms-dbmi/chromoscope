@@ -406,7 +406,7 @@ function App(props: RouteComponentProps) {
             bpIntervals,
             svReads
         });
-        console.log('spec', spec);
+        // console.log('spec', spec);
         return (
             <GoslingComponent
                 ref={gosRef}

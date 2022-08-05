@@ -55,11 +55,11 @@ export default function sv(
     selectedSvId: string
 ): OverlaidTracks {
     const _baselineYMap: { [k in SvType]: number } = {
-        Translocation: (height / 4) * 3,
-        Deletion: height / 4,
-        Duplication: height / 4,
-        'Inversion (TtT)': (height / 4) * 2,
-        'Inversion (HtH)': (height / 4) * 2
+        Translocation: (height / 5) * 4,
+        Deletion: height / 5,
+        Duplication: height / 5,
+        'Inversion (TtT)': (height / 5) * 3,
+        'Inversion (HtH)': (height / 5) * 3
     };
     const arcs = (sv: SvType, selected: boolean): Partial<SingleTrack> => {
         const _flipYMap: { [k in SvType]: boolean } = {
@@ -109,8 +109,8 @@ export default function sv(
                 x: { field: 'start1', type: 'genomic' },
                 y: { value: height },
                 ye,
+                size: { value: selected ? 2 : 1 },
                 strokeWidth: { value: selected ? 1 : 0 },
-                size: { value: 1 },
                 flipY: false
             },
             {
@@ -128,12 +128,13 @@ export default function sv(
                 x: { field: 'end2', type: 'genomic' },
                 y: { value: height },
                 ye,
-                size: { value: 1 },
+                size: { value: selected ? 2 : 1 },
                 strokeWidth: { value: selected ? 1 : 0 },
                 flipY: false
             }
         ];
     };
+    const svs = [...defaults.color.svclass.domain];
     return {
         id: `${sampleId}-${mode}-sv`,
         alignment: 'overlay',
@@ -173,10 +174,10 @@ export default function sv(
         },
         mark: 'withinLink',
         tracks: [
-            ...defaults.color.svclass.domain.map(d => arcs(d as any, false)),
-            ...(mode !== 'mid' ? [] : defaults.color.svclass.domain.map(d => verticalBars(d as any, false)).flat()),
-            ...(mode !== 'mid' ? [] : defaults.color.svclass.domain.map(d => verticalBars(d as any, true)).flat()),
-            ...defaults.color.svclass.domain.map(d => arcs(d as any, true)),
+            ...svs.map(d => arcs(d as any, false)),
+            ...(mode !== 'mid' ? [] : svs.map(d => verticalBars(d as any, false)).flat()),
+            ...(mode !== 'mid' ? [] : svs.map(d => verticalBars(d as any, true)).flat()),
+            ...svs.map(d => arcs(d as any, true)),
             ...((mode !== 'mid'
                 ? []
                 : [
@@ -199,14 +200,8 @@ export default function sv(
                           style: { dashed: [3, 3] }
                       }
                   ]) as OverlaidTracks[])
-            // {
-            //     mark: 'point',
-            //     size: { value: -1 },
-            //     x: { field: 'end2', type: 'genomic' },
-            //     row: { field: "svclass", type: "nominal", domain: ['1', '2', '3'], grid: true}
-            // }
         ],
-        y: { value: height / 4 / 2 },
+        y: { value: height / 5 },
         color: {
             field: 'svclass',
             type: 'nominal',
@@ -231,7 +226,7 @@ export default function sv(
             { field: 'sv_id', type: 'nominal' },
             { field: 'pe_support', type: 'nominal' }
         ],
-        style: { linkStyle: 'elliptical', linkMinHeight: 0.7, mouseOver: { stroke: 'darkgrey', strokeWidth: 1 } },
+        style: { linkStyle: 'elliptical', linkMinHeight: 0.7, mouseOver: { stroke: '#242424', strokeWidth: 1 } },
         width,
         height
     };
