@@ -204,7 +204,7 @@ export default function sv(
             //     row: { field: "svclass", type: "nominal", domain: ['1', '2', '3'], grid: true}
             // }
         ],
-        y: { value: height / 4.0 },
+        y: { value: height / 4 / 2 },
         color: {
             field: 'svclass',
             type: 'nominal',
