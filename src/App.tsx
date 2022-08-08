@@ -304,13 +304,14 @@ function App(props: RouteComponentProps) {
     }, []);
 
     const smallOverviewWrapper = useMemo(() => {
+        // !! Uncomment the following lines to generated specs for making thumbnails.
         // console.log(
         //     'overviewSpec',
         //     filteredSamples.map(d =>
         //         getOneOfSmallMultiplesSpec({
         //             cnvUrl: d.cnv,
         //             svUrl: d.sv,
-        //             width: 100,
+        //             width: 1200,
         //             title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
         //             subtitle: d.id, // '' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : ''),
         //             cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
@@ -318,6 +319,7 @@ function App(props: RouteComponentProps) {
         //     ),
         //     filteredSamples.map(d => `node gosling-screenshot.js output/${d.id}.json img/${d.id}.jpeg`).join('\n')
         // );
+        // return [];
         return filteredSamples.map((d, i) => (
             <div
                 key={JSON.stringify(d.id)}
