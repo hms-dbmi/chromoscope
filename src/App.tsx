@@ -64,6 +64,7 @@ function App(props: RouteComponentProps) {
     const [jumpButtonInfo, setJumpButtonInfo] =
         useState<{ id: string; x: number; y: number; direction: 'leftward' | 'rightward'; zoomTo: () => void }>();
     const mousePos = useRef({ x: -100, y: -100 });
+    const prevJumpId = useRef('');
 
     // SV data
     const leftReads = useRef<{ [k: string]: number | string }[]>([]);
@@ -100,6 +101,10 @@ function App(props: RouteComponentProps) {
             );
         }
     }, []);
+
+    useEffect(() => {
+        prevJumpId.current = jumpButtonInfo?.id;
+    }, [jumpButtonInfo]);
 
     useEffect(() => {
         setFilteredSamples(
@@ -163,7 +168,7 @@ function App(props: RouteComponentProps) {
                 if (sanitizedChr(c) === sanitizedChr(e.data[0].chrom1)) {
                     const direction = calDir(c, e.data[0].chrom2);
                     const id = e.data[0].sv_id + '-' + direction;
-                    // if(id === jumpButtonInfo?.id) return;
+                    if (id === prevJumpId.current) return;
                     const { start2, end2 } = e.data[0];
                     setJumpButtonInfo({
                         id,
@@ -175,7 +180,7 @@ function App(props: RouteComponentProps) {
                 } else {
                     const direction = calDir(c, e.data[0].chrom1);
                     const id = e.data[0].sv_id + '-' + direction;
-                    // if(id === jumpButtonInfo?.id) return;
+                    if (id === prevJumpId.current) return;
                     const { start1, end1 } = e.data[0];
                     setJumpButtonInfo({
                         id,
@@ -185,6 +190,8 @@ function App(props: RouteComponentProps) {
                         zoomTo: () => gosRef.current.api.zoomTo(e.id, `chr1:${start1}-${end1}`, padding, ZOOM_DURATION)
                     });
                 }
+            } else {
+                setJumpButtonInfo(undefined);
             }
         });
 
