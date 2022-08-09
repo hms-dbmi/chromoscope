@@ -1,5 +1,7 @@
 # GosCan
 
+🚧 Documentation is a work in progress 🚧
+
 ## Browsing Your Data
 
 You need to (1) make a config file (`.json`) that contains the information for each sample, (2) store the config file in a HTTPS file server (e.g., AVS S3 or [GitHub Gist](https://gist.github.com/)), and (3) load it in GosCan using the following URL:
