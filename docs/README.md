@@ -1,12 +1,20 @@
 # GosCan
 
-🚧 Documentation is a work in progress 🚧
+## Loading Your Data
 
-## Browsing Your Data
+To load your data, you need to (1) make a config file (`.json`) that contains the information for each sample, (2) store the config file in a HTTPS file server (e.g., AWS S3 or [GitHub Gist](https://gist.github.com/)), and (3) use it with the `external` parameter of the GosCan URL.
 
-You need to (1) make a config file (`.json`) that contains the information for each sample, (2) store the config file in a HTTPS file server (e.g., AVS S3 or [GitHub Gist](https://gist.github.com/)), and (3) load it in GosCan using the following URL:
+```
+// format
+https://sehilyi.github.io/goscan/?external=[URL_TO_YOUR_CONFIG_FILE]
 
-> https://sehilyi.github.io/goscan/?external=[URL_TO_YOUR_CONFIG_FILE]
+// example
+https://sehilyi.github.io/goscan/?external=https://gist.githubusercontent.com/sehilyi/a9bbbc3e63806d2282e1959e27a65a53/raw/b6c0ab07a220027196746f46607e916bd9751c70/goscan-multiple-samples.json
+```
+
+### Configuration
+
+For each sample, you need to prepare the following information in a JSON object.
 
 | Property | Type | Note |
 |---|---|---|
@@ -61,6 +69,10 @@ A multi-sample example:
     }
 ]
 ```
+
+## Contact
+
+- Please send an email to Sehi L'Yi (sehi_lyi@hms.harvard.edu)
 
 <!-- This web-based tool allows interactively exploring structural variants of cancer patients with macroscopic (genome-wide) and microscopic (alignment) views. The main visualization shows structural variants of a single patient with circular overview (top), linear detail view (middle), and two alignment views (bottom). Users can select a sample from a sample gallery that can be opened by clicking on a button on the left-top corner of the browser.
 
