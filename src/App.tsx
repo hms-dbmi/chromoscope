@@ -129,8 +129,21 @@ function App(props: RouteComponentProps) {
                 x1e = +e.data[0].end1;
             }
 
-            const padding = (x1e - x) / 4.0;
-            gosRef.current.api.zoomTo(`${demo.id}-mid-ideogram`, `chr1:${x}-${x1e}`, padding, ZOOM_DURATION);
+            let zoomStart = x;
+            let zoomEnd = x1e;
+            let padding = (zoomEnd - zoomStart) / 4.0;
+            if (e.data[0].svclass === 'Translocation') {
+                zoomStart = x;
+                zoomEnd = xe;
+                padding = 10000;
+            }
+
+            gosRef.current.api.zoomTo(
+                `${demo.id}-mid-ideogram`,
+                `chr1:${zoomStart}-${zoomEnd}`,
+                padding,
+                ZOOM_DURATION
+            );
 
             // we will show the bam files, so set the initial positions
             setBreakpoints([+x - ZOOM_PADDING, +xe + ZOOM_PADDING, +x1 - ZOOM_PADDING, +x1e + ZOOM_PADDING]);
@@ -164,7 +177,7 @@ function App(props: RouteComponentProps) {
             };
             if (e.id.includes('-mid-sv') && e.data[0].svclass === 'Translocation') {
                 const { chromosome: c, position: p } = e.genomicPosition;
-                const padding = 1000;
+                const padding = 100000;
                 if (sanitizedChr(c) === sanitizedChr(e.data[0].chrom1)) {
                     const direction = calDir(c, e.data[0].chrom2);
                     const id = e.data[0].sv_id + '-' + direction;
@@ -660,8 +673,8 @@ function App(props: RouteComponentProps) {
                                 className="gene-search-icon"
                                 viewBox="0 0 16 16"
                                 style={{
-                                    top: `${Math.min(visPanelWidth, 600) + 6}px`,
-                                    visibility: demo.assembly === 'hg38' ? 'visible' : 'hidden'
+                                    top: `${Math.min(visPanelWidth, 600) + 6}px`
+                                    // visibility: demo.assembly === 'hg38' ? 'visible' : 'hidden'
                                 }}
                             >
                                 <path
@@ -676,11 +689,11 @@ function App(props: RouteComponentProps) {
                                 // alt={demo.assembly === 'hg38' ? 'Search Gene' : 'Not currently available for this assembly.'}
                                 style={{
                                     pointerEvents: 'auto',
-                                    top: `${Math.min(visPanelWidth, 600)}px`,
-                                    cursor: demo.assembly === 'hg38' ? 'auto' : 'not-allowed',
-                                    visibility: demo.assembly === 'hg38' ? 'visible' : 'hidden'
+                                    top: `${Math.min(visPanelWidth, 600)}px`
+                                    // cursor: demo.assembly === 'hg38' ? 'auto' : 'not-allowed',
+                                    // visibility: demo.assembly === 'hg38' ? 'visible' : 'hidden'
                                 }}
-                                disabled={demo.assembly === 'hg38' ? false : true}
+                                // disabled={demo.assembly === 'hg38' ? false : true}
                                 // onChange={(e) => {
                                 //     const keyword = e.target.value;
                                 //     if(keyword !== "" && !keyword.startsWith("c")) {
@@ -718,6 +731,44 @@ function App(props: RouteComponentProps) {
                                     }
                                 }}
                             />
+                            <button
+                                style={{
+                                    pointerEvents: 'auto',
+                                    // !! This should be identical to how the height of circos determined.
+                                    top: `${Math.min(visPanelWidth, 600)}px`
+                                }}
+                                className="zoom-out-button"
+                                onClick={e => {
+                                    const trackId = `${demo.id}-mid-ideogram`;
+                                    const [start, end] = gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
+                                    const delta = (end - start) / 2.0;
+                                    gosRef.current.api.zoomTo(trackId, `chr1:${start}-${end}`, delta, ZOOM_DURATION);
+                                }}
+                            >
+                                Zoom Out
+                            </button>
+                            <button
+                                style={{
+                                    pointerEvents: 'auto',
+                                    // !! This should be identical to how the height of circos determined.
+                                    top: `${Math.min(visPanelWidth, 600)}px`
+                                }}
+                                className="zoom-in-button"
+                                onClick={e => {
+                                    const trackId = `${demo.id}-mid-ideogram`;
+                                    const [start, end] = gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
+                                    if (end - start < 100) return;
+                                    const delta = (end - start) / 3.0;
+                                    gosRef.current.api.zoomTo(
+                                        trackId,
+                                        `chr1:${start + delta}-${end - delta}`,
+                                        0,
+                                        ZOOM_DURATION
+                                    );
+                                }}
+                            >
+                                Zoom In
+                            </button>
                         </div>
                     </div>
                 </div>

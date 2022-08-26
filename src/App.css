@@ -93,6 +93,31 @@ body {
     border-radius: 0px;
 }
 
+.zoom-in-button {
+    left: 380px;
+}
+.zoom-out-button {
+    left: 470px;
+}
+.zoom-in-button,
+.zoom-out-button {
+    cursor: pointer;
+    position: absolute;
+    font-size: 14px;
+    height: 30px;
+    margin-left: 20px;
+    padding: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    line-height: 30px;
+    border: 1px solid grey;
+}
+
+.zoom-in-button:hover,
+.zoom-out-button:hover {
+    background: lightgrey;
+}
+
 .gene-search {
     position: absolute;
     font-size: 14px;

@@ -120,7 +120,7 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                         maxRows: 300
                     }
                 ],
-                color: { value: '#C8C8C8' },
+                color: { value: '#E5E5E5' },
                 x: { field: 'start', type: 'genomic' },
                 xe: { field: 'end', type: 'genomic' }
             },
@@ -145,7 +145,7 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                     }
                 ],
                 mark: 'triangleRight',
-                color: { value: '#C8C8C8' },
+                color: { value: '#E5E5E5' },
                 x: { field: 'end', type: 'genomic' }
             },
             {
@@ -169,7 +169,7 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                     }
                 ],
                 mark: 'triangleLeft',
-                color: { value: '#C8C8C8' },
+                color: { value: '#E5E5E5' },
                 x: { field: 'start', type: 'genomic' },
                 style: { align: 'right' }
             },

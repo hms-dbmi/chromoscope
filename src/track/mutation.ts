@@ -22,7 +22,7 @@ export default function mutation(
         mark: 'point',
         x: { field: 'POS', type: 'genomic' },
         color: { field: 'SUBTYPE', type: 'nominal', legend: true, domain: ['C>A', 'C>G', 'C>T', 'T>A', 'T>C', 'T>G'] },
-        y: { field: 'DISTPREVLOGE', type: 'quantitative', axis: 'left' },
+        y: { field: 'DISTPREVLOGE', type: 'quantitative', axis: 'left', range: [0, height - 10] },
         opacity: { value: 0.9 },
         tooltip: [
             { field: 'DISTPREV', type: 'nominal', format: 's1', alt: 'Distance To Previous Mutation (BP)' },
