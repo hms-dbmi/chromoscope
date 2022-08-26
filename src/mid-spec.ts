@@ -24,7 +24,7 @@ export default function getMidView(option: SpecOption): View[] {
     return [
         {
             linkingId: 'mid-scale',
-            xDomain: xDomain ? { interval: xDomain } : { chromosome: '3' },
+            xDomain: xDomain ? { interval: xDomain } : { chromosome: 'chr1' },
             layout: 'linear',
             tracks: [
                 {
