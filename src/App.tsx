@@ -737,22 +737,6 @@ function App(props: RouteComponentProps) {
                                     // !! This should be identical to how the height of circos determined.
                                     top: `${Math.min(visPanelWidth, 600)}px`
                                 }}
-                                className="zoom-out-button"
-                                onClick={e => {
-                                    const trackId = `${demo.id}-mid-ideogram`;
-                                    const [start, end] = gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
-                                    const delta = (end - start) / 2.0;
-                                    gosRef.current.api.zoomTo(trackId, `chr1:${start}-${end}`, delta, ZOOM_DURATION);
-                                }}
-                            >
-                                Zoom Out
-                            </button>
-                            <button
-                                style={{
-                                    pointerEvents: 'auto',
-                                    // !! This should be identical to how the height of circos determined.
-                                    top: `${Math.min(visPanelWidth, 600)}px`
-                                }}
                                 className="zoom-in-button"
                                 onClick={e => {
                                     const trackId = `${demo.id}-mid-ideogram`;
@@ -767,7 +751,66 @@ function App(props: RouteComponentProps) {
                                     );
                                 }}
                             >
-                                Zoom In
+                                +
+                            </button>
+                            <button
+                                style={{
+                                    pointerEvents: 'auto',
+                                    // !! This should be identical to how the height of circos determined.
+                                    top: `${Math.min(visPanelWidth, 600)}px`
+                                }}
+                                className="zoom-out-button"
+                                onClick={e => {
+                                    const trackId = `${demo.id}-mid-ideogram`;
+                                    const [start, end] = gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
+                                    const delta = (end - start) / 2.0;
+                                    gosRef.current.api.zoomTo(trackId, `chr1:${start}-${end}`, delta, ZOOM_DURATION);
+                                }}
+                            >
+                                -
+                            </button>
+                            <button
+                                style={{
+                                    pointerEvents: 'auto',
+                                    // !! This should be identical to how the height of circos determined.
+                                    top: `${Math.min(visPanelWidth, 600)}px`
+                                }}
+                                className="zoom-left-button"
+                                onClick={e => {
+                                    const trackId = `${demo.id}-mid-ideogram`;
+                                    const [start, end] = gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
+                                    if (end - start < 100) return;
+                                    const delta = (end - start) / 4.0;
+                                    gosRef.current.api.zoomTo(
+                                        trackId,
+                                        `chr1:${start - delta}-${end - delta}`,
+                                        0,
+                                        ZOOM_DURATION
+                                    );
+                                }}
+                            >
+                                ←
+                            </button>
+                            <button
+                                style={{
+                                    pointerEvents: 'auto',
+                                    // !! This should be identical to how the height of circos determined.
+                                    top: `${Math.min(visPanelWidth, 600)}px`
+                                }}
+                                className="zoom-right-button"
+                                onClick={e => {
+                                    const trackId = `${demo.id}-mid-ideogram`;
+                                    const [start, end] = gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
+                                    const delta = (end - start) / 4.0;
+                                    gosRef.current.api.zoomTo(
+                                        trackId,
+                                        `chr1:${start + delta}-${end + delta}`,
+                                        0,
+                                        ZOOM_DURATION
+                                    );
+                                }}
+                            >
+                                →
                             </button>
                         </div>
                     </div>

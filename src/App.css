@@ -95,26 +95,45 @@ body {
 
 .zoom-in-button {
     left: 380px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 .zoom-out-button {
-    left: 470px;
+    left: 410px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.zoom-left-button {
+    left: 455px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.zoom-right-button {
+    left: 485px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 .zoom-in-button,
-.zoom-out-button {
+.zoom-out-button,
+.zoom-left-button,
+.zoom-right-button {
     cursor: pointer;
     position: absolute;
     font-size: 14px;
     height: 30px;
+    width: 30px;
     margin-left: 20px;
     padding: 0px;
-    padding-left: 10px;
-    padding-right: 10px;
+    /* padding-left: 10px;
+    padding-right: 10px; */
     line-height: 30px;
-    border: 1px solid grey;
+    border: 1px solid lightgrey;
 }
 
 .zoom-in-button:hover,
-.zoom-out-button:hover {
+.zoom-out-button:hover,
+.zoom-left-button:hover,
+.zoom-right-button:hover {
     background: lightgrey;
 }
 
