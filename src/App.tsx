@@ -11,6 +11,7 @@ import { CHROMOSOMES, THEME, WHOLE_CHROMOSOME_STR } from './constants';
 import { ICONS } from './icon';
 import './App.css';
 import { INTERNAL_SAVED_THUMBNAILS } from './data/external-thumbnails';
+import { isChrome } from './utils';
 
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
 const VIS_PADDING = 60;
@@ -532,6 +533,14 @@ function App(props: RouteComponentProps) {
                             <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
                         </svg>
                     </a>
+                    {!isChrome() ? (
+                        <a
+                            style={{ marginLeft: '100px', color: 'black', fontWeight: 'bold' }}
+                            href="https://www.google.com/chrome/downloads/"
+                        >
+                            Warning: This page is optimized for Google Chrome.
+                        </a>
+                    ) : null}
                 </div>
                 {demo.bam && demo.bai ? (
                     <div className="help-label">

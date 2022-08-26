@@ -79,3 +79,7 @@ export function getRelativeGenomicPosition(absPos: number, assembly: 'hg38' | 'h
 
     return { chromosome, position: absPos - absInterval[0] };
 }
+
+export function isChrome() {
+    return window.navigator.userAgent.toLowerCase().indexOf('chrome') !== -1;
+}
