@@ -4,6 +4,7 @@ import reactRefresh from '@vitejs/plugin-react-refresh';
 // https://vitejs.dev/config/
 export default defineConfig({
     base: '/goscan/',
+    build: { target: 'esnext' },
     optimizeDeps: {
         include: ['gosling.js']
     },
