@@ -224,6 +224,14 @@ body {
     color: grey;
 }
 
+.thumbnail-loading-message {
+    position: absolute;
+    left: calc(50% - 25px);
+    top: calc(50% - 12px);
+    font-weight: bold;
+    color: darkgrey;
+}
+
 .tag-assembly {
     position: absolute;
     color: rgb(195, 195, 195);
