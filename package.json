@@ -19,6 +19,7 @@
         "@types/react-router-dom": "^5.2.0",
         "buffer": "^6.0.3",
         "gosling.js": "^0.9.23",
+        "idb": "^7.0.2",
         "lodash": "^4.17.21",
         "path": "^0.12.7",
         "pixi.js": "^6.0.4",

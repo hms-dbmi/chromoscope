@@ -1,17 +1,24 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { GoslingComponent, GoslingRef } from 'gosling.js';
-import { debounce } from 'lodash';
+import { GoslingComponent, GoslingRef, embed } from 'gosling.js';
+import { debounce, sample } from 'lodash';
 import type { RouteComponentProps } from 'react-router-dom';
 import generateSpec from './main-spec';
 import ErrorBoundary from './error';
 import allDrivers from './data/driver.json';
-import samples from './data/samples';
+import samples, { SampleType } from './data/samples';
 import getOneOfSmallMultiplesSpec from './small-multiples-spec';
 import { CHROMOSOMES, THEME, WHOLE_CHROMOSOME_STR } from './constants';
 import { ICONS } from './icon';
 import './App.css';
 import { INTERNAL_SAVED_THUMBNAILS } from './data/external-thumbnails';
 import { isChrome } from './utils';
+import THUMBNAIL_PLACEHOLDER from './script/img/placeholder.png';
+import { Database } from './database';
+
+const db = new Database();
+
+const DATABSE_THUMBNAILS = await db.get();
+const GENERATED_THUMBNAILS = {};
 
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
 const VIS_PADDING = 60;
@@ -39,6 +46,7 @@ function App(props: RouteComponentProps) {
     );
 
     const gosRef = useRef<GoslingRef>();
+    const thumbnailRef = useRef<GoslingRef>();
 
     // demo
     const [demo, setDemo] = useState(
@@ -46,7 +54,8 @@ function App(props: RouteComponentProps) {
     );
 
     // interactions
-    const [showSamples, setShowSamples] = useState(false);
+    const [showSamples, setShowSamples] = useState(true); // XXX
+    const [thumbnailForceGenerate, setThumbnailForceGenerate] = useState(false);
     const [filterSampleBy, setFilterSampleBy] = useState('');
     const [filteredSamples, setFilteredSamples] = useState(selectedSamples);
     const [showOverview, setShowOverview] = useState(true);
@@ -324,6 +333,15 @@ function App(props: RouteComponentProps) {
         );
     }, []);
 
+    const getThumbnail = (d: SampleType) => {
+        return (
+            d.thumbnail ||
+            INTERNAL_SAVED_THUMBNAILS[d.id] ||
+            DATABSE_THUMBNAILS.find(db => db.id === d.id)?.dataUrl ||
+            GENERATED_THUMBNAILS[d.id]
+        );
+    };
+
     const smallOverviewWrapper = useMemo(() => {
         // !! Uncomment the following lines to generated specs for making thumbnails.
         // console.log(
@@ -341,6 +359,29 @@ function App(props: RouteComponentProps) {
         //     filteredSamples.map(d => `node gosling-screenshot.js output/${d.id}.json img/${d.id}.jpeg`).join('\n')
         // );
         // return [];
+        /* Load image if necessary */
+        const thumbnailLoadSample = filteredSamples.filter(d => !getThumbnail(d))[0];
+        if (thumbnailLoadSample) {
+            const { id } = thumbnailLoadSample;
+            const spec = getOneOfSmallMultiplesSpec({
+                cnvUrl: thumbnailLoadSample.cnv,
+                svUrl: thumbnailLoadSample.sv,
+                width: 600,
+                title: thumbnailLoadSample.cancer.charAt(0).toUpperCase() + thumbnailLoadSample.cancer.slice(1),
+                subtitle: id,
+                cnFields: thumbnailLoadSample.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
+            });
+            const hidden = document.getElementById('hidden-gosling');
+            embed(hidden, spec, { padding: 0, margin: 10 }).then(api => {
+                setTimeout(() => {
+                    const { canvas } = api.getCanvas();
+                    const dataUrl = canvas.toDataURL('image/png');
+                    GENERATED_THUMBNAILS[thumbnailLoadSample.id] = dataUrl;
+                    db.add(id, dataUrl);
+                    setThumbnailForceGenerate(!thumbnailForceGenerate);
+                }, 500);
+            });
+        }
         return filteredSamples.map((d, i) => (
             <div
                 key={JSON.stringify(d.id)}
@@ -360,26 +401,30 @@ function App(props: RouteComponentProps) {
                     {'' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : '')}
                 </div>
                 <div style={{ position: 'relative' }}>
-                    {d.thumbnail || INTERNAL_SAVED_THUMBNAILS[d.id] ? (
-                        <img
-                            src={d.thumbnail || INTERNAL_SAVED_THUMBNAILS[d.id]}
-                            style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }}
-                        />
+                    {getThumbnail(d) ? (
+                        <img src={getThumbnail(d)} style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }} />
                     ) : (
-                        <div style={{ marginLeft: 'calc(50% - 105px - 10px)' }}>
-                            <GoslingComponent
-                                padding={0}
-                                margin={10}
-                                spec={getOneOfSmallMultiplesSpec({
-                                    cnvUrl: d.cnv,
-                                    svUrl: d.sv,
-                                    width: 210,
-                                    title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
-                                    subtitle: d.id, // '' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : ''),
-                                    cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
-                                })}
+                        // <div style={{ marginLeft: 'calc(50% - 105px - 10px)' }}>
+                        //     <GoslingComponent
+                        //         padding={0}
+                        //         margin={10}
+                        //         spec={getOneOfSmallMultiplesSpec({
+                        //             cnvUrl: d.cnv,
+                        //             svUrl: d.sv,
+                        //             width: 210,
+                        //             title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
+                        //             subtitle: d.id, // '' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : ''),
+                        //             cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
+                        //         })}
+                        //     />
+                        // </div>
+                        <>
+                            <img
+                                src={THUMBNAIL_PLACEHOLDER}
+                                style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }}
                             />
-                        </div>
+                            <span className="thumbnail-loading-message">Loading...</span>
+                        </>
                     )}
                     <span className="tag-assembly">{d.assembly ?? 'hg38'}</span>
                 </div>
@@ -407,7 +452,7 @@ function App(props: RouteComponentProps) {
         //         {component}
         //     </div>
         // ));
-    }, [demo, filteredSamples]);
+    }, [demo, filteredSamples, thumbnailForceGenerate]);
 
     const goslingComponent = useMemo(() => {
         if (!ready) return null;
@@ -873,19 +918,10 @@ function App(props: RouteComponentProps) {
                         <path fill="currentColor" d={ICONS.ARROW_UP.path[0]} />
                     </svg>
                 </div>
+                <div id="hidden-gosling" style={{ visibility: 'collapse' }} />
             </div>
         </ErrorBoundary>
     );
 }
 
 export default App;
-function getSmallOverviewSpec(arg0: {
-    cnvUrl: string;
-    svUrl: string;
-    width: number;
-    title: string;
-    subtitle: string; // '' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : ''),
-    cnFields: [string, string, string];
-}): any {
-    throw new Error('Function not implemented.');
-}
