@@ -827,7 +827,7 @@ function App(props: RouteComponentProps) {
                 <div
                     style={{
                         visibility:
-                            ((!interactiveMode && mouseOnVis) || (interactiveMode && !mouseOnVis)) && !showSamples
+                            ((!interactiveMode && !mouseOnVis) || (interactiveMode && mouseOnVis)) && !showSamples
                                 ? 'visible'
                                 : 'collapse',
                         position: 'absolute',
@@ -843,7 +843,7 @@ function App(props: RouteComponentProps) {
                 >
                     {!interactiveMode
                         ? 'Click inside to use interactions on visualizations'
-                        : 'Click outside to deactivate interactions'}
+                        : 'Click outside to deactivate interactions and scroll the page'}
                 </div>
                 <div
                     style={{

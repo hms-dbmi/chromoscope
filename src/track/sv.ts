@@ -176,30 +176,7 @@ export default function sv(
         tracks: [
             ...svs.map(d => arcs(d as any, false)),
             ...(mode !== 'mid' ? [] : svs.map(d => verticalBars(d as any, false)).flat()),
-            ...(mode !== 'mid' ? [] : svs.map(d => verticalBars(d as any, true)).flat()),
-            ...svs.map(d => arcs(d as any, true)),
-            ...((mode !== 'mid'
-                ? []
-                : [
-                      {
-                          dataTransform: [...svInfer, { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] }],
-                          mark: 'rule',
-                          x: { field: 'start1', type: 'genomic' },
-                          color: { value: 'black' },
-                          strokeWidth: { value: 1 },
-                          opacity: { value: 1 },
-                          style: { dashed: [3, 3] }
-                      },
-                      {
-                          dataTransform: [...svInfer, { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] }],
-                          mark: 'rule',
-                          x: { field: 'end2', type: 'genomic' },
-                          color: { value: 'black' },
-                          strokeWidth: { value: 1 },
-                          opacity: { value: 1 },
-                          style: { dashed: [3, 3] }
-                      }
-                  ]) as OverlaidTracks[])
+            ...(mode !== 'mid' ? [] : svs.map(d => verticalBars(d as any, true)).flat())
         ],
         y: { value: height / 5 },
         color: {
