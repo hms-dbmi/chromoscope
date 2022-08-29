@@ -1,0 +1,591 @@
+{
+    "description": "af9cfac8-7fbe-49cb-aeca-8d68aea57994",
+    "views": [
+        {
+            "static": true,
+            "layout": "circular",
+            "spacing": 1,
+            "style": {
+                "outline": "lightgray"
+            },
+            "tracks": [
+                {
+                    "data": {
+                        "url": "https://raw.githubusercontent.com/sehilyi/gemini-datasets/master/data/UCSC.HG38.Human.CytoBandIdeogram.csv",
+                        "type": "csv",
+                        "chromosomeField": "Chromosome",
+                        "genomicFields": ["chromStart", "chromEnd"]
+                    },
+                    "mark": "rect",
+                    "color": {
+                        "field": "Chromosome",
+                        "type": "nominal",
+                        "domain": [
+                            "chr1",
+                            "chr2",
+                            "chr3",
+                            "chr4",
+                            "chr5",
+                            "chr6",
+                            "chr7",
+                            "chr8",
+                            "chr9",
+                            "chr10",
+                            "chr11",
+                            "chr12",
+                            "chr13",
+                            "chr14",
+                            "chr15",
+                            "chr16",
+                            "chr17",
+                            "chr18",
+                            "chr19",
+                            "chr20",
+                            "chr21",
+                            "chr22",
+                            "chrX",
+                            "chrY"
+                        ],
+                        "range": ["#F6F6F6", "lightgray"]
+                    },
+                    "x": {
+                        "field": "chromStart",
+                        "type": "genomic",
+                        "aggregate": "min",
+                        "axis": "none"
+                    },
+                    "xe": {
+                        "field": "chromEnd",
+                        "aggregate": "max",
+                        "type": "genomic"
+                    },
+                    "stroke": {
+                        "value": "gray"
+                    },
+                    "strokeWidth": {
+                        "value": 0.5
+                    },
+                    "style": {
+                        "outline": "black"
+                    },
+                    "width": 1200,
+                    "height": 30
+                },
+                {
+                    "id": "PACA-CA-small-gain",
+                    "title": "",
+                    "style": {
+                        "background": "#F6F6F6"
+                    },
+                    "data": {
+                        "separator": "\t",
+                        "url": "https://somatic-browser-test.s3.amazonaws.com/ccne1_amp/af9cfac8-7fbe-49cb-aeca-8d68aea57994.consensus.20170119.somatic.cna.txt",
+                        "type": "csv",
+                        "chromosomeField": "chromosome",
+                        "genomicFields": ["start", "end"]
+                    },
+                    "dataTransform": [
+                        {
+                            "type": "filter",
+                            "field": "total_cn",
+                            "inRange": [5, 999]
+                        }
+                    ],
+                    "mark": "rect",
+                    "x": {
+                        "field": "start",
+                        "type": "genomic"
+                    },
+                    "xe": {
+                        "field": "end",
+                        "type": "genomic"
+                    },
+                    "color": {
+                        "value": "#73C475"
+                    },
+                    "width": 1200,
+                    "height": 40
+                },
+                {
+                    "id": "PACA-CA-small-loh",
+                    "title": "",
+                    "style": {
+                        "background": "#F6F6F6"
+                    },
+                    "data": {
+                        "separator": "\t",
+                        "url": "https://somatic-browser-test.s3.amazonaws.com/ccne1_amp/af9cfac8-7fbe-49cb-aeca-8d68aea57994.consensus.20170119.somatic.cna.txt",
+                        "type": "csv",
+                        "chromosomeField": "chromosome",
+                        "genomicFields": ["start", "end"]
+                    },
+                    "dataTransform": [
+                        {
+                            "type": "filter",
+                            "field": "minor_cn",
+                            "oneOf": ["0"]
+                        },
+                        {
+                            "type": "filter",
+                            "field": "total_cn",
+                            "oneOf": ["0"],
+                            "not": true
+                        }
+                    ],
+                    "mark": "rect",
+                    "x": {
+                        "field": "start",
+                        "type": "genomic"
+                    },
+                    "xe": {
+                        "field": "end",
+                        "type": "genomic"
+                    },
+                    "color": {
+                        "value": "#FB6A4B"
+                    },
+                    "width": 1200,
+                    "height": 40
+                },
+                {
+                    "id": "PACA-CA-small-sv",
+                    "alignment": "overlay",
+                    "experimental": {
+                        "mouseEvents": {
+                            "click": true,
+                            "mouseOver": true,
+                            "groupMarksByField": "sv_id"
+                        }
+                    },
+                    "data": {
+                        "url": "https://somatic-browser-test.s3.amazonaws.com/ccne1_amp/af9cfac8-7fbe-49cb-aeca-8d68aea57994.pcawg_consensus_1.6.161116.somatic.sv.bedpe",
+                        "type": "csv",
+                        "separator": "\t",
+                        "headerNames": [
+                            "chrom1",
+                            "start1",
+                            "end1",
+                            "chrom2",
+                            "start2",
+                            "end2",
+                            "sv_id",
+                            "pe_support",
+                            "strand1",
+                            "strand2"
+                        ],
+                        "genomicFieldsToConvert": [
+                            {
+                                "chromosomeField": "chrom1",
+                                "genomicFields": ["start1", "end1"]
+                            },
+                            {
+                                "chromosomeField": "chrom2",
+                                "genomicFields": ["start2", "end2"]
+                            }
+                        ]
+                    },
+                    "mark": "withinLink",
+                    "tracks": [
+                        {
+                            "dataTransform": [
+                                {
+                                    "type": "svType",
+                                    "firstBp": {
+                                        "chrField": "chrom1",
+                                        "posField": "start1",
+                                        "strandField": "strand1"
+                                    },
+                                    "secondBp": {
+                                        "chrField": "chrom2",
+                                        "posField": "start2",
+                                        "strandField": "strand2"
+                                    },
+                                    "newField": "svclass"
+                                },
+                                {
+                                    "type": "replace",
+                                    "field": "svclass",
+                                    "replace": [
+                                        {
+                                            "from": "DUP",
+                                            "to": "Duplication"
+                                        },
+                                        {
+                                            "from": "TRA",
+                                            "to": "Translocation"
+                                        },
+                                        {
+                                            "from": "DEL",
+                                            "to": "Deletion"
+                                        },
+                                        {
+                                            "from": "t2tINV",
+                                            "to": "Inversion (TtT)"
+                                        },
+                                        {
+                                            "from": "h2hINV",
+                                            "to": "Inversion (HtH)"
+                                        }
+                                    ],
+                                    "newField": "svclass"
+                                },
+                                {
+                                    "type": "filter",
+                                    "field": "sv_id",
+                                    "oneOf": [""],
+                                    "not": true
+                                },
+                                {
+                                    "type": "filter",
+                                    "field": "svclass",
+                                    "oneOf": ["Translocation"],
+                                    "not": false
+                                }
+                            ],
+                            "x": {
+                                "field": "start1",
+                                "type": "genomic"
+                            },
+                            "xe": {
+                                "field": "end2",
+                                "type": "genomic"
+                            },
+                            "baselineY": 64,
+                            "flipY": true
+                        },
+                        {
+                            "dataTransform": [
+                                {
+                                    "type": "svType",
+                                    "firstBp": {
+                                        "chrField": "chrom1",
+                                        "posField": "start1",
+                                        "strandField": "strand1"
+                                    },
+                                    "secondBp": {
+                                        "chrField": "chrom2",
+                                        "posField": "start2",
+                                        "strandField": "strand2"
+                                    },
+                                    "newField": "svclass"
+                                },
+                                {
+                                    "type": "replace",
+                                    "field": "svclass",
+                                    "replace": [
+                                        {
+                                            "from": "DUP",
+                                            "to": "Duplication"
+                                        },
+                                        {
+                                            "from": "TRA",
+                                            "to": "Translocation"
+                                        },
+                                        {
+                                            "from": "DEL",
+                                            "to": "Deletion"
+                                        },
+                                        {
+                                            "from": "t2tINV",
+                                            "to": "Inversion (TtT)"
+                                        },
+                                        {
+                                            "from": "h2hINV",
+                                            "to": "Inversion (HtH)"
+                                        }
+                                    ],
+                                    "newField": "svclass"
+                                },
+                                {
+                                    "type": "filter",
+                                    "field": "sv_id",
+                                    "oneOf": [""],
+                                    "not": true
+                                },
+                                {
+                                    "type": "filter",
+                                    "field": "svclass",
+                                    "oneOf": ["Duplication"],
+                                    "not": false
+                                }
+                            ],
+                            "x": {
+                                "field": "start1",
+                                "type": "genomic"
+                            },
+                            "xe": {
+                                "field": "end2",
+                                "type": "genomic"
+                            },
+                            "baselineY": 16,
+                            "flipY": true
+                        },
+                        {
+                            "dataTransform": [
+                                {
+                                    "type": "svType",
+                                    "firstBp": {
+                                        "chrField": "chrom1",
+                                        "posField": "start1",
+                                        "strandField": "strand1"
+                                    },
+                                    "secondBp": {
+                                        "chrField": "chrom2",
+                                        "posField": "start2",
+                                        "strandField": "strand2"
+                                    },
+                                    "newField": "svclass"
+                                },
+                                {
+                                    "type": "replace",
+                                    "field": "svclass",
+                                    "replace": [
+                                        {
+                                            "from": "DUP",
+                                            "to": "Duplication"
+                                        },
+                                        {
+                                            "from": "TRA",
+                                            "to": "Translocation"
+                                        },
+                                        {
+                                            "from": "DEL",
+                                            "to": "Deletion"
+                                        },
+                                        {
+                                            "from": "t2tINV",
+                                            "to": "Inversion (TtT)"
+                                        },
+                                        {
+                                            "from": "h2hINV",
+                                            "to": "Inversion (HtH)"
+                                        }
+                                    ],
+                                    "newField": "svclass"
+                                },
+                                {
+                                    "type": "filter",
+                                    "field": "sv_id",
+                                    "oneOf": [""],
+                                    "not": true
+                                },
+                                {
+                                    "type": "filter",
+                                    "field": "svclass",
+                                    "oneOf": ["Deletion"],
+                                    "not": false
+                                }
+                            ],
+                            "x": {
+                                "field": "start1",
+                                "type": "genomic"
+                            },
+                            "xe": {
+                                "field": "end2",
+                                "type": "genomic"
+                            },
+                            "baselineY": 16,
+                            "flipY": false
+                        },
+                        {
+                            "dataTransform": [
+                                {
+                                    "type": "svType",
+                                    "firstBp": {
+                                        "chrField": "chrom1",
+                                        "posField": "start1",
+                                        "strandField": "strand1"
+                                    },
+                                    "secondBp": {
+                                        "chrField": "chrom2",
+                                        "posField": "start2",
+                                        "strandField": "strand2"
+                                    },
+                                    "newField": "svclass"
+                                },
+                                {
+                                    "type": "replace",
+                                    "field": "svclass",
+                                    "replace": [
+                                        {
+                                            "from": "DUP",
+                                            "to": "Duplication"
+                                        },
+                                        {
+                                            "from": "TRA",
+                                            "to": "Translocation"
+                                        },
+                                        {
+                                            "from": "DEL",
+                                            "to": "Deletion"
+                                        },
+                                        {
+                                            "from": "t2tINV",
+                                            "to": "Inversion (TtT)"
+                                        },
+                                        {
+                                            "from": "h2hINV",
+                                            "to": "Inversion (HtH)"
+                                        }
+                                    ],
+                                    "newField": "svclass"
+                                },
+                                {
+                                    "type": "filter",
+                                    "field": "sv_id",
+                                    "oneOf": [""],
+                                    "not": true
+                                },
+                                {
+                                    "type": "filter",
+                                    "field": "svclass",
+                                    "oneOf": ["Inversion (TtT)"],
+                                    "not": false
+                                }
+                            ],
+                            "x": {
+                                "field": "start1",
+                                "type": "genomic"
+                            },
+                            "xe": {
+                                "field": "end2",
+                                "type": "genomic"
+                            },
+                            "baselineY": 48,
+                            "flipY": false
+                        },
+                        {
+                            "dataTransform": [
+                                {
+                                    "type": "svType",
+                                    "firstBp": {
+                                        "chrField": "chrom1",
+                                        "posField": "start1",
+                                        "strandField": "strand1"
+                                    },
+                                    "secondBp": {
+                                        "chrField": "chrom2",
+                                        "posField": "start2",
+                                        "strandField": "strand2"
+                                    },
+                                    "newField": "svclass"
+                                },
+                                {
+                                    "type": "replace",
+                                    "field": "svclass",
+                                    "replace": [
+                                        {
+                                            "from": "DUP",
+                                            "to": "Duplication"
+                                        },
+                                        {
+                                            "from": "TRA",
+                                            "to": "Translocation"
+                                        },
+                                        {
+                                            "from": "DEL",
+                                            "to": "Deletion"
+                                        },
+                                        {
+                                            "from": "t2tINV",
+                                            "to": "Inversion (TtT)"
+                                        },
+                                        {
+                                            "from": "h2hINV",
+                                            "to": "Inversion (HtH)"
+                                        }
+                                    ],
+                                    "newField": "svclass"
+                                },
+                                {
+                                    "type": "filter",
+                                    "field": "sv_id",
+                                    "oneOf": [""],
+                                    "not": true
+                                },
+                                {
+                                    "type": "filter",
+                                    "field": "svclass",
+                                    "oneOf": ["Inversion (HtH)"],
+                                    "not": false
+                                }
+                            ],
+                            "x": {
+                                "field": "start1",
+                                "type": "genomic"
+                            },
+                            "xe": {
+                                "field": "end2",
+                                "type": "genomic"
+                            },
+                            "baselineY": 48,
+                            "flipY": true
+                        }
+                    ],
+                    "y": {
+                        "value": 16
+                    },
+                    "color": {
+                        "field": "svclass",
+                        "type": "nominal",
+                        "legend": false,
+                        "domain": ["Translocation", "Duplication", "Deletion", "Inversion (TtT)", "Inversion (HtH)"],
+                        "range": ["lightgrey", "#409F7A", "#3275B4", "#CC7DAA", "#E6A01B"]
+                    },
+                    "stroke": {
+                        "field": "svclass",
+                        "type": "nominal",
+                        "domain": ["Translocation", "Duplication", "Deletion", "Inversion (TtT)", "Inversion (HtH)"],
+                        "range": ["lightgrey", "#409F7A", "#3275B4", "#CC7DAA", "#E6A01B"]
+                    },
+                    "strokeWidth": {
+                        "value": 1
+                    },
+                    "opacity": {
+                        "value": 0.7
+                    },
+                    "tooltip": [
+                        {
+                            "field": "start1",
+                            "type": "genomic"
+                        },
+                        {
+                            "field": "end2",
+                            "type": "genomic"
+                        },
+                        {
+                            "field": "strand1",
+                            "type": "nominal"
+                        },
+                        {
+                            "field": "strand2",
+                            "type": "nominal"
+                        },
+                        {
+                            "field": "svclass",
+                            "type": "nominal"
+                        },
+                        {
+                            "field": "sv_id",
+                            "type": "nominal"
+                        },
+                        {
+                            "field": "pe_support",
+                            "type": "nominal"
+                        }
+                    ],
+                    "style": {
+                        "linkStyle": "elliptical",
+                        "linkMinHeight": 0.7,
+                        "mouseOver": {
+                            "stroke": "#242424",
+                            "strokeWidth": 1
+                        }
+                    },
+                    "width": 1200,
+                    "height": 80
+                }
+            ]
+        }
+    ]
+}
