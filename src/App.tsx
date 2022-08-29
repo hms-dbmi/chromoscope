@@ -366,7 +366,7 @@ function App(props: RouteComponentProps) {
             const spec = getOneOfSmallMultiplesSpec({
                 cnvUrl: thumbnailLoadSample.cnv,
                 svUrl: thumbnailLoadSample.sv,
-                width: 1200,
+                width: 600,
                 title: thumbnailLoadSample.cancer.charAt(0).toUpperCase() + thumbnailLoadSample.cancer.slice(1),
                 subtitle: id,
                 cnFields: thumbnailLoadSample.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
