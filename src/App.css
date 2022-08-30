@@ -224,10 +224,19 @@ body {
     color: grey;
 }
 
+.thumbnail-generate-button {
+    margin-left: 20px;
+    line-height: 30px;
+    border-radius: 0px;
+    border: 1px solid grey;
+    cursor: pointer;
+}
+
 .thumbnail-loading-message {
     position: absolute;
-    left: calc(50% - 25px);
+    left: 0px;
     top: calc(50% - 12px);
+    width: 100%;
     font-weight: bold;
     color: darkgrey;
 }

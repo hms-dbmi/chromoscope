@@ -46,7 +46,6 @@ function App(props: RouteComponentProps) {
     );
 
     const gosRef = useRef<GoslingRef>();
-    const thumbnailRef = useRef<GoslingRef>();
 
     // demo
     const [demo, setDemo] = useState(
@@ -56,6 +55,8 @@ function App(props: RouteComponentProps) {
     // interactions
     const [showSamples, setShowSamples] = useState(false);
     const [thumbnailForceGenerate, setThumbnailForceGenerate] = useState(false);
+    const [generateThumbnails, setGenerateThumbnails] = useState(false);
+    const [doneGeneratingThumbnails, setDoneGeneratingThumbnails] = useState(false);
     const [filterSampleBy, setFilterSampleBy] = useState('');
     const [filteredSamples, setFilteredSamples] = useState(selectedSamples);
     const [showOverview, setShowOverview] = useState(true);
@@ -360,27 +361,32 @@ function App(props: RouteComponentProps) {
         // );
         // return [];
         /* Load image if necessary */
-        const thumbnailLoadSample = filteredSamples.filter(d => !getThumbnail(d))[0];
-        if (thumbnailLoadSample) {
-            const { id } = thumbnailLoadSample;
+        const noThumbnail = filteredSamples.filter(d => !getThumbnail(d))[0];
+        if (noThumbnail && generateThumbnails) {
+            const { id } = noThumbnail;
             const spec = getOneOfSmallMultiplesSpec({
-                cnvUrl: thumbnailLoadSample.cnv,
-                svUrl: thumbnailLoadSample.sv,
+                cnvUrl: noThumbnail.cnv,
+                svUrl: noThumbnail.sv,
                 width: 600,
-                title: thumbnailLoadSample.cancer.charAt(0).toUpperCase() + thumbnailLoadSample.cancer.slice(1),
+                title: noThumbnail.cancer.charAt(0).toUpperCase() + noThumbnail.cancer.slice(1),
                 subtitle: id,
-                cnFields: thumbnailLoadSample.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
+                cnFields: noThumbnail.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
             });
             const hidden = document.getElementById('hidden-gosling');
             embed(hidden, spec, { padding: 0, margin: 10 }).then(api => {
                 setTimeout(() => {
                     const { canvas } = api.getCanvas();
                     const dataUrl = canvas.toDataURL('image/png');
-                    GENERATED_THUMBNAILS[thumbnailLoadSample.id] = dataUrl;
+                    GENERATED_THUMBNAILS[noThumbnail.id] = dataUrl;
                     db.add(id, dataUrl);
                     setThumbnailForceGenerate(!thumbnailForceGenerate);
                 }, 500);
             });
+        }
+        if (noThumbnail) {
+            setDoneGeneratingThumbnails(false);
+        } else {
+            setDoneGeneratingThumbnails(true);
         }
         return filteredSamples.map((d, i) => (
             <div
@@ -423,7 +429,9 @@ function App(props: RouteComponentProps) {
                                 src={THUMBNAIL_PLACEHOLDER}
                                 style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }}
                             />
-                            <span className="thumbnail-loading-message">Loading...</span>
+                            <span className="thumbnail-loading-message">
+                                {generateThumbnails ? 'Loading...' : 'Thumbnail Missing'}
+                            </span>
                         </>
                     )}
                     <span className="tag-assembly">{d.assembly ?? 'hg38'}</span>
@@ -452,7 +460,7 @@ function App(props: RouteComponentProps) {
         //         {component}
         //     </div>
         // ));
-    }, [demo, filteredSamples, thumbnailForceGenerate]);
+    }, [demo, filteredSamples, thumbnailForceGenerate, generateThumbnails]);
 
     const goslingComponent = useMemo(() => {
         if (!ready) return null;
@@ -622,6 +630,13 @@ function App(props: RouteComponentProps) {
                                     fill="currentColor"
                                 ></path>
                             </svg>
+                            <button
+                                className="thumbnail-generate-button"
+                                onClick={() => setGenerateThumbnails(!generateThumbnails)}
+                                style={{ visibility: doneGeneratingThumbnails ? 'hidden' : 'visible' }}
+                            >
+                                {generateThumbnails ? 'Stop Generating Thumbnails' : 'Generate Missing Thumbnails'}
+                            </button>
                         </div>
                         <div className="overview-container">{smallOverviewWrapper}</div>
                     </div>
