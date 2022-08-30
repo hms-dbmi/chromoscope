@@ -54,7 +54,7 @@ function App(props: RouteComponentProps) {
     );
 
     // interactions
-    const [showSamples, setShowSamples] = useState(true); // XXX
+    const [showSamples, setShowSamples] = useState(false);
     const [thumbnailForceGenerate, setThumbnailForceGenerate] = useState(false);
     const [filterSampleBy, setFilterSampleBy] = useState('');
     const [filteredSamples, setFilteredSamples] = useState(selectedSamples);
