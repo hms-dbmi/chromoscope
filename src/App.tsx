@@ -933,7 +933,7 @@ function App(props: RouteComponentProps) {
                         <path fill="currentColor" d={ICONS.ARROW_UP.path[0]} />
                     </svg>
                 </div>
-                <div id="hidden-gosling" style={{ visibility: 'collapse' }} />
+                <div id="hidden-gosling" style={{ visibility: 'collapse', position: 'fixed' }} />
             </div>
         </ErrorBoundary>
     );
