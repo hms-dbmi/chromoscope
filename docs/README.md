@@ -2,7 +2,7 @@
 
 ## Loading Your Data
 
-To load your data, you need to (1) make a config file (`.json`) that contains the information for each sample, (2) store the config file in a HTTPS file server (e.g., AWS S3 or [GitHub Gist](https://gist.github.com/)), and (3) use it with the `external` parameter of the GosCan URL.
+To load your data, you need to (1) make a config file (`.json`) that contains the information for individual samples, (2) store the config file in a HTTPS file server (e.g., AWS S3 or [GitHub Gist](https://gist.github.com/)), and (3) use it with the `external` parameter of the GosCan URL.
 
 ```
 // format
@@ -69,6 +69,48 @@ A multi-sample example:
     }
 ]
 ```
+
+### Data Formats
+
+#### Structural Variants (BEDPE)
+<!-- https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format -->
+
+The structural variants are stored in a BEDPE file. The following columns are used in the browser:
+
+| Property | Type | Note |
+|---|---|---|
+| `chrom1` | `string` | Required. The name of the chromosome of the first break point (BP). |
+| `start1` | `number` | Required. The starting position of the first BP. |
+| `end1` | `number` | Required. The end position of the first BP. |
+| `chrom2` | `string` | Required. The name of the chromosome of the second BP. |
+| `start2` | `number` | Required. The starting position of the second BP. |
+| `end2` | `number` | Required. The end position of the second BP. |
+| `sv_id` | `string` | Required. The name of the SV. |
+| `pe_support` | `string` | Optional. The number of events that support SV shown in tooltips. |
+| `strand1` | `string` | Required. The strand for the first BP. Either `'+'` or `'-'`. |
+| `strand2` | `string` | Required. The strand for the first BP. Either `'+'` or `'-'`. |
+
+Example file:
+
+?> https://somatic-browser-test.s3.amazonaws.com/SVTYPE_SV_test_tumor_normal_with_panel.bedpe
+
+#### CNV (TSV)
+<!-- https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format -->
+
+The CNV is stored in a tab-delimited file that is visualized as three tracks: CNV, Gain, and LOH.
+
+| Property | Type | Note |
+|---|---|---|
+| `chromosome` | `string` | Required. The name of the chromosome. |
+| `start` | `number` | Required. The starting position. |
+| `end` | `number` | Required. The end position. |
+| `total_cn` | `string` | Required. The total number of copies. |
+| `major_cn` | `number` | Required. The major allele counts. |
+| `minor_cn` | `number` | Required. The minor allele counts. |
+
+Example file:
+
+?> https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.consensus.20170119.somatic.cna.annotated.txt
 
 ## Contact
 
