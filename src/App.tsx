@@ -28,8 +28,15 @@ const ZOOM_DURATION = 500;
 function App(props: RouteComponentProps) {
     // URL parameters
     const urlParams = new URLSearchParams(props.location.search);
+    // !! instead of using `urlParams.get('external')`, we directly parse the external URL in order to include
+    // any inlined parameters of the external link (e.g., private AWS link with authentication info.)
+    let externalUrl = props.location.search.split('external=')[1];
+    // remove known parameters
+    externalUrl = externalUrl.split('&demoIndex')[0];
+    externalUrl = externalUrl.split('&example')[0];
+    externalUrl = externalUrl.split('&domain')[0];
+
     const exampleId = urlParams.get('example');
-    const externalUrl = urlParams.get('external');
     const xDomain = urlParams.get('domain')
         ? urlParams
               .get('domain')
@@ -380,7 +387,7 @@ function App(props: RouteComponentProps) {
                     GENERATED_THUMBNAILS[noThumbnail.id] = dataUrl;
                     db.add(id, dataUrl);
                     setThumbnailForceGenerate(!thumbnailForceGenerate);
-                }, 500);
+                }, 10000);
             });
         }
         if (noThumbnail) {
@@ -553,10 +560,14 @@ function App(props: RouteComponentProps) {
                         onClick={() => {
                             const { xDomain } = gosRef.current.hgApi.api.getLocation(`${demo.id}-mid-ideogram`);
                             if (xDomain) {
-                                urlParams.set('demoIndex', demoIndex.current + '');
-                                urlParams.set('domain', xDomain.join('-'));
-                                const newUrl =
-                                    window.location.origin + window.location.pathname + '?' + urlParams.toString();
+                                // urlParams.set('demoIndex', demoIndex.current + '');
+                                // urlParams.set('domain', xDomain.join('-'));
+                                let newUrl = window.location.origin + window.location.pathname + '?';
+                                newUrl += `demoIndex=${demoIndex.current}`;
+                                newUrl += `&domain=${xDomain.join('-')}`;
+                                if (externalUrl) {
+                                    newUrl += `&external=${externalUrl}`;
+                                }
                                 navigator.clipboard
                                     .writeText(newUrl)
                                     .then(() =>
