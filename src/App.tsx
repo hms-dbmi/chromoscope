@@ -30,12 +30,14 @@ function App(props: RouteComponentProps) {
     const urlParams = new URLSearchParams(props.location.search);
     // !! instead of using `urlParams.get('external')`, we directly parse the external URL in order to include
     // any inlined parameters of the external link (e.g., private AWS link with authentication info.)
-    let externalUrl = props.location.search.split('external=')[1];
-    // remove known parameters
-    externalUrl = externalUrl.split('&demoIndex')[0];
-    externalUrl = externalUrl.split('&example')[0];
-    externalUrl = externalUrl.split('&domain')[0];
-
+    let externalUrl = null;
+    if (props.location.search.includes('external=')) {
+        externalUrl = props.location.search.split('external=')[1];
+        // remove known parameters
+        externalUrl = externalUrl.split('&demoIndex')[0];
+        externalUrl = externalUrl.split('&example')[0];
+        externalUrl = externalUrl.split('&domain')[0];
+    }
     const exampleId = urlParams.get('example');
     const xDomain = urlParams.get('domain')
         ? urlParams
