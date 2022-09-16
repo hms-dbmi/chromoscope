@@ -143,7 +143,8 @@ export default function sv(
                 click: true,
                 mouseOver: true,
                 groupMarksByField: 'sv_id'
-            }
+            },
+            performanceMode: true
         },
         data: {
             url,

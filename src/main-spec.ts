@@ -44,9 +44,6 @@ function generateSpec(opt: SpecOption): GoslingSpec {
             outline: 'lightgray',
             enableSmoothPath: false
         },
-        experimental: {
-            performanceMode: true
-        },
         views: [
             {
                 arrangement: 'vertical',
