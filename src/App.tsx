@@ -4,7 +4,8 @@ import { debounce, sample } from 'lodash';
 import type { RouteComponentProps } from 'react-router-dom';
 import generateSpec from './main-spec';
 import ErrorBoundary from './error';
-import allDrivers from './data/driver.json';
+import _allDrivers from './data/driver.json';
+import _customDrivers from './data/driver.custom.json';
 import samples, { SampleType } from './data/samples';
 import getOneOfSmallMultiplesSpec from './small-multiples-spec';
 import { CHROMOSOMES, THEME, WHOLE_CHROMOSOME_STR } from './constants';
@@ -24,6 +25,16 @@ const INIT_VIS_PANEL_WIDTH = window.innerWidth;
 const VIS_PADDING = 60;
 const ZOOM_PADDING = 200;
 const ZOOM_DURATION = 500;
+
+const allDrivers = [
+    ...(_allDrivers as any),
+    ..._customDrivers.map(d => {
+        return { ...d, sample_id: 'SRR7890905' };
+    }),
+    ..._customDrivers.map(d => {
+        return { ...d, sample_id: 'SRR7890905_Hartwig' };
+    })
+];
 
 function App(props: RouteComponentProps) {
     // URL parameters

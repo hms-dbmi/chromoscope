@@ -1,0 +1,86 @@
+[
+    {
+        "chr": "2",
+        "pos": 47806320,
+        "ref": "G",
+        "alt": "A",
+        "gene": "MSH6",
+        "category": "mutational"
+    },
+    {
+        "chr": "6",
+        "pos": 157133136,
+        "ref": "G",
+        "alt": "C",
+        "gene": "ARID1B",
+        "category": "mutational"
+    },
+    {
+        "chr": "8",
+        "pos": 38428420,
+        "ref": "G",
+        "alt": "A",
+        "gene": "FGFR1",
+        "category": "mutational"
+    },
+    {
+        "chr": "13",
+        "pos": 32339132,
+        "ref": "G",
+        "alt": "T",
+        "gene": "BRCA2",
+        "category": "mutational",
+        "biallelic": "yes"
+    },
+    {
+        "chr": "chr17",
+        "pos": 7675088,
+        "ref": "C",
+        "alt": "T",
+        "gene": "TP53",
+        "category": "mutational",
+        "biallelic": "yes"
+    },
+    {
+        "chr": "X",
+        "pos": 77681733,
+        "ref": "T",
+        "alt": "C",
+        "gene": "ATRX",
+        "category": "mutational",
+        "biallelic": "yes"
+    },
+    {
+        "gene": "CDKN2A",
+        "chr": "9",
+        "pos": 21981527,
+        "start": "21967753",
+        "end": "21995301",
+        "category": "deletion"
+    },
+    {
+        "gene": "MET",
+        "chr": "7",
+        "pos": 116735291,
+        "start": "116672196",
+        "end": "116798386",
+        "category": "amplification"
+    },
+    {
+        "gene": "MYC",
+        "chr": "8",
+        "pos": 127739192,
+        "start": "127735434",
+        "end": "127742951",
+        "category": "amplification"
+    },
+    {
+        "gene": "PTEN",
+        "chr": "10",
+        "pos": 89677278,
+        "start": "89622870",
+        "end": "89731687",
+        "category": "deletion",
+        "biallelic": "yes"
+    }
+]
