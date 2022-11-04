@@ -85,9 +85,7 @@ function App(props: RouteComponentProps) {
     const [visPanelWidth, setVisPanelWidth] = useState(INIT_VIS_PANEL_WIDTH - VIS_PADDING * 2);
     const [overviewChr, setOverviewChr] = useState('');
     const [genomeViewChr, setGenomeViewChr] = useState('');
-    const [drivers, setDrivers] = useState(
-        (allDrivers as any).filter((d: any) => d.sample_id === demo.id && +d.chr && +d.pos)
-    );
+    const [drivers, setDrivers] = useState((allDrivers as any).filter((d: any) => d.sample_id === demo.id && +d.pos));
     const [selectedSvId, setSelectedSvId] = useState<string>('');
     const [breakpoints, setBreakpoints] = useState<[number, number, number, number]>([1, 100, 1, 100]);
     const [bpIntervals, setBpIntervals] = useState<[number, number, number, number] | undefined>();
@@ -104,7 +102,7 @@ function App(props: RouteComponentProps) {
 
     // update demo
     useEffect(() => {
-        const filteredDrivers = (allDrivers as any).filter((d: any) => d.sample_id === demo.id && +d.chr && +d.pos);
+        const filteredDrivers = (allDrivers as any).filter((d: any) => d.sample_id === demo.id && +d.pos);
         // console.log(demo, filteredDrivers);
         setDrivers(filteredDrivers);
         setOverviewChr('');

@@ -13,7 +13,8 @@
         "ref": "G",
         "alt": "C",
         "gene": "ARID1B",
-        "category": "mutational"
+        "category": "mutational",
+        "biallelic": "yes"
     },
     {
         "chr": "8",
@@ -30,7 +31,7 @@
         "alt": "T",
         "gene": "BRCA2",
         "category": "mutational",
-        "biallelic": "yes"
+        "biallelic": "no"
     },
     {
         "chr": "chr17",
@@ -64,14 +65,6 @@
         "pos": 116735291,
         "start": "116672196",
         "end": "116798386",
-        "category": "amplification"
-    },
-    {
-        "gene": "MYC",
-        "chr": "8",
-        "pos": 127739192,
-        "start": "127735434",
-        "end": "127742951",
         "category": "amplification"
     },
     {
