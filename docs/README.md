@@ -23,6 +23,7 @@ For each sample, you need to prepare the following information in a JSON object.
 | `assembly` | `'hg38'` or `'hg19'` | Required. Assembly. |
 | `sv` | `string` | Required. An URL of the SV bedpe file (`.bedpe`). |
 | `cnv` | `string` | Required. An URL of the CNV text file (`.txt`). |
+| `drivers` | `string` | Optional. An URL of a file that contains drivers (`.txt`). |
 | `vcf` | `string` | Optional. An URL of the point mutation file (`.vcf`). |
 | `vcfIndex` | `string` | Optional. An URL of the point mutation index file (`.tbi`). |
 | `vcf2` | `string` | Optional. An URL of the the indel file (`.vcf`). |
@@ -49,6 +50,7 @@ A multi-sample example:
         "id": "SRR7890905",
         "cancer": "breast",
         "assembly": "hg38",
+        "drivers": "https://gist.githubusercontent.com/sehilyi/350b9e633c52ad97df00a0fc13a8839a/raw/c47b9ba33f1c9e187c69d1dadd01838db44d3b29/driver.txt",
         "sv": "https://somatic-browser-test.s3.amazonaws.com/SVTYPE_SV_test_tumor_normal_with_panel.bedpe",
         "cnv": "https://gist.githubusercontent.com/sehilyi/6fbceae35756b13472332d6b81b10803/raw/596428a8b0ebc00e7f8cbc52b050db0fbd6e19a5/SRR7890943.ascat.v3.cnv.tsv",
         "bam": "https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam",
@@ -111,6 +113,31 @@ The CNV is stored in a tab-delimited file that is visualized as three tracks: CN
 Example file:
 
 ?> https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.consensus.20170119.somatic.cna.annotated.txt
+
+#### Drivers (TSV)
+<!-- https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format -->
+
+The drivers are stored in a tab-delimited file. When this file is present, the browser will show drivers that are included in the file only.
+
+The order of the columns does not need to be in the exact same order.
+
+| Property | Type | Note |
+|---|---|---|
+| `chr` | `string` | Required. The name of the chromosome, such as `chr2` and `chrX`. |
+| `pos` | `number` | Required. The position of the driver. |
+| `gene` | `number` | Required. The name of the driver. |
+| `ref` | `string` | Optional. Information only shown on a tooltip. |
+| `alt` | `string` | Optional. Information only shown on a tooltip. |
+| `category` | `string` | Optional. Information only shown on a tooltip. |
+| `transcript_consequence` | `string` | Optional. Information only shown on a tooltip. |
+| `protein_mutation` | `string` | Optional. Information only shown on a tooltip. |
+| `allele_fraction` | `string` | Optional. Information only shown on a tooltip. |
+| `mutation_type` | `string` | Optional. Information only shown on a tooltip. |
+| `biallelic` | `string` | Optional. Either `yes` or `no`. Whether the mutation occurs on both alleles of a single gene. |
+
+Example file:
+
+?> https://gist.githubusercontent.com/sehilyi/350b9e633c52ad97df00a0fc13a8839a/raw/c47b9ba33f1c9e187c69d1dadd01838db44d3b29/driver.txt
 
 ## Contact
 
