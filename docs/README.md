@@ -129,6 +129,7 @@ The order of the columns does not need to be in the exact same order.
 | `ref` | `string` | Optional. Information only shown on a tooltip. |
 | `alt` | `string` | Optional. Information only shown on a tooltip. |
 | `category` | `string` | Optional. Information only shown on a tooltip. |
+| `top_category` | `string` | Optional. Information only shown on a tooltip. |
 | `transcript_consequence` | `string` | Optional. Information only shown on a tooltip. |
 | `protein_mutation` | `string` | Optional. Information only shown on a tooltip. |
 | `allele_fraction` | `string` | Optional. Information only shown on a tooltip. |
