@@ -5,7 +5,11 @@
         "ref": "G",
         "alt": "A",
         "gene": "MSH6",
-        "category": "mutational"
+        "category": "mutational",
+        "transcript_consequence": "c.3763G>A",
+        "protein_mutation": "p.Asp1255Asn",
+        "allele_fraction": "0.238095",
+        "mutation_type": "missense_variant"
     },
     {
         "chr": "6",
@@ -13,8 +17,12 @@
         "ref": "G",
         "alt": "C",
         "gene": "ARID1B",
+        "biallelic": "yes",
         "category": "mutational",
-        "biallelic": "yes"
+        "transcript_consequence": "c.2480G>C",
+        "protein_mutation": "p.Gly827Ala",
+        "allele_fraction": "0.977273",
+        "mutation_type": "missense_variant"
     },
     {
         "chr": "8",
@@ -22,7 +30,11 @@
         "ref": "G",
         "alt": "A",
         "gene": "FGFR1",
-        "category": "mutational"
+        "category": "mutational",
+        "transcript_consequence": "c.473C>T",
+        "protein_mutation": "p.Ser158Leu",
+        "allele_fraction": "1",
+        "mutation_type": "missense_variant"
     },
     {
         "chr": "13",
@@ -31,7 +43,11 @@
         "alt": "T",
         "gene": "BRCA2",
         "category": "mutational",
-        "biallelic": "no"
+        "biallelic": "no",
+        "transcript_consequence": "c.4777G>T",
+        "protein_mutation": "p.Glu1593Ter",
+        "allele_fraction": "0.447368",
+        "mutation_type": "missense_variant"
     },
     {
         "chr": "chr17",
@@ -40,7 +56,11 @@
         "alt": "T",
         "gene": "TP53",
         "category": "mutational",
-        "biallelic": "yes"
+        "biallelic": "yes",
+        "transcript_consequence": "c.524G>A",
+        "protein_mutation": "p.Arg175His",
+        "allele_fraction": "0.977273",
+        "mutation_type": "missense_variant"
     },
     {
         "chr": "X",
@@ -49,7 +69,11 @@
         "alt": "C",
         "gene": "ATRX",
         "category": "mutational",
-        "biallelic": "yes"
+        "biallelic": "yes",
+        "transcript_consequence": "c.3523A>G",
+        "protein_mutation": "p.Lys1175Glu",
+        "allele_fraction": "0.944444",
+        "mutation_type": "missense_variant"
     },
     {
         "gene": "CDKN2A",

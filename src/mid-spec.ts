@@ -105,7 +105,11 @@ export default function getMidView(option: SpecOption): View[] {
                                   { field: 'alt', alt: 'ALT', type: 'nominal' },
                                   { field: 'category', alt: 'Category', type: 'nominal' },
                                   { field: 'top_category', alt: 'Top Category', type: 'nominal' },
-                                  { field: 'biallelic', alt: 'Biallelic', type: 'nominal' }
+                                  { field: 'biallelic', alt: 'Biallelic', type: 'nominal' },
+                                  { field: 'transcript_consequence', alt: 'Transcript Consequence', type: 'nominal' },
+                                  { field: 'protein_mutation', alt: 'Protein Mutation', type: 'nominal' },
+                                  { field: 'allele_fraction', alt: 'Allele Fraction', type: 'nominal' },
+                                  { field: 'mutation_type', alt: 'Mutation Type', type: 'nominal' }
                               ],
                               width,
                               height: 20
