@@ -5,6 +5,7 @@ import { alignment } from './alignment';
 import { verticalGuide } from './vertical-guide';
 import tracks from './track';
 import { SampleType } from './data/samples';
+import { driversToTsvUrl } from './utils';
 
 export interface SpecOption extends SampleType {
     showOverview: boolean;
@@ -12,7 +13,7 @@ export interface SpecOption extends SampleType {
     xDomain?: [number, number];
     xOffset: number;
     width: number;
-    drivers: { [k: string]: string | number }[];
+    drivers: { [k: string]: string | number }[] | string;
     selectedSvId: string;
     breakpoints: [number, number, number, number];
     svReads: { name: string; type: string }[];
@@ -356,43 +357,7 @@ function getOverviewSpec(option: SpecOption): View[] {
                     width,
                     height: 100
                 },
-                ...(!showPutativeDriver
-                    ? []
-                    : [
-                          {
-                              id: `${id}-top-driver`,
-                              data: {
-                                  values: drivers,
-                                  type: 'json',
-                                  chromosomeField: 'chr',
-                                  genomicFields: ['pos']
-                              },
-                              dataTransform: [],
-                              mark: 'text',
-                              size: { value: 10 },
-                              x: { field: 'pos', type: 'genomic' },
-                              text: { field: 'gene', type: 'nominal' },
-                              color: { value: 'black' },
-                              style: {
-                                  textFontWeight: 'normal',
-                                  outlineWidth: 0
-                              },
-                              tooltip: [
-                                  { field: 'pos', alt: 'Position', type: 'genomic' },
-                                  { field: 'ref', alt: 'REF', type: 'nominal' },
-                                  { field: 'alt', alt: 'ALT', type: 'nominal' },
-                                  { field: 'category', alt: 'Category', type: 'nominal' },
-                                  { field: 'top_category', alt: 'Top Category', type: 'nominal' },
-                                  { field: 'biallelic', alt: 'Biallelic', type: 'nominal' },
-                                  { field: 'transcript_consequence', alt: 'Transcript Consequence', type: 'nominal' },
-                                  { field: 'protein_mutation', alt: 'Protein Mutation', type: 'nominal' },
-                                  { field: 'allele_fraction', alt: 'Allele Fraction', type: 'nominal' },
-                                  { field: 'mutation_type', alt: 'Mutation Type', type: 'nominal' }
-                              ],
-                              width,
-                              height: 40
-                          } as SingleTrack
-                      ]),
+                tracks.driver(id, driversToTsvUrl(drivers), width, 40, 'top'),
                 tracks.boundary('driver', 'top'),
                 tracks.gain(id, cnv, width, 40, 'top', cnFields),
                 tracks.boundary('gain', 'top'),

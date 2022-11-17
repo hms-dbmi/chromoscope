@@ -27,7 +27,7 @@ export default function cnv(
         alignment: 'overlay',
         tracks: [
             {
-                y: { field: total_cn, type: 'quantitative', axis: 'right', grid: true, range: [0, height - 10] },
+                y: { field: total_cn, type: 'quantitative', axis: 'right', grid: true, range: [0 + 10, height - 10] },
                 color: { value: '#808080' }
             }
             // {

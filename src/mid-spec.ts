@@ -1,6 +1,7 @@
 import { SpecOption } from './main-spec';
 import { SingleTrack, View } from 'gosling.js/dist/src/core/gosling.schema';
 import tracks from './track';
+import { driversToTsvUrl } from './utils';
 
 export default function getMidView(option: SpecOption): View[] {
     const {
@@ -79,42 +80,7 @@ export default function getMidView(option: SpecOption): View[] {
                     width,
                     height: 18
                 },
-                ...(!showPutativeDriver
-                    ? []
-                    : [
-                          {
-                              id: `${id}-mid-driver`,
-                              title: 'Putative Driver',
-                              data: {
-                                  values: drivers,
-                                  type: 'json',
-                                  chromosomeField: 'chr',
-                                  genomicFields: ['pos']
-                              },
-                              // dataTransform: [
-                              //   { type: 'displace', method: 'pile', boundingBox: { startField: 'pos', endField: 'pos', padding: 100} }
-                              // ],
-                              mark: 'text',
-                              x: { field: 'pos', type: 'genomic' },
-                              text: { field: 'gene', type: 'nominal' },
-                              color: { value: 'black' },
-                              style: { textFontWeight: 'normal' },
-                              tooltip: [
-                                  { field: 'pos', alt: 'Position', type: 'genomic' },
-                                  { field: 'ref', alt: 'REF', type: 'nominal' },
-                                  { field: 'alt', alt: 'ALT', type: 'nominal' },
-                                  { field: 'category', alt: 'Category', type: 'nominal' },
-                                  { field: 'top_category', alt: 'Top Category', type: 'nominal' },
-                                  { field: 'biallelic', alt: 'Biallelic', type: 'nominal' },
-                                  { field: 'transcript_consequence', alt: 'Transcript Consequence', type: 'nominal' },
-                                  { field: 'protein_mutation', alt: 'Protein Mutation', type: 'nominal' },
-                                  { field: 'allele_fraction', alt: 'Allele Fraction', type: 'nominal' },
-                                  { field: 'mutation_type', alt: 'Mutation Type', type: 'nominal' }
-                              ],
-                              width,
-                              height: 20
-                          } as SingleTrack
-                      ]),
+                tracks.driver(id, driversToTsvUrl(drivers), width, 20, 'mid'),
                 tracks.boundary('driver', 'mid'),
                 {
                     id: `${id}-mid-gene`,

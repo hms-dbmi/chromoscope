@@ -83,3 +83,15 @@ export function getRelativeGenomicPosition(absPos: number, assembly: 'hg38' | 'h
 export function isChrome() {
     return window.navigator.userAgent.toLowerCase().indexOf('chrome') !== -1;
 }
+
+export function driversToTsvUrl(drivers: string | { [k: string]: string | number }[]) {
+    if (typeof drivers === 'string') return drivers;
+
+    const keys = [];
+    drivers.forEach(d => keys.push(...Object.keys(d)));
+    const uniqueKeys = Array.from(new Set(keys));
+    const text = [uniqueKeys.join('\t'), ...drivers.map(d => uniqueKeys.map(k => d[k]).join('\t'))].join('\n');
+    const tsv = new Blob([text], { type: 'text/tsv' });
+    const url = URL.createObjectURL(tsv);
+    return url;
+}

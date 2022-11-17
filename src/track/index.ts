@@ -1,3 +1,4 @@
+import driver from './driver';
 import cnv from './cnv';
 import gain from './gain';
 import loh from './loh';
@@ -9,6 +10,7 @@ import boundary from './boundary';
 export type TrackMode = 'small' | 'top' | 'mid';
 
 export default {
+    driver,
     cnv,
     gain,
     loh,

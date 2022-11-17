@@ -1,6 +1,6 @@
 [
     {
-        "chr": "2",
+        "chr": "chr2",
         "pos": 47806320,
         "ref": "G",
         "alt": "A",
@@ -12,7 +12,7 @@
         "mutation_type": "missense_variant"
     },
     {
-        "chr": "6",
+        "chr": "chr6",
         "pos": 157133136,
         "ref": "G",
         "alt": "C",
@@ -25,7 +25,7 @@
         "mutation_type": "missense_variant"
     },
     {
-        "chr": "8",
+        "chr": "chr8",
         "pos": 38428420,
         "ref": "G",
         "alt": "A",
@@ -37,7 +37,7 @@
         "mutation_type": "missense_variant"
     },
     {
-        "chr": "13",
+        "chr": "chr13",
         "pos": 32339132,
         "ref": "G",
         "alt": "T",
@@ -63,7 +63,7 @@
         "mutation_type": "missense_variant"
     },
     {
-        "chr": "X",
+        "chr": "chrX",
         "pos": 77681733,
         "ref": "T",
         "alt": "C",
@@ -77,26 +77,20 @@
     },
     {
         "gene": "CDKN2A",
-        "chr": "9",
+        "chr": "chr9",
         "pos": 21981527,
-        "start": "21967753",
-        "end": "21995301",
         "category": "deletion"
     },
     {
         "gene": "MET",
-        "chr": "7",
+        "chr": "chr7",
         "pos": 116735291,
-        "start": "116672196",
-        "end": "116798386",
         "category": "amplification"
     },
     {
         "gene": "PTEN",
-        "chr": "10",
+        "chr": "chr10",
         "pos": 89677278,
-        "start": "89622870",
-        "end": "89731687",
         "category": "deletion",
         "biallelic": "yes"
     }

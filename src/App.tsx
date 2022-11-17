@@ -491,9 +491,7 @@ function App(props: RouteComponentProps) {
             xOffset: 0,
             showPutativeDriver,
             width: visPanelWidth,
-            drivers: drivers.map(d => {
-                return { ...d, gene: `${d['biallelic'] === 'yes' ? '⊙' : ''} ${d.gene}` };
-            }),
+            drivers,
             selectedSvId,
             breakpoints: breakpoints,
             crossChr: false,
