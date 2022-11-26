@@ -16,7 +16,7 @@ export default function indel(
             url,
             indexUrl,
             type: 'vcf',
-            sampleLength: 5000
+            sampleLength: 500
         },
         dataTransform: [
             {

@@ -2618,10 +2618,10 @@ gosling-theme@^0.0.10:
   resolved "https://registry.yarnpkg.com/gosling-theme/-/gosling-theme-0.0.10.tgz#5a4c2d0d24f90fe47c293335cd67832be6cf4d54"
   integrity sha512-GRm+XGeSGhKBjM/bNyeUkwp6tjnFKpNbywr58WzzA2qSA4RFPOoitS03R7xpYxqLXBGMFgahkyYd9Mostd2Csw==
 
-gosling.js@^0.9.25:
-  version "0.9.25"
-  resolved "https://registry.yarnpkg.com/gosling.js/-/gosling.js-0.9.25.tgz#172378a3497633148b690b2cd05ebe2492f2c45f"
-  integrity sha512-FlXKq54fjJGJjuEs9S7JdWgn0iuI7yLXJUN3AdP7T5a9PjH8mU/jL6OIikCjBlqZi242b2mqACK5nGlfsI4PiQ==
+gosling.js@^0.9.26:
+  version "0.9.26"
+  resolved "https://registry.yarnpkg.com/gosling.js/-/gosling.js-0.9.26.tgz#4e135ab3751b8bb9eba916ebaddfc36e54caed25"
+  integrity sha512-+oa/cYhCVL/QKeUTRdAUZEi7Vy1cav5WKBwF5T78d2fGIUNi602aDYlEqojDvTOFhcsVDSpyXTIyAAqZfNA1/w==
   dependencies:
     "@gmod/bam" "^1.1.8"
     "@gmod/bbi" "^1.0.30"

@@ -17,7 +17,7 @@ export default function mutation(
             type: 'vcf',
             url,
             indexUrl,
-            sampleLength: 1000
+            sampleLength: 500
         },
         dataTransform: [{ field: 'DISTPREV', type: 'filter', oneOf: [0], not: true }],
         mark: 'point',
