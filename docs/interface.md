@@ -1,10 +1,9 @@
-# GosCan
-
-Welcome to the documentation of GosCan.
-
-<!-- This web-based tool allows interactively exploring structural variants of cancer patients with macroscopic (genome-wide) and microscopic (alignment) views. The main visualization shows structural variants of a single patient with circular overview (top), linear detail view (middle), and two alignment views (bottom). Users can select a sample from a sample gallery that can be opened by clicking on a button on the left-top corner of the browser.
+# Interface
 
 ## Main Components
+
+![interface](assets/interface.png ':class=image')
+
 ### Circular overview
 This view displays the overview of structural variants (arcs), Loss-of-Heterozygosity, or LOH (red ring), CNV Gain (green ring), and putative drivers (text labels), along with chromosome ideograms.
 
@@ -47,6 +46,3 @@ By default, interactions are not activated in visualizations. You will first nee
 After clicking on it, you can now adjust brushes, use the mouse wheel to zoom in and out, and click on a SV. In this mode, you can scroll the entire website by putting your mouse around the main visualization (i.e., gray dotted region). 
 
 When you click on the outside of the visualization, the interactions will be deactivated. In this mode, you can safely scroll the entire website by positioning your mouse anywhere, even on the visualization.
-
-### Loading Your Own Datasets
-... -->
