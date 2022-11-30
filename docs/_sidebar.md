@@ -1,12 +1,15 @@
   - **Datahub**
+    - [Overview](/datahub.md) 
     - [Configuration](/datahub.md#configuration) 
     - [Data Formats](/datahub.md#data-formats)
     - [Public Datahubs](/public-datahubs.md)
+    - [URL Parameters](/url-parameters.md)
  - **Private Data**
     - [Local File Server](/private_data.md#running-local-file-server)
 - **Interface**
+    - [Overview](/interface.md) 
     - [Visualization](/interface.md#main-components) 
-    - [Interaction](/interface.md#how-to-use) 
+    - [Interaction](/interface.md#how-to-use)
 - **About**
     - [Contact](/contact.md)
     
