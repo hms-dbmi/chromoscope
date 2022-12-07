@@ -130,12 +130,10 @@ export default function getMidView(option: SpecOption): View[] {
                 },
                 ...(!vcf
                     ? []
-                    : [
-                          tracks.mutation(id, vcf, vcfIndex, width, 60, 'mid'),
-                          tracks.boundary('mutation', 'mid'),
-                          tracks.indel(id, vcf2, vcf2Index, width, 40, 'mid'),
-                          tracks.boundary('indel', 'mid')
-                      ]),
+                    : [tracks.mutation(id, vcf, vcfIndex, width, 60, 'mid'), tracks.boundary('mutation', 'mid')]),
+                ...(!vcf2
+                    ? []
+                    : [tracks.indel(id, vcf2, vcf2Index, width, 40, 'mid'), tracks.boundary('indel', 'mid')]),
                 tracks.cnv(id, cnv, width, 60, 'mid', cnFields),
                 tracks.boundary('cnv', 'mid'),
                 tracks.gain(id, cnv, width, 20, 'mid', cnFields),
