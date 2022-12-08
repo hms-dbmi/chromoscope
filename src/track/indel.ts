@@ -58,38 +58,38 @@ export default function indel(
                         threshold: 1000
                     }
                 ]
-            },
-            {
-                mark: 'text',
-                text: { field: 'LAB', type: 'nominal' },
-                xe: { field: 'POSEND', type: 'genomic', axis: 'top' },
-                color: { value: 'white' },
-                strokeWidth: { value: 0 },
-                opacity: { value: 1 },
-                visibility: [
-                    {
-                        target: 'mark',
-                        operation: 'LT',
-                        measure: 'width',
-                        transitionPadding: 30,
-                        threshold: '|xe-x|'
-                    }
-                ]
             }
+            // {
+            //     mark: 'text',
+            //     text: { field: 'LAB', type: 'nominal' },
+            //     xe: { field: 'POSEND', type: 'genomic', axis: 'top' },
+            //     color: { value: 'white' },
+            //     strokeWidth: { value: 0 },
+            //     opacity: { value: 1 },
+            //     visibility: [
+            //         {
+            //             target: 'mark',
+            //             operation: 'LT',
+            //             measure: 'width',
+            //             transitionPadding: 30,
+            //             threshold: '|xe-x|'
+            //         }
+            //     ]
+            // }
         ],
         mark: 'rect',
         x: { field: 'POS', type: 'genomic' },
-        stroke: {
-            field: 'MUTTYPE',
-            type: 'nominal',
-            legend: true,
-            domain: ['Insertion', 'Deletion']
-        },
-        strokeWidth: { value: 1 },
+        // stroke: {
+        //     field: 'MUTTYPE',
+        //     type: 'nominal',
+        //     legend: false,
+        //     domain: ['Insertion', 'Deletion']
+        // },
+        // strokeWidth: { value: 1 },
         color: {
             field: 'MUTTYPE',
             type: 'nominal',
-            legend: true,
+            legend: false,
             domain: ['Insertion', 'Deletion']
         },
         row: {
