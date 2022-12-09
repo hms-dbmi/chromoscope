@@ -22,7 +22,7 @@ export default function loh(
             genomicFields: ['start', 'end']
         },
         dataTransform: [
-            { type: 'filter', field: minor_cn, oneOf: ['0'] },
+            { type: 'filter', field: minor_cn, inRange: [0, 0.01] },
             { type: 'filter', field: total_cn, oneOf: ['0'], not: true }
         ],
         mark: 'rect',
