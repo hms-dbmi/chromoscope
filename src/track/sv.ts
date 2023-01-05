@@ -131,6 +131,58 @@ export default function sv(
                 ? []
                 : [
                       {
+                          dataTransform: [
+                              { type: 'filter', field: 'strand1', oneOf: ['+'] },
+                              filterSv(['Translocation'], false)
+                          ],
+                          mark: 'triangleLeft',
+                          x: { field: 'start1', type: 'genomic' },
+                          size: { value: 8 },
+                          y: { value: height },
+                          stroke: { value: 0 },
+                          style: { align: 'right' }
+                      },
+                      {
+                          dataTransform: [
+                              { type: 'filter', field: 'strand1', oneOf: ['-'] },
+                              filterSv(['Translocation'], false)
+                          ],
+                          mark: 'triangleRight',
+                          x: { field: 'start1', type: 'genomic' },
+                          size: { value: 8 },
+                          y: { value: height },
+                          stroke: { value: 0 },
+                          style: { align: 'left' }
+                      },
+                      {
+                          dataTransform: [
+                              { type: 'filter', field: 'strand2', oneOf: ['+'] },
+                              filterSv(['Translocation'], false)
+                          ],
+                          mark: 'triangleLeft',
+                          x: { field: 'end2', type: 'genomic' },
+                          size: { value: 8 },
+                          y: { value: height },
+                          stroke: { value: 0 },
+                          style: { align: 'right' }
+                      },
+                      {
+                          dataTransform: [
+                              { type: 'filter', field: 'strand2', oneOf: ['-'] },
+                              filterSv(['Translocation'], false)
+                          ],
+                          mark: 'triangleRight',
+                          x: { field: 'end2', type: 'genomic' },
+                          size: { value: 8 },
+                          y: { value: height },
+                          stroke: { value: 0 },
+                          style: { align: 'left' }
+                      }
+                  ]) as OverlaidTracks[]),
+            ...((mode !== 'mid'
+                ? []
+                : [
+                      {
                           dataTransform: [...svInfer, { type: 'filter', field: 'sv_id', oneOf: [selectedSvId] }],
                           mark: 'rule',
                           x: { field: 'start1', type: 'genomic' },
