@@ -131,10 +131,7 @@ export default function sv(
                 ? []
                 : [
                       {
-                          dataTransform: [
-                              { type: 'filter', field: 'strand1', oneOf: ['+'] },
-                              filterSv(['Translocation'], false)
-                          ],
+                          dataTransform: [{ type: 'filter', field: 'strand1', oneOf: ['+'] }],
                           mark: 'triangleLeft',
                           x: { field: 'start1', type: 'genomic' },
                           size: { value: 8 },
@@ -143,10 +140,7 @@ export default function sv(
                           style: { align: 'right' }
                       },
                       {
-                          dataTransform: [
-                              { type: 'filter', field: 'strand1', oneOf: ['-'] },
-                              filterSv(['Translocation'], false)
-                          ],
+                          dataTransform: [{ type: 'filter', field: 'strand1', oneOf: ['-'] }],
                           mark: 'triangleRight',
                           x: { field: 'start1', type: 'genomic' },
                           size: { value: 8 },
@@ -155,10 +149,7 @@ export default function sv(
                           style: { align: 'left' }
                       },
                       {
-                          dataTransform: [
-                              { type: 'filter', field: 'strand2', oneOf: ['+'] },
-                              filterSv(['Translocation'], false)
-                          ],
+                          dataTransform: [{ type: 'filter', field: 'strand2', oneOf: ['+'] }],
                           mark: 'triangleLeft',
                           x: { field: 'end2', type: 'genomic' },
                           size: { value: 8 },
@@ -167,10 +158,7 @@ export default function sv(
                           style: { align: 'right' }
                       },
                       {
-                          dataTransform: [
-                              { type: 'filter', field: 'strand2', oneOf: ['-'] },
-                              filterSv(['Translocation'], false)
-                          ],
+                          dataTransform: [{ type: 'filter', field: 'strand2', oneOf: ['-'] }],
                           mark: 'triangleRight',
                           x: { field: 'end2', type: 'genomic' },
                           size: { value: 8 },
