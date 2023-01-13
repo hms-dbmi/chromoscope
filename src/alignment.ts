@@ -201,14 +201,14 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                         genomicLengthField: 'length'
                     },
                     // { type: 'filter', field: 'type', oneOf: ['sub'] },
-                    { type: 'filter', field: 'type', oneOf: ['A', 'T', 'G', 'C', 'S', 'H', 'X', 'I', 'D'] }
+                    { type: 'filter', field: 'type', oneOf: ['A', 'T', 'G', 'C', 'X', 'I', 'D'] }
                 ],
                 x: { field: 'pos_start', type: 'genomic' },
                 xe: { field: 'pos_end', type: 'genomic' },
                 color: {
                     field: 'variant',
                     type: 'nominal',
-                    domain: ['A', 'T', 'G', 'C', 'S', 'H', 'X', 'I', 'D'],
+                    domain: ['A', 'T', 'G', 'C', 'X', 'I', 'D'],
                     legend: true
                 }
             },
