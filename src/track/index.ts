@@ -1,5 +1,6 @@
 import driver from './driver';
 import cnv from './cnv';
+import coverage from './coverage';
 import gain from './gain';
 import loh from './loh';
 import sv from './sv';
@@ -12,6 +13,7 @@ export type TrackMode = 'small' | 'top' | 'mid';
 export default {
     driver,
     cnv,
+    coverage,
     gain,
     loh,
     sv,

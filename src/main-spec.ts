@@ -60,7 +60,7 @@ function generateSpec(opt: SpecOption): GoslingSpec {
                     })
                 ]
             },
-            ...(selectedSvId === '' || !bam || !bai
+            ...(selectedSvId === ''
                 ? []
                 : ([
                       {
@@ -69,43 +69,21 @@ function generateSpec(opt: SpecOption): GoslingSpec {
                           views: [
                               {
                                   static: false,
-                                  zoomLimits: [500, 1000],
+                                  zoomLimits: [50, 1000],
                                   layout: 'linear',
                                   centerRadius: 0.05,
                                   xDomain: { interval: [breakpoints[0], breakpoints[1]] },
                                   spacing: 0.01,
                                   linkingId: 'detail-scale-1',
                                   tracks: [
-                                      {
-                                          id: `${id}-bottom-left-coverage`,
-                                          title: 'Coverage',
-                                          data: {
-                                              type: 'bam',
-                                              url: bam,
-                                              indexUrl: bai
-                                          },
-                                          dataTransform: [
-                                              {
-                                                  type: 'coverage',
-                                                  startField: 'start',
-                                                  endField: 'end'
-                                              }
-                                          ],
-                                          mark: 'bar',
-                                          x: { field: 'start', type: 'genomic' },
-                                          xe: { field: 'end', type: 'genomic' },
-                                          y: {
-                                              field: 'coverage',
-                                              type: 'quantitative',
-                                              axis: 'right',
-                                              grid: true
-                                          },
-                                          color: { value: 'lightgray' },
-                                          stroke: { value: 'gray' },
-                                          width: bottomViewWidth,
-                                          height: 80
-                                      },
-                                      ...(bpIntervals ? [verticalGuide(bpIntervals[0], bpIntervals[1])] : []),
+                                      ...(opt.bam && opt.bai
+                                          ? [
+                                                {
+                                                    ...tracks.coverage({ ...opt, width: bottomViewWidth }, true)
+                                                },
+                                                ...(bpIntervals ? [verticalGuide(bpIntervals[0], bpIntervals[1])] : [])
+                                            ]
+                                          : []),
                                       {
                                           id: `${id}-bottom-left-sequence`,
                                           title: 'Sequence',
@@ -184,43 +162,21 @@ function generateSpec(opt: SpecOption): GoslingSpec {
                               },
                               {
                                   static: false,
-                                  zoomLimits: [500, 1000],
+                                  zoomLimits: [50, 1000],
                                   layout: 'linear',
                                   centerRadius: 0.05,
                                   xDomain: { interval: [breakpoints[2], breakpoints[3]] },
                                   spacing: 0.01,
                                   linkingId: 'detail-scale-2',
                                   tracks: [
-                                      {
-                                          id: `${id}-bottom-right-coverage`,
-                                          title: 'Coverage',
-                                          data: {
-                                              type: 'bam',
-                                              url: bam,
-                                              indexUrl: bai
-                                          },
-                                          dataTransform: [
-                                              {
-                                                  type: 'coverage',
-                                                  startField: 'start',
-                                                  endField: 'end'
-                                              }
-                                          ],
-                                          mark: 'bar',
-                                          x: { field: 'start', type: 'genomic' },
-                                          xe: { field: 'end', type: 'genomic' },
-                                          y: {
-                                              field: 'coverage',
-                                              type: 'quantitative',
-                                              axis: 'right',
-                                              grid: true
-                                          },
-                                          color: { value: 'lightgray' },
-                                          stroke: { value: 'gray' },
-                                          width: bottomViewWidth,
-                                          height: 80
-                                      },
-                                      ...(bpIntervals ? [verticalGuide(bpIntervals[2], bpIntervals[3])] : []),
+                                      ...(opt.bam && opt.bai
+                                          ? [
+                                                {
+                                                    ...tracks.coverage({ ...opt, width: bottomViewWidth }, false)
+                                                },
+                                                ...(bpIntervals ? [verticalGuide(bpIntervals[2], bpIntervals[3])] : [])
+                                            ]
+                                          : []),
                                       {
                                           id: `${id}-bottom-right-sequence`,
                                           title: 'Sequence',
