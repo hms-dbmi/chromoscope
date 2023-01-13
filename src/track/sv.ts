@@ -9,6 +9,8 @@ import { consistentSv } from '../constants';
 import defaults from '../default-encoding';
 import { TrackMode } from '.';
 
+const TRI_SIZE = 5;
+
 const svInfer: [SvTypeTransform, StrReplaceTransform] = [
     {
         type: 'svType',
@@ -134,7 +136,7 @@ export default function sv(
                           dataTransform: [{ type: 'filter', field: 'strand1', oneOf: ['+'] }],
                           mark: 'triangleLeft',
                           x: { field: 'start1', type: 'genomic' },
-                          size: { value: 8 },
+                          size: { value: TRI_SIZE },
                           y: { value: height },
                           stroke: { value: 0 },
                           style: { align: 'right' }
@@ -143,7 +145,7 @@ export default function sv(
                           dataTransform: [{ type: 'filter', field: 'strand1', oneOf: ['-'] }],
                           mark: 'triangleRight',
                           x: { field: 'start1', type: 'genomic' },
-                          size: { value: 8 },
+                          size: { value: TRI_SIZE },
                           y: { value: height },
                           stroke: { value: 0 },
                           style: { align: 'left' }
@@ -152,7 +154,7 @@ export default function sv(
                           dataTransform: [{ type: 'filter', field: 'strand2', oneOf: ['+'] }],
                           mark: 'triangleLeft',
                           x: { field: 'end2', type: 'genomic' },
-                          size: { value: 8 },
+                          size: { value: TRI_SIZE },
                           y: { value: height },
                           stroke: { value: 0 },
                           style: { align: 'right' }
@@ -161,7 +163,7 @@ export default function sv(
                           dataTransform: [{ type: 'filter', field: 'strand2', oneOf: ['-'] }],
                           mark: 'triangleRight',
                           x: { field: 'end2', type: 'genomic' },
-                          size: { value: 8 },
+                          size: { value: TRI_SIZE },
                           y: { value: height },
                           stroke: { value: 0 },
                           style: { align: 'left' }

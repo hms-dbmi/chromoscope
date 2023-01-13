@@ -101,6 +101,9 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
         title: 'Alignment',
         data: { type: 'bam', url: bam, indexUrl: bai, loadMates: false },
         mark: 'rect',
+        experimental: {
+            mouseEvents: { mouseOver: true, groupMarksByField: 'id' }
+        },
         tracks: [
             /**
              * Regular Reads
@@ -172,6 +175,42 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
                 color: { value: '#E5E5E5' },
                 x: { field: 'start', type: 'genomic' },
                 style: { align: 'right' }
+            },
+            /**
+             * Mutations
+             */
+            {
+                dataTransform: [
+                    {
+                        type: 'displace',
+                        method: 'pile',
+                        boundingBox: {
+                            startField: 'start',
+                            endField: 'end',
+                            padding: 5,
+                            isPaddingBP: true
+                        },
+                        newField: 'pileup-row',
+                        maxRows: 300
+                    },
+                    {
+                        type: 'subjson',
+                        field: 'substitutions',
+                        genomicField: 'pos',
+                        baseGenomicField: 'start',
+                        genomicLengthField: 'length'
+                    },
+                    // { type: 'filter', field: 'type', oneOf: ['sub'] },
+                    { type: 'filter', field: 'type', oneOf: ['A', 'T', 'G', 'C', 'S', 'H', 'X', 'I', 'D'] }
+                ],
+                x: { field: 'pos_start', type: 'genomic' },
+                xe: { field: 'pos_end', type: 'genomic' },
+                color: {
+                    field: 'variant',
+                    type: 'nominal',
+                    domain: ['A', 'T', 'G', 'C', 'S', 'H', 'X', 'I', 'D'],
+                    legend: true
+                }
             },
             /**
              * Soft and Hard Clipping Reads
@@ -301,7 +340,7 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
             { field: 'mapq', type: 'quantitative', alt: 'Mapping Quality (MAPQ)' },
             { field: 'substitutions', type: 'nominal' }
         ],
-        style: { outlineWidth: 0.5 },
+        style: { outlineWidth: 0.5, mouseOver: { stroke: 'black' } },
         width,
         height: 500
     };
