@@ -1,5 +1,6 @@
 import { Assembly } from 'gosling.js/dist/src/core/gosling.schema';
 import { THUMBNAILS } from './thumbnails';
+import pcawg from '../script/pcawg/all-pcawg-data.json';
 import _7a921087 from '../script/img/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.jpeg';
 import _84ca6ab0 from '../script/img/84ca6ab0-9edc-4636-9d27-55cdba334d7d.jpeg';
 import _7d332cb1 from '../script/img/7d332cb1-ba25-47e4-8bf8-d25e14f40d59.jpeg';
@@ -32,6 +33,9 @@ export type SampleType = {
     thumbnail?: string;
     note?: string;
 };
+
+// const samples: SampleType[] = (pcawg as SampleType[]).map(d => { return { group: 'default', ...d }});
+// console.log(samples);
 
 const samples: SampleType[] = [
     ...Array.from({ length: 92 }, (v, i) => i).map(

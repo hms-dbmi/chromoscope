@@ -336,7 +336,7 @@ function App(props: RouteComponentProps) {
         if (!genomeViewChr) return;
 
         if (genomeViewChr.includes('chr')) {
-            gosRef.current?.api.zoomTo(`${demo.id}-mid-ideogram`, genomeViewChr, 0, ZOOM_DURATION);
+            gosRef.current?.api.zoomTo(`${demo.id}-mid-ideogram`, genomeViewChr, 100000000, ZOOM_DURATION);
         } else {
             gosRef.current?.api.zoomToExtent(`${demo.id}-mid-ideogram`, ZOOM_DURATION);
         }

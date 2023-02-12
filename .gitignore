@@ -7,3 +7,5 @@ dist-ssr
 *.swo
 *~
 **/gosling-screenshot
+/script/output/
+/overview-specs.json

@@ -2,7 +2,7 @@
 import json
 # %%
 overview_specs = json.load(open('overview-specs.json'))
-overview_specs
+# overview_specs
 # %%
 for i, spec in enumerate(overview_specs):
     with open(f"output/{spec['description']}.json", 'w') as out:
