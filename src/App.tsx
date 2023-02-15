@@ -491,7 +491,7 @@ function App(props: RouteComponentProps) {
             xOffset: 0,
             showPutativeDriver,
             width: visPanelWidth,
-            drivers,
+            drivers: demo.drivers ?? drivers,
             selectedSvId,
             breakpoints: breakpoints,
             crossChr: false,
