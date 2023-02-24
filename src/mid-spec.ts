@@ -84,7 +84,6 @@ export default function getMidView(option: SpecOption): View[] {
                 tracks.boundary('driver', 'mid'),
                 {
                     id: `${id}-mid-gene`,
-                    alignment: 'overlay',
                     template: 'gene',
                     data: {
                         url:

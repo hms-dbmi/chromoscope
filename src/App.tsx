@@ -15,6 +15,7 @@ import { INTERNAL_SAVED_THUMBNAILS } from './data/external-thumbnails';
 import { isChrome } from './utils';
 import THUMBNAIL_PLACEHOLDER from './script/img/placeholder.png';
 import { Database } from './database';
+import { getHtmlTemplate } from './html-template';
 
 const db = new Database();
 
@@ -71,6 +72,8 @@ function App(props: RouteComponentProps) {
     const [demo, setDemo] = useState(
         selectedSamples[demoIndex.current < selectedSamples.length ? demoIndex.current : 0]
     );
+
+    const currentSpec = useRef<string>();
 
     // interactions
     const [showSamples, setShowSamples] = useState(false);
@@ -498,6 +501,7 @@ function App(props: RouteComponentProps) {
             bpIntervals,
             svReads
         });
+        currentSpec.current = JSON.stringify(spec);
         // console.log('spec', spec);
         return (
             <GoslingComponent
@@ -559,7 +563,53 @@ function App(props: RouteComponentProps) {
                     <span className="title-btn" onClick={() => gosRef.current?.api.exportPng()}>
                         <svg className="button" viewBox="0 0 16 16">
                             <title>Export Image</title>
-                            {ICONS.IMAGE.path.map(p => (
+                            {ICONS.PNG.path.map(p => (
+                                <path fill="currentColor" key={p} d={p} />
+                            ))}
+                        </svg>
+                    </span>
+                    <span
+                        className="title-btn"
+                        onClick={() => {
+                            const a = document.createElement('a');
+                            a.setAttribute(
+                                'href',
+                                `data:text/plain;charset=utf-8,${encodeURIComponent(
+                                    getHtmlTemplate(currentSpec.current)
+                                )}`
+                            );
+                            a.download = 'visualization.html';
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                        }}
+                        style={{ marginLeft: 40 }}
+                    >
+                        <svg className="button" viewBox="0 0 16 16">
+                            <title>Export HTML</title>
+                            {ICONS.HTML.path.map(p => (
+                                <path fill="currentColor" key={p} d={p} />
+                            ))}
+                        </svg>
+                    </span>
+                    <span
+                        className="title-btn"
+                        onClick={() => {
+                            const a = document.createElement('a');
+                            a.setAttribute(
+                                'href',
+                                `data:text/plain;charset=utf-8,${encodeURIComponent(currentSpec.current)}`
+                            );
+                            a.download = 'visualization.json';
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                        }}
+                        style={{ marginLeft: 70 }}
+                    >
+                        <svg className="button" viewBox="0 0 16 16">
+                            <title>Export Gosling Spec (JSON)</title>
+                            {ICONS.JSON.path.map(p => (
                                 <path fill="currentColor" key={p} d={p} />
                             ))}
                         </svg>
@@ -584,7 +634,7 @@ function App(props: RouteComponentProps) {
                                     );
                             }
                         }}
-                        style={{ marginLeft: 40 }}
+                        style={{ marginLeft: 100 }}
                     >
                         <svg className="button" viewBox="0 0 16 16">
                             <title>Export Link</title>
@@ -596,7 +646,7 @@ function App(props: RouteComponentProps) {
                         className="title-btn"
                         href="https://sehilyi.github.io/goscan/docs/"
                         target="_blank"
-                        style={{ marginLeft: 70 }}
+                        style={{ marginLeft: 140 }}
                         rel="noreferrer"
                     >
                         <svg className="button" viewBox="0 0 16 16">
