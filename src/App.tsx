@@ -16,6 +16,7 @@ import { isChrome } from './utils';
 import THUMBNAIL_PLACEHOLDER from './script/img/placeholder.png';
 import { Database } from './database';
 import { getHtmlTemplate } from './html-template';
+import { EXTERNAL_THUMBNAILS } from './data/stevens-mpnst';
 
 const db = new Database();
 
@@ -359,6 +360,7 @@ function App(props: RouteComponentProps) {
         return (
             d.thumbnail ||
             INTERNAL_SAVED_THUMBNAILS[d.id] ||
+            EXTERNAL_THUMBNAILS[d.id] ||
             DATABSE_THUMBNAILS.find(db => db.id === d.id)?.dataUrl ||
             GENERATED_THUMBNAILS[d.id]
         );
@@ -366,20 +368,20 @@ function App(props: RouteComponentProps) {
 
     const smallOverviewWrapper = useMemo(() => {
         // !! Uncomment the following lines to generated specs for making thumbnails.
-        // console.log(
-        //     'overviewSpec',
-        //     filteredSamples.map(d =>
-        //         getOneOfSmallMultiplesSpec({
-        //             cnvUrl: d.cnv,
-        //             svUrl: d.sv,
-        //             width: 1200,
-        //             title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
-        //             subtitle: d.id, // '' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : ''),
-        //             cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
-        //         })
-        //     ),
-        //     filteredSamples.map(d => `node gosling-screenshot.js output/${d.id}.json img/${d.id}.jpeg`).join('\n')
-        // );
+        console.log(
+            'overviewSpec',
+            filteredSamples.map(d =>
+                getOneOfSmallMultiplesSpec({
+                    cnvUrl: d.cnv,
+                    svUrl: d.sv,
+                    width: 1200,
+                    title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
+                    subtitle: d.id, // '' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : ''),
+                    cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
+                })
+            ),
+            filteredSamples.map(d => `node gosling-screenshot.js output/${d.id}.json img/${d.id}.jpeg`).join('\n')
+        );
         // return [];
         /* Load image if necessary */
         const noThumbnail = filteredSamples.filter(d => !getThumbnail(d))[0];
