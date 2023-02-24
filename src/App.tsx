@@ -660,10 +660,15 @@ function App(props: RouteComponentProps) {
                     </a>
                     {!isChrome() ? (
                         <a
-                            style={{ marginLeft: '100px', color: 'black', fontWeight: 'bold' }}
+                            style={{
+                                marginLeft: '200px',
+                                color: '#E6A01B',
+                                fontWeight: 'bold',
+                                textDecoration: 'none'
+                            }}
                             href="https://www.google.com/chrome/downloads/"
                         >
-                            Warning: This page is optimized for Google Chrome.
+                            ⚠️ Warning: This page is optimized for Google Chrome.
                         </a>
                     ) : null}
                 </div>
