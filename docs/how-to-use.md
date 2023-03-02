@@ -1,27 +1,28 @@
-# Interface
+# Visualizations
 
-### Main Components
+?> 🚧 This page is work in progress 🚧
+<!-- ![interface](assets/interface.png ':class=image') -->
 
-![interface](assets/interface.png ':class=image')
+GosCan offers multiple visualizations at four levels of scales.
 
-#### Circular overview
+## Multi-sample Overview
+
+This gallery allows browsing samples in small multiples.
+
+## Genome View
 This view displays the overview of structural variants (arcs), Loss-of-Heterozygosity, or LOH (red ring), CNV Gain (green ring), and putative drivers (text labels), along with chromosome ideograms.
 
-#### Linear Detail View
+## Variant View
 This view shows the same information as in Circular Overview but focuses on a smaller region to allow browsing information in a more detailed manner. This view is linked with a light blue brush on the circular overview, i.e., representing the same region.
 
-#### Alignment Views
+## Breakpoint View
 These views show alignment around two breakpoints of a user-selected SV (i.e., thick arc on the circular overview and the linear detail view). The gray vertical lines represent breakpoints of the user-selected SV. 
 
 * Color: The five colors (green, blue, red, orange, yellow) represent the types of SV events. If a read on the left view has a mate on the right view, these reads are encoded with one of the five colors depending on its SV type. If paired reads are not positioned within the two views, they are just represented with grey colors.
 
 * Loading the alignment information may take up to few minutes.
 
-#### Sample Gallery
-
-This gallery allows browsing samples in small multiples.
-
-### How To Use
+## User Interactions
 
 #### Navigating Linear Detail View on Circular Overview
 By clicking and dragging a mouse on a blue brush, users can navigate a linear view.

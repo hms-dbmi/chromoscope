@@ -1,4 +1,4 @@
-// Script to generate the list of public datahubs to be added in *.md
+// Script to generate the list of public data configs to be added in *.md
 let o = '';
 temp1
     .sort((a, b) => -a['no.samples'] + b['no.samples'])

@@ -1,15 +1,12 @@
-  - **Datahub**
-    - [Overview](/datahub.md) 
-    - [Configuration](/datahub.md#configuration) 
-    - [Data Formats](/datahub.md#data-formats)
+  - **Data Config**
+    - [Overview](/data-config.md) 
+    - [Configuration](/data-config.md#configuration) 
+    - [Data Formats](/data-config.md#data-formats)
     - [URL Parameters](/url-parameters.md)
-    - [Public Datahubs](/public-datahubs.md)
- - **Private Data**
-    - [Local File Server](/private_data.md#running-local-file-server)
-- **Interface**
-    - [Overview](/interface.md) 
-    - [Visualizations](/interface.md#main-components) 
-    - [User Interactions](/interface.md#how-to-use)
+    - [Public Data](/public-data-config.md)
+    - [Loading Local Data](/private_data.md)
+- **How To Use**
+    - [Visualizations](/how-to-use.md)
 - **About**
     - [Contact](/contact.md)
     

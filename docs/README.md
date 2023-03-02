@@ -2,6 +2,8 @@
 
 Welcome to the documentation of GosCan.
 
+![teaser](assets/figure-1-wide.jpg ':class=image')
+
 <!-- This web-based tool allows interactively exploring structural variants of cancer patients with macroscopic (genome-wide) and microscopic (alignment) views. The main visualization shows structural variants of a single patient with circular overview (top), linear detail view (middle), and two alignment views (bottom). Users can select a sample from a sample gallery that can be opened by clicking on a button on the left-top corner of the browser.
 
 ## Main Components
