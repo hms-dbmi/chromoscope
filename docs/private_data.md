@@ -1,10 +1,8 @@
-# Private Data
-
-### Running Local File Server
+# Loading Local Data
 
 You can run a local file server to display local files on GosCan. This enables you to safely visualize your private files. There are multiple light and easy-to-install file servers. In this page, we will use [http-server](https://www.npmjs.com/package/http-server) for the demonstration.
 
-#### 1. Run a file server
+### Run a file server
 
 You first need to install the file server called [http-server](https://www.npmjs.com/package/http-server). To install it, you need to first install a package manager, [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-node-js-and-npm).
 
@@ -28,9 +26,9 @@ Now, you can browse files that are located under the selected folder using your 
 
 ?> Also see https://stackoverflow.com/a/16350826
 
-#### 2. Make a datahub using local files
+### Make a data config using local files
 
-Using the URL of the local files, you can make a [datahub](datahub.md). For example, the following example uses two files (i.e., SV and CNV) based on the local files.
+Using the URL of the local files, you can make a [data config](data-config.md). For example, the following example uses two files (i.e., SV and CNV) based on the local files.
 
 ```json
 {
@@ -42,11 +40,11 @@ Using the URL of the local files, you can make a [datahub](datahub.md). For exam
 }
 ```
 
-Optionally, put this datahub file (say, `first-config.json`) under the folder hosted by your [http-server](https://www.npmjs.com/package/http-server). You should be able to open the datahub file on the browser using [http://127.0.0.1:8080/first-config.json](http://127.0.0.1:8080/first-config.json).
+Optionally, put this data config file (say, `first-config.json`) under the folder hosted by your [http-server](https://www.npmjs.com/package/http-server). You should be able to open the data config file on the browser using [http://127.0.0.1:8080/first-config.json](http://127.0.0.1:8080/first-config.json).
 
-#### 3. Open Browser Using Datahub
+### Open Browser Using Data Config
 
-As a last step, use the datahub to browse your local files.
+As a last step, use the data config to browse your local files.
 
 ?> https://sehilyi.github.io/gosling-app-sv/?external=http://127.0.0.1:8080/first-config.json
 
