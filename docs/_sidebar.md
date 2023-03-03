@@ -7,6 +7,7 @@
     - [Loading Local Data](/private_data.md)
 - **How To Use**
     - [Visualizations](/how-to-use.md#visualizations)
-- **About**
+- **Help**
+    - [FAQ](/faq.md)
     - [Contact](/contact.md)
     
