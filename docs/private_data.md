@@ -22,7 +22,7 @@ Note that the `--cors` option allows the browser to access your files.
 
 Now, you can browse files that are located under the selected folder using your browser. For example, open [http://127.0.0.1:8080/](http://127.0.0.1:8080/) on the browser.
 
-![server](assets/private-data-local-server.png ':class=image')
+![server](assets/private-data-local-server.png ':class=image-small')
 
 ?> Also see https://stackoverflow.com/a/16350826
 
@@ -48,4 +48,4 @@ As a last step, use the data config to browse your local files.
 
 ?> https://sehilyi.github.io/gosling-app-sv/?external=http://127.0.0.1:8080/first-config.json
 
-![browser](assets/private-data-browser.png ':class=image')
+![browser](assets/private-data-browser.png ':class=image-medium')
