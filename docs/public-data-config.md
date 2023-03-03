@@ -1,4 +1,4 @@
-# Public Data Configs
+# Available Data Configs
 
 ## PCAWG Data
 
@@ -46,7 +46,7 @@ A total of 2,778 samples of 39 cancer types.
 1. [Public Data Using Hartwig's Algorithm](https://sehilyi.github.io/goscan/?demoIndex=1&domain=1-248956422&external=https://somatic-browser-test.s3.amazonaws.com/configs/cell.line.benchmark.json) (2 samples)
 
 
-## Use Case Datasets
+## Use Case Data
 
 1. [Cancers with pathogenic BRCA mutations](https://sehilyi.github.io/goscan/?external=https://somatic-browser-test.s3.amazonaws.com/pathogenicBrca/configs/pathogenicBrca.all.config.json)
     - 44 samples with BRCA1 or BRCA2 mutations.

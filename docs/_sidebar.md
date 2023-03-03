@@ -1,12 +1,12 @@
   - **Data Config**
-    - [Overview](/data-config.md) 
+    - [Overview](/data-config.md#Data-Config) 
     - [Configuration](/data-config.md#configuration) 
     - [Data Formats](/data-config.md#data-formats)
     - [URL Parameters](/url-parameters.md)
-    - [Public Data](/public-data-config.md)
+    - [Available Data](/public-data-config.md)
     - [Loading Local Data](/private_data.md)
 - **How To Use**
-    - [Visualizations](/how-to-use.md)
+    - [Visualizations](/how-to-use.md#visualizations)
 - **About**
     - [Contact](/contact.md)
     

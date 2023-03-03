@@ -11,13 +11,59 @@
         <style>
             body {
                 font-family: 'inter', Arial, Helvetica, sans-serif;
+                font-size: 18px;
+            }
+            a {
+                text-decoration-color: #5cb6ea !important;
+                text-underline-offset: 3px !important;
+                text-decoration-thickness: 2px !important;
+                color: inherit !important;
+            }
+            a:hover {
+                text-decoration-color: #5cb6ea !important;
+                text-decoration-thickness: 3px !important;
+            }
+            .markdown-section li {
+                line-height: 2;
+                padding-left: 10px;
+            }
+            .markdown-section p.warn {
+                background: #e6a01b1a;
+                border-left: 4px solid #e6a01b39;
+                border-radius: 0px;
+            }
+            .markdown-section h3 {
+                margin: 1.2rem 0;
+            }
+            .sidebar {
+                border-right: 1px solid lightgrey;
+            }
+            .sidebar ul li.active {
+                background-color: rgba(211, 211, 211, 0.234);
             }
             .sidebar ul li.active > a {
-                color: #7aaded !important;
+                border-right: 3px solid #5cb6ea;
             }
-            /* .image {
+            .sidebar-nav strong {
+                font-weight: 600;
+            }
+            .image {
                 border: 1px solid lightgrey;
-            } */
+            }
+            .markdown-section pre {
+                padding: 0 10px;
+                border-radius: 24px;
+                font-size: 20px;
+            }
+            .markdown-section pre > code {
+                line-height: 2rem;
+            }
+            .markdown-section h1 {
+                font-weight: bolder;
+            }
+            .markdown-section h2 {
+                font-weight: 500;
+            }
         </style>
     </head>
     <body>

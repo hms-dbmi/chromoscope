@@ -1,4 +1,4 @@
-# URL parameters
+# URL Parameters
 
 There are multiple parameters available that you can used along with the base URL. The pattern of using the parameters is like the below.
 
