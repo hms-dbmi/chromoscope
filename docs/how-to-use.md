@@ -3,7 +3,7 @@
 <!-- ?> 🚧 This page is work in progress 🚧 -->
 <!-- ![interface](assets/interface.png ':class=image') -->
 
-SVLET offers four main visualizations that enable to explore structural variation at four levels of scale.
+SVELT offers four main visualizations that enable to explore structural variation at four levels of scale.
 
 ## Multi-Sample Overview
 
@@ -25,18 +25,18 @@ The breakpoint view shows raw reads around breakpoints and highlights pairs of r
 ## User Interactions
 
 ### Navigation
-All visualizations in SVLET are interactive which is designed to support efficient navigation between genomic regions of interest across scales. Users can smoothly zoom and pan, use an interactive brush, search for a gene of interest, and interactively select a structural variation to instantly display read-level views around breakpoints for an in-depth examination. 
+All visualizations in SVELT are interactive which is designed to support efficient navigation between genomic regions of interest across scales. Users can smoothly zoom and pan, use an interactive brush, search for a gene of interest, and interactively select a structural variation to instantly display read-level views around breakpoints for an in-depth examination. 
 
 ### Export
 
 #### Session
-For the effective and efficient communication of findings made with SVLET, the tool generates a shareable URL that encodes the current visualization state, including the loaded datahub, selected sample, and genomic locations most recently viewed. 
+For the effective and efficient communication of findings made with SVELT, the tool generates a shareable URL that encodes the current visualization state, including the loaded datahub, selected sample, and genomic locations most recently viewed. 
 
 #### PNG
-SVLET enables the export of a publication-ready image (PNG).
+SVELT enables the export of a publication-ready image (PNG).
 
 #### HTML
-SVLET enables the export of an interactive webpage that contains the entire SVLET visualization (single HTML file).
+SVELT enables the export of an interactive webpage that contains the entire SVELT visualization (single HTML file).
 
 #### JSON (Gosling Spec)
 To enable further fine-grained customization (e.g., changing colors or sizes), the entire interactive visualization can be exported as a Gosling JSON specification. This JSON values can be used directly on the Gosling Online Editor (https://gosling.js.org).

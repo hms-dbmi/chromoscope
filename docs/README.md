@@ -1,6 +1,6 @@
-# SVLET
+# SVELT
 
-Welcome to the documentation of SVLET.
+Welcome to the documentation of SVELT.
 
 ![teaser](assets/figure-1-wide.jpg ':class=image')
 
