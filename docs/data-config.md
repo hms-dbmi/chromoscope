@@ -1,6 +1,6 @@
 # Data Config
 
-To load your data, you need to (1) make a data config file (`.json`) that contains the information for individual samples, (2) store the config file in a HTTPS file server (e.g., AWS S3 or [GitHub Gist](https://gist.github.com/)), and (3) use it with the `external` parameter of the SVLET URL.
+To load your data, you need to (1) make a data config file (`.json`) that contains the information for individual samples, (2) store the config file in a HTTPS file server (e.g., AWS S3 or [GitHub Gist](https://gist.github.com/)), and (3) use it with the `external` parameter of the SVELT URL.
 
 ```
 // format
