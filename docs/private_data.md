@@ -1,6 +1,6 @@
 # Loading Local Data
 
-You can run a local file server to display local files on GosCan. This enables you to safely visualize your private files. There are multiple light and easy-to-install file servers. In this page, we will use [http-server](https://www.npmjs.com/package/http-server) for the demonstration.
+You can run a local file server to display local files on SVLET. This enables you to safely visualize your private files. There are multiple light and easy-to-install file servers. In this page, we will use [http-server](https://www.npmjs.com/package/http-server) for the demonstration.
 
 ## Run Local File Server
 

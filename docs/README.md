@@ -1,6 +1,6 @@
-# GosCan
+# SVLET
 
-Welcome to the documentation of GosCan.
+Welcome to the documentation of SVLET.
 
 ![teaser](assets/figure-1-wide.jpg ':class=image')
 
