@@ -1,0 +1,79 @@
+.menu-container {
+    width: 100%;
+    padding: 20px;
+}
+.menu-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.menu-subtitle {
+    font-weight: light;
+    margin-bottom: 10px;
+}
+.menu-subtitle-right {
+    float: right;
+    position: relative;
+    right: 0px;
+}
+.menu-horizontal-line {
+    width: calc(100% - 40px);
+    margin-left: 20px;
+    margin-right: 20px;
+    height: 1px;
+    border-top: 1px solid lightgrey;
+}
+.sample-config-form {
+    width: calc(100% - 80px);
+    border-radius: 10px;
+    background-color: rgb(244, 244, 244);
+    padding: 20px;
+}
+.menu-button,
+.menu-button-disallowed {
+    width: 100%;
+    padding: 10px 0px;
+    text-align: center;
+    background-color: #2e94ff;
+    border: none;
+    color: white;
+    font-weight: 800;
+    margin-top: 10px;
+
+    cursor: pointer;
+}
+.menu-button-disallowed {
+    background-color: lightgrey;
+    cursor: not-allowed;
+}
+.menu-icon {
+    margin-left: 5px;
+    cursor: pointer;
+}
+.dropdown {
+    height: 30px;
+    width: calc(100% - 40px);
+
+    cursor: pointer;
+}
+.menu-dropdown {
+    height: 30px;
+    width: 100%;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.menu-text-input,
+.menu-text-input-invalid {
+    height: 30px;
+    width: calc(100% - 23px);
+    border-radius: 0px;
+    border: 2px solid grey;
+    padding: 0 10px;
+    margin-bottom: 10px;
+}
+.menu-text-input:focus,
+.menu-text-input-invalid:focus {
+    outline: none;
+}
+.menu-text-input-invalid {
+    border-color: #d61e4b;
+}

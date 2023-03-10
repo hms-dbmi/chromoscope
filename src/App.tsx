@@ -17,6 +17,9 @@ import THUMBNAIL_PLACEHOLDER from './script/img/placeholder.png';
 import { Database } from './database';
 import { getHtmlTemplate } from './html-template';
 import { EXTERNAL_THUMBNAILS } from './data/stevens-mpnst';
+import CancerSelector from './ui/cancer-selector';
+import HorizontalLine from './ui/horizontal-line';
+import SampleConfigForm from './ui/sample-config-form';
 
 const db = new Database();
 
@@ -77,7 +80,7 @@ function App(props: RouteComponentProps) {
     const currentSpec = useRef<string>();
 
     // interactions
-    const [showSamples, setShowSamples] = useState(false);
+    const [showSamples, setShowSamples] = useState(urlParams.get('showSamples') === 'true');
     const [thumbnailForceGenerate, setThumbnailForceGenerate] = useState(false);
     const [generateThumbnails, setGenerateThumbnails] = useState(false);
     const [doneGeneratingThumbnails, setDoneGeneratingThumbnails] = useState(false);
@@ -423,8 +426,8 @@ function App(props: RouteComponentProps) {
                 }}
                 className={demo === d ? 'selected-overview' : 'unselected-overview'}
             >
-                <div style={{}}>
-                    <b>{d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1).split(' ')[0]}</b>
+                <div style={{ fontWeight: 500 }}>
+                    {d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1).split(' ')[0]}
                 </div>
                 <div style={{ color: 'grey', fontSize: '14px' }}>
                     {'' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : '')}
@@ -686,7 +689,7 @@ function App(props: RouteComponentProps) {
                     <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
                         <div className="title">
                             Samples
-                            <small>{` (Total of ${filteredSamples.length})`}</small>
+                            {` (Total of ${filteredSamples.length})`}
                             <input
                                 type="text"
                                 className="sample-text-box"
@@ -715,7 +718,44 @@ function App(props: RouteComponentProps) {
                                 {generateThumbnails ? 'Stop Generating Thumbnails' : 'Generate Missing Thumbnails'}
                             </button>
                         </div>
-                        <div className="overview-container">{smallOverviewWrapper}</div>
+                        <div className="overview-root">
+                            <div className="overview-left">
+                                <CancerSelector
+                                    onChange={url => {
+                                        fetch(url).then(response =>
+                                            response.text().then(d => {
+                                                let externalDemo = JSON.parse(d);
+                                                if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
+                                                    setFilteredSamples(externalDemo);
+                                                    externalDemo =
+                                                        externalDemo[
+                                                            demoIndex.current < externalDemo.length
+                                                                ? demoIndex.current
+                                                                : 0
+                                                        ];
+                                                }
+                                                if (externalDemo) {
+                                                    setDemo(externalDemo);
+                                                }
+                                            })
+                                        );
+                                    }}
+                                />
+                                <HorizontalLine />
+                                <SampleConfigForm
+                                    onAdd={config => {
+                                        setFilteredSamples([
+                                            {
+                                                ...config,
+                                                group: 'default'
+                                            },
+                                            ...filteredSamples
+                                        ]);
+                                    }}
+                                />
+                            </div>
+                            <div className="overview-container">{smallOverviewWrapper}</div>
+                        </div>
                     </div>
                     <div
                         id="gosling-panel"
