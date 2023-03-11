@@ -79,8 +79,10 @@ export default function SampleConfigForm(props: { onAdd: (config: ValidSampleCon
                     </option>
                 </select>
 
-                <span className="menu-subtitle">ID</span>
-                <span className="menu-subtitle-right">Required</span>
+                <span className="menu-subtitle">
+                    ID<sup>*</sup>
+                </span>
+                {/* <span className="menu-subtitle-right">Required</span> */}
                 <input
                     type="text"
                     className={testOkay.id(sampleConfig) ? 'menu-text-input' : 'menu-text-input-invalid'}
@@ -90,8 +92,10 @@ export default function SampleConfigForm(props: { onAdd: (config: ValidSampleCon
                     value={sampleConfig.id}
                 />
 
-                <span className="menu-subtitle">Cancer</span>
-                <span className="menu-subtitle-right">Required</span>
+                <div className="menu-subtitle">
+                    Cancer<sup>*</sup>
+                </div>
+                {/* <span className="menu-subtitle-right">Required</span> */}
                 <input
                     type="text"
                     className={testOkay.cancer(sampleConfig) ? 'menu-text-input' : 'menu-text-input-invalid'}
@@ -101,10 +105,10 @@ export default function SampleConfigForm(props: { onAdd: (config: ValidSampleCon
                     value={sampleConfig.cancer}
                 />
 
-                <span className="menu-subtitle">
-                    SV <small>(.bedpe)</small>
-                </span>
-                <span className="menu-subtitle-right">Required</span>
+                <div className="menu-subtitle">
+                    SV<sup>*</sup> <small>(.bedpe)</small>
+                </div>
+                {/* <span className="menu-subtitle-right">Required</span> */}
                 <input
                     type="text"
                     className={testOkay.sv(sampleConfig) ? 'menu-text-input' : 'menu-text-input-invalid'}
@@ -114,10 +118,10 @@ export default function SampleConfigForm(props: { onAdd: (config: ValidSampleCon
                     value={sampleConfig.sv}
                 />
 
-                <span className="menu-subtitle">
-                    CNV <small>(.txt)</small>
-                </span>
-                <span className="menu-subtitle-right">Required</span>
+                <div className="menu-subtitle">
+                    CNV<sup>*</sup> <small>(.txt)</small>
+                </div>
+                {/* <span className="menu-subtitle-right">Required</span> */}
                 <input
                     type="text"
                     className={testOkay.cnv(sampleConfig) ? 'menu-text-input' : 'menu-text-input-invalid'}
@@ -203,7 +207,9 @@ export default function SampleConfigForm(props: { onAdd: (config: ValidSampleCon
                     onChange={e => setSampleConfig({ ...sampleConfig, bai: e.currentTarget.value })}
                     value={sampleConfig.bai}
                 />
-
+                <div className="menu-subtitle" style={{ float: 'right' }}>
+                    * Required Fields
+                </div>
                 <button
                     className={sampleOkayToAdd ? 'menu-button' : 'menu-button-disallowed'}
                     onClick={() => onAdd(sampleConfig as ValidSampleConfig)}

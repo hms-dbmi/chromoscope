@@ -454,6 +454,7 @@ body {
     width: 399px;
     border-right: 1px solid lightgrey;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .vis-overview-panel table {
