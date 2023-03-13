@@ -17,6 +17,18 @@ After providing all required information, you can click on the Add button on the
 |![server](assets/3-sample-added.png ':class=image-medium')|
 |---|
 
+?> To test the browser for adding a sample, you can use the following information:
+
+|Fields|Contents|
+|---|---|
+|ID|7a921087-8e62-4a93-a757-fd8cdbe1eb8f
+|Cancer|Ovarian
+|assembly|"hg19"
+|SV|`https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.pcawg_consensus_1.6.161022.somatic.sv.bedpe`
+|CNV|`https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.consensus.20170119.somatic.cna.annotated.txt`
+
+!> Details about each of the fields, as well as accepted files, are described in the following section.
+
 ### Data Configuration
 
 You need to (1) make a data config file (`.json`) that contains the information for individual samples, (2) store the config file in a HTTPS file server (e.g., AWS S3 or [GitHub Gist](https://gist.github.com/)), and (3) use it with [the `external` parameter of the SVELT URL](url-parameters.md):
