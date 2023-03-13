@@ -2,7 +2,9 @@
 
 There are multiple parameters available that you can used along with the base URL. The pattern of using the parameters is like the below.
 
-?> https://sehilyi.github.io/goscan/?[parameter1]=[value1]&[parameter2]=[value2]
+```
+https://sehilyi.github.io/goscan/?[parameter1]=[value1]&[parameter2]=[value2]
+```
 
 The supported parameters are as follows:
 
@@ -15,12 +17,12 @@ The supported parameters are as follows:
 
 !> The `external` parameter should be positioned at the last if multiple parameters are used.
 <br/><br/>
-**Correct**
+✅ **Correct**
 <br/>
 https://sehilyi.github.io/goscan/?showSamples=true&external=[URL]
 <br/><br/>
-**Incorrect**
+❌ **Incorrect**
 <br/>
 https://sehilyi.github.io/goscan/?external=[URL]&showSamples=true
 <br/><br/>
-This allows for the external URL to have its own parameters (e.g., authenticated preassigned URL)
+This allows the external URL to have its own parameters (e.g., authenticated preassigned URL)

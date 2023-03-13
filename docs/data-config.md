@@ -1,6 +1,25 @@
-# Data Config
+# Loading Data
 
-To load your data, you need to (1) make a data config file (`.json`) that contains the information for individual samples, (2) store the config file in a HTTPS file server (e.g., AWS S3 or [GitHub Gist](https://gist.github.com/)), and (3) use it with the `external` parameter of the SVELT URL.
+There are two ways to load your data:
+
+- [Loading a small number of samples directly on the browser through the interface.](#Loading-Data-Through-Interface)
+- [Loading large samples through data configurations](#data-configuration).
+
+### Loading Data Through Interface
+
+In the cohort-level view, there is a side panel that enables you to add a new sample by providing metadata (e.g., cancer type) and file URLs (e.g., bedpe, txt, vcf).
+
+|![server](assets/1-interface.png ':class=image-medium')|
+|---|
+
+After providing all required information, you can click on the Add button on the bottom of this form. Once you click on it, you will be able to see a sample added as the first sample on the list of samples.
+
+|![server](assets/3-sample-added.png ':class=image-medium')|
+|---|
+
+### Data Configuration
+
+You need to (1) make a data config file (`.json`) that contains the information for individual samples, (2) store the config file in a HTTPS file server (e.g., AWS S3 or [GitHub Gist](https://gist.github.com/)), and (3) use it with [the `external` parameter of the SVELT URL](url-parameters.md):
 
 ```
 // format
@@ -9,8 +28,6 @@ https://sehilyi.github.io/goscan/?external=[URL_TO_YOUR_CONFIG_FILE]
 // example
 https://sehilyi.github.io/goscan/?external=https://gist.githubusercontent.com/sehilyi/a9bbbc3e63806d2282e1959e27a65a53/raw/b6c0ab07a220027196746f46607e916bd9751c70/goscan-multiple-samples.json
 ```
-
-### Configuration
 
 For each sample, you need to prepare the following information in a JSON object.
 
@@ -69,71 +86,3 @@ A multi-sample example:
     }
 ]
 ```
-
-### Data Formats
-
-#### Structural Variants (BEDPE)
-<!-- https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format -->
-
-The structural variants are stored in a BEDPE file. The following columns are used in the browser:
-
-| Property | Type | Note |
-|---|---|---|
-| `chrom1` | `string` | Required. The name of the chromosome of the first break point (BP). |
-| `start1` | `number` | Required. The starting position of the first BP. |
-| `end1` | `number` | Required. The end position of the first BP. |
-| `chrom2` | `string` | Required. The name of the chromosome of the second BP. |
-| `start2` | `number` | Required. The starting position of the second BP. |
-| `end2` | `number` | Required. The end position of the second BP. |
-| `sv_id` | `string` | Required. The name of the SV. |
-| `pe_support` | `string` | Optional. The number of events that support SV shown in tooltips. |
-| `strand1` | `string` | Required. The strand for the first BP. Either `'+'` or `'-'`. |
-| `strand2` | `string` | Required. The strand for the first BP. Either `'+'` or `'-'`. |
-
-Example file:
-
-?> https://somatic-browser-test.s3.amazonaws.com/SVTYPE_SV_test_tumor_normal_with_panel.bedpe
-
-#### CNV (TSV)
-<!-- https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format -->
-
-The CNV is stored in a tab-delimited file that is visualized as three tracks: CNV, Gain, and LOH.
-
-| Property | Type | Note |
-|---|---|---|
-| `chromosome` | `string` | Required. The name of the chromosome. |
-| `start` | `number` | Required. The starting position. |
-| `end` | `number` | Required. The end position. |
-| `total_cn` | `string` | Required. The total number of copies. |
-| `major_cn` | `number` | Required. The major allele counts. |
-| `minor_cn` | `number` | Required. The minor allele counts. |
-
-Example file:
-
-?> https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.consensus.20170119.somatic.cna.annotated.txt
-
-#### Drivers (TSV)
-<!-- https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format -->
-
-The drivers are stored in a tab-delimited file. When this file is present, the browser will show drivers that are included in the file only.
-
-The order of the columns does not need to be in the exact same order.
-
-| Property | Type | Note |
-|---|---|---|
-| `chr` | `string` | Required. The name of the chromosome, such as `chr2` and `chrX`. |
-| `pos` | `number` | Required. The position of the driver. |
-| `gene` | `number` | Required. The name of the driver. |
-| `ref` | `string` | Optional. Information only shown on a tooltip. |
-| `alt` | `string` | Optional. Information only shown on a tooltip. |
-| `category` | `string` | Optional. Information only shown on a tooltip. |
-| `top_category` | `string` | Optional. Information only shown on a tooltip. |
-| `transcript_consequence` | `string` | Optional. Information only shown on a tooltip. |
-| `protein_mutation` | `string` | Optional. Information only shown on a tooltip. |
-| `allele_fraction` | `string` | Optional. Information only shown on a tooltip. |
-| `mutation_type` | `string` | Optional. Information only shown on a tooltip. |
-| `biallelic` | `string` | Optional. Either `yes` or `no`. Whether the mutation occurs on both alleles of a single gene. |
-
-Example file:
-
-?> https://gist.githubusercontent.com/sehilyi/350b9e633c52ad97df00a0fc13a8839a/raw/c47b9ba33f1c9e187c69d1dadd01838db44d3b29/driver.txt

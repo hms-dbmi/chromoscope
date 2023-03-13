@@ -1,12 +1,19 @@
-  - **Data Config**
-    - [Overview](/data-config.md#Data-Config) 
-    - [Configuration](/data-config.md#configuration) 
-    - [Data Formats](/data-config.md#data-formats)
+  - **Loading Data**
+    - [Overview](/data-config.md#loading-data) 
+    - [Through Interface](/data-config.md#loading-data-through-interface) 
+    - [Through Data Config](/data-config.md#data-configuration) 
+    - [Data Formats](/data-formats.md)
+    - [Thumbnails](/thumbnails.md)
     - [URL Parameters](/url-parameters.md)
     - [Available Data](/public-data-config.md)
     - [Loading Local Data](/private_data.md)
-- **How To Use**
-    - [Visualizations](/how-to-use.md#visualizations)
+- **Visualizations**
+    - [Introduction](/how-to-use.md#visualizations)
+    - [Cohort View](/how-to-use.md#cohort-view)
+    - [Genome View](/how-to-use.md#genome-view)
+    - [Variant View](/how-to-use.md#variant-view)
+    - [Breakpoint View](/how-to-use.md#breakpoint-view)
+    - [Additional Interactions](/how-to-use.md#additional-interactions)
 - **Help**
     - [FAQ](/faq.md)
     - [Contact](/contact.md)

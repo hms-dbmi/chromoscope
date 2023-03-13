@@ -46,6 +46,8 @@ Optionally, put this data config file (say, `first-config.json`) under the folde
 
 As a last step, use the data config to browse your local files.
 
-?> https://sehilyi.github.io/gosling-app-sv/?external=http://127.0.0.1:8080/first-config.json
+```
+https://sehilyi.github.io/gosling-app-sv/?external=http://127.0.0.1:8080/first-config.json
+```
 
 ![browser](assets/private-data-browser.png ':class=image-medium')
