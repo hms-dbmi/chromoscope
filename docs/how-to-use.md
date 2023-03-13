@@ -3,44 +3,107 @@
 <!-- ?> 🚧 This page is work in progress 🚧 -->
 <!-- ![interface](assets/interface.png ':class=image') -->
 
-SVELT offers four main visualizations that enable to explore structural variation at four levels of scale.
+SVELT offers four main visualizations that enable you to explore structural variants at multiple scales: 
+1. [Cohort View](#cohort-view)
+1. [Genome View](#genome-view)
+1. [Variant View](#variant-view)
+1. [Breakpoint View](#breakpoint-view)
 
-## Multi-Sample Overview
+|![Cohort View](./assets/cohort-view.png)|![Main Interface](./assets/main-interface.png)|
+|---|---|
+|**Figure.** Cohort View|**Figure.** Main Interface|
 
-This cohort-level view displays structural variants and their types as arches connecting chromosomal breakpoints using distinct colors to indicate duplications, deletions, inversions, and inter-chromosomal translocations. This view also displays copy number variants and loss of heterozygosity (LOH). With this cohort overview, users can quickly inspect the patterns of many structural variation datasets and efficiently find samples of interest.
+### Cohort View
 
-## Genome View
-The genome view shows the selected sample in a circular visualization, similar to the multi-sample overview but with additional details, such as chromosome ideograms, highlighting putative driver mutations.
+This cohort-level view displays structural variants as arches connecting chromosomal breakpoints using distinct colors to indicate duplications, deletions, inversions, and inter-chromosomal translocations. This view also displays copy number variants (CNV) and loss of heterozygosity (LOH).
 
-## Variant View
-The variant view, focusing on a shorter genomic region, shows additional details, including point mutations, indels, copy number variation, and genes.
+With this cohort overview, you can quickly inspect the patterns of many structural variation samples and efficiently find samples of interest.
 
-## Breakpoint View
-The breakpoint view shows raw reads around breakpoints and highlights pairs of reads with long distances, showing evidence for structural variant calls.
+__Interactions__
 
-<!-- * Color: The five colors (green, blue, red, orange, yellow) represent the types of SV events. If a read on the left view has a mate on the right view, these reads are encoded with one of the five colors depending on its SV type. If paired reads are not positioned within the two views, they are just represented with grey colors. -->
+- You can click on a sample in this view to analyze them using three visualizations which are in the following sections.
+- You can also browse [PCAWG Data](/public-data-config?id=pcawg-data) or [load a small number of your datasets](/data-config?id=loading-data-through-interface).
 
-<!-- * Loading the alignment information may take up to few minutes. -->
+?> You can find this view by clicking on a ≡ button shown on the left-top corner of the browser.
 
-## User Interactions
+### Genome View
+The genome view shows the selected sample in a circular visualization. This uses the visual representations that are similar to the ones on the [cohort view](#cohort-view) but shows several additional tracks, such as chromosome ideograms and putative drivers.
+
+|![Brush](./assets/circular.png)|![Brush](./assets/tooltip.png)|
+|---|---|
+|**Figure.** Genome View with an interactive brush for selecting a region of interest.|**Figure.** A tooptip showing detailed information.|
+
+__Interactions__
+
+- You can move or resize an interactive brush (light blue) using the mouse. This is linked with a [variant view](#variant-view) that is shown on the bottom of the genome view.
+- You can move your mouse on top of a structural variant to see detailed information on a tooltip.
+
+### Variant View
+The variant view, focusing on a shorter genomic region, shows additional tracks on top of the tracks included in the genome view, including point mutations, indels, copy number variation, and genes.
+
+|![Variant View](./assets/linear-view.png)|
+|---|
+|**Figure.** A linear view that shows the region that is selected by an interactive brush of the genome view.|
+
+__Interactions__
+
+- You can click on a structural variant of your interest using the mouse. Upon clicking, the browser instantly shows a [breakpoint view](#breakpoint-view) on the bottom that highlights read alignments around the breakpoints.
+
+### Breakpoint View
+The breakpoint view shows reads around breakpoints and highlights pairs of reads with long distances, showing evidence for structural variant calls.
+
+|![Variant View and Breakpoint View](./assets/breakpoint-view.png)|
+|---|
+|**Figure.** Upon clicking on a SV in a linear view (top), a breakpoint view (bottom) appears that shows read alignments around two corresponding breakpoints. Black vertical lines in both views represent the positions of selected breakpoints. |
+
+?> Loading the breakpoint view may take up to few minutes.
+
+__Colors__
+
+The five colors (grey, green, blue, pink, yellow) of individual reads represent the types of SV events (translocation, duplication, deletion, tail-to-tail inversion, head-to-head inversion). If a read on the left view has a mate on the right view, these reads are encoded with one of the five colors depending on its SV type. If paired reads are not positioned within the two views, they are just represented in lightgrey. Parts of reads highlighted in different colors represent point mutations (see color legends).
+
+__Interactions__
+
+- You can move your mouse on top of a structural variant to see detailed information on a tooltip.
+
+### Additional Interactions
+
+|![Header](./assets/header.png)|
+|---|
+|**Figure.** The Header of the Browser. Right next to the sample name, there are multiple types of export buttons. |
 
 ### Navigation
-All visualizations in SVELT are interactive which is designed to support efficient navigation between genomic regions of interest across scales. Users can smoothly zoom and pan, use an interactive brush, search for a gene of interest, and interactively select a structural variation to instantly display read-level views around breakpoints for an in-depth examination. 
+All visualizations in SVELT are interactive which is designed to support easy-navigation between genomic regions of interest across scales.
+
+|![Header](./assets/navigation-buttons.png)|
+|---|
+|**Figure.** Additional navigation buttons for selecting a chromosome, searching for a gene, zooming, and panning. |
+
+Users can smoothly zoom and pan, use [an interactive brush](#genome-view), search for a gene of interest, and interactively select a structural variation to instantly display read-level views around breakpoints for an in-depth examination.
 
 ### Export
 
-#### Session
-For the effective and efficient communication of findings made with SVELT, the tool generates a shareable URL that encodes the current visualization state, including the loaded datahub, selected sample, and genomic locations most recently viewed. 
-
 #### PNG
-SVELT enables the export of a publication-ready image (PNG).
+SVELT enables the export of a PNG image file of the entire visualization.
 
 #### HTML
-SVELT enables the export of an interactive webpage that contains the entire SVELT visualization (single HTML file).
+SVELT also allows you to export an interactive webpage that contains the entire SVELT visualization as a single HTML file.
+
+|![HTML exported](./assets/html-export.png)|
+|---|
+|__Figure.__ The exported HTML file on a browser.
 
 #### JSON (Gosling Spec)
 To enable further fine-grained customization (e.g., changing colors or sizes), the entire interactive visualization can be exported as a Gosling JSON specification. This JSON values can be used directly on the Gosling Online Editor (https://gosling.js.org).
 
+|![Gosling Editor](./assets/gosling-editor.png)|
+|---|
+|__Figure.__ The exported JSON value added to an public Gosling editor.
+
+#### Session 🔗
+For the effective and efficient communication of findings made with SVELT, the tool generates a shareable URL that encodes the current visualization state, including the loaded datahub, selected sample, and genomic locations most recently viewed.
+
+?> To understand the individual parameters of the exported URL, please refer to [our docs](/url-parameters.md).
 
 <!-- #### Navigating Linear Detail View on Circular Overview
 By clicking and dragging a mouse on a blue brush, users can navigate a linear view.
