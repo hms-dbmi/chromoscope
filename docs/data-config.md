@@ -12,7 +12,7 @@ In the cohort-level view, there is a side panel that enables you to add a new sa
 |![server](assets/1-interface.png ':class=image-medium')|
 |---|
 
-After providing all required information, you can click on the Add button on the bottom of this form. Once you click on it, you will be able to see a sample added as the first sample on the list of samples.
+After providing all required information, you can click on the Add button on the bottom of this form. Once you click on it, you will be able to see a sample added as the first sample.
 
 |![server](assets/3-sample-added.png ':class=image-medium')|
 |---|
