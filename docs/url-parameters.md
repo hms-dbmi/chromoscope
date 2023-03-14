@@ -1,6 +1,6 @@
 # URL Parameters
 
-There are multiple parameters available that you can used along with the base URL. The pattern of using the parameters is like the below.
+There are multiple parameters available that you can used along with the base URL (`https://sehilyi.github.io/goscan/`). The pattern of using the parameters is like the following:
 
 ```
 https://sehilyi.github.io/goscan/?[parameter1]=[value1]&[parameter2]=[value2]

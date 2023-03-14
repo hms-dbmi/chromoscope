@@ -1,8 +1,8 @@
 # Thumbnails
 
-For browsing a large number of samples at scale, we generate **thumbnail images** for individual samples and use these image files to show samples on the cohort-level view.
+To enable browsing a large number of samples at scale in the cohort-level view, we generate **thumbnail images** for individual samples and use these image files. We pre-generated thumbnails for all datasets that we provide.
 
-If you loaded your sample for the first time on your browser, you have to generate thumbnails by clicking on the "Generate Missing Thumbnails" button on the left-top corner. 
+However, if you loaded your sample for the first time, you have to generate thumbnails. You can do thi by clicking on the "Generate Missing Thumbnails" button on the left-top corner. 
 
 These generate thumbnails will be stored on your local browser. Which means, you can safely close the browser and reopen it without losing the generated thumbnails.
 

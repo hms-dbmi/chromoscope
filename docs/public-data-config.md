@@ -2,7 +2,7 @@
 
 ## PCAWG Data
 
-A total of 2,778 samples of 39 cancer types.
+We offer a total of 2,778 samples of 39 cancer types that can be directly browsed in SVELT.
 
 1. [HCC (Liver)](https://sehilyi.github.io/goscan/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Liver-HCC/configs/Liver-HCC.all.config.json) (327 samples)
 1. [AdenoCA (Prost)](https://sehilyi.github.io/goscan/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Prost-AdenoCA/configs/Prost-AdenoCA.all.config.json) (286 samples)
