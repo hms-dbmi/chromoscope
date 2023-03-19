@@ -46,7 +46,7 @@ Example file:
 https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.consensus.20170119.somatic.cna.annotated.txt
 ```
 
-## Drivers (TSV)
+## Drivers (TSV or JSON)
 <!-- https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format -->
 
 The drivers are stored in a tab-delimited file. When this file is present, the browser will show drivers that are included in the file only.
@@ -55,9 +55,9 @@ The order of the columns does not need to be in the exact same order.
 
 | Property | Type | Note |
 |---|---|---|
-| `chr` | `string` | Required. The name of the chromosome, such as `chr2` and `chrX`. |
+| `chr` | `string` | Required. The name of the chromosome. _The names should contain `chr` prefix_, such as `chr2` and `chrX`. |
 | `pos` | `number` | Required. The position of the driver. |
-| `gene` | `number` | Required. The name of the driver. |
+| `gene` | `string` | Required. The name of the driver. |
 | `ref` | `string` | Optional. Information only shown on a tooltip. |
 | `alt` | `string` | Optional. Information only shown on a tooltip. |
 | `category` | `string` | Optional. Information only shown on a tooltip. |
@@ -66,7 +66,17 @@ The order of the columns does not need to be in the exact same order.
 | `protein_mutation` | `string` | Optional. Information only shown on a tooltip. |
 | `allele_fraction` | `string` | Optional. Information only shown on a tooltip. |
 | `mutation_type` | `string` | Optional. Information only shown on a tooltip. |
-| `biallelic` | `string` | Optional. Either `yes` or `no`. Whether the mutation occurs on both alleles of a single gene. |
+| `biallelic` | `string` | Required. Either `Yes` or `No`. Whether the mutation occurs on both alleles of a single gene. |
+
+|![biallelic](assets/biallelic.png ':class=image-small')|
+|---|
+|An annotation representing a biallelic mutation. |
+
+
+Based on the `biallelic` value, the browser shows annotations near the gene name: 
+- “⊙” for biallelic when the `biallelic` column is `"yes"`
+- “.” for not biallelic (i.e., mono-allelic) when `"no"`
+- no symbol when `undefined`
 
 Example file:
 
