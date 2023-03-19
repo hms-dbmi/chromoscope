@@ -66,6 +66,7 @@ const samples: SampleType[] = [
         vcf2: 'https://somatic-browser-test.s3.amazonaws.com/browserExamples/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.consensus.20161006.somatic.indel.sorted.vcf.gz',
         vcf2Index:
             'https://somatic-browser-test.s3.amazonaws.com/browserExamples/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.consensus.20161006.somatic.indel.sorted.vcf.gz.tbi',
+        // drivers: 'https://gist.githubusercontent.com/sehilyi/01096d32326da8e7f9acc48dd9790332/raw/4f2bbd96ce3d2b6637bd733674f60e197e4d4da9/json-driver.json', // json example
         thumbnail: _7a921087
     },
     {

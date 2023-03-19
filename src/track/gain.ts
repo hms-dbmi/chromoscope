@@ -32,7 +32,7 @@ export default function gain(
         mark: 'rect',
         x: { field: 'start', type: 'genomic' },
         xe: { field: 'end', type: 'genomic' },
-        color: { value: '#73C475' },
+        color: { value: '#5CB6EA' },
         width,
         height
     };

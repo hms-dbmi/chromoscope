@@ -11,6 +11,13 @@ export default function driver(
     return {
         id: `${sampleId}-${mode}-driver`,
         title: 'Putative Driver',
+        // TODO: click events are not supported for layered tracks
+        // experimental: {
+        //     mouseEvents: {
+        //         click: true,
+        //         mouseOver: true
+        //     }
+        // },
         data: {
             url,
             type: 'csv',
@@ -24,17 +31,21 @@ export default function driver(
                 field: 'biallelic',
                 replace: [
                     { from: 'yes', to: '⊙ ' },
-                    { from: 'no', to: '' }
+                    { from: 'no', to: '· ' },
+                    { from: 'Yes', to: '⊙ ' },
+                    { from: 'No', to: '· ' },
+                    { from: undefined, to: '' }
                 ],
                 newField: 'prefix'
             },
             { type: 'concat', fields: ['prefix', 'gene'], newField: 'geneWithPrefix', separator: '' }
-            //   { type: 'displace', method: 'pile', boundingBox: { startField: 'pos', endField: 'pos', padding: 100} }
+            // { type: 'displace', method: 'pile', boundingBox: { startField: 'pos', endField: 'pos', padding: 100, isPaddingBP: false }, newField: 'row', maxRows: 2 }
         ],
         mark: 'text',
         x: { field: 'pos', type: 'genomic' },
         text: { field: 'geneWithPrefix', type: 'nominal' },
         color: { value: 'black' },
+        row: { field: 'row', type: 'nominal' },
         style: { textFontWeight: 'normal' },
         size: { value: mode === 'top' ? 10 : 14 },
         tooltip: [
@@ -50,6 +61,6 @@ export default function driver(
             { field: 'mutation_type', alt: 'Mutation Type', type: 'nominal' }
         ],
         width,
-        height
+        height: height
     };
 }

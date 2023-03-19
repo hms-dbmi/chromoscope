@@ -12,7 +12,7 @@ export default function loh(
     const [total_cn, major_cn, minor_cn] = cnFields;
     return {
         id: `${sampleId}-${mode}-loh`,
-        title: mode !== 'small' ? 'LOH' : '',
+        title: mode !== 'small' ? 'Loss of Heterozygosity (LOH)' : '',
         style: { background: '#F6F6F6' },
         data: {
             separator: '\t',
@@ -28,7 +28,7 @@ export default function loh(
         mark: 'rect',
         x: { field: 'start', type: 'genomic' },
         xe: { field: 'end', type: 'genomic' },
-        color: { value: '#FB6A4B' },
+        color: { value: '#D6641E' },
         width,
         height
     };

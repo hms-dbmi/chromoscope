@@ -197,8 +197,8 @@ export default function sv(
             field: 'svclass',
             type: 'nominal',
             legend: mode !== 'small',
-            domain: defaults.color.svclass.domain,
-            range: defaults.color.svclass.range
+            domain: ['Gain', 'LOH', ...defaults.color.svclass.domain],
+            range: ['#5CB6EA', '#D6641E', ...defaults.color.svclass.range]
         },
         stroke: {
             field: 'svclass',

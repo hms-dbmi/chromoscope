@@ -92,7 +92,9 @@ function App(props: RouteComponentProps) {
     const [visPanelWidth, setVisPanelWidth] = useState(INIT_VIS_PANEL_WIDTH - VIS_PADDING * 2);
     const [overviewChr, setOverviewChr] = useState('');
     const [genomeViewChr, setGenomeViewChr] = useState('');
-    const [drivers, setDrivers] = useState((allDrivers as any).filter((d: any) => d.sample_id === demo.id && +d.pos));
+    const [drivers, setDrivers] = useState(
+        typeof demo.drivers === 'string' && demo.drivers.split('.').pop() === 'json' ? [] : getFilteredDrivers(demo.id)
+    );
     const [selectedSvId, setSelectedSvId] = useState<string>('');
     const [breakpoints, setBreakpoints] = useState<[number, number, number, number]>([1, 100, 1, 100]);
     const [bpIntervals, setBpIntervals] = useState<[number, number, number, number] | undefined>();
@@ -107,11 +109,51 @@ function App(props: RouteComponentProps) {
     const rightReads = useRef<{ [k: string]: number | string }[]>([]);
     const [svReads, setSvReads] = useState<{ name: string; type: string }[]>([]);
 
+    function getFilteredDrivers(demoId: string) {
+        return (allDrivers as any).filter((d: any) => d.sample_id === demoId && +d.pos);
+    }
+
     // update demo
     useEffect(() => {
-        const filteredDrivers = (allDrivers as any).filter((d: any) => d.sample_id === demo.id && +d.pos);
-        // console.log(demo, filteredDrivers);
-        setDrivers(filteredDrivers);
+        if (typeof demo.drivers === 'string' && demo.drivers.split('.').pop() === 'json') {
+            // we want to change this json file to json value
+            fetch(demo.drivers).then(response =>
+                response.text().then(d => {
+                    const customDrivers = JSON.parse(d);
+                    // TODO: these need to be supported in other types of data
+                    customDrivers.forEach(d => {
+                        const optionalFields = [
+                            'ref',
+                            'alt',
+                            'category',
+                            'top_category',
+                            'transcript_consequence',
+                            'protein-mutation',
+                            'allele_fraction',
+                            'mutation_type',
+                            'biallelic'
+                        ];
+                        optionalFields.forEach(f => {
+                            if (!d[f]) {
+                                d[f] = '';
+                            }
+                        });
+                        if (typeof d['biallelic'] === 'string' && d['biallelic'].toUpperCase() === 'YES') {
+                            d['biallelic'] = 'yes';
+                        }
+                        if (typeof d['biallelic'] === 'string' && d['biallelic'].toUpperCase() === 'NO') {
+                            d['biallelic'] = 'no';
+                        }
+                    });
+
+                    setDrivers(customDrivers);
+                })
+            );
+        } else {
+            const filteredDrivers = getFilteredDrivers(demo.id);
+            setDrivers(filteredDrivers);
+        }
+
         setOverviewChr('');
         setGenomeViewChr('');
         setSelectedSvId('');
@@ -152,6 +194,8 @@ function App(props: RouteComponentProps) {
         if (!gosRef.current) return;
 
         gosRef.current.api.subscribe('click', (_, e) => {
+            // console.log(e);
+
             let x = +e.data[0].start1;
             let xe = +e.data[0].end1;
             let x1 = +e.data[0].start2;
@@ -489,9 +533,11 @@ function App(props: RouteComponentProps) {
     }, [demo, filteredSamples, thumbnailForceGenerate, generateThumbnails]);
 
     const goslingComponent = useMemo(() => {
-        if (!ready) return null;
-        // console.log(demo.id, drivers.length);
+        const loadingCustomJSONDrivers = typeof demo.drivers === 'string' && demo.drivers.split('.').pop() === 'json';
+        const isStillLoadingDrivers = loadingCustomJSONDrivers && drivers.length == 0;
+        if (!ready || isStillLoadingDrivers) return null;
 
+        const useCustomDrivers = loadingCustomJSONDrivers || !demo.drivers;
         const spec = generateSpec({
             ...demo,
             showOverview,
@@ -499,7 +545,7 @@ function App(props: RouteComponentProps) {
             xOffset: 0,
             showPutativeDriver,
             width: visPanelWidth,
-            drivers: demo.drivers ?? drivers,
+            drivers: useCustomDrivers ? drivers : demo.drivers,
             selectedSvId,
             breakpoints: breakpoints,
             crossChr: false,

@@ -12,7 +12,7 @@ export default function cnv(
     const [total_cn, major_cn, minor_cn] = cnFields;
     return {
         id: `${sampleId}-${mode}-cnv`,
-        title: mode === 'small' ? '' : 'CNV',
+        title: mode === 'small' ? '' : 'Copy Number Variants',
         style: { background: '#FFFFFF' },
         data: {
             separator: '\t',

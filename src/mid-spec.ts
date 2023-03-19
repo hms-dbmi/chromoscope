@@ -80,7 +80,7 @@ export default function getMidView(option: SpecOption): View[] {
                     width,
                     height: 18
                 },
-                tracks.driver(id, driversToTsvUrl(drivers), width, 20, 'mid'),
+                tracks.driver(id, driversToTsvUrl(drivers), width, 40, 'mid'),
                 tracks.boundary('driver', 'mid'),
                 {
                     id: `${id}-mid-gene`,
