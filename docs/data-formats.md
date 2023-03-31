@@ -94,6 +94,8 @@ tabix myfile.sorted.vcf.gz
 
 Refer to the documentation of Samtools for details (https://www.htslib.org/doc/tabix.html).
 
+!> The VCF files should be sorted and indexed to be able to make SVELT to properly show genomics features.
+
 ## BAM & BAI
 
 For read alignments, we use standard BAM files along with BAI files. To generate the index file, you can run the following command:
@@ -104,4 +106,4 @@ samtools index myfile.sorted.bam.gz myfile.sorted.bam.bai
 
 Refer to the documentation of Samtools for details (https://www.htslib.org/doc/samtools-index.html).
 
-!> The VCF and BAM files should be sorted to be able to make SVELT to properly show genomics features.
+!> The BAM files should be sorted and indexed to be able to make SVELT to properly show genomics features.

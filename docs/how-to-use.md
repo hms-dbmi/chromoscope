@@ -30,7 +30,7 @@ __Interactions__
 - You can click on a sample in this view to analyze them using three visualizations which are in the following sections.
 - You can also browse [PCAWG Data](/public-data-config?id=pcawg-data) or [load a small number of your datasets](/data-config?id=loading-data-through-interface).
 
-?> You can find this view by clicking on a ≡ button shown on the left-top corner of the browser.
+?> You can find this view by clicking on a ≡ button shown on the top-left corner of the browser.
 
 ### Genome View
 The genome view shows the selected sample in a circular visualization. This uses the visual representations that are similar to the ones on the [cohort view](#cohort-view) but shows several additional tracks, such as chromosome ideograms and putative drivers.
@@ -95,16 +95,12 @@ SVELT enables the export of a PNG image file of the entire visualization.
 #### HTML
 SVELT also allows you to export an interactive webpage that contains the entire SVELT visualization as a single HTML file.
 
-|![HTML exported](./assets/html-export.png)|
-|---|
-|__Figure.__ The exported HTML file on a browser.
-
 #### JSON (Gosling Spec)
 To enable further fine-grained customization (e.g., changing colors or sizes), the entire interactive visualization can be exported as a Gosling JSON specification. This JSON values can be used directly on the Gosling Online Editor (https://gosling.js.org).
 
-|![Gosling Editor](./assets/gosling-editor.png)|
-|---|
-|__Figure.__ The exported JSON value added to an public Gosling editor.
+|![HTML exported](./assets/html-export.png)|![Gosling Editor](./assets/gosling-editor.png)|
+|---|---|
+|__Figure.__ The exported HTML file on a browser.|__Figure.__ The exported JSON value added to an public Gosling editor.|
 
 #### Session 🔗
 For the effective and efficient communication of findings made with SVELT, the tool generates a shareable URL that encodes the current visualization state, including the loaded datahub, selected sample, and genomic locations most recently viewed.
@@ -129,7 +125,7 @@ Using the drop-down menus, a user can quickly navigate to a certain chromosome o
 #### Exporting PNG
 
 #### Interacting with Visualizations
-By default, interactions are not activated in visualizations. You will first need to click on a visualization, following the instruction on the left-top corner (i.e., “Click inside to use interactions”). 
+By default, interactions are not activated in visualizations. You will first need to click on a visualization, following the instruction on the top-left corner (i.e., “Click inside to use interactions”). 
 
 After clicking on it, you can now adjust brushes, use the mouse wheel to zoom in and out, and click on a SV. In this mode, you can scroll the entire website by putting your mouse around the main visualization (i.e., gray dotted region). 
 
