@@ -3,18 +3,18 @@
 There are two ways to load your data:
 
 - [Loading a small number of samples directly on the browser through the interface.](#Loading-Data-Through-Interface)
-- [Loading large samples through data configurations](#data-configuration).
+- [Loading a large number of samples through data configurations](#data-configuration).
 
 ### Loading Data Through Interface
 
 In the cohort-level view, there is a side panel that enables you to add a new sample by providing metadata (e.g., cancer type) and file URLs (e.g., bedpe, txt, vcf).
 
-|![server](assets/1-interface.png ':class=image-medium')|
+|![server](assets/1-interface.png)|
 |---|
 
 After providing all required information, you can click on the Add button on the bottom of this form. Once you click on it, you will be able to see a sample added as the first sample.
 
-|![server](assets/3-sample-added.png ':class=image-medium')|
+|![server](assets/3-sample-added.png)|
 |---|
 
 ?> To test the browser for adding a sample, you can use the following information:
@@ -27,7 +27,7 @@ After providing all required information, you can click on the Add button on the
 |SV|`https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.pcawg_consensus_1.6.161022.somatic.sv.bedpe`
 |CNV|`https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.consensus.20170119.somatic.cna.annotated.txt`
 
-!> Details about each of the fields, as well as accepted files, are described in the following section.
+Details about each of the fields, as well as accepted files, are described in [the following section](#Data-Configuration).
 
 ### Data Configuration
 
