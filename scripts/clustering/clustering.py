@@ -111,7 +111,7 @@ def run_clustering(svelt_samples, patterns):
         # UUIDs of SVELT samples
         svelt_uuids = svelt_cancer_subset.UUID.tolist()
 
-        # narrow down publication data into svelt samples
+        # narrow down pattern data into svelt samples
         pub_svelt_common_samples = patterns[patterns["UUID"].isin(svelt_uuids)]
 
         # drop UUIDs as we want to run clustering on a matrix of numbers
@@ -146,6 +146,7 @@ def run_clustering(svelt_samples, patterns):
             cluster_map.figure.suptitle(
                 f"Clustering of structural variant patterns of samples of {his}."
             )
+            cluster_map.ax_col_dendrogram.set_visible(False)
 
             # save the dataframe on which we run the algorithm
             patterns[patterns["UUID"].isin(svelt_uuids)].to_csv(

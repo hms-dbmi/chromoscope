@@ -5,7 +5,8 @@ In order to reproduce the results of the hierarchical clustering on the PCAWG sa
 
 ## Dependencies
 
-**Python version**: 3.7.0 
+**Python version**: 3.7.0
+
 **Packages**: click, pandas, matplotlib, seaborn
 
 ## CLI 
