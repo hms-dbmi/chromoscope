@@ -144,7 +144,10 @@ def run_clustering(svelt_samples, patterns):
             cluster_map.ax_heatmap.set_xlabel("Rearrangement type")
             cluster_map.ax_heatmap.tick_params(axis="y", width=0.5)
             cluster_map.figure.suptitle(
-                f"Clustering of structural variant patterns of samples of {his}."
+                f"Clustering of structural variant patterns of samples of {his}.",
+                size="xx-large",
+                x=0.55,
+                y=1,
             )
             cluster_map.ax_col_dendrogram.set_visible(False)
 
@@ -153,7 +156,14 @@ def run_clustering(svelt_samples, patterns):
                 f"{dataframes_folder}/{his}.csv", index=False
             )
 
+            # to avoid cbar overlapping with the dendrogram
+            cluster_map.ax_cbar.set_axis_off()
+            cluster_map.figure.tight_layout(h_pad=1, w_pad=0.02, rect=[0, 0, 1, 1])
+            cluster_map.ax_cbar.set_axis_on()
+            cluster_map.ax_cbar.set_position((0.02, 0.8, 0.05, 0.18))
+
             cluster_map.savefig(f"{heatmap_folder}/{his}.pdf")
+
             plt.close()
 
             f = open(f"{clusters_folder}/{his}.txt", "a")
@@ -165,6 +175,7 @@ def run_clustering(svelt_samples, patterns):
             f = open(f"{clusters_folder}/not_clustered_datasets.txt", "a")
             f.write(f"{his}\n")
             f.close()
+
 
 if __name__ == "__main__":
     run_clustering()
