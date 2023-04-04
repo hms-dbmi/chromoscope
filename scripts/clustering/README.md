@@ -1,6 +1,6 @@
-# 📄 Clustering of PCAWG samples 
+# 📄 Hierarchical clustering of PCAWG samples 
 
-In order to reproduce the results of the hierarchical clustering on the PCAWG samples uploaded to SVELT, please run `clustering.py`.  The aim of the tool is to organize the PCAWG samples based on the patterns of rearrangement signatures to facilitate the process of structural variants interpretation. The samples are clustered using the Euclidean metric as a distance measure.
+In order to reproduce the results of hierarchical clustering on the PCAWG samples uploaded to SVELT, please run `clustering.py`.  The aim of the tool is to organize the PCAWG samples based on the patterns of rearrangement signatures to facilitate the process of structural variants interpretation. The samples are clustered using the Euclidean metric as a distance measure.
 
 ## Dependencies
 
@@ -40,11 +40,11 @@ All the output results will be stored in the `SVELT_clustering/` folder.
 |Output                                | Description                                                                                                                                                                                                      |
 |--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |`clusters/`                           | directory containing lists of ordered samples. Each list represents one cancer type from the SVELT dataset                                                                                                       |
-|`clusters/non_clustered_datasets.txt` | file containing cancer types for which SVELT has less than 3 samples. These cancer types were not subject to the clustering algorithm. They are displayed in a default order in the multi-sample view            | 
+|`clusters/non_clustered_datasets.txt` | file containing cancer types for which SVELT has less than 3 samples. These cancer types were not subject to the clustering algorithm. They are displayed in a default order in the multi-sample overview        | 
 |`dataframes/`                         | directory of TSV files representing matrices used for clustering                                                                                                                                                 |
 |`heatmaps/`                           | directory of generated heat maps and dendrograms in the PDF format for visual inspection on how the algorithm grouped the samples                                                                                |
 |`missing_samples/`                    | directory containing `missing_samples.tsv` that stores samples demonstrated on SVELT but not included in the clustering analysis due to missing rearrangement types for these samples                            |
 |`missing_samples_in_patterns.txt`     | it’s a report containing a compacted list of sample UUIDs excluded from the analysis and their total number for each cancer type                                                                                 |
 
 
-> **Note** Please find already generated output results in the `output_data` folder.
+> **Note** Please find already generated output results in the `output_data` folder. These data were used in order to upload the reordered samples to SVELT.
