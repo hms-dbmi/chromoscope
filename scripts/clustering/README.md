@@ -6,7 +6,11 @@ In order to reproduce the results of hierarchical clustering on the PCAWG sample
 
 **Python version**: 3+
 
-**Packages**: click, pandas, matplotlib, seaborn
+**Packages**:
+- [click](https://github.com/pallets/click) (version 8.1.3)
+- [pandas](https://github.com/pandas-dev/pandas) (version 1.1.5)
+- [matplotlib](https://github.com/matplotlib/matplotlib) (version 3.5.3)
+- [seaborn](https://github.com/mwaskom/seaborn) (version 0.12.2)
 
 ## CLI 
 
@@ -24,6 +28,11 @@ Options:
   --help                     Show this message and exit.
 ``` 
 
+### Usage 
+
+```
+python3 clustering.py --svelt_samples data/svelt_samples.csv --patterns data/patterns.tsv
+```
 
 ## Input files
 
