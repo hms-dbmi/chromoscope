@@ -11,6 +11,7 @@ In order to reproduce the results of hierarchical clustering on the PCAWG sample
 - [pandas](https://github.com/pandas-dev/pandas) (version 1.1.5)
 - [matplotlib](https://github.com/matplotlib/matplotlib) (version 3.5.3)
 - [seaborn](https://github.com/mwaskom/seaborn) (version 0.12.2)
+- [openpyxl](https://openpyxl.readthedocs.io/en/stable/) (version 3.1.2)
 
 ## CLI 
 
@@ -39,7 +40,7 @@ Options:
 
 ## How to reproduce the results?
 
-Please run `run_clustering.sh`  in the `clustering` folder in order to download the file containing the information about somatic rearrangements and run the tool. This script implement the following commands:
+Please run `run_clustering.sh`  in the `clustering` folder in order to download the file containing the information about somatic rearrangements and run the tool. This script implements the following commands:
 
 ```
 PATTERNS_FILE="data/43018_2020_27_MOESM3_ESM.xlsx"
@@ -68,3 +69,7 @@ All the output results will be stored in the `SVELT_clustering/` folder.
 
 
 > **Note** Please find already generated output results in the `output_data` folder. These data were used in order to upload the reordered samples to SVELT.
+
+## References
+
+Degasperi, A., Amarante, T.D., Czarnecki, J. et al. A practical framework and online tool for mutational signature analyses show intertissue variation and driver dependencies. Nat Cancer 1, 249–263 (2020).
