@@ -24,22 +24,33 @@ Usage: clustering.py [OPTIONS]
 
 Options:
   --svelt_samples TEXT       SVELT samples in CSV.
-  --patterns      TEXT       Patterns of structural variants TSV.
+  --patterns      TEXT       Patterns of structural variants XLSX.
   --help                     Show this message and exit.
 ``` 
 
-### Usage 
-
-```
-python3 clustering.py --svelt_samples data/svelt_samples.csv --patterns data/patterns.tsv
-```
 
 ## Input files
 
 |       Parameter       |Description                                                                                                                                                                                                    |
 |-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |`svelt_samples`        | List of samples used as demo data for SVELT. Cancer type is defined in the `histology_abbreviation` column. Sample UUIDs are defined in the `UUID` column. This file is available in the `data` folder        |
-|`patterns`             |  Patters of somatic rearrangements.  [ref:https://pubmed.ncbi.nlm.nih.gov/32118208/. The source file is available under Supplementary Tables, Sheet 7]                                         |
+|`patterns`             | Patters of somatic rearrangements.  [ref:https://pubmed.ncbi.nlm.nih.gov/32118208/. The source file is available under Supplementary Tables, Sheet 7]                                                         |
+
+
+## How to reproduce the results?
+
+Please run `run_clustering.sh`  in the `clustering` folder in order to download the file containing the information about somatic rearrangements and run the tool. This script implement the following commands:
+
+```
+PATTERNS_FILE="data/43018_2020_27_MOESM3_ESM.xlsx"
+SVELT_SAMPLES="data/svelt_samples.csv"
+
+wget -O $PATTERNS_FILE "https://static-content.springer.com/esm/art%3A10.1038%2Fs43018-020-0027-5/MediaObjects/43018_2020_27_MOESM3_ESM.xlsx"
+
+python3 clustering.py  --svelt_samples $SVELT_SAMPLES --patterns  $PATTERNS_FILE
+```
+
+The results will be stored in a new folder `SVELT_clustering`, see below the description of the output files.
 
 
 ## Output files

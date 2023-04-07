@@ -8,6 +8,12 @@ import click
 dateTimeObj = datetime.now()
 timestampStr = dateTimeObj.strftime("%d_%b_%Y_%H_%M_%S_%f")
 
+PATTERNS_COLUMNS=['UUID', 'RefSig R2', 'RefSig R4', 'RefSig R6a', 'RefSig R1',
+       'RefSig R7', 'RefSig R5', 'RefSig R6b', 'RefSig R8', 'RefSig R3',
+       'RefSig R9', 'RefSig R10', 'RefSig R11', 'RefSig R12', 'RefSig R13',
+       'RefSig R14', 'RefSig R15', 'RefSig R16', 'RefSig R17', 'RefSig R18',
+       'RefSig R19', 'RefSig R20']
+
 # make output folders accessible across the script
 output_folder = f"SVELT_clustering/{timestampStr}"
 heatmap_folder = f"{output_folder}/heatmaps"
@@ -67,7 +73,7 @@ def create_reports(missing_samples_df, histology):
 @click.option("--svelt_samples", help="SVELT samples in CSV.")
 @click.option(
     "--patterns",
-    help="Patterns of somatic rearrangements across cancers in TSV.",
+    help="Patterns of somatic rearrangements across cancers in XLSX.",
 )
 def run_clustering(svelt_samples, patterns):
     """Run hierarchical clustering to organize PCAWG samples on SVELT."""
@@ -87,8 +93,7 @@ def run_clustering(svelt_samples, patterns):
     )
 
     # load publication samples
-    patterns = pandas.read_csv(patterns, sep="\t", index_col=False)
-
+    patterns = pandas.read_excel(patterns, sheet_name='S7', names=PATTERNS_COLUMNS, index_col=False, engine='openpyxl')
     # get cancer types
     histology_abb = svelt_samples.histology_abbreviation.unique().tolist()
 
