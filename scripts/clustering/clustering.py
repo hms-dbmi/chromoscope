@@ -8,12 +8,6 @@ import click
 dateTimeObj = datetime.now()
 timestampStr = dateTimeObj.strftime("%d_%b_%Y_%H_%M_%S_%f")
 
-PATTERNS_COLUMNS=['UUID', 'RefSig R2', 'RefSig R4', 'RefSig R6a', 'RefSig R1',
-       'RefSig R7', 'RefSig R5', 'RefSig R6b', 'RefSig R8', 'RefSig R3',
-       'RefSig R9', 'RefSig R10', 'RefSig R11', 'RefSig R12', 'RefSig R13',
-       'RefSig R14', 'RefSig R15', 'RefSig R16', 'RefSig R17', 'RefSig R18',
-       'RefSig R19', 'RefSig R20']
-
 # make output folders accessible across the script
 output_folder = f"SVELT_clustering/{timestampStr}"
 heatmap_folder = f"{output_folder}/heatmaps"
@@ -93,7 +87,14 @@ def run_clustering(svelt_samples, patterns):
     )
 
     # load publication samples
-    patterns = pandas.read_excel(patterns, sheet_name='S7', names=PATTERNS_COLUMNS, index_col=False, engine='openpyxl')
+    patterns = pandas.read_excel(
+        patterns,
+        sheet_name="S7",
+        index_col=False,
+        engine="openpyxl",
+    )
+
+    patterns.columns = ["UUID"] + list(patterns.columns[1:])
     # get cancer types
     histology_abb = svelt_samples.histology_abbreviation.unique().tolist()
 
@@ -149,7 +150,7 @@ def run_clustering(svelt_samples, patterns):
             cluster_map.ax_heatmap.set_xlabel("Rearrangement type")
             cluster_map.ax_heatmap.tick_params(axis="y", width=0.5)
             cluster_map.figure.suptitle(
-                f"Clustering of structural variant patterns of samples of {his}.",
+                f"Clustering of structural variant patterns of {his} samples.",
                 size="xx-large",
                 x=0.55,
                 y=1,
