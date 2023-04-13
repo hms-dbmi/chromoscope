@@ -1,27 +1,33 @@
-import logging
+#!/usr/bin/env python3
+
+################################################
+#   Libraries
+################################################
 import os
+import pandas
+import logging
 import boto3
 from botocore.exceptions import ClientError
 
-logger = logging.getLogger(__name__)
-
-"""
-based on code from AWS boto3 documentation: https://boto3.amazonaws.com/v1/documentation/api/latest/guide/s3-presigned-urls.html
-for IAM users: Presigned URLs can be valid up to seven days (604800 sec) when using AWS Signature Version 4.
-Usage example: generate_presigned_URL("EXAMPLE_BUCKET_NAME", "SV/EXAMPLE_ID/EXAMPLE_merged_somatic.bedpe")
-"""
+################################################
+#   generate_presigned_URL
+################################################
 def generate_presigned_URL(bucket_name, object_path, expiration=3600):
     """
-    Generate a presigned URL that can be used to share a private S3 object.
+    Generates a presigned URL that can be used to share a private S3 object.
+    For IAM users, presigned URLs can be valid up to seven days (604800 sec) when using AWS Signature Version 4.
+    Based on code from AWS boto3 documentation: https://boto3.amazonaws.com/v1/documentation/api/latest/guide/s3-presigned-urls.html
+
+    Usage example: python3 generate_presigned_URL("EXAMPLE_BUCKET_NAME", "EXAMPLE_ID/EXAMPLE_merged_somatic.bedpe")
 
     :param bucket_name: The name of S3 bucket containing private objects.
-    :type bucket_name: string
+    :type bucket_name: str
     :param object_path: The relative path of S3 object to be shared via presigned URL.
-    :type object_path: string
-    :param expiration: The number of seconds the presigned URL is valid for.
+    :type object_path: str
+    :param expiration: The number of seconds the generated presigned URL is valid for.
     :type expiration: int
     :return: The presigned URL.
-    :rtype: string
+    :rtype: str or None
     """
 
     # Create low-level S3 service client
@@ -38,20 +44,76 @@ def generate_presigned_URL(bucket_name, object_path, expiration=3600):
             ExpiresIn=expiration
         )
     except ClientError as err:
-        logger.error(err)
+        print(err)
+        logging.error(err)
         return None
 
     # Return the presigned URL as a string
     return url
 
-#######################################
+################################################
+#   list_items_in_bucket_dir
+################################################
+def list_items_in_bucket_dir(bucket_name, subdir_rel_path, required):
+    """
+    Given an S3 bucket and a subdirectory's relative path within that bucket,
+    lists the objects within the subdirectory and the full path of
+    that subdirectory. Must have AWS security credentials set up.
+    
+    If the items within this subdirectory are required for a SVELT configuration
+    file, and there are none found, or the path of this subdirectory is
+    invalid, raises ValueError.
 
-def list_items_in_bucket_dir(bucket_name, object_path):
-    target = "s3://" + bucket_name + "/" + object_path + "/"
-    item_str = os.popen("aws s3 ls  %s | awk 'NF>1{print $4}' | grep ." % (target)).read()
-    item_list = item_str.split('\n')
-    return item_list
+    Usage example: python3 list_items_in_bucket_dir("EXAMPLE_BUCKET_NAME", "EXAMPLE_SUBDIR")
+    --> creates list of items within s3://EXAMPLE_BUCKET_NAME/EXAMPLE_SUBDIR/
 
-def check_URL_validity(bucket_name, object_path):
-    s3_client = boto3.client("s3")
-    s3_client.get_object(Bucket=bucket_name, Key=object_path)
+    :param bucket_name: The name of S3 bucket.
+    :type bucket_name: str
+    :param subdir_rel_path: The relative path of S3 subdirectory to be searched (the "target").
+    :type subdir_rel_path: str
+    :param required: Whether the items in given subdirectory are required for a SVELT configuration file.
+    :type required: bool
+    :return: The list of objects within the searched S3 subdirectory.
+    :rtype: list[str]
+    :return: The full S3 path of subdirectory that was searched (the "target").
+    :rtype: str
+    """
+
+    # Create full path of subdirectory to be searched
+    target = "s3://" + bucket_name + "/" + subdir_rel_path + "/"
+
+    # Using AWS CLI, list the objects within subdirectory and save as a list
+    item_str = os.popen("aws s3 ls  %s | awk 'NF>1{print $4}'" % (target)).read()
+    item_list = list(filter(None, item_str.split('\n')))
+
+    # If there are no items within a subdirectory with required S3 objects for SVELT
+    # or invalid target path, raise ValueError
+    if (len(item_list) == 0) and required:
+        raise ValueError(f'S3 path invalid or empty: {target}')
+
+    # Return list of items and full target path
+    return item_list, target
+
+################################################
+#   create_id_list
+################################################
+def create_id_list(tsv_file):
+    """
+    Given (a path to) a TSV file containing IDs for SVELT cohort,
+    save IDs into a list. TSV file must contain a column header
+    "ID", under which the IDs are listed.
+
+    :param tsv_file: The filepath of a TSV file.
+    :type tsv_file: str
+    :return: The list of IDs for a SVELT cohort.
+    :rtype: list[str]
+    """
+
+    # Open and read tab-delimited file
+    id_df = pandas.read_csv(
+        tsv_file,
+        sep="\t"
+    )
+
+    # Isolate and return list of IDs
+    return id_df["ID"]

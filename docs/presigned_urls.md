@@ -111,7 +111,6 @@ One can also use AWS SDKs like *boto3* for Python to generate presigned URLs, us
 ```python
 import boto3
 from botocore.exceptions import ClientError
-import logging
 
 def generate_presigned_URL(bucket_name, object_path, expiration=3600):
     """
@@ -123,7 +122,7 @@ def generate_presigned_URL(bucket_name, object_path, expiration=3600):
     :type object_path: string
     :param expiration: The number of seconds the presigned URL is valid for.
     :type expiration: int
-    :return: The presigned URL.
+    :return: The presigned URL. #TODO: change this
     :rtype: string
     """
 
@@ -141,7 +140,7 @@ def generate_presigned_URL(bucket_name, object_path, expiration=3600):
             ExpiresIn=expiration # URL duration in seconds
         )
     except ClientError as err:
-        logger.error(err)
+        # logger.error(err) #TODO: change this
         return None
 
     # Return the presigned URL as a string
@@ -150,3 +149,37 @@ def generate_presigned_URL(bucket_name, object_path, expiration=3600):
 Further information on this *boto3* function can be found [here](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/s3-presigned-urls.html).
 
 Non-programmatically, a presigned URL can be generated using the S3 console or AWS Explorer for Visual Studio – [comprehensive documentation on presigned URLs can be found here](https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-presigned-url.html). Once a presigned URL is created for a private object, it can be used within SVELT configuration files to temporarily visualize these private files.
+
+&nbsp;
+## Configuration File Creation Using Presigned URLs
+
+- all must be same cancer type
+- all must be same assembly
+
+- draw out directory structure -- include which ones contain combination of properties/files
+- give example python command with this dummy directory structure
+- list requirements.txt (i used a conda environment)
+
+- what the overall function does: generates a presigned url for every object needed in the config file. makes the config file locally, uploads to config folder within S3, then generates a presigned URL for that new timestamped config file
+- designed for: cohorts of samples with large amount of samples, with the same cancer type and assembly. good when comparing between samples within the same cohort (TODO: link out to dominika's stuff? will it be available? ask dom and sehi) 
+
+- doesnt handle notes (ask if this is needed)
+- samtools bai doesnt work on gunzipped file for me
+- check imports
+- terminal command to write to local file (> file.txt)
+- print out to terminal in the script
+- s3fs -- is this too much to mention?
+- just exceptions? or raise other type of error?
+- make public bucket for testing out?
+- tell to check properties manually in cohort view
+- generates samples and displays in order of ID list
+
+
+    #TODO: create goscan URL and put in text file (including expiration date?) and upload to S3 (maybe use sync?)
+    #TODO: look at gerstein github repo for example of walking through a script
+    # TODO: describe directory structure needed within the S3 bucket
+    # TODO: step-by-step of each argument, format
+    #TODO: finally, an example with a dummy directory structure (draw it out)
+    #TODO: generate link or straight to svelt link? i think just generate the presigned URL
+    # then include an example of how to append this URL to svelt link (ask dom and sehi)
+    # look at first todo in this list
