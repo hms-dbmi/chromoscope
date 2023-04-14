@@ -49,8 +49,8 @@ For each sample, you need to prepare the following information in a JSON object.
 | `cancer` | `string` | Required. Type of a cancer. |
 | `assembly` | `'hg38'` or `'hg19'` | Required. Assembly. |
 | `sv` | `string` | Required. An URL of the SV bedpe file (`.bedpe`). |
-| `cnv` | `string` | Required. An URL of the CNV text file (`.txt`). |
-| `drivers` | `string` | Optional. An URL of a file that contains drivers (`.txt`). |
+| `cnv` | `string` | Required. An URL of the CNV text file (`.tsv`). |
+| `drivers` | `string` | Optional. An URL of a file that contains drivers (`.tsv` or `.json`). |
 | `vcf` | `string` | Optional. An URL of the point mutation file (`.vcf`). |
 | `vcfIndex` | `string` | Optional. An URL of the point mutation index file (`.tbi`). |
 | `vcf2` | `string` | Optional. An URL of the the indel file (`.vcf`). |
