@@ -107,7 +107,7 @@ https://EXAMPLE_BUCKET.s3.us-east-1.amazonaws.com/myobject?AWSAccessKeyId=AKIAEX
 
 For further optional arguments of this AWS CLI function, see the detailed documentation [here](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/presign.html).
 
-One can also use AWS SDKs like *boto3* for Python to generate presigned URLs, using the `generate_presigned_url` function, using the following script:
+One can also use AWS SDKs like *boto3* for Python to generate presigned URLs, using the `generate_presigned_url` function, using the [following script](../scripts/presigned_url_scripts/create_presigned_urls.py):
 ```python
 import boto3
 from botocore.exceptions import ClientError
@@ -122,8 +122,8 @@ def generate_presigned_URL(bucket_name, object_path, expiration=3600):
     :type object_path: string
     :param expiration: The number of seconds the presigned URL is valid for.
     :type expiration: int
-    :return: The presigned URL. #TODO: change this
-    :rtype: string
+    :return: The presigned URL.
+    :rtype: string or None
     """
 
     # Create low-level S3 service client
@@ -140,7 +140,8 @@ def generate_presigned_URL(bucket_name, object_path, expiration=3600):
             ExpiresIn=expiration # URL duration in seconds
         )
     except ClientError as err:
-        # logger.error(err) #TODO: change this
+        print(err)
+        logging.error(err)
         return None
 
     # Return the presigned URL as a string
@@ -153,33 +154,116 @@ Non-programmatically, a presigned URL can be generated using the S3 console or A
 &nbsp;
 ## Configuration File Creation Using Presigned URLs
 
+### Presigned URL Use with SVELT
+
+The ability to create presigned URLs not only allows for controlled, temporary visualization/sharing of private data, but also provides mode of sharing large amounts of data stored on the AWS cloud. Presigned URLs can be (1) used directly within a SVELT configuration file, linking to data for individual samples (simple single-sample example below): 
+```json
+[
+    {
+        "id": "EXAMPLE_ID",
+        "cancer": "breast",
+        "assembly": "hg19",
+        "sv": "https://EXAMPLE_BUCKET.s3.us-east-1.amazonaws.com/myobject.somatic.sv.bedpe?AWSAccessKeyId=AKIAEXAMPLEXXX&Expires=604800&Signature=alA%WOIDHCSha",
+        "cnv": "https://EXAMPLE_BUCKET.s3.us-east-1.amazonaws.com/myobject.somatic.cna.annotated.tsv?AWSAccessKeyId=AKIAEXAMPLEXXX&Expires=604800&Signature=jj321dtg2s%3ibOGf"
+    }
+]
+```
+
+and/or (2) as a temporary URL for the configuration file itself, used for [the `external` parameter of a SVELT URL](url-parameters.md):
+```
+// format
+https://sehilyi.github.io/goscan/?external=[PRESIGNED_URL_TO_YOUR_CONFIG_FILE]
+
+// example
+https://sehilyi.github.io/goscan/?external=https://EXAMPLE_BUCKET.s3.us-east-1.amazonaws.com/myobject.configfile?AWSAccessKeyId=AKIAEXAMPLEXXX&Expires=604800&Signature=ibOGfAovnhASUASsdasjj321
+```
+
+### Configuration File Creation Scripts: Detailed README
+
+Two Python scripts are provided to automate the creation of configuration files using private data on an S3 bucket via presigned URLs, once the prerequisites described above have been met, since the AWS CLI and Python API are used within these scripts. [create_presigned_urls.py](../scripts/presigned_url_scripts/create_presigned_urls.py) contains a function used for generating presigned URLs. [generate_config_files.py](../scripts/presigned_url_scripts/generate_config_files.py) accesses a (provided) S3 bucket containing private objects, generates a presigned URL for every object needed in the SVELT configuration file, creates the configuration file, then generates a presigned URL for the newly created configuration file.
+
+The latter script is designed for analysis and visualization of cohorts of samples, all with the same cancer type and assembly.
+
+?> Note: Samples are added to the configuration file in the order they are listed in the ID TSV file. To change the ordering of the samples within SVELT, the order can be manually altered within the ID file. Refer to the [following documentation](../scripts/clustering/README.md) for an explanation of hierarchical clustering using the Euclidean metric as a distance measure.
+
+
+- what the overall function does: generates a presigned url for every object needed in the config file. makes the config file locally, uploads to config folder within S3, then generates a presigned URL for that new timestamped config file
+- designed for: cohorts of samples with large amount of samples, with the same cancer type and assembly. good when comparing between samples within the same cohort
+
+
+
+and now explain the requirements, and directory structure
+
+```bash
+EXAMPLE_S3_BUCKET/
+├── CONFIGS_SUBDIR
+│   ├── example_config_a.json
+│   ├── example_config_b.json
+│   ├── ···
+│   └── example_config_z.json
+├── SV_SUBDIR
+│   ├── SAMPLE_1_ID
+│   │   └── example_sv_sample_1.bedpe
+│   ├── ···
+│   └── SAMPLE_N_ID
+│       └── example_sv_sample_n.bedpe
+├── CNV_SUBDIR
+│   ├── SAMPLE_1_ID
+│   │   └── example_cnv_sample_1.txt
+│   ├── ···
+│   └── SAMPLE_N_ID
+│       └── example_cnv_sample_n.txt
+├── DRIVERS_SUBDIR
+│   ├── SAMPLE_1_ID
+│   │   └── example_drivers_sample_1.txt
+│   ├── ···
+│   └── SAMPLE_N_ID
+│       └── example_drivers_sample_n.txt
+├── SNV_SUBDIR
+│   ├── SAMPLE_1_ID
+│   │   ├── example_snv_sample_1.vcf.gz
+│   │   └── example_snv_sample_1.vcf.gz.tbi
+│   ├── ···
+│   └── SAMPLE_N_ID
+│   │   ├── example_snv_sample_n.vcf.gz
+│   │   └── example_snv_sample_n.vcf.gz.tbi
+├── INDEL_SUBDIR
+│   ├── SAMPLE_1_ID
+│   │   ├── example_indel_sample_1.vcf.gz
+│   │   └── example_indel_sample_1.vcf.gz.tbi
+│   ├── ···
+│   └── SAMPLE_N_ID
+│   │   ├── example_indel_sample_n.vcf.gz
+│   │   └── example_indel_sample_n.vcf.gz.tbi
+└── READ_ALIGNMENTS_SUBDIR
+    ├── SAMPLE_1_ID
+    │   ├── example_reads_sample_1.bam
+    │   └── example_reads_sample_1.bam.bai
+    ├── ···
+    └── SAMPLE_N_ID
+        ├── example_reads_sample_n.bam
+        └── example_reads_sample_n.bam.bai
+```
+
 - all must be same cancer type
 - all must be same assembly
 
-- draw out directory structure -- include which ones contain combination of properties/files
 - give example python command with this dummy directory structure
 - list requirements.txt (i used a conda environment)
 
-- what the overall function does: generates a presigned url for every object needed in the config file. makes the config file locally, uploads to config folder within S3, then generates a presigned URL for that new timestamped config file
-- designed for: cohorts of samples with large amount of samples, with the same cancer type and assembly. good when comparing between samples within the same cohort (TODO: link out to dominika's stuff? will it be available? ask dom and sehi) 
+
 
 - doesnt handle notes (ask if this is needed)
 - samtools bai doesnt work on gunzipped file for me
-- check imports
-- terminal command to write to local file (> file.txt)
-- print out to terminal in the script
-- s3fs -- is this too much to mention?
-- just exceptions? or raise other type of error?
-- make public bucket for testing out?
 - tell to check properties manually in cohort view
 - generates samples and displays in order of ID list
+- bam bai wrong in example config file
+- add how to add to S3
+- gunzip necessary for filetypes?
+- must id list be tsv or txt is fine? or csv?
+- pattern xlsx missing in the clustering code
+- @click.command()
 
 
-    #TODO: create goscan URL and put in text file (including expiration date?) and upload to S3 (maybe use sync?)
-    #TODO: look at gerstein github repo for example of walking through a script
-    # TODO: describe directory structure needed within the S3 bucket
-    # TODO: step-by-step of each argument, format
-    #TODO: finally, an example with a dummy directory structure (draw it out)
-    #TODO: generate link or straight to svelt link? i think just generate the presigned URL
-    # then include an example of how to append this URL to svelt link (ask dom and sehi)
-    # look at first todo in this list
+     TODO: describe directory structure needed within the S3 bucket
+     TODO: step-by-step of each argument, format
