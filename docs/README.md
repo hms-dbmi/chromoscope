@@ -1,16 +1,16 @@
-# SVELT
+# Chromoscope
 
-Welcome to the documentation of SVELT (Structural Variant Exploration Less Tedious). 
+Welcome to the documentation of Chromoscope (Structural Variant Exploration Less Tedious). 
 
-SVELT is an interactive visualization tool that supports **multiscale** and **multiform** visualizations. SVELT enables users to analyze SVs at multiple scales, using four main views (multiscale) (Fig. 1a–d). Moreover, each view uses different visual representations (multiform) that can facilitate the interpretation for a given level of scale.
+Chromoscope is an interactive visualization tool that supports **multiscale** and **multiform** visualizations. Chromoscope enables users to analyze SVs at multiple scales, using four main views (multiscale) (Fig. 1a–d). Moreover, each view uses different visual representations (multiform) that can facilitate the interpretation for a given level of scale.
 
 |![teaser](assets/figure-1.png ':class=image')|
 |---|
-**Figure.** The SVELT interface consists of four views for analyzing structural variation in cancer genomes at multiple scales (a–d). SVELT uses a "data config" to load datasets via HTTP requests and does not require setting up a server (e). The data can be either stored privately or publicly (e.g., cloud buckets or local servers). SVELT captures distinct patterns of structural variations and their copy number footprint in samples with different types of chromosomal instability, such as chromothripsis, or associated with loss of BRCA1 -/-, BRCA2 -/-, or CCNE1 amplification (f-g).
+**Figure.** The Chromoscope interface consists of four views for analyzing structural variation in cancer genomes at multiple scales (a–d). Chromoscope uses a "data config" to load datasets via HTTP requests and does not require setting up a server (e). The data can be either stored privately or publicly (e.g., cloud buckets or local servers). Chromoscope captures distinct patterns of structural variations and their copy number footprint in samples with different types of chromosomal instability, such as chromothripsis, or associated with loss of BRCA1 -/-, BRCA2 -/-, or CCNE1 amplification (f-g).
 
 ### Useful Links
-- Demo: https://sehilyi.github.io/goscan/
-- GitHub: https://github.com/sehilyi/goscan
+- Demo: https://chromoscope.bio/
+- GitHub: https://github.com/hms-dbmi/chromoscope
 - Gosling Project: http://gosling-lang.org
 
 <!-- This web-based tool allows interactively exploring structural variants of cancer patients with macroscopic (genome-wide) and microscopic (alignment) views. The main visualization shows structural variants of a single patient with circular overview (top), linear detail view (middle), and two alignment views (bottom). Users can select a sample from a sample gallery that can be opened by clicking on a button on the top-left corner of the browser.

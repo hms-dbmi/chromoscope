@@ -53,7 +53,7 @@ export default function SampleConfigForm(props: { onAdd: (config: ValidSampleCon
                 <span
                     className="menu-icon"
                     style={{ float: 'right', marginRight: '40px' }}
-                    onClick={() => window.open('https://sehilyi.github.io/goscan/docs/#/data-config', '_blank')}
+                    onClick={() => window.open('https://chromoscope.bio/docs/#/data-config', '_blank')}
                 >
                     <svg width={16} height={16} viewBox={ICONS.DOCS.viewBox}>
                         {ICONS.DOCS.path.map(d => (

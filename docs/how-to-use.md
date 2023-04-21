@@ -3,7 +3,7 @@
 <!-- ?> 🚧 This page is work in progress 🚧 -->
 <!-- ![interface](assets/interface.png ':class=image') -->
 
-SVELT offers four main visualizations that enable you to explore structural variants at multiple scales: 
+Chromoscope offers four main visualizations that enable you to explore structural variants at multiple scales: 
 1. [Cohort View](#cohort-view)
 1. [Genome View](#genome-view)
 1. [Variant View](#variant-view)
@@ -79,7 +79,7 @@ __Interactions__
 |**Figure.** The Header of the Browser. Right next to the sample name, there are multiple types of export buttons. |
 
 ### Navigation
-All visualizations in SVELT are interactive which is designed to support easy-navigation between genomic regions of interest across scales.
+All visualizations in Chromoscope are interactive which is designed to support easy-navigation between genomic regions of interest across scales.
 
 |![Header](./assets/navigation-buttons.png)|
 |---|
@@ -90,10 +90,10 @@ Users can smoothly zoom and pan, use [an interactive brush](#genome-view), searc
 ### Export
 
 #### PNG
-SVELT enables the export of a PNG image file of the entire visualization.
+Chromoscope enables the export of a PNG image file of the entire visualization.
 
 #### HTML
-SVELT also allows you to export an interactive webpage that contains the entire SVELT visualization as a single HTML file.
+Chromoscope also allows you to export an interactive webpage that contains the entire Chromoscope visualization as a single HTML file.
 
 #### JSON (Gosling Spec)
 To enable further fine-grained customization (e.g., changing colors or sizes), the entire interactive visualization can be exported as a Gosling JSON specification. This JSON values can be used directly on the Gosling Online Editor (https://gosling.js.org).
@@ -103,7 +103,7 @@ To enable further fine-grained customization (e.g., changing colors or sizes), t
 |__Figure.__ The exported HTML file on a browser.|__Figure.__ The exported JSON value added to an public Gosling editor.|
 
 #### Session 🔗
-For the effective and efficient communication of findings made with SVELT, the tool generates a shareable URL that encodes the current visualization state, including the loaded datahub, selected sample, and genomic locations most recently viewed.
+For the effective and efficient communication of findings made with Chromoscope, the tool generates a shareable URL that encodes the current visualization state, including the loaded datahub, selected sample, and genomic locations most recently viewed.
 
 ?> To understand the individual parameters of the exported URL, please refer to [our docs](/url-parameters.md).
 
