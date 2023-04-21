@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2023-present Sehi L'Yi
+# SPDX-FileCopyrightText: 2023-present Trevor Manz
 #
 # SPDX-License-Identifier: MIT
 from __future__ import annotations
