@@ -99,7 +99,7 @@ def fill_property_values(config_object, sample_id, s3_bucket_name, s3_directory_
 def generate_configs(args):
     """
     Creates presigned URLs of private S3 objects for a given cohort and adds to SVELT configuration file.
-    Saves configuration JSON object to a file, adds to given S3 bucket, and prints a presigned URL 
+    Saves configuration JSON object to a file, copies it to the given S3 bucket, and prints a presigned URL 
     for newly created configuration file, as well as complete SVELT URL with this presigned
     URL in the "external" parameter.
 
