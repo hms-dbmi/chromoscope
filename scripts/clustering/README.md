@@ -44,19 +44,19 @@ Please run `run_clustering.sh`  in the `clustering` folder in order to download 
 
 ```
 PATTERNS_FILE="data/43018_2020_27_MOESM3_ESM.xlsx"
-CHROMOSCOPE_SAMPLES="data/Chromoscope_samples.csv"
+CHROMOSCOPE_SAMPLES="data/chromoscope_samples.csv"
 
 wget -O $PATTERNS_FILE "https://static-content.springer.com/esm/art%3A10.1038%2Fs43018-020-0027-5/MediaObjects/43018_2020_27_MOESM3_ESM.xlsx"
 
 python3 clustering.py  --chromoscope_samples $CHROMOSCOPE_SAMPLES --patterns  $PATTERNS_FILE
 ```
 
-The results will be stored in a new folder `Chromoscope_clustering`, see below the description of the output files.
+The results will be stored in a new folder `chromoscope_clustering`, see below the description of the output files.
 
 
 ## Output files
 
-All the output results will be stored in the `Chromoscope_clustering/` folder. 
+All the output results will be stored in the `chromoscope_clustering/` folder. 
 
 |Output                                | Description                                                                                                                                                                                                      |
 |--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
