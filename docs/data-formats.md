@@ -1,6 +1,6 @@
 # Data Formats
 
-This page describes file formats used in SVELT. To find a list of required and optional files, please refer to the [Data Configuration section](data-config.md#data-configuration).
+This page describes file formats used in Chromoscope. To find a list of required and optional files, please refer to the [Data Configuration section](data-config.md#data-configuration).
 
 ## Structural Variants (BEDPE)
 <!-- https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format -->
@@ -94,7 +94,7 @@ tabix myfile.sorted.vcf.gz
 
 Refer to the documentation of Samtools for details (https://www.htslib.org/doc/tabix.html).
 
-!> The VCF files should be sorted and indexed to be able to make SVELT to properly show genomics features.
+!> The VCF files should be sorted and indexed to be able to make Chromoscope to properly show genomics features.
 
 ## BAM & BAI
 
@@ -106,4 +106,4 @@ samtools index myfile.sorted.bam.gz myfile.sorted.bam.bai
 
 Refer to the documentation of Samtools for details (https://www.htslib.org/doc/samtools-index.html).
 
-!> The BAM files should be sorted and indexed to be able to make SVELT to properly show genomics features.
+!> The BAM files should be sorted and indexed to be able to make Chromoscope to properly show genomics features.

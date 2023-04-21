@@ -695,7 +695,7 @@ function App(props: RouteComponentProps) {
                     </span>
                     <a
                         className="title-btn"
-                        href="https://sehilyi.github.io/goscan/docs/"
+                        href="https://chromoscope.bio/docs/"
                         target="_blank"
                         style={{ marginLeft: 140 }}
                         rel="noreferrer"

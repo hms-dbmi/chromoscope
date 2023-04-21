@@ -14,5 +14,5 @@ temp1
         };
     })
     .forEach(d => {
-        o += `1. [${d.cancer} (${d.tissue})](https://sehilyi.github.io/goscan/?external=${d.link}) (${d.size} samples)\n`;
+        o += `1. [${d.cancer} (${d.tissue})](https://chromoscope.bio/?external=${d.link}) (${d.size} samples)\n`;
     });
