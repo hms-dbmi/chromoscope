@@ -64,12 +64,12 @@ def create_reports(missing_samples_df, histology):
 
 
 @click.command()
-@click.option("--Chromoscope_samples", help="Chromoscope samples in CSV.")
+@click.option("--chromoscope_samples", help="Chromoscope samples in CSV.")
 @click.option(
     "--patterns",
     help="Patterns of somatic rearrangements across cancers in XLSX.",
 )
-def run_clustering(Chromoscope_samples, patterns):
+def run_clustering(chromoscope_samples, patterns):
     """Run hierarchical clustering to organize PCAWG samples on Chromoscope."""
 
     # output folders
@@ -80,8 +80,8 @@ def run_clustering(Chromoscope_samples, patterns):
     create_folder(missing_samples_folder)
 
     # load Chromoscope samples
-    Chromoscope_samples = pandas.read_csv(
-        Chromoscope_samples,
+    chromoscope_samples = pandas.read_csv(
+        chromoscope_samples,
         sep=",",
         index_col=False,
     )
@@ -96,15 +96,15 @@ def run_clustering(Chromoscope_samples, patterns):
 
     patterns.columns = ["UUID"] + list(patterns.columns[1:])
     # get cancer types
-    histology_abb = Chromoscope_samples.histology_abbreviation.unique().tolist()
+    histology_abb = chromoscope_samples.histology_abbreviation.unique().tolist()
 
     # iterate over cancer types
     for his in histology_abb:
         print(f"Annalyzing samples of {his}")
 
         # select Chromoscope samples with the given cancer type
-        Chromoscope_cancer_subset = Chromoscope_samples[
-            Chromoscope_samples["histology_abbreviation"] == his
+        Chromoscope_cancer_subset = chromoscope_samples[
+            chromoscope_samples["histology_abbreviation"] == his
         ]
 
         # get samples that are missing in the publication
