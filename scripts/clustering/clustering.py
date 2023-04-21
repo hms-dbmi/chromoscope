@@ -9,7 +9,7 @@ dateTimeObj = datetime.now()
 timestampStr = dateTimeObj.strftime("%d_%b_%Y_%H_%M_%S_%f")
 
 # make output folders accessible across the script
-output_folder = f"Chromoscope_clustering/{timestampStr}"
+output_folder = f"chromoscope_clustering/{timestampStr}"
 heatmap_folder = f"{output_folder}/heatmaps"
 clusters_folder = f"{output_folder}/clusters"
 dataframes_folder = f"{output_folder}/dataframes"
@@ -103,25 +103,25 @@ def run_clustering(chromoscope_samples, patterns):
         print(f"Annalyzing samples of {his}")
 
         # select Chromoscope samples with the given cancer type
-        Chromoscope_cancer_subset = chromoscope_samples[
+        chromoscope_cancer_subset = chromoscope_samples[
             chromoscope_samples["histology_abbreviation"] == his
         ]
 
         # get samples that are missing in the publication
-        Chromoscope_publication_missing = Chromoscope_cancer_subset[
-            ~Chromoscope_cancer_subset["UUID"].isin(patterns.UUID.tolist())
+        chromoscope_publication_missing = chromoscope_cancer_subset[
+            ~chromoscope_cancer_subset["UUID"].isin(patterns.UUID.tolist())
         ]
 
-        create_reports(Chromoscope_publication_missing, his)
+        create_reports(chromoscope_publication_missing, his)
 
         # UUIDs of Chromoscope samples
-        Chromoscope_uuids = Chromoscope_cancer_subset.UUID.tolist()
+        chromoscope_uuids = chromoscope_cancer_subset.UUID.tolist()
 
         # narrow down pattern data into Chromoscope samples
-        pub_Chromoscope_common_samples = patterns[patterns["UUID"].isin(Chromoscope_uuids)]
+        pub_chromoscope_common_samples = patterns[patterns["UUID"].isin(chromoscope_uuids)]
 
         # drop UUIDs as we want to run clustering on a matrix of numbers
-        cluster_data = pub_Chromoscope_common_samples.drop("UUID", axis=1)
+        cluster_data = pub_chromoscope_common_samples.drop("UUID", axis=1)
 
         # run clustering only on a dataset with more than 2 samples
         if len(cluster_data) > 2:
@@ -158,7 +158,7 @@ def run_clustering(chromoscope_samples, patterns):
             cluster_map.ax_col_dendrogram.set_visible(False)
 
             # save the dataframe on which we run the algorithm
-            patterns[patterns["UUID"].isin(Chromoscope_uuids)].to_csv(
+            patterns[patterns["UUID"].isin(chromoscope_uuids)].to_csv(
                 f"{dataframes_folder}/{his}.csv", index=False
             )
 
@@ -175,7 +175,7 @@ def run_clustering(chromoscope_samples, patterns):
             f = open(f"{clusters_folder}/{his}.txt", "a")
             for index in cluster_map.dendrogram_row.reordered_ind:
                 # write the reordered UUIDs
-                f.write(f"{pub_Chromoscope_common_samples.iloc[index]['UUID']}\n")
+                f.write(f"{pub_chromoscope_common_samples.iloc[index]['UUID']}\n")
             f.close()
         else:
             f = open(f"{clusters_folder}/not_clustered_datasets.txt", "a")
