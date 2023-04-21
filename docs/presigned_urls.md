@@ -154,7 +154,7 @@ Non-programmatically, a presigned URL can be generated using the S3 console or A
 &nbsp;
 ## Configuration File Creation Using Presigned URLs
 
-### Presigned URL Use with SVELT
+### Presigned URLs within SVELT
 
 The ability to create presigned URLs not only allows for controlled, temporary visualization/sharing of private data, but also provides mode of sharing large amounts of data stored on the AWS cloud. Presigned URLs can be (1) used directly within a SVELT configuration file, linking to data for individual samples (simple single-sample example below): 
 ```json
@@ -169,101 +169,173 @@ The ability to create presigned URLs not only allows for controlled, temporary v
 ]
 ```
 
-and/or (2) as a temporary URL for the configuration file itself, used for [the `external` parameter of a SVELT URL](url-parameters.md):
+and/or (2) as a temporary URL for the configuration file itself (if it is saved as a private object within an S3 bucket), used as the argument for [the `external` parameter of a SVELT URL](url-parameters.md):
 ```
 // format
-https://sehilyi.github.io/goscan/?external=[PRESIGNED_URL_TO_YOUR_CONFIG_FILE]
+https://sehilyi.github.io/goscan/?external=[PRESIGNED_URL_FOR_YOUR_CONFIG_FILE]
 
 // example
 https://sehilyi.github.io/goscan/?external=https://EXAMPLE_BUCKET.s3.us-east-1.amazonaws.com/myobject.configfile?AWSAccessKeyId=AKIAEXAMPLEXXX&Expires=604800&Signature=ibOGfAovnhASUASsdasjj321
 ```
 
-### Configuration File Creation Scripts: Detailed README
+&nbsp;
+### Configuration File Creation Scripts: Overview
 
-Two Python scripts are provided to automate the creation of configuration files using private data on an S3 bucket via presigned URLs, once the prerequisites described above have been met, since the AWS CLI and Python API are used within these scripts. [create_presigned_urls.py](../scripts/presigned_url_scripts/create_presigned_urls.py) contains a function used for generating presigned URLs. [generate_config_files.py](../scripts/presigned_url_scripts/generate_config_files.py) accesses a (provided) S3 bucket containing private objects, generates a presigned URL for every object needed in the SVELT configuration file, creates the configuration file, then generates a presigned URL for the newly created configuration file.
+Two Python scripts are provided to automate the creation of configuration files using private data on an S3 bucket via presigned URLs, once the prerequisites described above have been met, since the AWS CLI and Python API are used within these scripts. [create_presigned_urls.py](../scripts/presigned_url_scripts/create_presigned_urls.py) contains a function used to generate a presigned URL of a private object within an S3 object. [generate_config_files.py](../scripts/presigned_url_scripts/generate_config_files.py) accesses a (provided) S3 bucket containing private objects, generates a presigned URL for every object needed in the SVELT configuration file (calling the function defined in the prior script), creates the configuration file locally, then copies the newly created configuration file to the same S3 bucket and generates a presigned URL for it.
 
-The latter script is designed for analysis and visualization of cohorts of samples, all with the same cancer type and assembly.
+The latter script is designed to create SVELT configuration files for cohorts of samples, allowing for a user to compare samples within the same cohort visually using SVELT. There are several assumptions made for successful execution of this script, and will be expanded on below:
+* Structure of the input TSV file containing sample IDs is as expected
+* Directory structure in the S3 bucket containing the private data is as expected
+* File formats for different kinds of data are of correct type, i.e. correct file extensions are used
+* All samples are of the same **cancer type** and have the same **assembly**
+* TODO: same directory as the other script
+
+The following dependencies must also be met:
+* Python version: 3+
+* Packages:
+  * TODO: requirements and versions
+  * list requirements.txt (i used a conda environment)
+
+&nbsp;
+### Configuration File Creation Scripts: Sample ID List
+
+The first step completed when [generate_config_files.py](../scripts/presigned_url_scripts/generate_config_files.py) is executed is the definition of the list the sample IDs, from the TSV file passed into the parameter `ids`. These sample IDs leverage the expected structure of the subdirectories within the S3 bucket (see the following section) to link appropriate files to their corresponding sample within the configuration file, as well as define the `id` property for each sample within the configuration file.
+
+The file used for this must be a tab-delimited file (TSV) that includes (but not limited to) a column named `ID`. The following example list, containing `n` samples:
+
+```tsv
+ID
+SAMPLE_1_ID
+SAMPLE_2_ID
+...
+SAMPLE_N_ID
+```
+would be converted to the following ID list:
+```
+[SAMPLE_1_ID, SAMPLE_2_ID,..., SAMPLE_N_ID]
+```
+Using this list, sample-wise configuration JSON objects are created iteratively, until all the objects are generated for all samples within the cohort. These IDs also correspond to subdirectories within the S3 bucket that contain that sample's files.
 
 ?> Note: Samples are added to the configuration file in the order they are listed in the ID TSV file. To change the ordering of the samples within SVELT, the order can be manually altered within the ID file. Refer to the [following documentation](../scripts/clustering/README.md) for an explanation of hierarchical clustering using the Euclidean metric as a distance measure.
 
+&nbsp;
+### Configuration File Creation Scripts: S3 Bucket (Sub)Directory Structure
+
+
+    TODO: describe directory structure needed within the S3 bucket
+    TODO: step-by-step of each argument, format
+
+    what directory structure in the bucket is expected
+what file extensions are expected
+- this is assuming there is only one cohort per s3 bucket at any given time....add cohort subfolder?? test this (TODO:)
+
+?> Note: TODO: if pairwise files don't pair because of user error, that parameter won't render within SVELT. so have to make sure that file structure is correct. and also they must already be formatted correctly
+
+&nbsp;
+### Configuration File Creation Scripts: Usage
+
+The usage of the configuration file creation script via command line is as follows:
+
+```
+python3 generate_config_files.py --ids IDS --bucket BUCKET [--cohort COHORT] --cancer CANCER --assembly ASSEMBLY --sv SV --cnv CNV [--drivers DRIVERS] [--snv SNV] [--indel INDEL] [--reads READS] [--configs CONFIGS] [--expiration EXPIR]
+```
+Required parameters provide information needed to access the S3 bucket (`bucket`), identify the samples that will be added to the configuration file (`ids`), and define the required properties within the configuration file (`cancer`, `assembly`, `sv`, and `cnv`). The optional parameters provide additional information for optional properties within a configuration file (`drivers`, `snv`, `indel`, and `reads`), and details for the generated presigned URLs (`configs` and `expiration`). Additional details can be found in the table below:
+
+| Parameter | Default | Description | Corresponding Configuration File Property |
+|---|---|---|---|
+| `ids` | - | Required. The name of the sample ID TSV file within S3 bucket. | `id` |
+| `bucket` | - | Required. The name of the S3 bucket containing the private data objects. | - |
+| `cohort` | `None` | Optional. The name of the cohort subdirectory within the S3 bucket. | - |
+| `cancer` | - | Required. The type of cancer of the samples. | `cancer` |
+| `assembly` | `'hg38'` or `'hg19'` | Required. The reference genome assembly for the samples. | `assembly` |
+| `sv` | - | Required. The name of the subdirectory within the S3 bucket containing structural variant (SV) `bedpe` files. | `sv` |
+| `cnv` | - | Required. The name of the subdirectory within the S3 bucket containing copy number variant (CNV) `tsv` files. | `cnv` |
+| `drivers` | `None` | Optional. The name of the subdirectory within the S3 bucket containing driver mutation `tsv` or `json` files. | `drivers` |
+| `snv` | `None` | Optional. The name of the subdirectory within the S3 bucket containing point mutation (SNV) `vcf` files and their corresponding index `tbi` files. | `vcf`, `vcfIndex` |
+| `indel` | `None` | Optional. The name of the subdirectory within the S3 bucket containing indel `vcf` files and their corresponding index `tbi` files.  | `vcf2`, `vcf2Index` |
+| `reads` | `None` | Optional. The name of the subdirectory within the S3 bucket containing read alignment `bam` files and their corresponding index `bai` files. | `bam`, `bamIndex` |
+| `configs` | `'CONFIGS'` | Optional. The name of the subdirectory, both locally and within the S3 bucket, that will contain the generated SVELT configuration `json` file. | - |
+| `expiration` | `3600` | Optional. The duration of the presigned URLs within and for the generated SVELT configuration file, in seconds. | - |
+
+?> The `note` property of the configuration file is not handled here, since it is a direct textual annotation. Only properties that require a URL value (in addition to required properties) are defined using this script.
+
+
+
+The remainder of the parameters, save `bucket` and `expiration`, again leverage the expected S3 subdirectory structure
+
+
+ [create_presigned_urls.py](../scripts/presigned_url_scripts/create_presigned_urls.py) contains a function used to generate a presigned URL of a private object within an S3 object. [generate_config_files.py](../scripts/presigned_url_scripts/generate_config_files.py) accesses a (provided) S3 bucket containing private objects, generates a presigned URL for every object needed in the SVELT configuration file (calling the function defined in the prior script), creates the configuration file locally, then copies the newly created configuration file to the same S3 bucket and generates a presigned URL for it.
 
 - what the overall function does: generates a presigned url for every object needed in the config file. makes the config file locally, uploads to config folder within S3, then generates a presigned URL for that new timestamped config file
-- designed for: cohorts of samples with large amount of samples, with the same cancer type and assembly. good when comparing between samples within the same cohort
 
 
+- TODO: put an example output here
+- give example python command with this dummy directory structure
 
-and now explain the requirements, and directory structure
+
 
 ```bash
-EXAMPLE_S3_BUCKET/
-├── CONFIGS_SUBDIR
-│   ├── example_config_a.json
-│   ├── example_config_b.json
-│   ├── ···
-│   └── example_config_z.json
-├── SV_SUBDIR
+EXAMPLE_S3_BUCKET/{EXAMPLE_COHORT_NAME/}    # Cohort value only necessary when 2+ cohorts in same bucket
+├── EXAMPLE_ID_LIST.tsv                     # File containing sample IDs of this cohort (tsv)
+├── SV_SUBDIR                               # Contains SV files (bedpe)
 │   ├── SAMPLE_1_ID
 │   │   └── example_sv_sample_1.bedpe
 │   ├── ···
 │   └── SAMPLE_N_ID
 │       └── example_sv_sample_n.bedpe
-├── CNV_SUBDIR
+├── CNV_SUBDIR                              # Contains CNV files (tsv)
 │   ├── SAMPLE_1_ID
-│   │   └── example_cnv_sample_1.txt
+│   │   └── example_cnv_sample_1.tsv
 │   ├── ···
 │   └── SAMPLE_N_ID
-│       └── example_cnv_sample_n.txt
-├── DRIVERS_SUBDIR
+│       └── example_cnv_sample_n.tsv
+├── DRIVERS_SUBDIR                          # Contains driver mutation files (tsv or json)
 │   ├── SAMPLE_1_ID
-│   │   └── example_drivers_sample_1.txt
+│   │   └── example_drivers_sample_1.tsv
 │   ├── ···
 │   └── SAMPLE_N_ID
-│       └── example_drivers_sample_n.txt
-├── SNV_SUBDIR
+│       └── example_drivers_sample_n.tsv
+├── SNV_SUBDIR                              # Contains SNV files (vcf + tbi)
 │   ├── SAMPLE_1_ID
 │   │   ├── example_snv_sample_1.vcf.gz
-│   │   └── example_snv_sample_1.vcf.gz.tbi
+│   │   └── example_snv_sample_1.tbi
 │   ├── ···
 │   └── SAMPLE_N_ID
 │   │   ├── example_snv_sample_n.vcf.gz
-│   │   └── example_snv_sample_n.vcf.gz.tbi
-├── INDEL_SUBDIR
+│   │   └── example_snv_sample_n.tbi
+├── INDEL_SUBDIR                            # Contains indel files (vcf + tbi)
 │   ├── SAMPLE_1_ID
 │   │   ├── example_indel_sample_1.vcf.gz
-│   │   └── example_indel_sample_1.vcf.gz.tbi
+│   │   └── example_indel_sample_1.tbi
 │   ├── ···
 │   └── SAMPLE_N_ID
 │   │   ├── example_indel_sample_n.vcf.gz
-│   │   └── example_indel_sample_n.vcf.gz.tbi
-└── READ_ALIGNMENTS_SUBDIR
-    ├── SAMPLE_1_ID
-    │   ├── example_reads_sample_1.bam
-    │   └── example_reads_sample_1.bam.bai
+│   │   └── example_indel_sample_n.tbi
+├── READ_ALIGNMENTS_SUBDIR                  # Contains read alignment files (bam + bai)
+│   ├── SAMPLE_1_ID
+│   │   ├── example_reads_sample_1.bam
+│   │   └── example_reads_sample_1.bai
+│   ├── ···
+│   └── SAMPLE_N_ID
+│   │    ├── example_reads_sample_n.bam
+│   │    └── example_reads_sample_n.bai
+└── CONFIGS_SUBDIR                          # Contains timestamped configuration files (json)
+    ├── example_config_a.json
+    ├── example_config_b.json
     ├── ···
-    └── SAMPLE_N_ID
-        ├── example_reads_sample_n.bam
-        └── example_reads_sample_n.bam.bai
+    └── example_config_z.json
 ```
 
-- all must be same cancer type
-- all must be same assembly
 
-- give example python command with this dummy directory structure
-- list requirements.txt (i used a conda environment)
-
-
-
-- doesnt handle notes (ask if this is needed)
-- samtools bai doesnt work on gunzipped file for me
-- tell to check properties manually in cohort view
-- generates samples and displays in order of ID list
-- bam bai wrong in example config file
-- add how to add to S3
-- gunzip necessary for filetypes?
-- must id list be tsv or txt is fine? or csv?
+TODO:
+- tell to check properties manually in cohort view -- create note?
+- unclear if adding sample manually via browser will modify the existing configuration file (it wont...right?)
 - pattern xlsx missing in the clustering code
-- @click.command()
-
-
-     TODO: describe directory structure needed within the S3 bucket
-     TODO: step-by-step of each argument, format
+- note that configs folder must not already be existing, that's optional
+- change create id list to just read tsv
+- check of whether a sample doesn't exist -- happens in list items in bucket dir, add note to docs that this happens
+- this is assuming there is only one cohort per s3 bucket at any given time....add cohort subfolder??
+- change description of arguments within script
+- docs say drivers are tab delimited but json is technically not tab delimited
+- error check of tsv file not including id header, and change helper function to read_tsv
+- change location of helper functions
