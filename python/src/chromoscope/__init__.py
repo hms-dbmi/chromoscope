@@ -9,7 +9,7 @@ import pathlib
 import servir
 import jinja2
 
-_CHROMSCOPE_URL = "https://hms-dbmi.github.io/chromoscope/"
+_CHROMOSCOPE_URL = "https://hms-dbmi.github.io/chromoscope/"
 _PROVIDER = servir.Provider()
 _RESOURCES = set()
 
@@ -49,7 +49,7 @@ class Viewer:
         self._config_url = config_url
 
     def _repr_mimebundle_(self, **kwargs):
-        url = f"{_CHROMSCOPE_URL}?external={self._config_url}"
+        url = f"{_CHROMOSCOPE_URL}?external={self._config_url}"
         return {
             "text/html": _TEMPLATE.render(chromoscope_url=url)
         }
