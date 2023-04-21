@@ -9,7 +9,7 @@ import pathlib
 import servir
 import jinja2
 
-_CHROMOSCOPE_URL = "https://hms-dbmi.github.io/chromoscope/"
+_CHROMOSCOPE_URL = "https://chromoscope.bio"
 _PROVIDER = servir.Provider()
 _RESOURCES = set()
 

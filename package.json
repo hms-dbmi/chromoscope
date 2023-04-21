@@ -2,7 +2,7 @@
     "name": "chromoscope",
     "version": "0.0.0",
     "license": "MIT",
-    "homepage": "https://hms-dbmi.github.io/chromoscope/",
+    "homepage": "https://chromoscope.bio",
     "scripts": {
         "start": "vite",
         "build": "vite build",
