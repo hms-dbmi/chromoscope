@@ -31,7 +31,7 @@ This command will source a python virtual environment with all the necessary dev
 as well as `chromoscope` installed in development mode. You can read more about environments
 in the `hatch` [documentation](https://hatch.pypa.io/latest/environment/).
 
-You can then launch a Jupyter with:
+You can then launch Jupyter:
 
 ```sh
 juptyer lab
@@ -39,7 +39,7 @@ juptyer lab
 
 and navigate to the `notebooks/playground.ipynb` to use the `Viewer`.
 
-All commands are run from the root of the project, from a terminal:
+All development commands are run from the project root, from a terminal:
 
 | Command                | Action                                                              |
 | :--------------------- | :------------------------------------------------------------------ |
