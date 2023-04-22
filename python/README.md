@@ -37,7 +37,7 @@ You can then launch a Jupyter with:
 juptyer lab
 ```
 
-and navigate to the `notebooks/playground.ipynb` to use the `Viewer.
+and navigate to the `notebooks/playground.ipynb` to use the `Viewer`.
 
 All commands are run from the root of the project, from a terminal:
 
