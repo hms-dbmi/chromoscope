@@ -33,4 +33,4 @@ jobs:
       - run: |
           cd python
           pip install --upgrade hatch
-          pytest
+          hatch run cov
