@@ -188,13 +188,6 @@ The latter script is designed to create Chromoscope configuration files for coho
 * Directory structure in the S3 bucket containing the private data is as expected
 * File formats for different kinds of data are of correct type, i.e. correct file extensions are used
 * All samples are of the same **cancer type** and have the same **assembly**
-* TODO: same directory as the other script
-
-The following dependencies must also be met:
-* Python version: 3+
-* Packages:
-  * TODO: requirements and versions
-  * list requirements.txt (i used a conda environment)
 
 &nbsp;
 ### Configuration File Creation Scripts: Sample ID List
