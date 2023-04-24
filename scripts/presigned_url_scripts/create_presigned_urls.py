@@ -60,7 +60,7 @@ def list_items_in_bucket_dir(bucket_name, subdir_rel_path, required):
     lists the objects within the subdirectory and the full path of
     that subdirectory. Must have AWS security credentials set up.
     
-    If the items within this subdirectory are required for a SVELT configuration
+    If the items within this subdirectory are required for a Chromoscope configuration
     file, and there are none found, or the path of this subdirectory is
     invalid, raises ValueError.
 
@@ -71,7 +71,7 @@ def list_items_in_bucket_dir(bucket_name, subdir_rel_path, required):
     :type bucket_name: str
     :param subdir_rel_path: The relative path of S3 subdirectory to be searched (the "target").
     :type subdir_rel_path: str
-    :param required: Whether the items in given subdirectory are required for a SVELT configuration file.
+    :param required: Whether the items in given subdirectory are required for a Chromoscope configuration file.
     :type required: bool
     :return: The list of objects within the searched S3 subdirectory.
     :rtype: list[str]
@@ -86,7 +86,7 @@ def list_items_in_bucket_dir(bucket_name, subdir_rel_path, required):
     item_str = os.popen("aws s3 ls  %s | awk 'NF>1{print $4}'" % (target)).read()
     item_list = list(filter(None, item_str.split('\n')))
 
-    # If there are no items within a subdirectory with required S3 objects for SVELT
+    # If there are no items within a subdirectory with required S3 objects for Chromoscope
     # or invalid target path, raise ValueError
     if (len(item_list) == 0) and required:
         raise ValueError(f'S3 path invalid or empty: {target}')
@@ -99,13 +99,13 @@ def list_items_in_bucket_dir(bucket_name, subdir_rel_path, required):
 ################################################
 def create_id_list(tsv_file):
     """
-    Given (a path to) a TSV file containing IDs for SVELT cohort,
+    Given (a path to) a TSV file containing IDs for Chromoscope cohort,
     save IDs into a list. TSV file must contain a column header
     "ID", under which the IDs are listed.
 
     :param tsv_file: The filepath of a TSV file.
     :type tsv_file: str
-    :return: The list of IDs for a SVELT cohort.
+    :return: The list of IDs for a Chromoscope cohort.
     :rtype: list[str]
     """
 
