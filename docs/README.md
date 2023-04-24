@@ -1,6 +1,6 @@
 # Chromoscope
 
-Welcome to the documentation of Chromoscope (Structural Variant Exploration Less Tedious). 
+Welcome to the documentation of Chromoscope. 
 
 Chromoscope is an interactive visualization tool that supports **multiscale** and **multiform** visualizations. Chromoscope enables users to analyze SVs at multiple scales, using four main views (multiscale) (Fig. 1a–d). Moreover, each view uses different visual representations (multiform) that can facilitate the interpretation for a given level of scale.
 
