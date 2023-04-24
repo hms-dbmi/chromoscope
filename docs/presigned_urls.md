@@ -256,49 +256,49 @@ the S3 bucket subdirectory should be as follows:
 ```bash
 EXAMPLE_S3_BUCKET/{EXAMPLE_COHORT_NAME/}    # Cohort value only necessary when 2+ cohorts in same bucket
 ├── EXAMPLE_ID_LIST.tsv                     # File containing sample IDs of this cohort (tsv)
-├── SV_SUBDIR                               # Contains SV files (bedpe)
-│   ├── SAMPLE_1_ID
+├── SV_SUBDIR/                               # Contains SV files (bedpe)
+│   ├── SAMPLE_1_ID/
 │   │   └── example_sv_sample_1.bedpe
 │   ├── ···
-│   └── SAMPLE_N_ID
+│   └── SAMPLE_N_ID/
 │       └── example_sv_sample_n.bedpe
-├── CNV_SUBDIR                              # Contains CNV files (tsv)
-│   ├── SAMPLE_1_ID
+├── CNV_SUBDIR/                              # Contains CNV files (tsv)
+│   ├── SAMPLE_1_ID/
 │   │   └── example_cnv_sample_1.tsv
 │   ├── ···
-│   └── SAMPLE_N_ID
+│   └── SAMPLE_N_ID/
 │       └── example_cnv_sample_n.tsv
-├── DRIVERS_SUBDIR                          # Contains driver mutation files (tsv or json)
-│   ├── SAMPLE_1_ID
+├── DRIVERS_SUBDIR/                          # Contains driver mutation files (tsv or json)
+│   ├── SAMPLE_1_ID/
 │   │   └── example_drivers_sample_1.tsv
 │   ├── ···
-│   └── SAMPLE_N_ID
+│   └── SAMPLE_N_ID/
 │       └── example_drivers_sample_n.tsv
-├── SNV_SUBDIR                              # Contains SNV files (vcf + tbi)
-│   ├── SAMPLE_1_ID
+├── SNV_SUBDIR/                              # Contains SNV files (vcf + tbi)
+│   ├── SAMPLE_1_ID/
 │   │   ├── example_snv_sample_1.vcf.gz
 │   │   └── example_snv_sample_1.tbi
 │   ├── ···
-│   └── SAMPLE_N_ID
+│   └── SAMPLE_N_ID/
 │   │   ├── example_snv_sample_n.vcf.gz
 │   │   └── example_snv_sample_n.tbi
-├── INDEL_SUBDIR                            # Contains indel files (vcf + tbi)
-│   ├── SAMPLE_1_ID
+├── INDEL_SUBDIR/                            # Contains indel files (vcf + tbi)
+│   ├── SAMPLE_1_ID/
 │   │   ├── example_indel_sample_1.vcf.gz
 │   │   └── example_indel_sample_1.tbi
 │   ├── ···
-│   └── SAMPLE_N_ID
+│   └── SAMPLE_N_ID/
 │   │   ├── example_indel_sample_n.vcf.gz
 │   │   └── example_indel_sample_n.tbi
-├── READ_ALIGNMENTS_SUBDIR                  # Contains read alignment files (bam + bai)
-│   ├── SAMPLE_1_ID
+├── READ_ALIGNMENTS_SUBDIR/                  # Contains read alignment files (bam + bai)
+│   ├── SAMPLE_1_ID/
 │   │   ├── example_reads_sample_1.bam
 │   │   └── example_reads_sample_1.bai
 │   ├── ···
-│   └── SAMPLE_N_ID
+│   └── SAMPLE_N_ID/
 │   │    ├── example_reads_sample_n.bam
 │   │    └── example_reads_sample_n.bai
-└── CONFIGS_SUBDIR                          # Contains timestamped configuration files (json)
+└── CONFIGS_SUBDIR/                          # Contains timestamped configuration files (json)
     ├── example_config_a.json
     ├── example_config_b.json
     ├── ···
@@ -339,31 +339,23 @@ Required parameters provide information needed to access the S3 bucket (`bucket`
 
 ?> The `note` property of the configuration file is not handled here, since it is a direct textual annotation. Only properties that require a URL value (in addition to required properties) are defined using this script.
 
+The remainder of the parameters, save `bucket` and `expiration`, again leverage the expected S3 subdirectory structure to access all relevant data, sample-wise, and generate presigned URLs for all of the private files needed. Based on the type of file and location within the bucket, the presigned URLs are used as input for their corresponding parameters within their sample-specific configuration object, and a configuration file is completed locally. Lastly, the newly created configuration file is uploaded to the S3 folder specified by `configs`, then a presigned URL is generated for that timestamped configuration file and outputted.
 
+&nbsp;
+### Configuration File Creation Scripts: Example
 
-The remainder of the parameters, save `bucket` and `expiration`, again leverage the expected S3 subdirectory structure
+For an S3 bucket with the subdirectory structure [specified above in this documentation](#configuration-file-creation-scripts-s3-bucket-subirectory-structure), which contains a cohort of sarcoma samples with an hg38 assembly, the call to the configuration file creation script via command line would be as follows, to generate presigned URLs that last 7 days:
 
+```
+python3 generate_config_files.py --ids EXAMPLE_ID_LIST.tsv --bucket EXAMPLE_S3_BUCKET --cohort EXAMPLE_COHORT_NAME --cancer sarcoma --assembly hg38 --sv SV_SUBDIR --cnv CNV_SUBDIR --drivers DRIVERS_SUBDIR --snv SNV_SUBDIR --indel INDEL_SUBDIR --reads READ_ALIGNMENTS_SUBDIR --configs CONFIGS_SUBDIR --expiration 604800
+```
 
- [create_presigned_urls.py](../scripts/presigned_url_scripts/create_presigned_urls.py) contains a function used to generate a presigned URL of a private object within an S3 object. [generate_config_files.py](../scripts/presigned_url_scripts/generate_config_files.py) accesses a (provided) S3 bucket containing private objects, generates a presigned URL for every object needed in the Chromoscope configuration file (calling the function defined in the prior script), creates the configuration file locally, then copies the newly created configuration file to the same S3 bucket and generates a presigned URL for it.
+Example output:
 
-- what the overall function does: generates a presigned url for every object needed in the config file. makes the config file locally, uploads to config folder within S3, then generates a presigned URL for that new timestamped config file
+```
+upload: CONFIGS_SUBDIR/24_Apr_2023_15_39_48_039276.json to s3://EXAMPLE_S3_BUCKET/CONFIGS_SUBDIR/24_Apr_2023_15_39_48_039276.json
 
+Presigned URL for generated configuration file: https://EXAMPLE_S3_BUCKET.s3.amazonaws.com/CONFIGS_SUBDIR/24_Apr_2023_15_39_48_039276.json?AWSAccessKeyId=AKIA5XXXXXXXXXX&Signature=xxxxxxxxxxxxxxxxxxx&Expires=1682969989
 
-- TODO: put an example output here
-- give example python command with this dummy directory structure
-
-
-
-TODO:
-- tell to check properties manually in cohort view -- create note?
-- unclear if adding sample manually via browser will modify the existing configuration file (it wont...right?)
-- pattern xlsx missing in the clustering code
-- note that configs folder must not already be existing, that's optional
-- change create id list to just read tsv
-- check of whether a sample doesn't exist -- happens in list items in bucket dir, add note to docs that this happens
-- this is assuming there is only one cohort per s3 bucket at any given time....add cohort subfolder??
-- change description of arguments within script
-- docs say drivers are tab delimited but json is technically not tab delimited
-- error check of tsv file not including id header, and change helper function to read_tsv
-- change location of helper functions
-- output should include when created, and how long it will last
+Complete SVELT URL for generated configuration file: https://sehilyi.github.io/goscan/?external=https://EXAMPLE_S3_BUCKET.s3.amazonaws.com/CONFIGS_SUBDIR/24_Apr_2023_15_39_48_039276.json?AWSAccessKeyId=AKIA5XXXXXXXXXX&Signature=xxxxxxxxxxxxxxxxxxx&Expires=1682969989
+```
