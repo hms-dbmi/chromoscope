@@ -18,7 +18,7 @@ The structural variants are stored in a BEDPE file. The following columns are us
 | `sv_id` | `string` | Required. The name of the SV. |
 | `pe_support` | `string` | Optional. The number of events that support SV shown in tooltips. |
 | `strand1` | `string` | Required. The strand for the first BP. Either `'+'` or `'-'`. |
-| `strand2` | `string` | Required. The strand for the first BP. Either `'+'` or `'-'`. |
+| `strand2` | `string` | Required. The strand for the second BP. Either `'+'` or `'-'`. |
 
 Example file:
 
