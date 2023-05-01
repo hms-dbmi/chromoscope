@@ -80,7 +80,7 @@ function App(props: RouteComponentProps) {
     const currentSpec = useRef<string>();
 
     // interactions
-    const [showSamples, setShowSamples] = useState(urlParams.get('showSamples') === 'true');
+    const [showSamples, setShowSamples] = useState(urlParams.get('showSamples') !== 'false' && !xDomain);
     const [thumbnailForceGenerate, setThumbnailForceGenerate] = useState(false);
     const [generateThumbnails, setGenerateThumbnails] = useState(false);
     const [doneGeneratingThumbnails, setDoneGeneratingThumbnails] = useState(false);
@@ -717,7 +717,7 @@ function App(props: RouteComponentProps) {
                             }}
                             href="https://www.google.com/chrome/downloads/"
                         >
-                            ⚠️ Warning: This page is optimized for Google Chrome.
+                            ⚠️ Chromoscope is optimized for Google Chrome
                         </a>
                     ) : null}
                 </div>
