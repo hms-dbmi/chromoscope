@@ -7,6 +7,7 @@
     - [URL Parameters](/url-parameters.md)
     - [Loading Local Data](/private_data.md)
     - [Loading Private Data](/presigned_urls.md)
+    - [Cohort Config Creation](/cohort_configs.md)
 - **Visualizations**
     - [Introduction](/how-to-use.md#visualizations)
     - [Cohort View](/how-to-use.md#cohort-view)
