@@ -1,6 +1,6 @@
 # Loading Private Data
 
-This article details how to set up security credentials for an Amazon Web Services (AWS) account and temporarily visualize data stored in private S3 buckets (all public access blocked) via [presigned URLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ShareObjectPreSignedURL.html).
+This article details how to set up security credentials for an Amazon Web Services (AWS) account and temporarily visualize data stored in private S3 buckets (all public access blocked) via [presigned URLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ShareObjectPreSignedURL.html). Presigned URLs are used in provided scripts described in the [following section](./cohort_configs.md), to create configuration files for large cohorts of sample data saved on private S3 buckets.
 
 ## Prerequisites
 

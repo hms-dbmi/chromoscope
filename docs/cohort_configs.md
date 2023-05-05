@@ -31,9 +31,7 @@ will be converted to the following ID list:
 ```
 Using this list, sample-wise configuration JSON objects are created iteratively, until all the objects are generated for all samples within the cohort. These IDs also correspond to subdirectories within the S3 bucket that contain that sample's files.
 
-?> Note: Samples are added to the configuration file in the order they are listed in the ID TSV file. To change the ordering of the samples within Chromoscope, the order can be manually altered within the ID file. Refer to the [following documentation](../scripts/clustering/README.md) for an explanation of hierarchical clustering using the Euclidean metric as a distance measure.
-
-
+?> Note: Samples are added to the configuration file in the order they are listed in the ID TSV file. To change the ordering of the samples within Chromoscope, the order can be manually altered within the ID file. 
 
 ## Subdirectory Structure
 
@@ -50,6 +48,7 @@ EXAMPLE_S3_BUCKET/
 Otherwise, if there is only one cohort within the bucket, ignore the above.
 
 For the following level, the data should be subdivided into subdirectories corresponding to the following categories, with certain filetypes grouped together by sample (according the [data formats](data-formats.md) documentation):
+
 | Subdirectory | Number of files (per sample) | Filetypes | Required |
 |---|---|---|---|
 | Structural variants (SV) | 1 | `bedpe` | Yes |
