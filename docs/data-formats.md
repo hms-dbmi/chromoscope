@@ -25,6 +25,14 @@ Example file:
 ```
 https://somatic-browser-test.s3.amazonaws.com/SVTYPE_SV_test_tumor_normal_with_panel.bedpe
 ```
+## SV Type Mapping Table
+
+|Inter-chromosomal SV types|`strand1`|`strand2`|
+|---|---|---|
+|Deletion|+|-|
+|Inversion (head-to-head)|+|+|
+|Inversion (tail-to-tail)|-|-|
+|Duplication|-|+|
 
 ## CNV (TSV)
 <!-- https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format -->
