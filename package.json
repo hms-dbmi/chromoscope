@@ -7,11 +7,9 @@
         "type": "git",
         "url": "https://github.com/hms-dbmi/chromoscope"
     },
-    "module": "dist/chromoscope.es.js",
     "scripts": {
         "start": "vite",
         "build": "vite build",
-        "build-lib": "vite build --mode lib",
         "serve": "vite preview",
         "predeploy": "yarn build",
         "format": "eslint src/ --fix && prettier --write *",
