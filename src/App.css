@@ -34,8 +34,11 @@ a:hover {
 
 .chromoscope-title {
     font-weight: bold;
-    margin-right: 20px;
+    margin-right: 4px;
     text-decoration: none;
+}
+.dimed {
+    color: lightgrey;
 }
 
 .about-modal,
@@ -52,19 +55,21 @@ a:hover {
     border-radius: 10px;
     transition: opacity 0.3s ease;
     padding: 30px;
+    line-height: 2;
+    overflow-y: scroll;
 }
 .about-modal a {
     text-decoration: 2px underline #5bb6ea !important;
 }
 .about-modal-disable-button {
-    width: calc(100% - 60px);
+    width: 100%;
     border-radius: 6px;
     border: 1px solid grey;
     height: 40px;
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
-    position: absolute;
-    bottom: 30px;
+    /* position: absolute; */
+    /* bottom: 30px; */
 }
 
 .about-modal-hidden,
@@ -91,9 +96,16 @@ a:hover {
     border: none;
 }
 
-.title-doc-link {
+.title-github-link {
+    display: inline-block;
     position: fixed;
-    right: 90px;
+    right: 285px;
+}
+
+.title-doc-link {
+    display: inline-block;
+    position: fixed;
+    right: 110px;
 }
 
 .title-about-link {
@@ -102,13 +114,9 @@ a:hover {
     cursor: pointer;
 }
 
-.title-github-link {
-    display: inline-block;
-    position: fixed;
-    right: 240px;
-}
-
-.title-github-link svg {
+.title-github-link svg,
+.title-doc-link svg,
+.title-about-link svg {
     height: 25px;
     vertical-align: middle;
     padding-right: 8px;
@@ -450,6 +458,9 @@ a:hover {
     background: #ffffff99;
 }
 
+.menu-title svg {
+    vertical-align: middle;
+}
 .sample-label small {
     margin-left: 12px;
     font-size: 12px;
@@ -534,7 +545,7 @@ a:hover {
 .vis-overview-panel .overview-container {
     display: flex;
     flex-wrap: wrap;
-    height: calc(100% - 41px);
+    height: calc(100% - 41px - 20px);
     padding: 20px;
     gap: 20px;
     overflow-y: auto;
@@ -548,6 +559,20 @@ a:hover {
 .overview-container {
     width: calc(100% - 400px - 40px);
     float: left;
+}
+
+.overview-status {
+    background: rgba(210, 210, 210, 0.1);
+    width: calc(100% - 400px);
+    height: 20px;
+    float: left;
+    border-bottom: 1px solid lightgrey;
+    padding: 0px;
+    margin: 0px;
+    color: grey;
+    align-content: middle;
+    display: flex;
+    justify-content: center;
 }
 
 .overview-left {

@@ -617,6 +617,7 @@ function App(props: RouteComponentProps) {
                     <a className="chromoscope-title" href="./">
                         CHROMOSCOPE
                     </a>
+                    <span className="dimed">{' | '}</span>
                     {/* {demo.cancer.charAt(0).toUpperCase() + demo.cancer.slice(1) + ' • ' + demo.id} */}
                     {demo.cancer.charAt(0).toUpperCase() + demo.cancer.slice(1)}
                     <small>{demo.id}</small>
@@ -731,6 +732,15 @@ function App(props: RouteComponentProps) {
                         GitHub
                     </a>
                     <a className="title-doc-link" href="https://chromoscope.bio/docs/" target="_blank" rel="noreferrer">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                        >
+                            <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1z" />
+                        </svg>
                         Documentation
                     </a>
                     <a
@@ -739,14 +749,27 @@ function App(props: RouteComponentProps) {
                             setShowAbout(true);
                         }}
                     >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                        >
+                            <path d="M5.933.87a2.89 2.89 0 0 1 4.134 0l.622.638.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636zM7.002 11a1 1 0 1 0 2 0 1 1 0 0 0-2 0zm1.602-2.027c.04-.534.198-.815.846-1.26.674-.475 1.05-1.09 1.05-1.986 0-1.325-.92-2.227-2.262-2.227-1.02 0-1.792.492-2.1 1.29A1.71 1.71 0 0 0 6 5.48c0 .393.203.64.545.64.272 0 .455-.147.564-.51.158-.592.525-.915 1.074-.915.61 0 1.03.446 1.03 1.084 0 .563-.208.885-.822 1.325-.619.433-.926.914-.926 1.64v.111c0 .428.208.745.585.745.336 0 .504-.24.554-.627z" />
+                        </svg>
                         About
                     </a>
                 </div>
                 <div id="vis-panel" className="vis-panel">
                     <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
-                        <div className="title">
-                            Samples
-                            {` (Total of ${filteredSamples.length})`}
+                        <div
+                            className="title"
+                            onClick={() => {
+                                setShowSamples(false);
+                            }}
+                        >
+                            <b>CHROMOSCOPE</b> <span className="dimed">{' | '}</span> Samples
                             <input
                                 type="text"
                                 className="sample-text-box"
@@ -811,6 +834,7 @@ function App(props: RouteComponentProps) {
                                     }}
                                 />
                             </div>
+                            <div className="overview-status">{`Total of ${filteredSamples.length} samples loaded`}</div>
                             <div className="overview-container">{smallOverviewWrapper}</div>
                         </div>
                     </div>
@@ -1113,11 +1137,14 @@ function App(props: RouteComponentProps) {
                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
                         </svg>
                     </button>
-                    <h2>Chromoscope</h2>
+                    <p>
+                        <b>Chromoscope</b>
+                        <span className="dimed">{' | '}</span>About
+                    </p>
                     <p>Welcome to the documentation of Chromoscope!</p>
 
                     <p>
-                        We developed Chromoscope, an interactive visualization tool that supports <b>multiscale</b> and{' '}
+                        Chromoscope is an interactive visualization tool that supports <b>multiscale</b> and{' '}
                         <b>multiform</b> visualizations. Chromoscope enables the user to analyze SVs at multiple scales,
                         using four main views (multiscale). Moreover, each view uses different visual representations
                         (multiform) that can facilitate the interpretation for a given level of scale.
@@ -1136,7 +1163,9 @@ function App(props: RouteComponentProps) {
                                 https://chromoscope.bio/docs/
                             </a>
                         </li>
-                        <li>Preprint: TBA </li>
+                        <li>
+                            <b>Preprint:</b> TBA{' '}
+                        </li>
                     </ul>
                     <button
                         className="about-modal-disable-button"

@@ -226,7 +226,7 @@ export default function CancerSelector(props: { onChange: (url: string) => void 
                 <option key={'Not Selected'} value={null}>
                     Not Selected
                 </option>
-                {PCAWG_SAMPLES.map(sample => {
+                {PCAWG_SAMPLES.sort((a, b) => (a.cancer > b.cancer ? 1 : -1)).map(sample => {
                     const str = `${sample.cancer} (${sample.count} samples)`;
                     const configUrl = sample.url.replace('https://chromoscope.bio/?showSamples=true&external=', '');
                     return (
