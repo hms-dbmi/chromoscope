@@ -2,13 +2,13 @@
 
 ## Overview
 
-Two Python scripts are provided to automate the creation of configuration files using private data on an S3 bucket via presigned URLs, once the prerequisites described above have been met, since the AWS CLI and Python API are used within these scripts. [create_presigned_urls.py](../scripts/presigned_url_scripts/create_presigned_urls.py) contains a function used to generate a presigned URL of a private object within an S3 object. [generate_config_files.py](../scripts/presigned_url_scripts/generate_config_files.py) accesses a (provided) S3 bucket containing private objects, generates a presigned URL for every object needed in the Chromoscope configuration file (calling the function defined in the prior script), creates the configuration file locally, then copies the newly created configuration file to the same S3 bucket and generates a presigned URL for it.
+Two Python scripts are provided to automate the creation of configuration files using private data on an S3 bucket via presigned URLs, once the [setup prerequisites](./presigned_urls.md#prerequisites) have been met, since the AWS Python API `boto3` is used within these scripts. [create_presigned_urls.py](../scripts/presigned_url_scripts/create_presigned_urls.py) contains a function used to generate a presigned URL for a private object within an S3 object. [generate_config_files.py](../scripts/presigned_url_scripts/generate_config_files.py) accesses an S3 bucket containing private objects, generates a presigned URL for every object needed for the Chromoscope configuration file, creates the configuration file locally, then copies the newly created configuration file to the same S3 bucket and generates a presigned URL for it.
 
-The latter script is designed to create Chromoscope configuration files for cohorts of samples, allowing for a user to compare samples within the same cohort visually using Chromoscope. There are several assumptions made for successful execution of this script, and will be expanded on below:
-* Structure of the input TSV file containing sample IDs is as expected
-* Directory structure in the S3 bucket containing the private data is as expected
-* File formats for different kinds of data are of correct type, i.e. correct file extensions are used
-* All samples are of the same **cancer type** and have the same **assembly**
+The latter script is designed to create Chromoscope configuration files for cohorts of samples, allowing a user to compare samples within the same cohort visually using Chromoscope. There are several requirements for successful execution of this script:
+* Structure of a [TSV file containing sample IDs](#sample-id-list) is as expected
+* [Directory structure](#subdirectory-structure) in the S3 bucket containing the private data is as expected
+* [File formats](data-config.md#data-configuration) for different kinds of data are of correct type, i.e. correct file extensions are used
+* All samples within the cohort have the same **cancer type** and same **assembly**
 
 
 
