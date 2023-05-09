@@ -14,15 +14,15 @@ The latter script is designed to create Chromoscope configuration files for coho
 
 ## Sample ID List
 
-When creating a configuration file for a cohort using [generate_config_files.py](../scripts/presigned_url_scripts/generate_config_files.py), a tab-delimited file (TSV) is taken as input to define a list of sample IDs within the cohort. These sample IDs leverage the [expected structure of the subdirectories](#subdirectory-structure) within the S3 bucket to link appropriate files to their corresponding sample within the configuration file, as well as define the `id` property for each sample within the configuration file. **This file must include a column named `ID`, under which the sample IDs are defined.** 
+When creating a configuration file for a cohort using [generate_config_files.py](../scripts/presigned_url_scripts/generate_config_files.py), a tab-delimited file (TSV) is taken as input to define a list of sample IDs within the cohort. These sample IDs leverage the [expected structure of the subdirectories](#subdirectory-structure) within the S3 bucket to link appropriate files to their corresponding sample within the configuration file, as well as define the `id` property for each sample within the configuration file. **This file must include a column named `ID`, under which the sample IDs are defined,** and should be saved locally (or wherever the config creation script is executed from).
 
 ?> Note: Samples are added to the configuration file in the order they are listed in the ID TSV file. To change the ordering of the samples within Chromoscope, the order can be manually altered within the ID file. 
 
 ## Subdirectory Structure
 
-The configuration file creation script relies on an expected subdirectory structure within the S3 bucket, which is then accessed, sample-wise, according to the list of sample IDs from the submitted sample ID tsv file.
+The configuration file creation script relies on an expected subdirectory structure within the S3 bucket, which is then accessed, sample-wise, according to the list of sample IDs from the submitted sample ID TSV file.
 
-If there are several cohorts within the S3 bucket containing the private data, each should have their own subdirectory:
+A cohort should have its own subdirectory within the S3 bucket containing the private data. For example, if there are `N` cohorts, the folder structure would be as follows within the bucket:
 ```bash
 EXAMPLE_S3_BUCKET/
 ├── COHORT_1/
@@ -30,9 +30,8 @@ EXAMPLE_S3_BUCKET/
 ├── ...
 └── COHORT_N/
 ```
-Otherwise, if there is only one cohort within the bucket, ignore the above.
 
-For the following level, the data should be subdivided into subdirectories corresponding to the following categories, with certain filetypes grouped together by sample (according the [data formats](data-formats.md) documentation):
+Within the cohort's directory, the data should be subdivided into subdirectories corresponding to the following categories, with certain filetypes grouped together by sample (according to the [data formats](data-formats.md) documentation):
 
 | Subdirectory | Number of files (per sample) | Filetypes | Required |
 |---|---|---|---|
@@ -44,7 +43,7 @@ For the following level, the data should be subdivided into subdirectories corre
 | Read alignments | 2 | `bam` and `bai` | No |
 | Configuration files | - | `json` | No |
 
-Within each of these categories, there will be sample-wise subdirectories, whose names should match their sample ID. For example, for the following ID list (provided via TSV file):
+Each of these categories should contain sample-wise subdirectories, whose names match to their corresponding sample ID. For example, for the following ID list (provided via TSV file):
 ```tsv
 ID
 SAMPLE_1_ID
@@ -54,8 +53,7 @@ SAMPLE_N_ID
 ```
 the S3 bucket subdirectory should be as follows:
 ```bash
-EXAMPLE_S3_BUCKET/{EXAMPLE_COHORT_NAME/}    # Cohort value only necessary when 2+ cohorts in same bucket
-├── EXAMPLE_ID_LIST.tsv                     # File containing sample IDs of this cohort (tsv)
+EXAMPLE_S3_BUCKET/EXAMPLE_COHORT_NAME/   
 ├── SV_SUBDIR/                               # Contains SV files (bedpe)
 │   ├── SAMPLE_1_ID/
 │   │   └── example_sv_sample_1.bedpe
@@ -112,7 +110,6 @@ EXAMPLE_S3_BUCKET/{EXAMPLE_COHORT_NAME/}    # Cohort value only necessary when 2
 ?> Note: If pairwise files don't pair correctly due to user error (e.g. a pair not of the same sample, not of correct file format), that category/parameter for that sample will not render within Chromoscope. This can be checked by manually inspecting samples within [cohort view](how-to-use.md#cohort-view).
 
 
-
 ## Creation Scripts Usage
 
 The usage of the configuration file creation script via command line is as follows:
@@ -158,5 +155,5 @@ upload: CONFIGS_SUBDIR/24_Apr_2023_15_39_48_039276.json to s3://EXAMPLE_S3_BUCKE
 
 Presigned URL for generated configuration file: https://EXAMPLE_S3_BUCKET.s3.amazonaws.com/CONFIGS_SUBDIR/24_Apr_2023_15_39_48_039276.json?AWSAccessKeyId=AKIA5XXXXXXXXXX&Signature=xxxxxxxxxxxxxxxxxxx&Expires=1682969989
 
-Complete Chromoscope URL for generated configuration file: https://sehilyi.github.io/goscan/?external=https://EXAMPLE_S3_BUCKET.s3.amazonaws.com/CONFIGS_SUBDIR/24_Apr_2023_15_39_48_039276.json?AWSAccessKeyId=AKIA5XXXXXXXXXX&Signature=xxxxxxxxxxxxxxxxxxx&Expires=1682969989
+Complete Chromoscope URL for generated configuration file: https://chromoscope.bio/?external=https://EXAMPLE_S3_BUCKET.s3.amazonaws.com/CONFIGS_SUBDIR/24_Apr_2023_15_39_48_039276.json?AWSAccessKeyId=AKIA5XXXXXXXXXX&Signature=xxxxxxxxxxxxxxxxxxx&Expires=1682969989
 ```
