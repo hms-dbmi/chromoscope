@@ -14,22 +14,7 @@ The latter script is designed to create Chromoscope configuration files for coho
 
 ## Sample ID List
 
-The first step completed when [generate_config_files.py](../scripts/presigned_url_scripts/generate_config_files.py) is executed is the definition of the list the sample IDs, from the TSV file passed into the parameter `ids`. These sample IDs leverage the expected structure of the subdirectories within the S3 bucket (see the following section) to link appropriate files to their corresponding sample within the configuration file, as well as define the `id` property for each sample within the configuration file.
-
-The file used for this must be a tab-delimited file (TSV) that includes (but not limited to) a column named `ID`. The following example list, containing `n` samples:
-
-```tsv
-ID
-SAMPLE_1_ID
-SAMPLE_2_ID
-...
-SAMPLE_N_ID
-```
-will be converted to the following ID list:
-```
-[SAMPLE_1_ID, SAMPLE_2_ID,..., SAMPLE_N_ID]
-```
-Using this list, sample-wise configuration JSON objects are created iteratively, until all the objects are generated for all samples within the cohort. These IDs also correspond to subdirectories within the S3 bucket that contain that sample's files.
+When creating a configuration file for a cohort using [generate_config_files.py](../scripts/presigned_url_scripts/generate_config_files.py), a tab-delimited file (TSV) is taken as input to define a list of sample IDs within the cohort. These sample IDs leverage the [expected structure of the subdirectories](#subdirectory-structure) within the S3 bucket to link appropriate files to their corresponding sample within the configuration file, as well as define the `id` property for each sample within the configuration file. **This file must include a column named `ID`, under which the sample IDs are defined.** 
 
 ?> Note: Samples are added to the configuration file in the order they are listed in the ID TSV file. To change the ordering of the samples within Chromoscope, the order can be manually altered within the ID file. 
 
