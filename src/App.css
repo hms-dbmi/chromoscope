@@ -22,6 +22,96 @@ body {
     background-color: white;
 }
 
+a {
+    text-decoration: none;
+}
+a:visited {
+    color: black;
+}
+a:hover {
+    text-decoration: 3px underline #5bb6ea;
+}
+
+.chromoscope-title {
+    font-weight: bold;
+    margin-right: 20px;
+    text-decoration: none;
+}
+
+.about-modal,
+.about-modal-hidden {
+    z-index: 10001;
+    opacity: 1;
+    position: absolute;
+    left: calc(25%);
+    top: calc(25%);
+    width: 50%;
+    height: 50%;
+    box-shadow: 0 0 15px #0008;
+    background: white;
+    border-radius: 10px;
+    transition: opacity 0.3s ease;
+    padding: 30px;
+}
+.about-modal a {
+    text-decoration: 2px underline #5bb6ea !important;
+}
+.about-modal-disable-button {
+    width: 100%;
+    border-radius: 0px;
+    border: 1px solid grey;
+    height: 30px;
+    font-size: 18px;
+}
+
+.about-modal-hidden,
+.about-modal-container-hidden {
+    visibility: collapse;
+}
+
+.about-modal-container,
+.about-modal-container-hidden {
+    z-index: 10000;
+    background-color: #0006;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.about-modal-close-button {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: none;
+    border: none;
+}
+
+.title-doc-link {
+    position: fixed;
+    right: 90px;
+}
+
+.title-about-link {
+    position: fixed;
+    right: 14px;
+    cursor: pointer;
+}
+
+.title-github-link {
+    display: inline-block;
+    position: fixed;
+    right: 240px;
+}
+
+.title-github-link svg {
+    height: 25px;
+    vertical-align: middle;
+    padding-right: 8px;
+    color: black;
+}
+
 .panel-title {
     font-size: 14px;
     font-weight: bold;
@@ -202,8 +292,8 @@ body {
     text-align: center;
     line-height: 30px;
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     cursor: pointer;
     z-index: 999;
     color: #333333;
@@ -293,6 +383,8 @@ body {
     left: 10px;
     cursor: pointer;
     z-index: 999;
+    stroke: black;
+    stroke-width: 0.5px;
 }
 
 .jump-to-bp-btn {
@@ -348,11 +440,18 @@ body {
 .sample-label {
     position: absolute;
     top: 12px;
-    left: 50px;
+    left: 40px;
     text-shadow: 0px 0px 6px white;
     font-size: 18px;
     z-index: 999;
     background: #ffffff99;
+}
+
+.sample-label small {
+    margin-left: 12px;
+    font-size: 12px;
+    color: gray;
+    margin-right: 10px;
 }
 
 .help-label {
@@ -432,7 +531,7 @@ body {
 .vis-overview-panel .overview-container {
     display: flex;
     flex-wrap: wrap;
-    height: calc(100% - 40px);
+    height: calc(100% - 41px);
     padding: 20px;
     gap: 20px;
     overflow-y: auto;
