@@ -14,7 +14,7 @@ The latter script is designed to create Chromoscope configuration files for coho
 
 ## Sample ID List
 
-When creating a configuration file for a cohort using [generate_config_files.py](../scripts/presigned_url_scripts/generate_config_files.py), a tab-delimited file (TSV) is taken as input to define a list of sample IDs within the cohort. These sample IDs leverage the [expected structure of the subdirectories](#subdirectory-structure) within the S3 bucket to link appropriate files to their corresponding sample within the configuration file, as well as define the `id` property for each sample within the configuration file. **This file must include a column named `ID`, under which the sample IDs are defined,** and should be saved locally (or wherever the config creation script is executed from).
+When creating a configuration file for a cohort using [generate_config_files.py](../scripts/presigned_url_scripts/generate_config_files.py), a tab-delimited file (TSV) is taken as input to define a list of sample IDs within the cohort. These sample IDs leverage the [expected structure of the subdirectories](#subdirectory-structure) within the S3 bucket to link appropriate files to their corresponding sample within the configuration file, as well as define the `id` property for each sample within the configuration file. **This file must include a column named `ID`, under which the sample IDs are defined,** and should be saved within the cohort's S3 directory.
 
 ?> Note: Samples are added to the configuration file in the order they are listed in the ID TSV file. To change the ordering of the samples within Chromoscope, the order can be manually altered within the ID file. 
 
@@ -54,6 +54,7 @@ SAMPLE_N_ID
 the S3 bucket subdirectory should be as follows:
 ```bash
 EXAMPLE_S3_BUCKET/EXAMPLE_COHORT_NAME/   
+├── EXAMPLE_ID_LIST.tsv                     # File containing sample IDs of this cohort (tsv)
 ├── SV_SUBDIR/                               # Contains SV files (bedpe)
 │   ├── SAMPLE_1_ID/
 │   │   └── example_sv_sample_1.bedpe
@@ -112,18 +113,26 @@ EXAMPLE_S3_BUCKET/EXAMPLE_COHORT_NAME/
 
 ## Creation Scripts Usage
 
+### Dependencies
+
+**Python version**: 3.8 and newer
+
+[**Packages**](../scripts/presigned_url_scripts/requirements.txt):
+- [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) (version 1.26.131)
+- [pandas](https://pandas.pydata.org/) (version 2.0.1)
+
 The usage of the configuration file creation script via command line is as follows:
 
 ```
-python3 generate_config_files.py --ids IDS --bucket BUCKET [--cohort COHORT] --cancer CANCER --assembly ASSEMBLY --sv SV --cnv CNV [--drivers DRIVERS] [--snv SNV] [--indel INDEL] [--reads READS] [--configs CONFIGS] [--expiration EXPIR]
+python3 generate_config_files.py --ids IDS --bucket BUCKET --cohort COHORT --cancer CANCER --assembly ASSEMBLY --sv SV --cnv CNV [--drivers DRIVERS] [--snv SNV] [--indel INDEL] [--reads READS] [--configs CONFIGS] [--expiration EXPIR]
 ```
-Required parameters provide information needed to access the S3 bucket (`bucket`), identify the samples that will be added to the configuration file (`ids`), and define the required properties within the configuration file (`cancer`, `assembly`, `sv`, and `cnv`). The optional parameters provide additional information for optional properties within a configuration file (`drivers`, `snv`, `indel`, and `reads`), and details for the generated presigned URLs (`configs` and `expiration`). Additional details can be found in the table below:
+Required parameters provide information needed to access the cohort folder within an S3 bucket (`cohort`, `bucket`), identify the samples that will be added to the configuration file (`ids`), and define the required properties within the configuration file (`cancer`, `assembly`, `sv`, and `cnv`). The optional parameters provide additional information for optional properties within a configuration file (`drivers`, `snv`, `indel`, and `reads`), and details for the generated presigned URLs (`configs` and `expiration`). A summary of these parameters can be found in the table below:
 
 | Parameter | Default | Description | Corresponding Configuration File Property |
 |---|---|---|---|
-| `ids` | - | Required. The name of the sample ID TSV file within S3 bucket. | `id` |
+| `ids` | - | Required. The name of the sample ID TSV file within S3 bucket's cohort subdirectory. | `id` |
 | `bucket` | - | Required. The name of the S3 bucket containing the private data objects. | - |
-| `cohort` | `None` | Optional. The name of the cohort subdirectory within the S3 bucket. | - |
+| `cohort` | - | Required. The name of the cohort subdirectory within the S3 bucket. | - |
 | `cancer` | - | Required. The type of cancer of the samples. | `cancer` |
 | `assembly` | `'hg38'` or `'hg19'` | Required. The reference genome assembly for the samples. | `assembly` |
 | `sv` | - | Required. The name of the subdirectory within the S3 bucket containing structural variant (SV) `bedpe` files. | `sv` |
@@ -151,9 +160,9 @@ python3 generate_config_files.py --ids EXAMPLE_ID_LIST.tsv --bucket EXAMPLE_S3_B
 Example output:
 
 ```
-upload: CONFIGS_SUBDIR/24_Apr_2023_15_39_48_039276.json to s3://EXAMPLE_S3_BUCKET/CONFIGS_SUBDIR/24_Apr_2023_15_39_48_039276.json
+upload: CONFIGS_SUBDIR/timestamp_at_creation.json to s3://EXAMPLE_S3_BUCKET/EXAMPLE_COHORT_NAME/CONFIGS_SUBDIR/timestamp_at_creation.json
 
-Presigned URL for generated configuration file: https://EXAMPLE_S3_BUCKET.s3.amazonaws.com/CONFIGS_SUBDIR/24_Apr_2023_15_39_48_039276.json?AWSAccessKeyId=AKIA5XXXXXXXXXX&Signature=xxxxxxxxxxxxxxxxxxx&Expires=1682969989
+Presigned URL for generated configuration file: https://EXAMPLE_S3_BUCKET.s3.amazonaws.com/EXAMPLE_COHORT_NAME/CONFIGS_SUBDIR/timestamp_at_creation.json?AWSAccessKeyId=AKIA5XXXXXXXXXX&Signature=xxxxxxxxxxxxxxxxxxx&Expires=1682969989
 
-Complete Chromoscope URL for generated configuration file: https://chromoscope.bio/?external=https://EXAMPLE_S3_BUCKET.s3.amazonaws.com/CONFIGS_SUBDIR/24_Apr_2023_15_39_48_039276.json?AWSAccessKeyId=AKIA5XXXXXXXXXX&Signature=xxxxxxxxxxxxxxxxxxx&Expires=1682969989
+Complete Chromoscope URL for generated configuration file: https://chromoscope.bio/?external=https://EXAMPLE_S3_BUCKET.s3.amazonaws.com/EXAMPLE_COHORT_NAME/CONFIGS_SUBDIR/timestamp_at_creation.json?AWSAccessKeyId=AKIA5XXXXXXXXXX&Signature=xxxxxxxxxxxxxxxxxxx&Expires=1682969989
 ```

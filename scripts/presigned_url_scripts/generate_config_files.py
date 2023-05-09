@@ -5,7 +5,6 @@
 ################################################
 import argparse
 import os
-import pandas
 import pathlib
 from datetime import datetime
 from json import dump
@@ -28,39 +27,8 @@ VALID_FILETYPES = {
 }
 
 ################################################
-#   Helper functions
+#   Helper function
 ################################################
-def create_id_list(tsv_file):
-    """
-    Given a TSV file, isolates the "ID" column and returns column
-    contents as a list.
-    
-    :param tsv_file: name of TSV file
-    :type tsv_file: str
-    :return: contents of "ID" column
-    :rtype: list
-    """
-    try:
-        id_df = pandas.read_csv(
-            tsv_file,
-            sep="\t"
-        )
-    
-        return id_df["ID"]
-    except KeyError as err:
-        raise KeyError("Missing required column header: %s" % err)
-        
-def link_names(*folder_names):
-    """
-    Given a series of names, join with "/" between names.
-    
-    :param folder_names: variable number of folder names to be joined
-    :type folder_names: str(s)
-    :return: joined folder names
-    :rtype: str
-    """
-    return "/".join(list(folder_names))
-
 def fill_property_values(config_object, sample_id, s3_bucket_name, s3_directory_name, properties, expiration):
     """
     Given properties for a Chromoscope configuration file, a sample ID, 
@@ -159,9 +127,6 @@ def generate_configs(args):
     - expiration: Duration length of presigned URLs (sec).
     """
     
-    # Create list of IDs from TSV file
-    ids = create_id_list(args["ids"])
-
     # Check for the arguments passed that are relevant for config files
     s3_bucket_name = args["bucket"]
     cohort_folder_name = args["cohort"]
@@ -175,6 +140,9 @@ def generate_configs(args):
     read_alignments_folder_name = args["reads"]
     configs_folder_name = args["configs"]
     expiration = args["expiration"]
+    
+    # Create list of IDs from TSV file
+    ids = create_id_list(s3_bucket_name, cohort_folder_name, args["ids"])
 
     # Fill out JSON objects (dicts)
     config_list = [] # will eventually be list of JSON objects

@@ -1,6 +1,7 @@
 import boto3
 from botocore.exceptions import ClientError
 import logging
+import pandas
 
 ################################################
 # Based on code from AWS boto3 documentation:
@@ -42,28 +43,43 @@ def generate_presigned_URL(bucket_name, object_path, expiration=3600):
 
 
 
-def upload_file(file_name, bucket_name, object_name=None):
+def create_id_list(bucket_name, cohort_name, tsv_file_name):
     """
-    Upload a file to an S3 bucket.
-
-    :param file_name: File to upload.
-    :type file_name: str
-    :param bucket_name: Bucket to upload to
+    Given a TSV file on S3 bucket, isolates the "ID" column and returns column
+    contents as a list.
+    
+    :param bucket_name: name of S3 bucket containing TSV file.
     :type bucket_name: str
-    :param object_name: S3 object name. If not specified, file_name is used.
-    :type object_name: str
+    :param cohort_name: name of cohort subdirectory containing TSV file.
+    :type cohort_name: str
+    :param tsv_file_name: name of TSV file.
+    :type tsv_file_name: str
+    :return: contents of "ID" column.
+    :rtype: list
     """
-
-    # If S3 object_name was not specified, use file_name
-    if object_name is None:
-        object_name = os.path.basename(file_name)
-
-    s3_client = boto3.client('s3')
+    
+    # Create low-level S3 service client
+    s3 = boto3.client('s3') 
+    
     try:
-        response = s3_client.upload_file(file_name, bucket_name, object_name)
+        # Get the TSV file
+        tsv_file = s3.get_object(Bucket= bucket_name, Key= link_names(cohort_name, tsv_file_name)) 
+        
+        try:
+            id_df = pandas.read_csv(
+                tsv_file['Body'],
+                sep="\t"
+            )
+        
+            return id_df["ID"]
+        except KeyError as key_err:
+            logging.error(key_err)
+            raise KeyError("Missing required column header: %s" % key_err)
+            
     except ClientError as client_err:
         logging.error(client_err)
         raise client_err
+
 
 
 def list_items_in_bucket_dir(bucket_name, obj_path, required):
@@ -99,3 +115,40 @@ def list_items_in_bucket_dir(bucket_name, obj_path, required):
         
     
     return item_list, target
+    
+    
+    
+def upload_file(file_name, bucket_name, object_name=None):
+    """
+    Upload a file to an S3 bucket.
+
+    :param file_name: File to upload.
+    :type file_name: str
+    :param bucket_name: Bucket to upload to
+    :type bucket_name: str
+    :param object_name: S3 object name. If not specified, file_name is used.
+    :type object_name: str
+    """
+
+    # If S3 object_name was not specified, use file_name
+    if object_name is None:
+        object_name = os.path.basename(file_name)
+
+    s3_client = boto3.client('s3')
+    try:
+        response = s3_client.upload_file(file_name, bucket_name, object_name)
+    except ClientError as client_err:
+        logging.error(client_err)
+        raise client_err
+        
+
+def link_names(*folder_names):
+    """
+    Given a series of names, join with "/" between names.
+    
+    :param folder_names: variable number of folder names to be joined
+    :type folder_names: str(s)
+    :return: joined folder names
+    :rtype: str
+    """
+    return "/".join(list(folder_names))
