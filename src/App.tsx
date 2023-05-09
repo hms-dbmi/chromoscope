@@ -1117,20 +1117,21 @@ function App(props: RouteComponentProps) {
                     <p>Welcome to the documentation of Chromoscope!</p>
 
                     <p>
-                        Chromoscope is an interactive visualization tool that supports multiscale and multiform
-                        visualizations. Chromoscope enables users to analyze SVs at multiple scales, using four main
-                        views (multiscale).
+                        We developed Chromoscope, an interactive visualization tool that supports <b>multiscale</b> and{' '}
+                        <b>multiform</b> visualizations. Chromoscope enables the user to analyze SVs at multiple scales,
+                        using four main views (multiscale). Moreover, each view uses different visual representations
+                        (multiform) that can facilitate the interpretation for a given level of scale.
                     </p>
                     <h4>Learn more about Chromoscope</h4>
                     <ul>
                         <li>
-                            GitHub:{' '}
+                            <b>GitHub:</b>{' '}
                             <a href="https://github.com/hms-dbmi/chromoscope" target="_blank" rel="noreferrer">
                                 https://github.com/hms-dbmi/chromoscope
                             </a>
                         </li>
                         <li>
-                            Decomentation:{' '}
+                            <b>Decomentation:</b>{' '}
                             <a href="https://chromoscope.bio/docs/" target="_blank" rel="noreferrer">
                                 https://chromoscope.bio/docs/
                             </a>

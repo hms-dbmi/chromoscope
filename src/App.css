@@ -57,11 +57,14 @@ a:hover {
     text-decoration: 2px underline #5bb6ea !important;
 }
 .about-modal-disable-button {
-    width: 100%;
-    border-radius: 0px;
+    width: calc(100% - 60px);
+    border-radius: 6px;
     border: 1px solid grey;
-    height: 30px;
+    height: 40px;
     font-size: 18px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 30px;
 }
 
 .about-modal-hidden,
