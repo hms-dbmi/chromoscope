@@ -16,7 +16,7 @@ pip install chromoscope
 jupyter lab
 ```
 
-We here use Jupyter Lab as an example,, but you can also use [Jupyter Notebook](https://jupyter.org/) or [Goolge Colab](https://colab.research.google.com/).
+We here use Jupyter Lab as an example, but you can also use [Jupyter Notebook](https://jupyter.org/) or [Goolge Colab](https://colab.research.google.com/).
 
 ## Setup Data Config
 
