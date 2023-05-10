@@ -1158,7 +1158,7 @@ function App(props: RouteComponentProps) {
                             </a>
                         </li>
                         <li>
-                            <b>Decomentation:</b>{' '}
+                            <b>Documentation:</b>{' '}
                             <a href="https://chromoscope.bio/docs/" target="_blank" rel="noreferrer">
                                 https://chromoscope.bio/docs/
                             </a>
