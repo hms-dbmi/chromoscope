@@ -30,9 +30,7 @@
     padding: 20px;
 }
 .sample-config-form-hidden {
-    height: 0px;
-    cursor: pointer;
-    content-visibility: hidden;
+    visibility: collapse;
 }
 .menu-button,
 .menu-button-disallowed {
