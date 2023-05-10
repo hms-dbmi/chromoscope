@@ -1,5 +1,7 @@
 # Loading Local Data
 
+!> You may also want to see the [Chromoscope Python package](#python), which allows you to load local files on computational notebooks.
+
 You can run a local file server to display local files on Chromoscope. This enables you to safely visualize your private files. There are multiple light and easy-to-install file servers. In this page, we will use [http-server](https://www.npmjs.com/package/http-server) for the demonstration.
 
 ## Run Local File Server
