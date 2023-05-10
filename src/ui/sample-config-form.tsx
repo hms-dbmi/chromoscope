@@ -80,7 +80,7 @@ export default function SampleConfigForm(props: { onAdd: (config: ValidSampleCon
                         </svg>
                     )}
                 </span>
-                <span
+                {/* <span
                     className="menu-icon"
                     style={{ float: 'right', marginRight: '40px', fontWeight: 300 }}
                     onClick={() => window.open('https://chromoscope.bio/docs/#/data-config', '_blank')}
@@ -91,7 +91,7 @@ export default function SampleConfigForm(props: { onAdd: (config: ValidSampleCon
                             <path key={d} fill="currentColor" d={d} />
                         ))}
                     </svg>
-                </span>
+                </span> */}
             </div>
             <div
                 className={showNewSampleConfig ? 'sample-config-form' : 'sample-config-form-hidden'}

@@ -84,7 +84,7 @@ function App(props: RouteComponentProps) {
 
     // interactions
     const [showSamples, setShowSamples] = useState(urlParams.get('showSamples') !== 'false' && !xDomain);
-    const [showAbout, setShowAbout] = useState(!DB_DO_NOT_SHOW_ABOUT_BY_DEFAULT);
+    const [showAbout, setShowAbout] = useState(false);
     const [thumbnailForceGenerate, setThumbnailForceGenerate] = useState(false);
     const [generateThumbnails, setGenerateThumbnails] = useState(false);
     const [doneGeneratingThumbnails, setDoneGeneratingThumbnails] = useState(false);
@@ -536,6 +536,24 @@ function App(props: RouteComponentProps) {
         // ));
     }, [demo, filteredSamples, thumbnailForceGenerate, generateThumbnails]);
 
+    const hidiveLabRef = (
+        <>
+            {' ('}
+            <a href="http://gehlenborglab.org/" target="_blank" rel="noreferrer">
+                HiDIVE Lab
+            </a>
+            {')'}
+        </>
+    );
+    const parkLabRef = (
+        <>
+            {' ('}
+            <a href="https://compbio.hms.harvard.edu/" target="_blank" rel="noreferrer">
+                Park Lab
+            </a>
+            {')'}
+        </>
+    );
     const goslingComponent = useMemo(() => {
         const loadingCustomJSONDrivers = typeof demo.drivers === 'string' && demo.drivers.split('.').pop() === 'json';
         const isStillLoadingDrivers = loadingCustomJSONDrivers && drivers.length == 0;
@@ -616,6 +634,23 @@ function App(props: RouteComponentProps) {
                 <div className="sample-label">
                     <a className="chromoscope-title" href="./">
                         CHROMOSCOPE
+                    </a>
+                    <a
+                        className="title-about-link"
+                        onClick={() => {
+                            setShowAbout(true);
+                        }}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                        >
+                            <path d="M5.933.87a2.89 2.89 0 0 1 4.134 0l.622.638.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636zM7.002 11a1 1 0 1 0 2 0 1 1 0 0 0-2 0zm1.602-2.027c.04-.534.198-.815.846-1.26.674-.475 1.05-1.09 1.05-1.986 0-1.325-.92-2.227-2.262-2.227-1.02 0-1.792.492-2.1 1.29A1.71 1.71 0 0 0 6 5.48c0 .393.203.64.545.64.272 0 .455-.147.564-.51.158-.592.525-.915 1.074-.915.61 0 1.03.446 1.03 1.084 0 .563-.208.885-.822 1.325-.619.433-.926.914-.926 1.64v.111c0 .428.208.745.585.745.336 0 .504-.24.554-.627z" />
+                        </svg>
+                        About
                     </a>
                     <span className="dimed">{' | '}</span>
                     {/* {demo.cancer.charAt(0).toUpperCase() + demo.cancer.slice(1) + ' • ' + demo.id} */}
@@ -743,42 +778,17 @@ function App(props: RouteComponentProps) {
                         </svg>
                         Documentation
                     </a>
-                    <a
-                        className="title-about-link"
-                        onClick={() => {
-                            setShowAbout(true);
-                        }}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            fill="currentColor"
-                            viewBox="0 0 16 16"
-                        >
-                            <path d="M5.933.87a2.89 2.89 0 0 1 4.134 0l.622.638.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636zM7.002 11a1 1 0 1 0 2 0 1 1 0 0 0-2 0zm1.602-2.027c.04-.534.198-.815.846-1.26.674-.475 1.05-1.09 1.05-1.986 0-1.325-.92-2.227-2.262-2.227-1.02 0-1.792.492-2.1 1.29A1.71 1.71 0 0 0 6 5.48c0 .393.203.64.545.64.272 0 .455-.147.564-.51.158-.592.525-.915 1.074-.915.61 0 1.03.446 1.03 1.084 0 .563-.208.885-.822 1.325-.619.433-.926.914-.926 1.64v.111c0 .428.208.745.585.745.336 0 .504-.24.554-.627z" />
-                        </svg>
-                        About
-                    </a>
                 </div>
                 <div id="vis-panel" className="vis-panel">
                     <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
                         <div
                             className="title"
-                            onClick={() => {
-                                setShowSamples(false);
+                            onClick={e => {
+                                if (e.target === e.currentTarget) setShowSamples(false);
                             }}
                         >
-                            <b>CHROMOSCOPE</b> <span className="dimed">{' | '}</span> Samples
-                            <input
-                                type="text"
-                                className="sample-text-box"
-                                placeholder="Search samples by ID"
-                                onChange={e => setFilterSampleBy(e.target.value)}
-                                hidden
-                            />
                             <svg
-                                className="button"
+                                className="config-button"
                                 viewBox="0 0 16 16"
                                 onClick={() => {
                                     setShowSamples(false);
@@ -790,6 +800,68 @@ function App(props: RouteComponentProps) {
                                     fill="currentColor"
                                 ></path>
                             </svg>
+                            <div className="sample-label">
+                                <b>CHROMOSCOPE</b>
+                                <a
+                                    className="title-about-link"
+                                    onClick={() => {
+                                        setShowAbout(true);
+                                    }}
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="20"
+                                        height="20"
+                                        fill="currentColor"
+                                        viewBox="0 0 16 16"
+                                    >
+                                        <path d="M5.933.87a2.89 2.89 0 0 1 4.134 0l.622.638.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636zM7.002 11a1 1 0 1 0 2 0 1 1 0 0 0-2 0zm1.602-2.027c.04-.534.198-.815.846-1.26.674-.475 1.05-1.09 1.05-1.986 0-1.325-.92-2.227-2.262-2.227-1.02 0-1.792.492-2.1 1.29A1.71 1.71 0 0 0 6 5.48c0 .393.203.64.545.64.272 0 .455-.147.564-.51.158-.592.525-.915 1.074-.915.61 0 1.03.446 1.03 1.084 0 .563-.208.885-.822 1.325-.619.433-.926.914-.926 1.64v.111c0 .428.208.745.585.745.336 0 .504-.24.554-.627z" />
+                                    </svg>
+                                    About
+                                </a>
+                                <span className="dimed">{' | '}</span> Samples
+                                <input
+                                    type="text"
+                                    className="sample-text-box"
+                                    placeholder="Search samples by ID"
+                                    onChange={e => setFilterSampleBy(e.target.value)}
+                                    hidden
+                                />
+                            </div>
+                            <a
+                                className="title-github-link"
+                                style={{ position: 'absolute' }}
+                                href="https://github.com/hms-dbmi/chromoscope"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <title>GitHub</title>
+                                    <path
+                                        fill="currentColor"
+                                        d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+                                    ></path>
+                                </svg>
+                                GitHub
+                            </a>
+                            <a
+                                className="title-doc-link"
+                                href="https://chromoscope.bio/docs/"
+                                target="_blank"
+                                rel="noreferrer"
+                                style={{ position: 'absolute' }}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    fill="currentColor"
+                                    viewBox="0 0 16 16"
+                                >
+                                    <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1z" />
+                                </svg>
+                                Documentation
+                            </a>
                             <button
                                 className="thumbnail-generate-button"
                                 onClick={() => setGenerateThumbnails(!generateThumbnails)}
@@ -1141,13 +1213,32 @@ function App(props: RouteComponentProps) {
                         <b>Chromoscope</b>
                         <span className="dimed">{' | '}</span>About
                     </p>
-                    <p>Welcome to the documentation of Chromoscope!</p>
-
-                    <p>
+                    {/* <p>
                         Chromoscope is an interactive visualization tool that supports <b>multiscale</b> and{' '}
                         <b>multiform</b> visualizations. Chromoscope enables the user to analyze SVs at multiple scales,
                         using four main views (multiscale). Moreover, each view uses different visual representations
                         (multiform) that can facilitate the interpretation for a given level of scale.
+                    </p> */}
+
+                    <p>
+                        Whole genome sequencing is now routinely used to profile mutations in DNA in the soma and in the
+                        germline, informing molecular diagnoses of disease and therapeutic decisions. Structural
+                        variants (SVs) are the main new type of alterations we see more of, and they are often
+                        diagnostic, prognostic, or therapy-informing. However, the size and complexity of SV data,
+                        combined with the difficulty of obtaining accurate SV calls, pose challenges in the
+                        interpretation of SVs, requiring tedious visual inspection of potentially pathogenic variants
+                        with multiple visualization tools.
+                    </p>
+
+                    <p>
+                        To overcome the problems with the interpretation of SVs, we developed Chromoscope, an
+                        open-source web-based application for the interactive visualization of structural variants.
+                        Chromoscope has several innovative features which unlock the insights from whole genome
+                        sequencing: visualization at multiple scale levels simultaneously, effective navigation across
+                        scales, easy setup for loading users&apos; large datasets, and a feature to export, share, and
+                        further customize visualizations. We anticipate that Chromoscope will accelerate the exploration
+                        and interpretation of SVs by a broad range of scientists and clinicians, leading to new insights
+                        into genomic biomarkers.
                     </p>
                     <h4>Learn more about Chromoscope</h4>
                     <ul>
@@ -1164,10 +1255,59 @@ function App(props: RouteComponentProps) {
                             </a>
                         </li>
                         <li>
-                            <b>Preprint:</b> TBA{' '}
+                            <b>Preprint:</b>{' '}
+                            <a href="https://osf.io/pyqrx/" target="_blank" rel="noreferrer">
+                                L&apos;Yi et al. Chromoscope: interactive multiscale visualization for structural
+                                variation in human genomes, OSF, 2023.
+                            </a>
                         </li>
                     </ul>
-                    <button
+                    <h4>The Team</h4>
+                    <ul>
+                        <li>
+                            <b>Sehi L&apos;Yi</b>
+                            {hidiveLabRef}
+                        </li>
+                        <li>
+                            <b>Dominika Maziec</b>
+                            {parkLabRef}
+                        </li>
+                        <li>
+                            <b>Victoria Stevens</b>
+                            {parkLabRef}
+                        </li>
+                        <li>
+                            <b>Trevor Manz</b>
+                            {hidiveLabRef}
+                        </li>
+                        <li>
+                            <b>Alexander Veit</b>
+                            {parkLabRef}
+                        </li>
+                        <li>
+                            <b>Michele Berselli</b>
+                            {parkLabRef}
+                        </li>
+                        <li>
+                            <b>Peter J Park</b>
+                            {parkLabRef}
+                        </li>
+                        <li>
+                            <b>Dominik Glodzik</b>
+                            {parkLabRef}
+                        </li>
+                        <li>
+                            <b>Nils Gehlenborg</b>
+                            {hidiveLabRef}
+                        </li>
+                    </ul>
+                    <div className="about-modal-footer">
+                        <a href="https://dbmi.hms.harvard.edu/" target="_blank" rel="noreferrer">
+                            Department of Biomedical Informatics, Harvard Medical School
+                        </a>
+                    </div>
+
+                    {/* <button
                         className="about-modal-disable-button"
                         onClick={() => {
                             log.add(true);
@@ -1175,7 +1315,7 @@ function App(props: RouteComponentProps) {
                         }}
                     >
                         Do not show this information by default
-                    </button>
+                    </button> */}
                 </div>
                 <div
                     className="move-to-top-btn"

@@ -47,9 +47,9 @@ a:hover {
     opacity: 1;
     position: absolute;
     left: calc(25%);
-    top: calc(25%);
+    top: calc(10%);
     width: 50%;
-    height: 50%;
+    height: 80%;
     box-shadow: 0 0 15px #0008;
     background: white;
     border-radius: 10px;
@@ -59,7 +59,34 @@ a:hover {
     overflow-y: scroll;
 }
 .about-modal a {
-    text-decoration: 2px underline #5bb6ea !important;
+    text-decoration: 2px underline grey dotted;
+    text-underline-offset: 2px;
+}
+.about-modal a:hover {
+    text-decoration: 2px underline black solid;
+}
+.about-modal h4 {
+    margin-bottom: 0px;
+    width: 100%;
+    border-bottom: 1px solid rgb(72, 66, 66);
+}
+.about-modal ul {
+    padding-left: 20px;
+}
+.about-modal b {
+    font-weight: 600;
+}
+.about-modal ul {
+    list-style-type: '- ';
+}
+.about-modal-footer {
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid rgb(72, 66, 66);
+    /* background-color: rgb(229, 229, 229); */
+}
+.about-modal-footer a {
+    text-decoration: none;
 }
 .about-modal-disable-button {
     width: 100%;
@@ -99,27 +126,34 @@ a:hover {
 .title-github-link {
     display: inline-block;
     position: fixed;
-    right: 285px;
+    right: 200px;
 }
 
 .title-doc-link {
     display: inline-block;
     position: fixed;
-    right: 110px;
+    right: 20px;
 }
 
 .title-about-link {
-    position: fixed;
-    right: 14px;
+    margin-left: 12px;
+    margin-right: 12px;
+    font-size: 12px;
     cursor: pointer;
 }
 
 .title-github-link svg,
-.title-doc-link svg,
-.title-about-link svg {
+.title-doc-link svg {
     height: 25px;
     vertical-align: middle;
     padding-right: 8px;
+    color: black;
+}
+
+.title-about-link svg {
+    height: 16px;
+    padding-right: 4px;
+    vertical-align: middle;
     color: black;
 }
 
@@ -455,7 +489,7 @@ a:hover {
     text-shadow: 0px 0px 6px white;
     font-size: 18px;
     z-index: 999;
-    background: #ffffff99;
+    /* background: #ffffff99; */
 }
 
 .menu-title svg {
