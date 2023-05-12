@@ -22,6 +22,141 @@ body {
     background-color: white;
 }
 
+a {
+    text-decoration: none;
+}
+a:visited {
+    color: black;
+}
+a:hover {
+    text-decoration: 3px underline #5bb6ea;
+}
+
+.chromoscope-title {
+    font-weight: bold;
+    margin-right: 4px;
+    text-decoration: none;
+}
+.dimed {
+    color: lightgrey;
+}
+
+.about-modal,
+.about-modal-hidden {
+    z-index: 10001;
+    opacity: 1;
+    position: absolute;
+    left: calc(25%);
+    top: calc(10%);
+    width: 50%;
+    height: 80%;
+    box-shadow: 0 0 15px #0008;
+    background: white;
+    border-radius: 10px;
+    transition: opacity 0.3s ease;
+    padding: 30px;
+    line-height: 2;
+    overflow-y: scroll;
+}
+.about-modal a {
+    text-decoration: 2px underline grey dotted;
+    text-underline-offset: 2px;
+}
+.about-modal a:hover {
+    text-decoration: 2px underline black solid;
+}
+.about-modal h4 {
+    margin-bottom: 0px;
+    width: 100%;
+    border-bottom: 1px solid rgb(72, 66, 66);
+}
+.about-modal ul {
+    padding-left: 20px;
+}
+.about-modal b {
+    font-weight: 600;
+}
+.about-modal ul {
+    list-style-type: '- ';
+}
+.about-modal-footer {
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid rgb(72, 66, 66);
+    /* background-color: rgb(229, 229, 229); */
+}
+.about-modal-footer a {
+    text-decoration: none;
+}
+.about-modal-disable-button {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid grey;
+    height: 40px;
+    font-size: 16px;
+    cursor: pointer;
+    /* position: absolute; */
+    /* bottom: 30px; */
+}
+
+.about-modal-hidden,
+.about-modal-container-hidden {
+    visibility: collapse;
+}
+
+.about-modal-container,
+.about-modal-container-hidden {
+    z-index: 10000;
+    background-color: #0006;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.about-modal-close-button {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: none;
+    border: none;
+}
+
+.title-github-link {
+    display: inline-block;
+    position: fixed;
+    right: 200px;
+}
+
+.title-doc-link {
+    display: inline-block;
+    position: fixed;
+    right: 20px;
+}
+
+.title-about-link {
+    margin-left: 12px;
+    margin-right: 12px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.title-github-link svg,
+.title-doc-link svg {
+    height: 25px;
+    vertical-align: middle;
+    padding-right: 8px;
+    color: black;
+}
+
+.title-about-link svg {
+    height: 16px;
+    padding-right: 4px;
+    vertical-align: middle;
+    color: black;
+}
+
 .panel-title {
     font-size: 14px;
     font-weight: bold;
@@ -202,8 +337,8 @@ body {
     text-align: center;
     line-height: 30px;
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     cursor: pointer;
     z-index: 999;
     color: #333333;
@@ -293,6 +428,8 @@ body {
     left: 10px;
     cursor: pointer;
     z-index: 999;
+    stroke: black;
+    stroke-width: 0.5px;
 }
 
 .jump-to-bp-btn {
@@ -348,11 +485,21 @@ body {
 .sample-label {
     position: absolute;
     top: 12px;
-    left: 50px;
+    left: 40px;
     text-shadow: 0px 0px 6px white;
     font-size: 18px;
     z-index: 999;
-    background: #ffffff99;
+    /* background: #ffffff99; */
+}
+
+.menu-title svg {
+    vertical-align: middle;
+}
+.sample-label small {
+    margin-left: 12px;
+    font-size: 12px;
+    color: gray;
+    margin-right: 10px;
 }
 
 .help-label {
@@ -432,7 +579,7 @@ body {
 .vis-overview-panel .overview-container {
     display: flex;
     flex-wrap: wrap;
-    height: calc(100% - 40px);
+    height: calc(100% - 41px - 20px);
     padding: 20px;
     gap: 20px;
     overflow-y: auto;
@@ -446,6 +593,20 @@ body {
 .overview-container {
     width: calc(100% - 400px - 40px);
     float: left;
+}
+
+.overview-status {
+    background: rgba(210, 210, 210, 0.1);
+    width: calc(100% - 400px);
+    height: 20px;
+    float: left;
+    border-bottom: 1px solid lightgrey;
+    padding: 0px;
+    margin: 0px;
+    color: grey;
+    align-content: middle;
+    display: flex;
+    justify-content: center;
 }
 
 .overview-left {

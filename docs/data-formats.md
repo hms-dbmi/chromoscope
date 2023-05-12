@@ -1,6 +1,6 @@
 # Data Formats
 
-This page describes file formats used in SVELT. To find a list of required and optional files, please refer to the [Data Configuration section](data-config.md#data-configuration).
+This page describes file formats used in Chromoscope. To find a list of required and optional files, please refer to the [Data Configuration section](data-config.md#data-configuration).
 
 ## Structural Variants (BEDPE)
 <!-- https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format -->
@@ -18,13 +18,21 @@ The structural variants are stored in a BEDPE file. The following columns are us
 | `sv_id` | `string` | Required. The name of the SV. |
 | `pe_support` | `string` | Optional. The number of events that support SV shown in tooltips. |
 | `strand1` | `string` | Required. The strand for the first BP. Either `'+'` or `'-'`. |
-| `strand2` | `string` | Required. The strand for the first BP. Either `'+'` or `'-'`. |
+| `strand2` | `string` | Required. The strand for the second BP. Either `'+'` or `'-'`. |
 
 Example file:
 
 ```
 https://somatic-browser-test.s3.amazonaws.com/SVTYPE_SV_test_tumor_normal_with_panel.bedpe
 ```
+## SV Type Mapping Table
+
+|Inter-chromosomal SV types|`strand1`|`strand2`|
+|---|---|---|
+|Deletion|+|-|
+|Inversion (head-to-head)|+|+|
+|Inversion (tail-to-tail)|-|-|
+|Duplication|-|+|
 
 ## CNV (TSV)
 <!-- https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format -->
@@ -94,7 +102,7 @@ tabix myfile.sorted.vcf.gz
 
 Refer to the documentation of Samtools for details (https://www.htslib.org/doc/tabix.html).
 
-!> The VCF files should be sorted and indexed to be able to make SVELT to properly show genomics features.
+!> The VCF files should be sorted and indexed to be able to make Chromoscope to properly show genomics features.
 
 ## BAM & BAI
 
@@ -106,4 +114,4 @@ samtools index myfile.sorted.bam.gz myfile.sorted.bam.bai
 
 Refer to the documentation of Samtools for details (https://www.htslib.org/doc/samtools-index.html).
 
-!> The BAM files should be sorted and indexed to be able to make SVELT to properly show genomics features.
+!> The BAM files should be sorted and indexed to be able to make Chromoscope to properly show genomics features.

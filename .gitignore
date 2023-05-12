@@ -4,8 +4,15 @@ dist
 dist-ssr
 *.local
 *.swp
+*.log
 *.swo
 *~
 **/gosling-screenshot
 /script/output/
 /overview-specs.json
+/lib/
+__pycache__/
+*.egg-info/
+.eggs/*
+.ipynb_checkpoints/
+.coverage

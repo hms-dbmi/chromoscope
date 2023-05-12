@@ -1,96 +1,96 @@
 Histology: ColoRect-AdenoCA
-Number of samples available on SVELT but not available in the provided patterns: 8
+Number of samples available on Chromoscope but not available in the provided patterns: 8
 UUIDs of the missing samples: ec43c4b5-fb72-4a4a-af03-10c2d05ff159,2182ce2c-5941-4b65-9419-fc7966d5e6d5,f4b9d98f-7b76-4eaa-9595-10b0973d5ff7,8853cbee-7931-49a6-b063-a806943a10ad,31e63f89-a6a9-40fb-823d-f41587bd73d8,711c8a16-3cf8-42d8-b29e-fd1e9ef1c82b,d3aff5d3-23c0-43ae-9c01-8ddd776b530b,303abbe5-4155-4a0d-bc3b-f8995261ca52 
 ##################################################
 Histology: Breast-AdenoCA
-Number of samples available on SVELT but not available in the provided patterns: 3
+Number of samples available on Chromoscope but not available in the provided patterns: 3
 UUIDs of the missing samples: fc8130df-1e8f-c879-e040-11ac0d485df4,fc8130e0-0dcf-b558-e040-11ac0c483285,f393bb00-888d-710f-e040-11ac0d484518 
 ##################################################
 Histology: Prost-AdenoCA
-Number of samples available on SVELT but not available in the provided patterns: 87
+Number of samples available on Chromoscope but not available in the provided patterns: 87
 UUIDs of the missing samples: 33de44a2-bec1-402d-872c-d78c1f2d52b3,fc9d704c-0cfb-0407-e040-11ac0d486980,fc9f998b-cc72-f6ea-e040-11ac0c482425,fca04929-586a-0594-e040-11ac0c48099d,fc9d93b6-77c6-8719-e040-11ac0d487dec,fc9d5fc6-546f-27b7-e040-11ac0d485f87,fca1c663-dec0-db39-e040-11ac0c486140,fca2d62f-2756-939e-e040-11ac0d4865e6,fc9f9295-01f6-a9e0-e040-11ac0d4845af,fc9d5fc7-a87b-c5e7-e040-11ac0c4850aa,f9c52414-385d-8cc7-e040-11ac0d485037,f9c70e38-dd99-3fe2-e040-11ac0d4862f2,f9c52187-2e82-d58a-e040-11ac0d484fc4,07531318-87e8-4db8-aa61-9b93597d063b,b33978c6-a855-4f9d-a0b0-d79453b9de41,db198301-6c69-4d56-88d1-c650406423dd,4d11d7da-1204-437e-87b1-e8337a67c9a8,4e596add-a7c5-4617-9649-b4ac6612e39c,f9854144-d92c-46da-ac87-9d1fd7efe67d,0bfd1043-8173-e3e4-e050-11ac0c4860c5,0bfd1068-3fe6-a95b-e050-11ac0c4860c3,0bfd1068-3fca-a95b-e050-11ac0c4860c3,0bfd1043-816e-e3e4-e050-11ac0c4860c5,0bfd1043-7344-fdd0-e050-11ac0c484cab,0bfd1068-3fcd-a95b-e050-11ac0c4860c3,0bfe2ac9-0afd-c248-e050-11ac0d487e1c,0bfd1068-3fd5-a95b-e050-11ac0c4860c3,0bfe2ac9-0afa-c248-e050-11ac0d487e1c,0bfd1043-7ec1-aaec-e050-11ac0c482f39,0bfd1043-817c-e3e4-e050-11ac0c4860c5,0bfd1043-5142-3662-e050-11ac0c486501,0bfd1043-817e-e3e4-e050-11ac0c4860c5,0bfebf9f-c781-e57d-e050-11ac0d487827,0bfd1043-8189-e3e4-e050-11ac0c4860c5,0c0038ff-6cc8-b0b0-e050-11ac0d483d73,0bfe2ac9-0af3-c248-e050-11ac0d487e1c,0bfebf9f-c783-e57d-e050-11ac0d487827,0bfe2ac9-0aff-c248-e050-11ac0d487e1c,0bfd1068-3fdd-a95b-e050-11ac0c4860c3,0bfd1068-3fe4-a95b-e050-11ac0c4860c3,0bfd1043-7343-fdd0-e050-11ac0c484cab,0bfe2ac9-0af8-c248-e050-11ac0d487e1c,0bfd1043-7ebf-aaec-e050-11ac0c482f39,0c0038ff-6cc6-b0b0-e050-11ac0d483d73,0bfd1043-7346-fdd0-e050-11ac0c484cab,0bfebf9f-c77f-e57d-e050-11ac0d487827,0c0038ff-6cc4-b0b0-e050-11ac0d483d73,0bfe2ac9-0af5-c248-e050-11ac0d487e1c,0bfebf9f-c779-e57d-e050-11ac0d487827,0bfe2ac9-0aec-c248-e050-11ac0d487e1c,0bfe2ac9-0aee-c248-e050-11ac0d487e1c,0bfd1043-7ed6-9ccc-e050-11ac0c481957,0bfd1043-8172-e3e4-e050-11ac0c4860c5,0bfd1068-3fdf-a95b-e050-11ac0c4860c3,0bfd1068-3fe1-a95b-e050-11ac0c4860c3,0bfd1043-8175-e3e4-e050-11ac0c4860c5,0bfebf9f-c77d-e57d-e050-11ac0d487827,0bfd1068-3fc3-a95b-e050-11ac0c4860c3,0bfd1043-8180-e3e4-e050-11ac0c4860c5,c3cb64b3-842b-4b42-8c42-020a0206eb06,74db46a8-a499-4951-af33-1d53b7d1c9b4,5df0aab4-0be2-4da3-a4b7-a10fca09a4ba,fd163b56-1c2d-4e63-9fad-ba3221ae274b,f1d73c2f-3d7d-4a0f-871b-b3bf76d865dc,84aa2983-714b-49fd-af93-f18ed4d6a6cb,052015bc-8c24-467c-8ff7-9e0dc4ad39fd,3b8ab548-6669-4142-9612-cafded0d7a23,9cdb1905-8b0f-48bd-ba37-11e7ac9646a0,1558629a-770a-4dcb-b0bf-9a8bcea9d80b,4c755527-3b5d-4d36-822d-990aa1003d6a,1bd47e40-d708-4ca2-b4b3-eb8d996c916b,b0f3087b-6f9c-47e9-b487-6726af1cb90b,6ff16b0d-5966-4119-9bec-c9ebff804a37,2b54d668-7585-4bf4-9fdd-aea3c5cd4fa4,280a069c-38e5-4300-a15c-2612301b70e3,7e10e325-16d2-42df-b957-df4d3a9477d0,1d6c9181-a02f-4c35-85b3-65dc5808f50e,2f79fe89-9d24-4fbe-ba5b-0ff6c3c4d663,9b75735b-705d-4ebf-92a0-fbb190b95285,db37739d-af50-4e63-9147-1a7d25630ac6,5fe8a231-bbac-4f91-a47a-0de4fee752d3,63faa59e-6649-412e-823a-338d0662ec72,95730d8b-327a-402c-a8bf-d71370f777a7,0bd3a230-531e-44aa-9999-b8ed8da0176b,339a2c94-55c9-4113-a706-b0971fa2784f,7a86abdc-d554-43bd-ad47-22d439c930ef,f9c6f4ca-4bb8-26b4-e040-11ac0d485600 
 ##################################################
 Histology: Eso-AdenoCA
-Number of samples available on SVELT but not available in the provided patterns: 1
+Number of samples available on Chromoscope but not available in the provided patterns: 1
 UUIDs of the missing samples: 526b3796-2cbd-4eec-8273-064b41456279 
 ##################################################
 Histology: CNS-GBM
-Number of samples available on SVELT but not available in the provided patterns: 2
+Number of samples available on Chromoscope but not available in the provided patterns: 2
 UUIDs of the missing samples: 841eb82b-347d-4d7f-805f-3f3701a2983d,2ce48f01-2f61-49d9-a56a-7438bf4a37d7 
 ##################################################
 Histology: Head-SCC
-Number of samples available on SVELT but not available in the provided patterns: 1
+Number of samples available on Chromoscope but not available in the provided patterns: 1
 UUIDs of the missing samples: d25a4c65-9cb4-4611-909e-e68f93408d84 
 ##################################################
 Histology: Kidney-RCC
-Number of samples available on SVELT but not available in the provided patterns: 1
+Number of samples available on Chromoscope but not available in the provided patterns: 1
 UUIDs of the missing samples: 72293a70-9dc8-4e4a-acdc-c74587a90420 
 ##################################################
 Histology: Liver-HCC
-Number of samples available on SVELT but not available in the provided patterns: 13
+Number of samples available on Chromoscope but not available in the provided patterns: 13
 UUIDs of the missing samples: 84a0bc36-9f29-4b23-aee1-bf5ff71f697b,ef78f09c-c622-11e3-bf01-24c6515278c0,cb573c96-f6d4-4897-8919-9827f623b6a7,2b569b88-c622-11e3-bf01-24c6515278c0,072f4146-c623-11e3-bf01-24c6515278c0,72c22a8c-c622-11e3-bf01-24c6515278c0,10db2142-c623-11e3-bf01-24c6515278c0,26de406e-c623-11e3-bf01-24c6515278c0,3f99ae0e-c623-11e3-bf01-24c6515278c0,520b8ab2-c623-11e3-bf01-24c6515278c0,632f3eb0-c623-11e3-bf01-24c6515278c0,690e481c-c623-11e3-bf01-24c6515278c0,6ce66be0-c623-11e3-bf01-24c6515278c0 
 ##################################################
 Histology: Lung-AdenoCA
-Number of samples available on SVELT but not available in the provided patterns: 1
+Number of samples available on Chromoscope but not available in the provided patterns: 1
 UUIDs of the missing samples: f5a97315-1906-4774-980e-0879c6ad368e 
 ##################################################
 Histology: Lung-SCC
-Number of samples available on SVELT but not available in the provided patterns: 1
+Number of samples available on Chromoscope but not available in the provided patterns: 1
 UUIDs of the missing samples: 692dfa4f-45e5-4183-b5da-6650a1fbcabd 
 ##################################################
 Histology: Ovary-AdenoCA
-Number of samples available on SVELT but not available in the provided patterns: 3
+Number of samples available on Chromoscope but not available in the provided patterns: 3
 UUIDs of the missing samples: 0ead45d8-d785-4404-8319-2ef951e02e03,37522f18-77b2-4414-8df8-3c2c8048adba,0664753b-7566-41e0-8006-7009c6735406 
 ##################################################
 Histology: Panc-AdenoCA
-Number of samples available on SVELT but not available in the provided patterns: 9
+Number of samples available on Chromoscope but not available in the provided patterns: 9
 UUIDs of the missing samples: 92dc0e0c-842f-40de-9c39-486b491ea80a,dd4fdb6a-8067-4b64-ab74-bbb0fec34ca9,541f91bd-7e9d-4348-9e78-45b948d8967e,0efee3f3-313b-44eb-b3b0-af975a1ded82,536dedba-46c4-4a21-b112-13c030b13069,bc395326-1656-4ef2-bb19-0cb29194b91c,a6ebe0c0-8aab-4b9f-8328-4b795895a77d,ec77847e-48fd-4ba5-bc3e-3cd1b149b552,60c33e32-7e19-4e71-b075-a63fcf27e660 
 ##################################################
 Histology: CNS-Medullo
-Number of samples available on SVELT but not available in the provided patterns: 5
+Number of samples available on Chromoscope but not available in the provided patterns: 5
 UUIDs of the missing samples: 4e361622-f9a8-4e9b-a89e-19bafebe1d6a,3b399659-8302-428a-9c97-1e7b455c9c2f,924bcc4a-c982-43bf-8bbb-641dc983d65e,5ab6a1d3-76f8-45d4-a430-d9831daa9ec4,86ae34f9-e16a-4593-8e55-b1296782bc1f 
 ##################################################
 Histology: Stomach-AdenoCA
-Number of samples available on SVELT but not available in the provided patterns: 7
+Number of samples available on Chromoscope but not available in the provided patterns: 7
 UUIDs of the missing samples: 1d0617e8-2725-4411-b50f-e46ea1d43242,ffb4f42b-58e9-40c3-8963-11804f041375,c73f3f82-3091-46dd-b667-e96a1d8c501c,606111e3-6b7d-42a6-b7d0-9d6c3e33acd6,dd9d2e9e-02dc-40fc-842b-c5b9707fca56,dbd834cb-b14f-4380-9741-f96551268447,dc107863-2c7d-4b19-8afb-666c7798f0da 
 ##################################################
 Histology: Uterus-AdenoCA
-Number of samples available on SVELT but not available in the provided patterns: 7
+Number of samples available on Chromoscope but not available in the provided patterns: 7
 UUIDs of the missing samples: bcf858fd-cc3b-4fde-ab10-eb96216f4366,accfc45b-eae0-4991-a488-e217cdb46655,950486ad-14f8-480a-b079-9cc3cd842090,c082dc34-457e-40ec-8258-e11e8ed362c2,638e80c7-9a6e-4a32-a621-fc4168e72343,9d2671b9-bd30-4e3c-aa74-01e31dd2531e,577d5c9e-fbda-41d5-b0b3-cdb733453ea5 
 ##################################################
 Histology: Panc-Endocrine
-Number of samples available on SVELT but not available in the provided patterns: 4
+Number of samples available on Chromoscope but not available in the provided patterns: 4
 UUIDs of the missing samples: 94b5dc5a-701a-45e3-8f63-8231031a055a,c307688c-b1fa-47f6-a9e2-1ea41f7645b6,94244f28-4ba2-4aa6-a0fb-0cd9b94bf9cc,4d2204f1-be84-4f58-b7e7-61ae9fbf6d25 
 ##################################################
 Histology: Myeloid-AML
-Number of samples available on SVELT but not available in the provided patterns: 3
+Number of samples available on Chromoscope but not available in the provided patterns: 3
 UUIDs of the missing samples: f8e61a02-8fbe-a9af-e040-11ac0d481b64,f8e61a02-90ec-96fd-e040-11ac0d481b5e,f8e61a02-654c-c226-e040-11ac0d481b60 
 ##################################################
 Histology: Lymph-CLL
-Number of samples available on SVELT but not available in the provided patterns: 5
+Number of samples available on Chromoscope but not available in the provided patterns: 5
 UUIDs of the missing samples: 49ce0836-adec-4f62-ac01-dbdfbb96d9fc,31a70598-33be-4f09-9990-bd7594467802,b7722577-f200-4dec-97f6-4fab3a9ba52d,2f324d8b-ec7b-4d3b-9d64-65f9fc6630a2,79524d64-8f4a-4889-b345-33198808b9de 
 ##################################################
 Histology: Bone-Osteosarc
-Number of samples available on SVELT but not available in the provided patterns: 3
+Number of samples available on Chromoscope but not available in the provided patterns: 3
 UUIDs of the missing samples: f856fa85-fdb8-c0b0-e040-11ac0d480b4e,f8696c79-b165-92a6-e040-11ac0c4804bf,f8467ec8-2d61-ba21-e040-11ac0c483584 
 ##################################################
 Histology: Bone-Benign
-Number of samples available on SVELT but not available in the provided patterns: 1
+Number of samples available on Chromoscope but not available in the provided patterns: 1
 UUIDs of the missing samples: fc96f0df-ef04-411e-e040-11ac0d484291 
 ##################################################
 Histology: Bone-Osteoblast
-Number of samples available on SVELT but not available in the provided patterns: 5
+Number of samples available on Chromoscope but not available in the provided patterns: 5
 UUIDs of the missing samples: fc998aec-57dd-eab2-e040-11ac0d48680a,fc99b734-7f61-88d1-e040-11ac0c482e88,fc99bbb0-e5c7-fb9e-e040-11ac0d4807e1,fc93e38d-6bd5-9912-e040-11ac0c4838cd,fc9469d0-4d0e-bb59-e040-11ac0d481e59 
 ##################################################
 Histology: Myeloid-MPN
-Number of samples available on SVELT but not available in the provided patterns: 28
+Number of samples available on Chromoscope but not available in the provided patterns: 28
 UUIDs of the missing samples: f903cfe2-c082-1bf6-e040-11ac0d4809f7,f8f7f274-dd98-3bb0-e040-11ac0c483fcd,f92b2c52-ed64-4594-e040-11ac0d48425c,f91faa2e-ea53-bef4-e040-11ac0d485f5d,f8e61a02-8c9e-aaee-e040-11ac0d481b6a,f8e61a02-938b-9428-e040-11ac0d481b6c,f9052bfc-94a0-cb29-e040-11ac0c48284a,f92c8821-daba-3727-e040-11ac0d480224,f942b732-7c0b-7ec6-e040-11ac0c483f86,f8f024e5-7096-3047-e040-11ac0d481c0f,f90dbdbf-f8cd-e0d8-e040-11ac0c482576,f920ef57-c942-d2e1-e040-11ac0d481706,f9012277-55c4-2486-e040-11ac0c48236f,f91a9af2-7909-099e-e040-11ac0c484205,f939f757-a415-ad44-e040-11ac0d4868e5,f8f9d9b8-abdd-1afb-e040-11ac0d480523,f91661d6-a2b5-fac2-e040-11ac0d4852fd,f937fc8b-6fa7-12fd-e040-11ac0d4850f9,f8e61a02-8c03-ad45-e040-11ac0d481b62,f90b298a-0546-6c36-e040-11ac0c487a0b,f925f24b-bffd-89ab-e040-11ac0d48682f,f93c9e35-c76c-2b59-e040-11ac0d485dee,f8efc19a-1e4b-e1b0-e040-11ac0c48104e,f9101872-d864-c508-e040-11ac0c4818b5,f93dd46d-4611-e84e-e040-11ac0c483323,f91d1645-9b68-edbb-e040-11ac0c4854d8,f8efa5ad-3a4d-39d6-e040-11ac0c480132,f9020478-c741-6776-e040-11ac0d481228 
 ##################################################
 Histology: Myeloid-MDS
-Number of samples available on SVELT but not available in the provided patterns: 1
+Number of samples available on Chromoscope but not available in the provided patterns: 1
 UUIDs of the missing samples: f90a074e-d82f-f6bb-e040-11ac0d487334 
 ##################################################
 Histology: Kidney-ChRCC
-Number of samples available on SVELT but not available in the provided patterns: 2
+Number of samples available on Chromoscope but not available in the provided patterns: 2
 UUIDs of the missing samples: 322f0b01-2118-4dbe-aba1-3875a54ee71b,9d29543e-8601-4fd0-8e76-3df3de465cab 
 ##################################################

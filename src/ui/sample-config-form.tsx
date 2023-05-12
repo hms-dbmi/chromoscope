@@ -38,6 +38,7 @@ const testOkay = {
 export default function SampleConfigForm(props: { onAdd: (config: ValidSampleConfig) => void }) {
     const { onAdd } = props;
     const [sampleConfig, setSampleConfig] = useState<SampleConfig>({});
+    const [showNewSampleConfig, setShowNewSampleConfig] = useState(false);
     const sampleOkayToAdd = useMemo(() => {
         let okay = true;
         Object.keys(testOkay).map(k => {
@@ -49,20 +50,55 @@ export default function SampleConfigForm(props: { onAdd: (config: ValidSampleCon
     return (
         <div className="menu-container">
             <div className="menu-title">
-                <span className="menu-title">Add New Sample</span>
                 <span
-                    className="menu-icon"
-                    style={{ float: 'right', marginRight: '40px' }}
-                    onClick={() => window.open('https://sehilyi.github.io/goscan/docs/#/data-config', '_blank')}
+                    className="menu-title"
+                    onClick={() => {
+                        setShowNewSampleConfig(!showNewSampleConfig);
+                    }}
+                    style={{ cursor: 'pointer', display: 'inline-block' }}
                 >
+                    Add New Sample
+                    {showNewSampleConfig ? (
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                        >
+                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                        </svg>
+                    ) : (
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                        >
+                            <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z" />
+                        </svg>
+                    )}
+                </span>
+                {/* <span
+                    className="menu-icon"
+                    style={{ float: 'right', marginRight: '40px', fontWeight: 300 }}
+                    onClick={() => window.open('https://chromoscope.bio/docs/#/data-config', '_blank')}
+                >
+                    Document{' '}
                     <svg width={16} height={16} viewBox={ICONS.DOCS.viewBox}>
                         {ICONS.DOCS.path.map(d => (
                             <path key={d} fill="currentColor" d={d} />
                         ))}
                     </svg>
-                </span>
+                </span> */}
             </div>
-            <div className="sample-config-form">
+            <div
+                className={showNewSampleConfig ? 'sample-config-form' : 'sample-config-form-hidden'}
+                onClick={() => {
+                    showNewSampleConfig ? null : setShowNewSampleConfig(true);
+                }}
+            >
                 <div className="menu-subtitle">Assembly</div>
                 <select
                     className="menu-dropdown"

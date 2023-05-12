@@ -31,14 +31,14 @@ Details about each of the fields, as well as accepted files, are described in [t
 
 ### Data Configuration
 
-You need to (1) make a data config file (`.json`) that contains the information for individual samples, (2) store the config file in a HTTPS file server (e.g., AWS S3 or [GitHub Gist](https://gist.github.com/)), and (3) use it with [the `external` parameter of the SVELT URL](url-parameters.md):
+You need to (1) make a data config file (`.json`) that contains the information for individual samples, (2) store the config file in a HTTPS file server (e.g., AWS S3 or [GitHub Gist](https://gist.github.com/)), and (3) use it with [the `external` parameter of the Chromoscope URL](url-parameters.md):
 
 ```
 // format
-https://sehilyi.github.io/goscan/?external=[URL_TO_YOUR_CONFIG_FILE]
+https://chromoscope.bio/?external=[URL_TO_YOUR_CONFIG_FILE]
 
 // example
-https://sehilyi.github.io/goscan/?external=https://gist.githubusercontent.com/sehilyi/a9bbbc3e63806d2282e1959e27a65a53/raw/b6c0ab07a220027196746f46607e916bd9751c70/goscan-multiple-samples.json
+https://chromoscope.bio/?external=https://gist.githubusercontent.com/sehilyi/a9bbbc3e63806d2282e1959e27a65a53/raw/b6c0ab07a220027196746f46607e916bd9751c70/goscan-multiple-samples.json
 ```
 
 For each sample, you need to prepare the following information in a JSON object.
@@ -49,8 +49,8 @@ For each sample, you need to prepare the following information in a JSON object.
 | `cancer` | `string` | Required. Type of a cancer. |
 | `assembly` | `'hg38'` or `'hg19'` | Required. Assembly. |
 | `sv` | `string` | Required. An URL of the SV bedpe file (`.bedpe`). |
-| `cnv` | `string` | Required. An URL of the CNV text file (`.txt`). |
-| `drivers` | `string` | Optional. An URL of a file that contains drivers (`.txt`). |
+| `cnv` | `string` | Required. An URL of the CNV text file (`.tsv`). |
+| `drivers` | `string` | Optional. An URL of a file that contains drivers (`.tsv` or `.json`). |
 | `vcf` | `string` | Optional. An URL of the point mutation file (`.vcf`). |
 | `vcfIndex` | `string` | Optional. An URL of the point mutation index file (`.tbi`). |
 | `vcf2` | `string` | Optional. An URL of the the indel file (`.vcf`). |

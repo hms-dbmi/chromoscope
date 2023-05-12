@@ -1,13 +1,17 @@
 {
-    "name": "goscan",
-    "version": "0.0.0",
+    "name": "chromoscope",
+    "version": "0.1.1",
     "license": "MIT",
-    "homepage": "https://sehilyi.github.io/goscan/",
+    "homepage": "https://chromoscope.bio",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hms-dbmi/chromoscope"
+    },
     "scripts": {
         "start": "vite",
         "build": "vite build",
         "serve": "vite preview",
-        "predeploy": "yarn build",
+        "predeploy": "yarn build; echo \"chromoscope.bio\" >> dist/CNAME",
         "format": "eslint src/ --fix && prettier --write *",
         "deploy": "touch dist/.nojekyll; cp -R docs dist/docs; gh-pages -d dist -t --git git",
         "doc-serve": "docsify serve docs",

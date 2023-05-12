@@ -1,4 +1,15 @@
-  - **Loading Data**
+- **Visualizations**
+    - [Introduction](/how-to-use.md#visualizations)
+    - [Cohort View](/how-to-use.md#cohort-view)
+    - [Genome View](/how-to-use.md#genome-view)
+    - [Variant View](/how-to-use.md#variant-view)
+    - [Breakpoint View](/how-to-use.md#breakpoint-view)
+    - [Additional Interactions](/how-to-use.md#additional-interactions)
+    - [Using Python Package](/python.md)
+    <!-- - [Relation to Gosling](/gosling.md) -->
+- **Examples**
+    - [Available Data](/public-data-config.md)
+- **Loading Data**
     - [Overview](/data-config.md#loading-data) 
     - [Through Interface](/data-config.md#loading-data-through-interface) 
     - [Through Data Config](/data-config.md#data-configuration) 
@@ -8,16 +19,6 @@
     - [Loading Local Data](/private_data.md)
     - [Loading Private Data](/presigned_urls.md)
     - [Cohort Config Creation](/cohort_configs.md)
-- **Visualizations**
-    - [Introduction](/how-to-use.md#visualizations)
-    - [Cohort View](/how-to-use.md#cohort-view)
-    - [Genome View](/how-to-use.md#genome-view)
-    - [Variant View](/how-to-use.md#variant-view)
-    - [Breakpoint View](/how-to-use.md#breakpoint-view)
-    - [Additional Interactions](/how-to-use.md#additional-interactions)
-    - [Relation to Gosling](/gosling.md)
-- **Examples**
-    - [Available Data](/public-data-config.md)
 - **Help**
     - [FAQ](/faq.md)
     - [Contact](/contact.md)

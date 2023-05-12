@@ -1,9 +1,9 @@
 # URL Parameters
 
-There are multiple parameters available that you can used along with the base URL (`https://sehilyi.github.io/goscan/`). The pattern of using the parameters is like the following:
+There are multiple parameters available that you can used along with the base URL (`https://chromoscope.bio/`). The pattern of using the parameters is like the following:
 
 ```
-https://sehilyi.github.io/goscan/?[parameter1]=[value1]&[parameter2]=[value2]
+https://chromoscope.bio/?[parameter1]=[value1]&[parameter2]=[value2]
 ```
 
 The supported parameters are as follows:
@@ -19,10 +19,10 @@ The supported parameters are as follows:
 <br/><br/>
 ✅ **Correct**
 <br/>
-https://sehilyi.github.io/goscan/?showSamples=true&external=[URL]
+https://chromoscope.bio/?showSamples=true&external=[URL]
 <br/><br/>
 ❌ **Incorrect**
 <br/>
-https://sehilyi.github.io/goscan/?external=[URL]&showSamples=true
+https://chromoscope.bio/?external=[URL]&showSamples=true
 <br/><br/>
 This allows the external URL to have its own parameters (e.g., authenticated preassigned URL)

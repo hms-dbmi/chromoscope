@@ -22,11 +22,15 @@
     height: 1px;
     border-top: 1px solid lightgrey;
 }
+.sample-config-form-hidden,
 .sample-config-form {
     width: calc(100% - 80px);
     border-radius: 10px;
     background-color: rgb(244, 244, 244);
     padding: 20px;
+}
+.sample-config-form-hidden {
+    visibility: collapse;
 }
 .menu-button,
 .menu-button-disallowed {
