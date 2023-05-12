@@ -2,7 +2,7 @@
 
 ## Overview
 
-Two Python scripts are provided to automate the creation of configuration files using private data on an S3 bucket via presigned URLs, once the [setup prerequisites](./presigned_urls.md#prerequisites) have been met, since the AWS Python API `boto3` is used within these scripts. [create_presigned_urls.py](../scripts/presigned_url_scripts/create_presigned_urls.py) contains a function used to generate a presigned URL for a private object within an S3 object. [generate_config_files.py](../scripts/presigned_url_scripts/generate_config_files.py) accesses an S3 bucket containing private objects, generates a presigned URL for every object needed for the Chromoscope configuration file, creates the configuration file locally, then copies the newly created configuration file to the same S3 bucket and generates a presigned URL for it.
+Two Python scripts are provided to automate the creation of configuration files using private data on an S3 bucket via presigned URLs, once the [setup prerequisites](./presigned_urls.md#prerequisites) have been met, since the AWS Python API `boto3` is used within these scripts. [create_presigned_urls.py](https://github.com/hms-dbmi/chromoscope/blob/master/scripts/presigned_url_scripts/create_presigned_urls.py) contains a function used to generate a presigned URL for a private object within an S3 object. [generate_config_files.py](https://github.com/hms-dbmi/chromoscope/blob/master/scripts/presigned_url_scripts/generate_config_files.py) accesses an S3 bucket containing private objects, generates a presigned URL for every object needed for the Chromoscope configuration file, creates the configuration file locally, then copies the newly created configuration file to the same S3 bucket and generates a presigned URL for it.
 
 The latter script is designed to create Chromoscope configuration files for cohorts of samples, allowing a user to compare samples within the same cohort visually using Chromoscope. There are several requirements for successful execution of this script:
 * Structure of a [TSV file containing sample IDs](#sample-id-list) is as expected
@@ -14,7 +14,7 @@ The latter script is designed to create Chromoscope configuration files for coho
 
 ## Sample ID List
 
-When creating a configuration file for a cohort using [generate_config_files.py](../scripts/presigned_url_scripts/generate_config_files.py), a tab-delimited file (TSV) is taken as input to define a list of sample IDs within the cohort. These sample IDs leverage the [expected structure of the subdirectories](#subdirectory-structure) within the S3 bucket to link appropriate files to their corresponding sample within the configuration file, as well as define the `id` property for each sample within the configuration file. **This file must include a column named `ID`, under which the sample IDs are defined,** and should be saved within the cohort's S3 directory.
+When creating a configuration file for a cohort using [generate_config_files.py](https://github.com/hms-dbmi/chromoscope/blob/master/scripts/presigned_url_scripts/generate_config_files.py), a tab-delimited file (TSV) is taken as input to define a list of sample IDs within the cohort. These sample IDs leverage the [expected structure of the subdirectories](#subdirectory-structure) within the S3 bucket to link appropriate files to their corresponding sample within the configuration file, as well as define the `id` property for each sample within the configuration file. **This file must include a column named `ID`, under which the sample IDs are defined,** and should be saved within the cohort's S3 directory.
 
 ?> Note: Samples are added to the configuration file in the order they are listed in the ID TSV file. To change the ordering of the samples within Chromoscope, the order can be manually altered within the ID file. 
 
@@ -117,7 +117,7 @@ EXAMPLE_S3_BUCKET/EXAMPLE_COHORT_NAME/
 
 **Python version**: 3.8 and newer
 
-[**Packages**](../scripts/presigned_url_scripts/requirements.txt):
+[**Packages**](https://github.com/hms-dbmi/chromoscope/blob/master/scripts/presigned_url_scripts/requirements.txt):
 - [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) (version 1.26.131)
 - [pandas](https://pandas.pydata.org/) (version 2.0.1)
 
