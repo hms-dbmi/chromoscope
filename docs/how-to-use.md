@@ -62,6 +62,8 @@ The breakpoint view shows reads around breakpoints and highlights pairs of reads
 |---|
 |**Figure.** Upon clicking on a SV in a linear view (top), a breakpoint view (bottom) appears that shows read alignments around two corresponding breakpoints. Black vertical lines in both views represent the positions of selected breakpoints. |
 
+?> The breakpoing view shows the sequence track only if BAM files are not contained in the selected sample.
+
 ?> Loading the breakpoint view may take up to few minutes.
 
 __Colors__
