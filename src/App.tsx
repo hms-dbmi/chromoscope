@@ -79,6 +79,7 @@ function App(props: RouteComponentProps) {
     const [demo, setDemo] = useState(
         selectedSamples[demoIndex.current < selectedSamples.length ? demoIndex.current : 0]
     );
+    const externalDemoUrl = useRef<string>();
 
     const currentSpec = useRef<string>();
 
@@ -720,7 +721,9 @@ function App(props: RouteComponentProps) {
                                 let newUrl = window.location.origin + window.location.pathname + '?';
                                 newUrl += `demoIndex=${demoIndex.current}`;
                                 newUrl += `&domain=${xDomain.join('-')}`;
-                                if (externalUrl) {
+                                if (externalDemoUrl.current) {
+                                    newUrl += `&external=${externalDemoUrl.current}`;
+                                } else if (externalUrl) {
                                     newUrl += `&external=${externalUrl}`;
                                 }
                                 navigator.clipboard
@@ -887,6 +890,7 @@ function App(props: RouteComponentProps) {
                                                         ];
                                                 }
                                                 if (externalDemo) {
+                                                    externalDemoUrl.current = url;
                                                     setDemo(externalDemo);
                                                 }
                                             })

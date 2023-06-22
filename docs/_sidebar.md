@@ -4,7 +4,7 @@
     - [Genome View](/how-to-use.md#genome-view)
     - [Variant View](/how-to-use.md#variant-view)
     - [Breakpoint View](/how-to-use.md#breakpoint-view)
-    - [Additional Interactions](/how-to-use.md#additional-interactions)
+    - [Navigation](/how-to-use.md#navigation)
     - [Using Python Package](/python.md)
     <!-- - [Relation to Gosling](/gosling.md) -->
 - **Examples**
