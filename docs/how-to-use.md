@@ -1,8 +1,5 @@
 # Visualizations
 
-<!-- ?> 🚧 This page is work in progress 🚧 -->
-<!-- ![interface](assets/interface.png ':class=image') -->
-
 Chromoscope offers four main visualizations that enable you to explore structural variants at multiple scales: 
 1. [Cohort View](#cohort-view)
 1. [Genome View](#genome-view)
@@ -81,6 +78,9 @@ __Interactions__
 |**Figure.** The Header of the Browser. Right next to the sample name, there are multiple types of export buttons. |
 
 ### Navigation
+
+![interface](assets/overall.gif ':class=image')
+
 All visualizations in Chromoscope are interactive which is designed to support easy-navigation between genomic regions of interest across scales.
 
 |![Header](./assets/navigation-buttons.png)|
