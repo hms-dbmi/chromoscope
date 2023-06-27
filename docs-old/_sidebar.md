@@ -1,0 +1,25 @@
+- **Visualizations**
+    - [Introduction](/how-to-use.md#visualizations)
+    - [Cohort View](/how-to-use.md#cohort-view)
+    - [Genome View](/how-to-use.md#genome-view)
+    - [Variant View](/how-to-use.md#variant-view)
+    - [Breakpoint View](/how-to-use.md#breakpoint-view)
+    - [Navigation](/how-to-use.md#navigation)
+    - [Using Python Package](/python.md)
+    <!-- - [Relation to Gosling](/gosling.md) -->
+- **Examples**
+    - [Available Data](/public-data-config.md)
+- **Loading Data**
+    - [Overview](/data-config.md#loading-data) 
+    - [Through Interface](/data-config.md#loading-data-through-interface) 
+    - [Through Data Config](/data-config.md#data-configuration) 
+    - [Data Formats](/data-formats.md)
+    - [Thumbnails](/thumbnails.md)
+    - [URL Parameters](/url-parameters.md)
+    - [Loading Local Data](/private_data.md)
+    - [Loading Private Data](/presigned_urls.md)
+    - [Cohort Config Creation](/cohort_configs.md)
+- **Help**
+    - [FAQ](/faq.md)
+    - [Contact](/contact.md)
+    

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Chromoscope Documentation</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="description" content="Description" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+        <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet" />
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/buble.css" />
+        <style>
+            body {
+                font-family: 'inter', Arial, Helvetica, sans-serif;
+                font-size: 18px;
+            }
+            a {
+                text-decoration-color: #5cb6ea !important;
+                text-underline-offset: 3px !important;
+                text-decoration-thickness: 2px !important;
+                color: inherit !important;
+            }
+            a:hover {
+                text-decoration-color: #5cb6ea !important;
+                text-decoration-thickness: 3px !important;
+            }
+            td {
+                /* Figure Captions and Tables */
+                font-size: 16px;
+            }
+            .markdown-section li {
+                line-height: 2;
+                padding-left: 10px;
+            }
+            .markdown-section p.warn {
+                background: #e6a01b1a;
+                border-left: 4px solid #e6a01b39;
+                border-radius: 0px;
+            }
+            .markdown-section h3 {
+                margin: 1.2rem 0;
+            }
+            .sidebar {
+                border-right: 1px solid lightgrey;
+            }
+            .sidebar ul li.active {
+                background-color: rgba(211, 211, 211, 0.234);
+            }
+            .sidebar ul li.active > a {
+                border-right: 3px solid #5cb6ea;
+            }
+            .sidebar-nav strong {
+                font-weight: 600;
+            }
+            .image,
+            .image-small {
+                border: 1px solid lightgrey;
+            }
+            .image-small {
+                max-width: 500px;
+            }
+            .image-medium {
+                max-width: 800px;
+            }
+            .markdown-section pre {
+                padding: 0 10px;
+                border-radius: 24px;
+                font-size: 20px;
+            }
+            .markdown-section pre > code {
+                line-height: 2rem;
+            }
+            .markdown-section h1 {
+                font-weight: bolder;
+            }
+            .markdown-section h2 {
+                font-weight: 500;
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <a href="https://chromoscope.bio/" target="_blank">Demo</a>
+            <a href="https://github.com/hms-dbmi/chromoscope" target="_blank">GitHub</a>
+        </nav>
+        <div id="app">Please wait...</div>
+        <script>
+            // Examples:
+            // https://github.com/docsifyjs/awesome-docsify#showcase
+            window.$docsify = {
+                name: 'Chromoscope',
+                // repo: 'https://github.com/hms-dbmi/chromoscope',
+                // Comment out the following line for the debug
+                // basePath: 'https://sehilyi.github.io/',
+                // routerMode: 'history',
+                auto2top: true,
+                loadSidebar: true,
+                coverpage: false,
+                subMaxLevel: 2
+            };
+        </script>
+        <!-- Docsify v4 -->
+        <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+    </body>
+</html>
