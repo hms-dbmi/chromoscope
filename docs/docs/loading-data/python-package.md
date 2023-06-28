@@ -1,4 +1,8 @@
-# Using the Python Package
+---
+sidebar_position: 9
+---
+
+# Using Python Package
 
 You can use a [Chromoscope Python package](https://pypi.org/project/chromoscope/) to visualize your local SV files directly on computational notebooks, such as [Jupyter Notebook](https://jupyter.org/), [Jupyter Lab](https://jupyter.org/), and [Google Colab](https://colab.research.google.com/).
 

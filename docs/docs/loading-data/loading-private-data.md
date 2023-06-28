@@ -1,6 +1,10 @@
+---
+sidebar_position: 7
+---
+
 # Loading Private Data
 
-This article details how to set up security credentials for an Amazon Web Services (AWS) account and temporarily visualize data stored in private S3 buckets (all public access blocked) via [presigned URLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ShareObjectPreSignedURL.html). Presigned URLs are used in provided scripts described in the [following section](./cohort_configs.md), to create configuration files for large cohorts of sample data saved on private S3 buckets.
+This article details how to set up security credentials for an Amazon Web Services (AWS) account and temporarily visualize data stored in private S3 buckets (all public access blocked) via [presigned URLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ShareObjectPreSignedURL.html). Presigned URLs are used in provided scripts described in the [following section](./cohort-config-creation), to create configuration files for large cohorts of sample data saved on private S3 buckets.
 
 ## Prerequisites
 
@@ -54,7 +58,7 @@ bucket = s3.Bucket('<bucket_name>')
 for bucket_obj in bucket.objects.all():
     print(bucket_obj.key)
 ```
-The latter will list *all* items within the given bucket recursively. *boto3* is also utilized within [example scripts within this repository for creating presigned URLs for cohorts of samples](./cohort_configs.md).
+The latter will list *all* items within the given bucket recursively. *boto3* is also utilized within [example scripts within this repository for creating presigned URLs for cohorts of samples](./cohort-config-creation).
 
 ## AWS Presigned URLs
 
@@ -64,7 +68,7 @@ Programmatically, a presigned URL can be created using the AWS CLI using the [`p
 
 ### Presigned URLs within Chromoscope
 
-The ability to create presigned URLs not only allows for controlled, temporary visualization/sharing of private data, but also provides mode of sharing large amounts of data stored on the AWS cloud. Presigned URLs can be (1) used directly within a [Chromoscope configuration file](https://chromoscope.bio/docs/#/data-config?id=data-configuration), linking to data for individual samples (simple single-sample example below): 
+The ability to create presigned URLs not only allows for controlled, temporary visualization/sharing of private data, but also provides mode of sharing large amounts of data stored on the AWS cloud. Presigned URLs can be (1) used directly within a [Chromoscope configuration file](./through-data-config), linking to data for individual samples (simple single-sample example below): 
 ```json
 [
     {
@@ -77,7 +81,7 @@ The ability to create presigned URLs not only allows for controlled, temporary v
 ]
 ```
 
-and/or (2) as a temporary URL for the configuration file itself (if it is saved as a private object within an S3 bucket), used as the argument for [the `external` parameter of a Chromoscope URL](url-parameters.md):
+and/or (2) as a temporary URL for the configuration file itself (if it is saved as a private object within an S3 bucket), used as the argument for [the `external` parameter of a Chromoscope URL](./url-parameters):
 ```
 // format
 https://chromoscope.bio/?external=[PRESIGNED_URL_FOR_YOUR_CONFIG_FILE]

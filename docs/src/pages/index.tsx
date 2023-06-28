@@ -16,11 +16,11 @@ function HomepageHeader() {
             <div className="container">
                 <h1 className="hero__title">{siteConfig.title}</h1>
                 <p className="hero__subtitle">{siteConfig.tagline}</p>
-                <div className={styles.buttons}>
+                {/* <div className={styles.buttons}>
                     <Link className="button button--secondary button--lg" to="/docs/intro">
                         Documentation
                     </Link>
-                </div>
+                </div> */}
             </div>
         </header>
     );
@@ -31,9 +31,9 @@ export default function Home(): JSX.Element {
     return (
         <Layout title={siteConfig.title}>
             <HomepageHeader />
-            {/* <div className="text--center" style={{padding: 30}}>
-                <img src={teaser} width={800}/>
-            </div> */}
+            <div className="text--center" style={{ paddingTop: 30 }}>
+                <img src={teaser} width={1000} />
+            </div>
             <main>
                 <HomepageFeatures />
             </main>

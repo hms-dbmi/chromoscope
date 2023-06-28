@@ -1,3 +1,7 @@
+---
+sidebar_position: 5
+---
+
 # URL Parameters
 
 There are multiple parameters available that you can used along with the base URL (`https://chromoscope.bio/`). The pattern of using the parameters is like the following:
@@ -15,14 +19,16 @@ The supported parameters are as follows:
 | `showSamples` | Whether to show the sample overview upon landing the page | `true` or `false` |
 | `external` | URL to data config | `https://gist.githubsercontent.com/sehilyi/example-datahub.json` |
 
-!> The `external` parameter should be positioned at the last if multiple parameters are used.
-<br/><br/>
+:::caution
+The `external` parameter should be positioned at the last if multiple parameters are used.
+
 ✅ **Correct**
-<br/>
+
 https://chromoscope.bio/?showSamples=true&external=[URL]
-<br/><br/>
+
 ❌ **Incorrect**
-<br/>
+
 https://chromoscope.bio/?external=[URL]&showSamples=true
-<br/><br/>
+
 This allows the external URL to have its own parameters (e.g., authenticated preassigned URL)
+:::

@@ -1,6 +1,12 @@
+---
+sidebar_position: 6
+---
+
 # Loading Local Data
 
-!> You may also want to see the [Chromoscope Python package](#python), which allows you to load local files on computational notebooks.
+:::tip
+You may also want to see the [Chromoscope Python package](./python-package), which allows you to load local files on computational notebooks.
+:::
 
 You can run a local file server to display local files on Chromoscope. This enables you to safely visualize your private files. There are multiple light and easy-to-install file servers. In this page, we will use [http-server](https://www.npmjs.com/package/http-server) for the demonstration.
 
@@ -26,11 +32,13 @@ Now, you can browse files that are located under the selected folder using your 
 
 ![server](../assets/private-data-local-server.png ':class=image-small')
 
-?> Also see https://stackoverflow.com/a/16350826
+:::tip
+Also see https://stackoverflow.com/a/16350826
+:::
 
 ## Make Data Config
 
-Using the URL of the local files, you can make a [data config](data-config.md). For example, the following example uses two files (i.e., SV and CNV) based on the local files.
+Using the URL of the local files, you can make a [data config](./through-data-config). For example, the following example uses two files (i.e., SV and CNV) based on the local files.
 
 ```json
 {

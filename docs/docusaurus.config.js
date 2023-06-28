@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
     title: 'Chromoscope',
     tagline: 'An interactive visualization tool that supports multiscale and multiform visualizations',
-    favicon: 'img/favicon.ico',
+    // favicon: 'img/favicon.ico',
 
     // Set the production url of your site here
     url: 'https://your-docusaurus-test-site.com',
@@ -41,8 +41,7 @@ const config = {
                     sidebarPath: require.resolve('./sidebars.js'),
                     // Please change this to your repo.
                     // Remove this to remove the "edit this page" links.
-                    editUrl:
-                        'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/'
+                    editUrl: 'https://github.com/hms-dbmi/chromoscope/tree/main/docs'
                 },
                 // blog: {
                 //   showReadingTime: true,
@@ -74,9 +73,9 @@ const config = {
                         type: 'docSidebar',
                         sidebarId: 'docsSidebar',
                         position: 'left',
-                        label: 'Docs'
+                        label: 'Documentation'
                     },
-                    // {to: '/blog', label: 'Blog', position: 'left'},
+                    { to: 'about', label: 'About', position: 'left' },
                     {
                         href: 'https://github.com/hms-dbmi/chromoscope',
                         label: 'GitHub',
@@ -93,11 +92,15 @@ const config = {
                 style: 'dark',
                 links: [
                     {
-                        title: 'Docs',
+                        title: 'Learn',
                         items: [
                             {
-                                label: 'Tutorial',
+                                label: 'Documentation',
                                 to: '/docs/intro'
+                            },
+                            {
+                                label: 'About',
+                                to: '/about'
                             }
                         ]
                     },
