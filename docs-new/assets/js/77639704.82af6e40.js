@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[7940],{1272:e=>{e.exports=JSON.parse('{"title":"Help","slug":"/category/help","permalink":"/docs-new/docs/category/help","navigation":{"previous":{"title":"Using Python Package","permalink":"/docs-new/docs/loading-data/python-package"},"next":{"title":"Q & A","permalink":"/docs-new/docs/help/faq"}}}')}}]);
