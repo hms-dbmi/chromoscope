@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Data Formats
 
-This page describes file formats used in Chromoscope. To find a list of required and optional files, please refer to the [Data Configuration section](data-config.md#data-configuration).
+This page describes file formats used in Chromoscope. To find a list of required and optional files, please refer to the [Data Configuration section](./through-data-config).
 
 ## Structural Variants (BEDPE)
 <!-- https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format -->

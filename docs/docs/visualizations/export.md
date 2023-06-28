@@ -21,5 +21,5 @@ To enable further fine-grained customization (e.g., changing colors or sizes), t
 For the effective and efficient communication of findings made with Chromoscope, the tool generates a shareable URL that encodes the current visualization state, including the loaded datahub, selected sample, and genomic locations most recently viewed.
 
 :::info
-To understand the individual parameters of the exported URL, please refer to the [corresponding section](/url-parameters.md).
+To understand the individual parameters of the exported URL, please refer to the [corresponding section](../loading-data/url-parameters).
 :::
