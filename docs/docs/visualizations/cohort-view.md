@@ -19,7 +19,7 @@ The four items listed on the bottom of each circular visualization (SV, Point Mu
 ## Interactions
 
 - You can click on a sample in this view to analyze them using three visualizations which are in the following sections.
-- You can also browse [PCAWG Data](/public-data-config?id=pcawg-data) or [load a small number of your datasets](/data-config?id=loading-data-through-interface).
+- You can also browse [PCAWG Data](./public-data-config?id=pcawg-data) or [load a small number of your datasets](/data-config?id=loading-data-through-interface).
 
 :::tip
 You can find this view by clicking on a "≡" button shown on the top-left corner of the browser.

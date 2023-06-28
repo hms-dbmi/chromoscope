@@ -21,3 +21,16 @@
     align-items: left;
     justify-content: left;
 }
+
+/* reference: https://github.com/facebook/docusaurus/blob/275f509d13f20dcb7758f114b04aa4ab01f4e4b8/website/src/pages/styles.module.css#L151 */
+.indexCtas {
+    --ifm-button-size-multiplier: 1.6;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 24px;
+}
+
+.indexCtas a:not(:last-of-type) {
+    margin-right: 24px;
+}

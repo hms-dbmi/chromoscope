@@ -1,0 +1,9 @@
+{
+    "label": "Use Cases",
+    "position": 4,
+    "link": {
+        "type": "generated-index",
+        "description": "We describe use cases of Chromoscope using human genome data."
+    },
+    "collapsed": true
+}

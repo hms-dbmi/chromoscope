@@ -32,7 +32,7 @@ const FeatureList: FeatureItem[] = [
         description: <>All views in Chromoscope are interactive, allowing a user to explore data effectively.</>
     },
     {
-        title: 'Easy-to-setup',
+        title: 'Easy to Setup',
         // Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
         description: <>Chromoscope users can load their data without setting up a dedicated server.</>
     }

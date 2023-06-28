@@ -1,0 +1,9 @@
+{
+    "label": "Available Data",
+    "position": 3,
+    "link": {
+        "type": "generated-index",
+        "description": "We offer several structural variation data that can be directly browsed in Chromoscope."
+    },
+    "collapsed": true
+}

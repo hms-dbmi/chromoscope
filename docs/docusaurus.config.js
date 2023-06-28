@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
     title: 'Chromoscope',
-    tagline: 'An interactive visualization tool that supports multiscale and multiform visualizations',
+    tagline: 'Interactive multiscale visualization for structural variation in human genomes',
     // favicon: 'img/favicon.ico',
 
     // Set the production url of your site here
@@ -56,7 +56,6 @@ const config = {
             })
         ]
     ],
-
     themeConfig:
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
@@ -77,14 +76,15 @@ const config = {
                     },
                     { to: 'about', label: 'About', position: 'left' },
                     {
-                        href: 'https://github.com/hms-dbmi/chromoscope',
-                        label: 'GitHub',
-                        position: 'right'
-                    },
-                    {
                         href: 'https://chromoscope.bio',
                         label: 'Demo',
                         position: 'right'
+                    },
+                    {
+                        href: 'https://github.com/hms-dbmi/chromoscope',
+                        position: 'right',
+                        className: 'header-github-link',
+                        'aria-label': 'GitHub repository'
                     }
                 ]
             },
@@ -132,6 +132,35 @@ const config = {
             prism: {
                 theme: lightCodeTheme,
                 darkTheme: darkCodeTheme
+            },
+            algolia: {
+                // The application ID provided by Algolia
+                appId: 'EXUDS2PZ19',
+
+                // Public API key: it is safe to commit it
+                apiKey: '9f93a21d0b781b87bdfbd2f925a0afa3',
+
+                indexName: 'chromoscope',
+
+                // Optional: see doc section below
+                contextualSearch: true
+
+                // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
+                // externalUrlRegex: 'external\\.com|domain\\.com',
+
+                // Optional: Replace parts of the item URLs from Algolia. Useful when using the same search index for multiple deployments using a different baseUrl. You can use regexp or string in the `from` param. For example: localhost:3000 vs myCompany.com/docs
+                // replaceSearchResultPathname: {
+                //   from: '/docs/', // or as RegExp: /\/docs\//
+                //   to: '/',
+                // },
+
+                // Optional: Algolia search parameters
+                // searchParameters: {},
+
+                // Optional: path for search page that enabled by default (`false` to disable it)
+                // searchPagePath: 'search',
+
+                //... other Algolia params
             }
         })
 };

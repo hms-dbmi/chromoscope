@@ -7,12 +7,12 @@ sidebar_position: 8
 
 ## Overview
 
-Two Python scripts are provided to automate the creation of configuration files using private data on an S3 bucket via presigned URLs, once the [setup prerequisites](./presigned_urls.md#prerequisites) have been met, since the AWS Python API `boto3` is used within these scripts. [create_presigned_urls.py](https://github.com/hms-dbmi/chromoscope/blob/master/scripts/presigned_url_scripts/create_presigned_urls.py) contains a function used to generate a presigned URL for a private object within an S3 object. [generate_config_files.py](https://github.com/hms-dbmi/chromoscope/blob/master/scripts/presigned_url_scripts/generate_config_files.py) accesses an S3 bucket containing private objects, generates a presigned URL for every object needed for the Chromoscope configuration file, creates the configuration file locally, then copies the newly created configuration file to the same S3 bucket and generates a presigned URL for it.
+Two Python scripts are provided to automate the creation of configuration files using private data on an S3 bucket via presigned URLs, once the [setup prerequisites](./loading-private-data#prerequisites) have been met, since the AWS Python API `boto3` is used within these scripts. [create_presigned_urls.py](https://github.com/hms-dbmi/chromoscope/blob/master/scripts/presigned_url_scripts/create_presigned_urls.py) contains a function used to generate a presigned URL for a private object within an S3 object. [generate_config_files.py](https://github.com/hms-dbmi/chromoscope/blob/master/scripts/presigned_url_scripts/generate_config_files.py) accesses an S3 bucket containing private objects, generates a presigned URL for every object needed for the Chromoscope configuration file, creates the configuration file locally, then copies the newly created configuration file to the same S3 bucket and generates a presigned URL for it.
 
 The latter script is designed to create Chromoscope configuration files for cohorts of samples, allowing a user to compare samples within the same cohort visually using Chromoscope. There are several requirements for successful execution of this script:
 * Structure of a [TSV file containing sample IDs](#sample-id-list) is as expected
 * [Directory structure](#subdirectory-structure) in the S3 bucket containing the private data is as expected
-* [File formats](data-config.md#data-configuration) for different kinds of data are of correct type, i.e. correct file extensions are used
+* [File formats](./through-data-config#data-configuration) for different kinds of data are of correct type, i.e. correct file extensions are used
 * All samples within the cohort have the same **cancer type** and same **assembly**
 
 
@@ -36,7 +36,7 @@ EXAMPLE_S3_BUCKET/
 └── COHORT_N/
 ```
 
-Within the cohort's directory, the data should be subdivided into subdirectories corresponding to the following categories, with certain filetypes grouped together by sample (according to the [data formats](data-formats.md) documentation):
+Within the cohort's directory, the data should be subdivided into subdirectories corresponding to the following categories, with certain filetypes grouped together by sample (according to the [data formats](./data-formats) documentation):
 
 | Subdirectory | Number of files (per sample) | Filetypes | Required |
 |---|---|---|---|
@@ -113,7 +113,7 @@ EXAMPLE_S3_BUCKET/EXAMPLE_COHORT_NAME/
 
 ?> The `configuration files` subdirectory, if not provided, is by default identified by the name **"CONFIGS"**. If it does not exist within the bucket, a new directory with this name will be created, and generated configuration files added to it. The configuration files are named by the time of their creation.
 
-?> Note: If pairwise files don't pair correctly due to user error (e.g. a pair not of the same sample, not of correct file format), that category/parameter for that sample will not render within Chromoscope. This can be checked by manually inspecting samples within [cohort view](how-to-use.md#cohort-view).
+?> Note: If pairwise files don't pair correctly due to user error (e.g. a pair not of the same sample, not of correct file format), that category/parameter for that sample will not render within Chromoscope. This can be checked by manually inspecting samples within [cohort view](../visualizations/cohort-view).
 
 
 ## Creation Scripts Usage
