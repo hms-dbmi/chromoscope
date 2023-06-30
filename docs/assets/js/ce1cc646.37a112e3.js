@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[4365],{6371:e=>{e.exports=JSON.parse('{"title":"Help","slug":"/category/help","permalink":"/docs/category/help","navigation":{"previous":{"title":"Biallelic Loss of CDK12","permalink":"/docs/use-cases/cdk12"},"next":{"title":"Q & A","permalink":"/docs/help/faq"}}}')}}]);
