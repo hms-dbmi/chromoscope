@@ -1,0 +1,9 @@
+{
+    "label": "Visualizations",
+    "position": 1,
+    "link": {
+        "type": "generated-index",
+        "description": "Chromoscope offers four main visualizations that enable you to explore structural variants at multiple scales."
+    },
+    "collapsed": false
+}
