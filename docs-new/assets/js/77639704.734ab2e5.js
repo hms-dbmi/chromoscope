@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[7940],{1272:e=>{e.exports=JSON.parse('{"title":"Help","slug":"/category/help","permalink":"/docs-new/docs/category/help","navigation":{"previous":{"title":"Biallelic Loss","permalink":"/docs-new/docs/use-cases/bi-allelic-loss"},"next":{"title":"Q & A","permalink":"/docs-new/docs/help/faq"}}}')}}]);
