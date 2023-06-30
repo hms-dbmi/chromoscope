@@ -42,7 +42,7 @@ const config = {
                     sidebarPath: require.resolve('./sidebars.js'),
                     // Please change this to your repo.
                     // Remove this to remove the "edit this page" links.
-                    editUrl: 'https://github.com/hms-dbmi/chromoscope/tree/main/docs'
+                    editUrl: 'https://github.com/hms-dbmi/chromoscope/tree/master/docs'
                 },
                 // blog: {
                 //   showReadingTime: true,
