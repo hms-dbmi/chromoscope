@@ -15,7 +15,7 @@
         "serve": "vite preview",
         "predeploy": "yarn build; yarn build-docs; echo \"chromoscope.bio\" >> dist/CNAME",
         "format": "eslint src/ --fix && prettier --write *",
-        "deploy": "touch dist/.nojekyll; cp -R docs-old dist/docs; cp -R docs/build dist/docs-new; gh-pages -d dist -t --git git",
+        "deploy": "touch dist/.nojekyll; cp -R docs/build dist/docs; gh-pages -d dist -t --git git",
         "thumbnail": "node src/thumbnails.js"
     },
     "dependencies": {

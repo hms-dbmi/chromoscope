@@ -1,5 +1,5 @@
 ---
-title: Biallelic Loss
+title: Biallelic Loss of Tumor suppressor
 sidebar_position: 2
 ---
 

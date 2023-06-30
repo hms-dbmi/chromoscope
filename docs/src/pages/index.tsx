@@ -17,10 +17,10 @@ function HomepageHeader() {
                 <h1 className="hero__title">{siteConfig.title}</h1>
                 <p className="hero__subtitle">{siteConfig.tagline}</p>
                 <div className={styles.indexCtas}>
-                    <Link className="button button--secondary button--lg" to="/docs/category/loading-data">
+                    <Link className="button button--secondary button--lg" to="/documentation/category/loading-data">
                         Get Started
                     </Link>
-                    <Link className="button button--secondary button--lg" to="/docs/category/use-cases">
+                    <Link className="button button--secondary button--lg" to="/documentation/category/use-cases">
                         Use Cases
                     </Link>
                     <Link className="button button--secondary button--lg" to="https://chromoscope.bio">

@@ -2,7 +2,8 @@
 sidebar_position: 2
 ---
 
-# CGPWGS & HMF Data
+# Cell Line Data with Read-level View
+<!-- # CGPWGS & HMF Data -->
 
 1. [Cell line whole genome data with sequencing reads](https://chromoscope.bio/?demoIndex=1&domain=1-248956422&external=https://somatic-browser-test.s3.amazonaws.com/configs/cell.line.benchmark.json) (2 samples)
 

@@ -32,7 +32,7 @@ Now, you can browse files that are located under the selected folder using your 
 
 ![server](../assets/private-data-local-server.png ':class=image-small')
 
-:::tip
+:::info
 Also see https://stackoverflow.com/a/16350826
 :::
 
@@ -50,6 +50,13 @@ Using the URL of the local files, you can make a [data config](./through-data-co
 }
 ```
 
+:::tip
+You can download the following files to test this.
+
+- SV: https://somatic-browser-test.s3.amazonaws.com/SVTYPE_SV_test_tumor_normal_with_panel.bedpe
+- CNV: https://gist.githubusercontent.com/sehilyi/6fbceae35756b13472332d6b81b10803/raw/596428a8b0ebc00e7f8cbc52b050db0fbd6e19a5/SRR7890943.ascat.v3.cnv.tsv
+:::
+
 Optionally, put this data config file (say, `first-config.json`) under the folder hosted by your [http-server](https://www.npmjs.com/package/http-server). You should be able to open the data config file on the browser using [http://127.0.0.1:8080/first-config.json](http://127.0.0.1:8080/first-config.json).
 
 ## Open Browser
@@ -57,7 +64,7 @@ Optionally, put this data config file (say, `first-config.json`) under the folde
 As a last step, use the data config to browse your local files.
 
 ```
-https://sehilyi.github.io/gosling-app-sv/?external=http://127.0.0.1:8080/first-config.json
+https://chromoscope.bio/?external=http://127.0.0.1:8080/first-config.json
 ```
 
 ![browser](../assets/private-data-browser.png ':class=image-medium')
