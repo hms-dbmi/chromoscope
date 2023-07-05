@@ -30,15 +30,15 @@ Note that the `--cors` option allows the browser to access your files.
 
 Now, you can browse files that are located under the selected folder using your browser. For example, open [http://127.0.0.1:8080/](http://127.0.0.1:8080/) on the browser.
 
-![server](../assets/private-data-local-server.png ':class=image-small')
+![server](../assets/private-data-local-server.png)
 
 :::info
 Also see https://stackoverflow.com/a/16350826
 :::
 
-## Make Data Config
+## Create Data Config
 
-Using the URL of the local files, you can make a [data config](./through-data-config). For example, the following example uses two files (i.e., SV and CNV) based on the local files.
+Using the URL of the local files, you can make a [data config](./through-data-config). For example, the following example specify two local files (i.e., SV and CNV).
 
 ```json
 {
@@ -57,14 +57,28 @@ You can download the following files to test this.
 - CNV: https://gist.githubusercontent.com/sehilyi/6fbceae35756b13472332d6b81b10803/raw/596428a8b0ebc00e7f8cbc52b050db0fbd6e19a5/SRR7890943.ascat.v3.cnv.tsv
 :::
 
-Optionally, put this data config file (say, `local-config.json`) under the folder hosted by your [http-server](https://www.npmjs.com/package/http-server). You should be able to open the data config file on the browser using [http://127.0.0.1:8080/local-config.json](http://127.0.0.1:8080/first-config.json).
+## Use Local Data Config
+
+You can also put this local data config (say, `local-config.json`) under the folder hosted by your [http-server](https://www.npmjs.com/package/http-server). You should be able to open the data config file on the browser using [http://127.0.0.1:8080/local-config.json](http://127.0.0.1:8080/local-config.json).
+
+![server](../assets/private-data-local-server-2.png)
+
+If you open the following URL, you should be able to open the data config on your browser.
+
+```sh
+http://127.0.0.1:8080/local-config.json
+```
+
+![server](../assets/private-data-local-config.png)
+
 
 ## Open Browser
 
-As a last step, use the data config to browse your local files.
+As a last step, use the data config you created to browse your local files in Chromoscope.
 
 ```
 https://chromoscope.bio/?external=http://127.0.0.1:8080/local-config.json
 ```
 
-![browser](../assets/private-data-browser.png ':class=image-medium')
+![browser](../assets/private-data-browser-1.png)
+![browser](../assets/private-data-browser-2.png)

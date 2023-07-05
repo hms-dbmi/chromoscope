@@ -973,6 +973,7 @@ function App(props: RouteComponentProps) {
                                 top: VIS_PADDING,
                                 left: VIS_PADDING,
                                 opacity: 0.9,
+                                zIndex: 2,
                                 pointerEvents: interactiveMode ? 'none' : 'auto'
                             }}
                         />
