@@ -418,6 +418,16 @@ function App(props: RouteComponentProps) {
         );
     };
 
+    const AvailabilityIcon = (isAvailable: boolean) => {
+        return (
+            <svg className="data-availability-checkbox" viewBox="0 0 16 16">
+                <title>Export Image</title>
+                {(isAvailable ? ICONS.CHECKSQUARE : ICONS.SQUARE).path.map(p => (
+                    <path fill="currentColor" key={p} d={p} />
+                ))}
+            </svg>
+        );
+    };
     const smallOverviewWrapper = useMemo(() => {
         // !! Uncomment the following lines to generated specs for making thumbnails.
         // console.log(
@@ -512,10 +522,16 @@ function App(props: RouteComponentProps) {
                     <span className="tag-assembly">{d.assembly ?? 'hg38'}</span>
                 </div>
                 <div className="tag-parent">
-                    <div className={'tag-sv'}>SV</div>
-                    <div className={d.vcf && d.vcfIndex ? 'tag-pm' : 'tag-disabled'}>Point Mutation</div>
-                    <div className={d.vcf2 && d.vcf2Index ? 'tag-id' : 'tag-disabled'}>Indel</div>
-                    <div className={d.bam && d.bai ? 'tag-ra' : 'tag-disabled'}>Read Alignment</div>
+                    <div className={'tag-sv'}>{AvailabilityIcon(true)}SV</div>
+                    <div className={d.vcf && d.vcfIndex ? 'tag-pm' : 'tag-disabled'}>
+                        {AvailabilityIcon(!!d.vcf && !!d.vcfIndex)}Point Mutation
+                    </div>
+                    <div className={d.vcf2 && d.vcf2Index ? 'tag-id' : 'tag-disabled'}>
+                        {AvailabilityIcon(!!d.vcf2 && !!d.vcf2Index)}Indel
+                    </div>
+                    <div className={d.bam && d.bai ? 'tag-ra' : 'tag-disabled'}>
+                        {AvailabilityIcon(!!d.bam && !!d.bai)}Read Alignment
+                    </div>
                     {d.note ? <div className="tag-note">{d.note}</div> : null}
                 </div>
             </div>

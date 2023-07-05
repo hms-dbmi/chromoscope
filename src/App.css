@@ -349,6 +349,7 @@ a:hover {
     max-width: 200px;
     margin: auto;
     margin-bottom: 10px;
+    text-align: left;
 }
 
 .tag-note {
@@ -357,6 +358,15 @@ a:hover {
     background-color: rgb(239, 239, 239);
     border-radius: 10px;
     color: grey;
+}
+
+.data-availability-checkbox {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 2px;
+    margin-right: 6px;
 }
 
 .thumbnail-generate-button {
@@ -392,9 +402,15 @@ a:hover {
 .tag-disabled {
     /* border-radius: 4px; */
     padding: 2px;
+    padding-left: 10px;
     /* margin: 2px; */
     border: 1px solid rgb(234, 234, 234);
+    border-top: none;
     font-weight: bold;
+}
+
+.tag-sv {
+    border-top: 1px solid rgb(234, 234, 234);
 }
 
 .tag-disabled {
