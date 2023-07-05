@@ -174,11 +174,13 @@ function App(props: RouteComponentProps) {
                     if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
                         setFilteredSamples(externalDemo);
                         externalDemo = externalDemo[demoIndex.current < externalDemo.length ? demoIndex.current : 0];
-                        setShowSmallMultiples(true);
+                    } else {
+                        setFilteredSamples([externalDemo]);
                     }
                     if (externalDemo) {
                         setDemo(externalDemo);
                     }
+                    setShowSmallMultiples(true);
                     setReady(true);
                 })
             );
@@ -418,6 +420,16 @@ function App(props: RouteComponentProps) {
         );
     };
 
+    const AvailabilityIcon = (isAvailable: boolean) => {
+        return (
+            <svg className="data-availability-checkbox" viewBox="0 0 16 16">
+                <title>Export Image</title>
+                {(isAvailable ? ICONS.CHECKSQUARE : ICONS.SQUARE).path.map(p => (
+                    <path fill="currentColor" key={p} d={p} />
+                ))}
+            </svg>
+        );
+    };
     const smallOverviewWrapper = useMemo(() => {
         // !! Uncomment the following lines to generated specs for making thumbnails.
         // console.log(
@@ -512,10 +524,16 @@ function App(props: RouteComponentProps) {
                     <span className="tag-assembly">{d.assembly ?? 'hg38'}</span>
                 </div>
                 <div className="tag-parent">
-                    <div className={'tag-sv'}>SV</div>
-                    <div className={d.vcf && d.vcfIndex ? 'tag-pm' : 'tag-disabled'}>Point Mutation</div>
-                    <div className={d.vcf2 && d.vcf2Index ? 'tag-id' : 'tag-disabled'}>Indel</div>
-                    <div className={d.bam && d.bai ? 'tag-ra' : 'tag-disabled'}>Read Alignment</div>
+                    <div className={'tag-sv'}>{AvailabilityIcon(true)}SV</div>
+                    <div className={d.vcf && d.vcfIndex ? 'tag-pm' : 'tag-disabled'}>
+                        {AvailabilityIcon(!!d.vcf && !!d.vcfIndex)}Point Mutation
+                    </div>
+                    <div className={d.vcf2 && d.vcf2Index ? 'tag-id' : 'tag-disabled'}>
+                        {AvailabilityIcon(!!d.vcf2 && !!d.vcf2Index)}Indel
+                    </div>
+                    <div className={d.bam && d.bai ? 'tag-ra' : 'tag-disabled'}>
+                        {AvailabilityIcon(!!d.bam && !!d.bai)}Read Alignment
+                    </div>
                     {d.note ? <div className="tag-note">{d.note}</div> : null}
                 </div>
             </div>
@@ -1194,6 +1212,18 @@ function App(props: RouteComponentProps) {
                     }}
                 />
                 <div
+                    style={{
+                        background: 'none',
+                        position: 'absolute',
+                        bottom: 20,
+                        left: VIS_PADDING,
+                        pointerEvents: 'none',
+                        visibility: demo.bam ? 'collapse' : 'visible'
+                    }}
+                >
+                    {'ⓘ No read alignment data available for this sample.'}
+                </div>
+                <div
                     className={showAbout ? 'about-modal-container' : 'about-modal-container-hidden'}
                     onClick={() => setShowAbout(false)}
                 />
@@ -1217,12 +1247,6 @@ function App(props: RouteComponentProps) {
                         <b>Chromoscope</b>
                         <span className="dimed">{' | '}</span>About
                     </p>
-                    {/* <p>
-                        Chromoscope is an interactive visualization tool that supports <b>multiscale</b> and{' '}
-                        <b>multiform</b> visualizations. Chromoscope enables the user to analyze SVs at multiple scales,
-                        using four main views (multiscale). Moreover, each view uses different visual representations
-                        (multiform) that can facilitate the interpretation for a given level of scale.
-                    </p> */}
 
                     <p>
                         Whole genome sequencing is now routinely used to profile mutations in DNA in the soma and in the
@@ -1310,16 +1334,6 @@ function App(props: RouteComponentProps) {
                             Department of Biomedical Informatics, Harvard Medical School
                         </a>
                     </div>
-
-                    {/* <button
-                        className="about-modal-disable-button"
-                        onClick={() => {
-                            log.add(true);
-                            setShowAbout(false);
-                        }}
-                    >
-                        Do not show this information by default
-                    </button> */}
                 </div>
                 <div
                     className="move-to-top-btn"

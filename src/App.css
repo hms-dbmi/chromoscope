@@ -349,6 +349,7 @@ a:hover {
     max-width: 200px;
     margin: auto;
     margin-bottom: 10px;
+    text-align: left;
 }
 
 .tag-note {
@@ -359,8 +360,17 @@ a:hover {
     color: grey;
 }
 
+.data-availability-checkbox {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 2px;
+    margin-right: 6px;
+}
+
 .thumbnail-generate-button {
-    margin-left: 20px;
+    margin-left: 400px;
     line-height: 30px;
     border-radius: 0px;
     border: 1px solid grey;
@@ -392,9 +402,15 @@ a:hover {
 .tag-disabled {
     /* border-radius: 4px; */
     padding: 2px;
+    padding-left: 10px;
     /* margin: 2px; */
     border: 1px solid rgb(234, 234, 234);
+    border-top: none;
     font-weight: bold;
+}
+
+.tag-sv {
+    border-top: 1px solid rgb(234, 234, 234);
 }
 
 .tag-disabled {
@@ -532,6 +548,10 @@ a:hover {
 .vis-overview-panel .gosling-component {
     cursor: pointer;
     pointer-events: none;
+}
+
+.gosling-component {
+    z-index: 1;
 }
 
 .vis-overview-panel .title {
