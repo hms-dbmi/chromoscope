@@ -1194,6 +1194,18 @@ function App(props: RouteComponentProps) {
                     }}
                 />
                 <div
+                    style={{
+                        background: 'none',
+                        position: 'absolute',
+                        bottom: 20,
+                        left: VIS_PADDING,
+                        pointerEvents: 'none',
+                        visibility: demo.bam ? 'collapse' : 'visible'
+                    }}
+                >
+                    {'ⓘ No read alignment data available for this sample.'}
+                </div>
+                <div
                     className={showAbout ? 'about-modal-container' : 'about-modal-container-hidden'}
                     onClick={() => setShowAbout(false)}
                 />
@@ -1217,12 +1229,6 @@ function App(props: RouteComponentProps) {
                         <b>Chromoscope</b>
                         <span className="dimed">{' | '}</span>About
                     </p>
-                    {/* <p>
-                        Chromoscope is an interactive visualization tool that supports <b>multiscale</b> and{' '}
-                        <b>multiform</b> visualizations. Chromoscope enables the user to analyze SVs at multiple scales,
-                        using four main views (multiscale). Moreover, each view uses different visual representations
-                        (multiform) that can facilitate the interpretation for a given level of scale.
-                    </p> */}
 
                     <p>
                         Whole genome sequencing is now routinely used to profile mutations in DNA in the soma and in the
@@ -1310,16 +1316,6 @@ function App(props: RouteComponentProps) {
                             Department of Biomedical Informatics, Harvard Medical School
                         </a>
                     </div>
-
-                    {/* <button
-                        className="about-modal-disable-button"
-                        onClick={() => {
-                            log.add(true);
-                            setShowAbout(false);
-                        }}
-                    >
-                        Do not show this information by default
-                    </button> */}
                 </div>
                 <div
                     className="move-to-top-btn"

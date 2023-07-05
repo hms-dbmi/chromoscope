@@ -1,13 +1,12 @@
 import { Assembly } from 'gosling.js/dist/src/core/gosling.schema';
-import { THUMBNAILS } from './thumbnails';
-import pcawg from '../script/pcawg/all-pcawg-data.json';
 import _7a921087 from '../script/img/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.jpeg';
 import _84ca6ab0 from '../script/img/84ca6ab0-9edc-4636-9d27-55cdba334d7d.jpeg';
 import _7d332cb1 from '../script/img/7d332cb1-ba25-47e4-8bf8-d25e14f40d59.jpeg';
 import _9ae0744a from '../script/img/9ae0744a-9bc1-4cd7-b7cf-c6569ed9e4aa.jpeg';
 import _b27d75ba from '../script/img/b27d75ba-5989-4200-bfe9-f1b7d7cf8008.jpeg';
 import _fc8edf46 from '../script/img/fc8edf46-2005-1af4-e040-11ac0d481414.jpeg';
-import _SRR7890905 from '../script/img/SRR7890905.jpeg';
+import SRR7890905 from '../script/img/SRR7890905.jpg';
+import SRR7890905_Hartwig from '../script/img/SRR7890905_Hartwig.jpg';
 import _bc0dee07 from '../script/img/GACA-CN-bc0dee07-de20-44d6-be65-05af7e63ac96.jpeg';
 import _f1504811 from '../script/img/OV-AU-f1504811-8363-41e6-b43c-62452b1262d3.jpeg';
 import _89dad92e from '../script/img/OV-AU-89dad92e-5b3f-479a-a6da-a94ee7df7f8a.jpeg';
@@ -38,21 +37,6 @@ export type SampleType = {
 // console.log(samples);
 
 const samples: SampleType[] = [
-    ...Array.from({ length: 92 }, (v, i) => i).map(
-        (
-            i // 92
-        ) =>
-            ({
-                group: 'doga',
-                id: `sample_${i + 1}`,
-                cancer: 'Breast',
-                assembly: 'hg19',
-                sv: `https://genomebrowserdata.s3.amazonaws.com/sv/sample_${i + 1}.bedpe`,
-                cnv: `https://genomebrowserdata.s3.amazonaws.com/cnv/sample_${i + 1}.tsv`,
-                cnFields: ['cn', 'cn1', 'cn2'],
-                thumbnail: THUMBNAILS[i]
-            } as SampleType)
-    ),
     {
         group: 'default',
         id: 'SRR7890905',
@@ -66,7 +50,8 @@ const samples: SampleType[] = [
         cnv: 'https://gist.githubusercontent.com/sehilyi/6fbceae35756b13472332d6b81b10803/raw/596428a8b0ebc00e7f8cbc52b050db0fbd6e19a5/SRR7890943.ascat.v3.cnv.tsv',
         bam: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam',
         bai: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam.bai',
-        note: 'CNV profile - ASCAT. SVs - Sentieon. Mutations and indels - Sentieon'
+        note: 'CNV profile - ASCAT. SVs - Sentieon. Mutations and indels - Sentieon',
+        thumbnail: SRR7890905
     },
     {
         group: 'default',
@@ -81,7 +66,8 @@ const samples: SampleType[] = [
         cnv: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905/SRR7890905.purple.cnv.somatic.reformatted.tsv',
         bam: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam',
         bai: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam.bai',
-        note: 'CNV profile - Purple. SVs - Gridss. Mutations and indels - Sentieon'
+        note: 'CNV profile - Purple. SVs - Gridss. Mutations and indels - Sentieon',
+        thumbnail: SRR7890905_Hartwig
     },
     {
         group: 'default',
@@ -159,17 +145,17 @@ const samples: SampleType[] = [
             'https://somatic-browser-test.s3.amazonaws.com/browserExamples/fc8edf46-2005-1af4-e040-11ac0d481414.consensus.20161006.somatic.indel.sorted.vcf.gz.tbi',
         thumbnail: _fc8edf46
     },
-    {
-        group: 'default',
-        id: 'SRR7890905',
-        cancer: 'breast',
-        assembly: 'hg38',
-        sv: 'https://somatic-browser-test.s3.amazonaws.com/SVTYPE_SV_test_tumor_normal_with_panel.bedpe',
-        cnv: 'https://gist.githubusercontent.com/sehilyi/6fbceae35756b13472332d6b81b10803/raw/596428a8b0ebc00e7f8cbc52b050db0fbd6e19a5/SRR7890943.ascat.v3.cnv.tsv',
-        bam: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam',
-        bai: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam.bai',
-        thumbnail: _SRR7890905
-    },
+    // {
+    //     group: 'default',
+    //     id: 'SRR7890905',
+    //     cancer: 'breast',
+    //     assembly: 'hg38',
+    //     sv: 'https://somatic-browser-test.s3.amazonaws.com/SVTYPE_SV_test_tumor_normal_with_panel.bedpe',
+    //     cnv: 'https://gist.githubusercontent.com/sehilyi/6fbceae35756b13472332d6b81b10803/raw/596428a8b0ebc00e7f8cbc52b050db0fbd6e19a5/SRR7890943.ascat.v3.cnv.tsv',
+    //     bam: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam',
+    //     bai: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam.bai',
+    //     thumbnail: _SRR7890905
+    // },
     {
         group: 'default',
         id: 'bc0dee07-de20-44d6-be65-05af7e63ac96', // GACA-CN-

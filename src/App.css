@@ -534,6 +534,10 @@ a:hover {
     pointer-events: none;
 }
 
+.gosling-component {
+    z-index: 1;
+}
+
 .vis-overview-panel .title {
     height: 30px;
     padding: 10px;
