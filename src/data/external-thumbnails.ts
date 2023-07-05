@@ -1,3 +1,5 @@
+import SRR7890905 from '../script/img/SRR7890905.jpg';
+import SRR7890905_Hartwig from '../script/img/SRR7890905_Hartwig.jpg';
 // pcawg data
 import _fc96f0df_ef04_411e_e040_11ac0d484291 from '../script/img/fc96f0df-ef04-411e-e040-11ac0d484291.jpeg';
 import _b9d1a64e_d445_4174_a5b4_76dd6ea69419 from '../script/img/b9d1a64e-d445-4174-a5b4-76dd6ea69419.jpeg';
@@ -5556,5 +5558,7 @@ export const INTERNAL_SAVED_THUMBNAILS = {
     '81a8b064-e735-455f-b2db-af7ae11daac4': _81a8b064_e735_455f_b2db_af7ae11daac4,
     '1c00925b-7328-4db0-b930-04aab2d80719': _1c00925b_7328_4db0_b930_04aab2d80719,
     'f1a4f60a-5228-47cd-883f-ff8d2dfe1633': _f1a4f60a_5228_47cd_883f_ff8d2dfe1633,
-    '352fbbb4-88a5-4354-b1fa-3a01da3fbfa7': _352fbbb4_88a5_4354_b1fa_3a01da3fbfa7
+    '352fbbb4-88a5-4354-b1fa-3a01da3fbfa7': _352fbbb4_88a5_4354_b1fa_3a01da3fbfa7,
+    SRR7890905: SRR7890905,
+    SRR7890905_Hartwig: SRR7890905_Hartwig
 };

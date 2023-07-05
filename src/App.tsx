@@ -174,11 +174,13 @@ function App(props: RouteComponentProps) {
                     if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
                         setFilteredSamples(externalDemo);
                         externalDemo = externalDemo[demoIndex.current < externalDemo.length ? demoIndex.current : 0];
-                        setShowSmallMultiples(true);
+                    } else {
+                        setFilteredSamples([externalDemo]);
                     }
                     if (externalDemo) {
                         setDemo(externalDemo);
                     }
+                    setShowSmallMultiples(true);
                     setReady(true);
                 })
             );
