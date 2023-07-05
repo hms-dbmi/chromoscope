@@ -23,7 +23,7 @@ npm install http-server -g
 Now you can run the server on the designated folder.
 
 ```sh
-http-server ./path-to-your-folder --cors
+http-server ./path-to-your-folder --cors -c-1
 ```
 
 Note that the `--cors` option allows the browser to access your files.
@@ -57,14 +57,14 @@ You can download the following files to test this.
 - CNV: https://gist.githubusercontent.com/sehilyi/6fbceae35756b13472332d6b81b10803/raw/596428a8b0ebc00e7f8cbc52b050db0fbd6e19a5/SRR7890943.ascat.v3.cnv.tsv
 :::
 
-Optionally, put this data config file (say, `first-config.json`) under the folder hosted by your [http-server](https://www.npmjs.com/package/http-server). You should be able to open the data config file on the browser using [http://127.0.0.1:8080/first-config.json](http://127.0.0.1:8080/first-config.json).
+Optionally, put this data config file (say, `local-config.json`) under the folder hosted by your [http-server](https://www.npmjs.com/package/http-server). You should be able to open the data config file on the browser using [http://127.0.0.1:8080/local-config.json](http://127.0.0.1:8080/first-config.json).
 
 ## Open Browser
 
 As a last step, use the data config to browse your local files.
 
 ```
-https://chromoscope.bio/?external=http://127.0.0.1:8080/first-config.json
+https://chromoscope.bio/?external=http://127.0.0.1:8080/local-config.json
 ```
 
 ![browser](../assets/private-data-browser.png ':class=image-medium')
