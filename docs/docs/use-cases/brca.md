@@ -13,6 +13,7 @@ The visualization shows that while both display general chromosomal instability,
 You can see cohort of 44 cancer genomes with BRCA1/2 loss using the following Chromoscope configuration:
 
 https://chromoscope.bio/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/pathogenicBrca/configs/pathogenicBrca.all.config.json
+
 :::
 
 [^1]: Nguyen, L., et al.  Pan-cancer landscape of homologous recombination deficiency. Nature Communications, 11(1), 5584 (2020).
