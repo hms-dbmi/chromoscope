@@ -13,6 +13,10 @@ Chromoscope also allows you to export an interactive webpage that contains the e
 ### JSON (Gosling Spec)
 To enable further fine-grained customization (e.g., changing colors or sizes), the entire interactive visualization can be exported as a Gosling JSON specification. This JSON values can be used directly on the Gosling Online Editor (https://gosling.js.org).
 
+:::info
+For more details about using the Gosling specification, please refer to the [workflow page](../workflows).
+:::
+
 |![HTML exported](../assets/html-export.png)|![Gosling Editor](../assets/gosling-editor.png)|
 |---|---|
 |__Figure.__ The exported HTML file on a browser.|__Figure.__ The exported JSON value added to an public Gosling editor.|
