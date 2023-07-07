@@ -13,6 +13,6 @@ You can view the selected 23 cancer genomes in this Chromoscope configuration:
 https://chromoscope.bio/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/coamps/configs/coamps.all.config.withnotes.json
 :::
 
-[^1]:Głodzik, D. et al. Mutational mechanisms of amplifications revealed by analysis of clustered rearrangements in breast cancers. Annals of Oncology, 29(11), 2223-2231 (2018).
+[^1]: Głodzik, D. et al. Mutational mechanisms of amplifications revealed by analysis of clustered rearrangements in breast cancers. Annals of Oncology, 29(11), 2223-2231 (2018).
 
-[^2]Lee, J. J. K., Jung, Y. L., et al.  ERα-associated translocations underlie oncogene amplifications in breast cancer. Nature, 1-9 (2023).
+[^2]: Lee, J. J. K., Jung, Y. L., et al.  ERα-associated translocations underlie oncogene amplifications in breast cancer. Nature, 1-9 (2023).
