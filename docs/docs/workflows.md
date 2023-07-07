@@ -27,8 +27,7 @@ You can build a web application using JavaScript (or TypeScript) with React. The
 
 ```ts
 import { GoslingComponent } from "gosling.js";
-
-const spec = // get your customized spec
+import spec from './your-gosling-spec.json'; // customized spec in another file
 
 function App() {
   return (
