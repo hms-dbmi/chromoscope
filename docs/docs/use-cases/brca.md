@@ -3,7 +3,7 @@ title: Pathogenic BRCA Mutations
 sidebar_position: 3
 ---
 
-# Cancers with Pathogenic BRCA Mutations
+# Cancers with Pathogenic BRCA1/2 Mutations
 
 The BRCA1 and BRCA2 genes have a role in the accurate repair of DNA double-strand breaks through homologous recombination deficiency[^1]. A mutational signature of BRCA1/2 loss consists of multiple mutation types (point mutations, indels, structural and copy number variants)[^2]. The exact mechanisms of how such mutations form in the context of homologous recombination deficiency have not been fully understood. 
 
