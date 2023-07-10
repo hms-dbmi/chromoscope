@@ -7,7 +7,7 @@ sidebar_position: 2
 
 Chromoscope facilitates the interpretation of clinically-relevant SVs in cancer genomes. 
 
-Known cancer genes are highlighted in the genome view for context (Fig. 1a), and, if desired, the user can navigate first to alterations near cancer-associated genes for detailed inspection.
+Known cancer genes are highlighted in the genome view for context (Fig. 1a), and, if desired, the user can navigate first to alterations near cancer-associated genes for detailed inspection. The search functionality (not shown in the figure) allows users to focus on any gene of interest
 
 The variant view shows the allele-specific copy number profile along with the SVs and mutations, allowing the user to identify co-localized loss-of-function point mutations and larger copy number variants, e.g., bi-allelic loss of tumor suppressor genes (Fig. 1d), which is associated with response to some oncological therapies [^1].
 
