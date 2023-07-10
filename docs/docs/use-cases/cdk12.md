@@ -5,7 +5,7 @@ sidebar_position: 7
 
 # Cancers with mutations in CDK12
 
-The CDK12 gene is a cyclin-dependent kinase and controls the cell cycle, cell division, and transcription [^1]. Cancers with pathogenic CDK12 mutations display chromosomal instability and their genomes are dominated by somatic tandem duplications [^2]. The mechanistic connection between the CDK12 loss and chromosomal instability remains unresolved, and uncovering the mechanism might inform new cancer therapies.
+The CDK12 gene is a cyclin-dependent kinase and controls the cell cycle, cell division, and transcription. [^1] Cancers with pathogenic CDK12 mutations display chromosomal instability and their genomes are dominated by somatic tandem duplications.[^2] The mechanistic connection between the CDK12 loss and chromosomal instability remains unresolved, and uncovering the mechanism might inform new cancer therapies.
 
 In order to explore the patterns of structural variants in cancers with CDK12 loss, we queried the PCAWG cancer genome dataset and created a Chromoscope configuration with 12 cancers with mutations in CDK12 likely to result in the loss of function. 
 
