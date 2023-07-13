@@ -8,7 +8,7 @@ This cohort-level view displays structural variants as arches connecting chromos
 
 |![HTML exported](../assets/zoomed-cohort-view.png)|
 |---|
-|__Figure.__ The visual summary of individual samples in the corhot view.|
+|__Figure.__ The visual summary of individual samples in the cohort view.|
 
 With this cohort overview, you can quickly inspect the patterns of many structural variation samples and efficiently find samples of interest.
 
