@@ -7,7 +7,7 @@ The genome view shows the selected sample in a circular visualization. This uses
 
 |![Brush](../assets/circular.png)|![Brush](../assets/tooltip.png)|
 |---|---|
-|**Figure.** Genome View with an interactive brush for selecting a region of interest.|**Figure.** A tooptip showing detailed information.|
+|**Figure.** Genome View with an interactive brush for selecting a region of interest.|**Figure.** A tooltip showing detailed information.|
 
 ## Interactions
 
