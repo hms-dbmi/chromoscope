@@ -136,10 +136,10 @@ const config = {
             },
             algolia: {
                 // The application ID provided by Algolia
-                appId: 'EXUDS2PZ19',
+                appId: 'T6K4NO6G0Z',
 
                 // Public API key: it is safe to commit it
-                apiKey: '9f93a21d0b781b87bdfbd2f925a0afa3',
+                apiKey: '2750461a166086d885fe5bbab18ffbbc',
 
                 indexName: 'chromoscope',
 
