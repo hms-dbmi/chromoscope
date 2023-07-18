@@ -12,7 +12,11 @@ You can run a local file server to display local files on Chromoscope. This enab
 
 ## Run Local File Server
 
-You first need to install the file server called [http-server](https://www.npmjs.com/package/http-server). To install it, you need to first install a package manager, [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-node-js-and-npm).
+You first need to install the file server called [http-server](https://www.npmjs.com/package/http-server). To install it, you need to first install a package manager, [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-node-js-and-npm). 
+
+:::tip
+To install npm, please refer to the official documentation: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-node-js-and-npm
+:::
 
 After installing the [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-node-js-and-npm), you can use it to install [http-server](https://www.npmjs.com/package/http-server). For example, run the following command on your terminal.
 
