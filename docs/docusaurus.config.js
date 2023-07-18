@@ -141,7 +141,7 @@ const config = {
                 // Public API key: it is safe to commit it
                 apiKey: '2750461a166086d885fe5bbab18ffbbc',
 
-                indexName: 'chromoscope',
+                indexName: 'chromoscopedocs',
 
                 // Optional: see doc section below
                 contextualSearch: true
