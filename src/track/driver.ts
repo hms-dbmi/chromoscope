@@ -33,8 +33,7 @@ export default function driver(
                     { from: 'yes', to: '⊙ ' },
                     { from: 'no', to: '· ' },
                     { from: 'Yes', to: '⊙ ' },
-                    { from: 'No', to: '· ' },
-                    { from: undefined, to: '' }
+                    { from: 'No', to: '· ' }
                 ],
                 newField: 'prefix'
             },
