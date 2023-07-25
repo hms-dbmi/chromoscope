@@ -643,7 +643,7 @@ function App(props: RouteComponentProps) {
                         width: '100%',
                         background: 'white',
                         position: 'absolute',
-                        zIndex: 2,
+                        zIndex: 999,
                         opacity: 0.8
                     }}
                 ></span>
