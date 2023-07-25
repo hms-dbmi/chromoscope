@@ -16,6 +16,7 @@ body,
     font-family: 'Inter', 'Roboto', Helvetica, Arial, sans-serif, 'Lato', 'Inter', 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol';
     height: 100%;
+    overflow: hidden;
 }
 
 body {

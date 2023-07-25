@@ -636,6 +636,16 @@ function App(props: RouteComponentProps) {
                     setJumpButtonInfo(undefined);
                 }}
             >
+                <span
+                    style={{
+                        height: '50px',
+                        width: '100%',
+                        background: 'white',
+                        position: 'absolute',
+                        zIndex: 2,
+                        opacity: 0.8
+                    }}
+                ></span>
                 <svg
                     className="config-button"
                     viewBox="0 0 16 16"
