@@ -21,6 +21,7 @@ import CancerSelector from './ui/cancer-selector';
 import HorizontalLine from './ui/horizontal-line';
 import SampleConfigForm from './ui/sample-config-form';
 import { BrowserDatabase } from './browser-log';
+import legend from './legend.png';
 
 const db = new Database();
 const log = new BrowserDatabase();
@@ -1018,6 +1019,16 @@ function App(props: RouteComponentProps) {
                                     );
                                 })}
                             </select>
+                            <img
+                                src={legend}
+                                style={{
+                                    position: 'absolute',
+                                    right: '3px',
+                                    top: '3px',
+                                    zIndex: 998,
+                                    width: '120px'
+                                }}
+                            />
                             <select
                                 style={{
                                     pointerEvents: 'auto',

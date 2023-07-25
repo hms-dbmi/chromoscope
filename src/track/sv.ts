@@ -196,7 +196,7 @@ export default function sv(
         color: {
             field: 'svclass',
             type: 'nominal',
-            legend: mode !== 'small',
+            legend: mode === 'mid',
             domain: ['Gain', 'LOH', ...defaults.color.svclass.domain],
             range: ['#5CB6EA', '#D6641E', ...defaults.color.svclass.range]
         },
