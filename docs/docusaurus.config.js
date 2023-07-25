@@ -75,6 +75,16 @@ const config = {
                         position: 'left',
                         label: 'Documentation'
                     },
+                    {
+                        label: 'Use Cases',
+                        position: 'left',
+                        to: '/docs/category/use-cases'
+                    },
+                    {
+                        label: 'Workflows',
+                        position: 'left',
+                        to: '/docs/workflows'
+                    },
                     { to: 'about', label: 'About', position: 'left' },
                     {
                         href: 'https://chromoscope.bio',
