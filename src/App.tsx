@@ -600,7 +600,7 @@ function App(props: RouteComponentProps) {
             <GoslingComponent
                 ref={gosRef}
                 spec={spec}
-                padding={0}
+                padding={3}
                 margin={0}
                 experimental={{ reactive: true }}
                 theme={THEME}
