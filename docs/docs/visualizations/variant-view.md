@@ -3,7 +3,7 @@ sidebar_position: 3
 ---
 
 # Variant View
-The variant view, focusing on a shorter genomic region, shows additional tracks on top of the tracks included in the genome view, including point mutations, indels, copy number variation, and genes.
+The variant view, focusing on a shorter genomic region, shows additional tracks on top of the tracks included in the genome view, including point mutations, indels, copy number variation like gains and loss of heterozgosity (LOH), and genes.
 
 |![Variant View](../assets/linear-view.png)|
 |---|
