@@ -12,7 +12,7 @@ In order to evaluate the evidence, we prepared a Chromoscope configuration conta
 :::info
 You can see visualization of 21 cancer genomes with putative ATM loss at:
 
-https://chromoscope.bio/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/atm_bi/configs/atm_bi.all.config.json
+https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/atm_bi/configs/atm_bi.all.config.json
 :::
 
 [^1]: Pitter, Kenneth L et al. “Pathogenic ATM Mutations in Cancer and a Genetic Basis for Radiotherapeutic Efficacy.” Journal of the National Cancer Institute vol. 113,3 (2021):

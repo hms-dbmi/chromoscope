@@ -4,10 +4,10 @@ sidebar_position: 5
 
 # URL Parameters
 
-There are multiple parameters available that you can used along with the base URL (`https://chromoscope.bio/`). The pattern of using the parameters is like the following:
+There are multiple parameters available that you can used along with the base URL (`https://chromoscope.bio/app/`). The pattern of using the parameters is like the following:
 
 ```
-https://chromoscope.bio/?[parameter1]=[value1]&[parameter2]=[value2]
+https://chromoscope.bio/app/?[parameter1]=[value1]&[parameter2]=[value2]
 ```
 
 The supported parameters are as follows:
@@ -24,11 +24,11 @@ The `external` parameter should be positioned at the last if multiple parameters
 
 ✅ **Correct**
 
-https://chromoscope.bio/?showSamples=true&external=[URL]
+https://chromoscope.bio/app/?showSamples=true&external=[URL]
 
 ❌ **Incorrect**
 
-https://chromoscope.bio/?external=[URL]&showSamples=true
+https://chromoscope.bio/app/?external=[URL]&showSamples=true
 
 This allows the external URL to have its own parameters (e.g., authenticated preassigned URL)
 :::

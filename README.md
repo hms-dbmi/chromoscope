@@ -1,11 +1,11 @@
-# Chromoscope [![Demo](https://img.shields.io/badge/demo-🧬-5CB6EA.svg)](https://chromoscope.bio/) [![Documentation Status](https://img.shields.io/badge/documentation-📖-5CB6EA.svg)](https://chromoscope.bio/docs/) [![License: MIT](https://img.shields.io/badge/License-MIT-5CB6EA.svg)](https://opensource.org/licenses/MIT)
+# Chromoscope [![Demo](https://img.shields.io/badge/demo-🧬-5CB6EA.svg)](https://chromoscope.bio/app) [![Documentation Status](https://img.shields.io/badge/documentation-📖-5CB6EA.svg)](https://chromoscope.bio) [![License: MIT](https://img.shields.io/badge/License-MIT-5CB6EA.svg)](https://opensource.org/licenses/MIT)
 
 Interactive multiscale visualization for structural variation in human genomes.
 
-- Demo: https://chromoscope.bio/
-- Documentation: https://chromoscope.bio/docs/
+- Demo: https://chromoscope.bio/app/
+- Documentation: https://chromoscope.bio
 
-![teaser](https://chromoscope.bio/docs/assets/images/teaser-35e018558eb73828a391cc03d8157521.png)
+![teaser](https://chromoscope.bio/assets/images/teaser-35e018558eb73828a391cc03d8157521.png)
 
 > The Chromoscope interface consists of four views for analyzing structural variation in cancer genomes at multiple scales (a–d). Chromoscope uses a "data config" to load datasets via HTTP requests and does not require setting up a server (e). The data can be either stored privately or publicly (e.g., cloud buckets or local servers). Chromoscope captures distinct patterns of structural variations and their copy number footprint in samples with different types of chromosomal instability, such as chromothripsis, or associated with loss of BRCA1 -/-, BRCA2 -/-, or CCNE1 amplification (f-g).
 

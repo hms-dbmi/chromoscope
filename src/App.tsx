@@ -798,7 +798,7 @@ function App(props: RouteComponentProps) {
                         </svg>
                         GitHub
                     </a>
-                    <a className="title-doc-link" href="https://chromoscope.bio/docs/" target="_blank" rel="noreferrer">
+                    <a className="title-doc-link" href="https://chromoscope.bio/" target="_blank" rel="noreferrer">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="20"
@@ -1300,8 +1300,8 @@ function App(props: RouteComponentProps) {
                         </li>
                         <li>
                             <b>Documentation:</b>{' '}
-                            <a href="https://chromoscope.bio/docs/" target="_blank" rel="noreferrer">
-                                https://chromoscope.bio/docs/
+                            <a href="https://chromoscope.bio/" target="_blank" rel="noreferrer">
+                                https://chromoscope.bio/
                             </a>
                         </li>
                         <li>

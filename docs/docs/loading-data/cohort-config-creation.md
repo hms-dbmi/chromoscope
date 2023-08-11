@@ -169,5 +169,5 @@ upload: CONFIGS_SUBDIR/timestamp_at_creation.json to s3://EXAMPLE_S3_BUCKET/EXAM
 
 Presigned URL for generated configuration file: https://EXAMPLE_S3_BUCKET.s3.amazonaws.com/EXAMPLE_COHORT_NAME/CONFIGS_SUBDIR/timestamp_at_creation.json?AWSAccessKeyId=AKIA5XXXXXXXXXX&Signature=xxxxxxxxxxxxxxxxxxx&Expires=1682969989
 
-Complete Chromoscope URL for generated configuration file: https://chromoscope.bio/?external=https://EXAMPLE_S3_BUCKET.s3.amazonaws.com/EXAMPLE_COHORT_NAME/CONFIGS_SUBDIR/timestamp_at_creation.json?AWSAccessKeyId=AKIA5XXXXXXXXXX&Signature=xxxxxxxxxxxxxxxxxxx&Expires=1682969989
+Complete Chromoscope URL for generated configuration file: https://chromoscope.bio/app/?external=https://EXAMPLE_S3_BUCKET.s3.amazonaws.com/EXAMPLE_COHORT_NAME/CONFIGS_SUBDIR/timestamp_at_creation.json?AWSAccessKeyId=AKIA5XXXXXXXXXX&Signature=xxxxxxxxxxxxxxxxxxx&Expires=1682969989
 ```

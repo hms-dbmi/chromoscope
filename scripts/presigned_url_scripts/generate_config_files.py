@@ -210,7 +210,7 @@ def generate_configs(args):
     
     # Print presigned URL and Chromoscope URL
     print("\nPresigned URL for generated configuration file: %s" % config_file_presigned_url)
-    print("\nComplete Chromoscope URL for generated configuration file: https://chromoscope.bio/?external=%s\n" % config_file_presigned_url)
+    print("\nComplete Chromoscope URL for generated configuration file: https://chromoscope.bio/app/?external=%s\n" % config_file_presigned_url)
 
 
 if __name__ == "__main__":

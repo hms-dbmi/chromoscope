@@ -81,7 +81,7 @@ http://127.0.0.1:8080/local-config.json
 As a last step, use the data config you created to browse your local files in Chromoscope.
 
 ```
-https://chromoscope.bio/?external=http://127.0.0.1:8080/local-config.json
+https://chromoscope.bio/app/?external=http://127.0.0.1:8080/local-config.json
 ```
 
 ![browser](../assets/private-data-browser-1.png)
