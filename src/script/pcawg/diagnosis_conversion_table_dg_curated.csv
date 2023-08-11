@@ -1,0 +1,40 @@
+old_name,new_name,no_samples
+Biliary-AdenoCA,Biliary Adenocarcinoma,34
+Bladder-TCC,Bladder Transitional Cell Carcinoma,23
+Bone-Benign,Bone/Softtissue Osteofibrous Dysplasia,1
+Bone-Osteoblast,Bone/Softtissue Osteoblastoma,5
+Bone-Epith,Bone Neoplasm Epithelioid,10
+Bone-Cart,Bone/Softtissue Chondroblastoma,9
+Bone-Osteosarc,Bone/Softtissue Osteosarcoma,39
+Bone-Leiomyo,Bone/Softtissue Leiomyosarcoma,34
+Breast-AdenoCA,Breast Adenocarcinoma,198
+Breast-DCIS,Breast In Situ Adenocarcinoma,3
+Breast-LobularCA,Breast Lobular Carcinoma,13
+Cervix-AdenoCA,Cervix Adenocarcinoma,2
+Cervix-SCC,Cervix Squamous Cell Carcinoma,18
+CNS-GBM,CNS Glioblastoma,41
+CNS-Oligo,CNS Oligodendroglioma,18
+CNS-Medullo,CNS Medulloblastoma,146
+CNS-PiloAstro,CNS Non-Diffuse Glioma,89
+ColoRect-AdenoCA,Colon/Rectum Adenocarcinoma,60
+Eso-AdenoCA,Esophagus Adenocarcinoma,98
+Head-SCC,Head/Neck Squamous Cell Carcinoma,57
+Kidney-ChRCC,Kidney Renal Cell Carcinoma (Distal Tubules),45
+Kidney-RCC,Kidney Renal Cell Carcinoma (Proximal Tubules),144
+Liver-HCC,Liver Hepatocellular Carcinoma,327
+Lung-AdenoCA,Lung Adenocarcinoma,38
+Lung-SCC,Lung Squamous Cell Carcinoma,48
+Lymph-CLL,Lymphoid Chronic Lymphocytic Leukemia,95
+Lymph-NOS,Lymphoid Lymphoma NOS,2
+Lymph-BNHL,Lymphoid Mature B-Cell Lymphoma,105
+Myeloid-AML,Myeloid Acute Myeloid Leukemia,16
+Myeloid-MDS,Myeloid Myelodysplastic Syndrome,3
+Myeloid-MPN,Myeloid Myeloproliferative Neoplasm,51
+Ovary-AdenoCA,Ovary Adenocarcinoma,113
+Panc-AdenoCA,Pancreas Adenocarcinoma,241
+Panc-Endocrine,Pancreas Neuroendocrine Tumor,85
+Prost-AdenoCA,Prostate Adenocarcinoma,286
+Skin-Melanoma,Skin Melanoma,107
+Stomach-AdenoCA,Stomach Adenocarcinoma,75
+Thy-AdenoCA,Thyroid Adenocarcinoma,48
+Uterus-AdenoCA,Uterus Adenocarcinoma,51
