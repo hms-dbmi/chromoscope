@@ -80,10 +80,10 @@ export default function SampleConfigForm(props: { onAdd: (config: ValidSampleCon
                         </svg>
                     )}
                 </span>
-                {/* <span
+                <span
                     className="menu-icon"
                     style={{ float: 'right', marginRight: '40px', fontWeight: 300 }}
-                    onClick={() => window.open('https://chromoscope.bio/docs/#/data-config', '_blank')}
+                    onClick={() => window.open('https://chromoscope.bio/loading-data/through-interface', '_blank')}
                 >
                     Document{' '}
                     <svg width={16} height={16} viewBox={ICONS.DOCS.viewBox}>
@@ -91,7 +91,7 @@ export default function SampleConfigForm(props: { onAdd: (config: ValidSampleCon
                             <path key={d} fill="currentColor" d={d} />
                         ))}
                     </svg>
-                </span> */}
+                </span>
             </div>
             <div
                 className={showNewSampleConfig ? 'sample-config-form' : 'sample-config-form-hidden'}
@@ -246,6 +246,21 @@ export default function SampleConfigForm(props: { onAdd: (config: ValidSampleCon
                 <div className="menu-subtitle" style={{ float: 'right' }}>
                     * Required Fields
                 </div>
+                <button
+                    className="menu-button"
+                    onClick={() => {
+                        setSampleConfig({
+                            ...sampleConfig,
+                            id: '7a921087-8e62-4a93-a757-fd8cdbe1eb8f',
+                            cancer: 'Ovarian',
+                            assembly: 'hg19',
+                            sv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.pcawg_consensus_1.6.161022.somatic.sv.bedpe',
+                            cnv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.consensus.20170119.somatic.cna.annotated.txt'
+                        });
+                    }}
+                >
+                    Fill in example datasets
+                </button>
                 <button
                     className={sampleOkayToAdd ? 'menu-button' : 'menu-button-disallowed'}
                     onClick={() => onAdd(sampleConfig as ValidSampleConfig)}
