@@ -878,7 +878,7 @@ function App(props: RouteComponentProps) {
                             </a>
                             <a
                                 className="title-doc-link"
-                                href="https://chromoscope.bio/docs/"
+                                href="https://chromoscope.bio/"
                                 target="_blank"
                                 rel="noreferrer"
                                 style={{ position: 'absolute' }}

@@ -78,12 +78,12 @@ const config = {
                     {
                         label: 'Use Cases',
                         position: 'left',
-                        to: '/docs/category/use-cases'
+                        to: '/category/use-cases'
                     },
                     {
                         label: 'Workflows',
                         position: 'left',
-                        to: '/docs/workflows'
+                        to: '/workflows'
                     },
                     { to: 'about', label: 'About', position: 'left' },
                     {
@@ -107,7 +107,7 @@ const config = {
                         items: [
                             {
                                 label: 'Documentation',
-                                to: '/docs/intro'
+                                to: '/intro'
                             },
                             {
                                 label: 'About',
