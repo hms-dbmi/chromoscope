@@ -2,8 +2,8 @@
 
 Interactive multiscale visualization for structural variation in human genomes.
 
+- Project/Documentation: https://chromoscope.bio
 - Demo: https://chromoscope.bio/app/
-- Documentation: https://chromoscope.bio
 
 ![teaser](https://chromoscope.bio/assets/images/teaser-35e018558eb73828a391cc03d8157521.png)
 
