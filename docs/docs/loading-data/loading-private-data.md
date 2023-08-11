@@ -84,9 +84,9 @@ The ability to create presigned URLs not only allows for controlled, temporary v
 and/or (2) as a temporary URL for the configuration file itself (if it is saved as a private object within an S3 bucket), used as the argument for [the `external` parameter of a Chromoscope URL](./url-parameters):
 ```
 // format
-https://chromoscope.bio/?external=[PRESIGNED_URL_FOR_YOUR_CONFIG_FILE]
+https://chromoscope.bio/app/?external=[PRESIGNED_URL_FOR_YOUR_CONFIG_FILE]
 
 // example
-https://chromoscope.bio/?external=https://EXAMPLE_BUCKET.s3.us-east-1.amazonaws.com/myobject.configfile?AWSAccessKeyId=AKIAEXAMPLEXXX&Expires=604800&Signature=ibOGfAovnhASUASsdasjj321
+https://chromoscope.bio/app/?external=https://EXAMPLE_BUCKET.s3.us-east-1.amazonaws.com/myobject.configfile?AWSAccessKeyId=AKIAEXAMPLEXXX&Expires=604800&Signature=ibOGfAovnhASUASsdasjj321
 ```
 

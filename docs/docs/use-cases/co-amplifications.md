@@ -10,7 +10,7 @@ The amplifications of chromosomes 8 and 11 in breast cancer co-occur. An inspect
 :::info
 You can view the selected 23 cancer genomes in this Chromoscope configuration:
 
-https://chromoscope.bio/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/coamps/configs/coamps.all.config.withnotes.json
+https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/coamps/configs/coamps.all.config.withnotes.json
 :::
 
 [^1]: Głodzik, D. et al. Mutational mechanisms of amplifications revealed by analysis of clustered rearrangements in breast cancers. Annals of Oncology, 29(11), 2223-2231 (2018).

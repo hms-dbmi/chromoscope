@@ -9,10 +9,10 @@ You can load a large number of samples through data configurations. You need to 
 
 ```
 // format
-https://chromoscope.bio/?external=[URL_TO_YOUR_CONFIG_FILE]
+https://chromoscope.bio/app/?external=[URL_TO_YOUR_CONFIG_FILE]
 
 // example
-https://chromoscope.bio/?external=https://gist.githubusercontent.com/sehilyi/a9bbbc3e63806d2282e1959e27a65a53/raw/b6c0ab07a220027196746f46607e916bd9751c70/goscan-multiple-samples.json
+https://chromoscope.bio/app/?external=https://gist.githubusercontent.com/sehilyi/a9bbbc3e63806d2282e1959e27a65a53/raw/b6c0ab07a220027196746f46607e916bd9751c70/goscan-multiple-samples.json
 ```
 
 For each sample, you need to prepare the following information in a JSON object.

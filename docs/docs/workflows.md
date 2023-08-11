@@ -5,7 +5,7 @@ sidebar_position: 4
 
 # Using Chromoscope in Different Workflows
 
-There are several ways to use Chromoscope visualizations in different analysis workflows other than directly using the online instance, https://chromoscope.bio One way is to use the [exported Gosling specification](./visualizations/export) and the other is to use [Chromoscope Python Package](./loading-data/python-package).
+There are several ways to use Chromoscope visualizations in different analysis workflows other than directly using the online instance, https://chromoscope.bio/app/. One way is to use the [exported Gosling specification](./visualizations/export) and the other is to use [Chromoscope Python Package](./loading-data/python-package).
 
 :::tip
 To test the following examples of using a customized spec, you can use the spec below.

@@ -13,9 +13,9 @@
         "build": "vite build",
         "build-docs": "yarn --cwd docs install; yarn --cwd docs build",
         "serve": "vite preview",
-        "predeploy": "yarn build; yarn build-docs; echo \"chromoscope.bio\" >> dist/CNAME",
-        "format": "eslint src/ --fix && prettier --write *",
-        "deploy": "touch dist/.nojekyll; cp -R docs/build dist/docs; gh-pages -d dist -t --git git",
+        "predeploy": "yarn build; yarn build-docs; mkdir build; echo \"chromoscope.bio\" >> build/CNAME",
+        "format": "eslint src/ --fix && prettier --write src/",
+        "deploy": "touch build/.nojekyll; cp -R docs/build build; cp -R dist build/app; gh-pages -d build -t --git git",
         "thumbnail": "node src/thumbnails.js"
     },
     "dependencies": {

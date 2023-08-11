@@ -10,12 +10,12 @@ The BRCA1 and BRCA2 genes have a role in the accurate repair of DNA double-stran
 From the PCAWG study, we retrieved 44 whole genomes of cancer samples with bi-allelic loss of BRCA1 or BRCA2 genes, which were identified based on the published curations of germline mutations in the two genes.[^3]
 
 
-Through Chromoscope, we can visualize and compare characteristics between the genome of BRCA1 or BRCA2 cancers. The visualization shows that while both display general chromosomal instability, BRCA1 cancers show the predominance of tandem duplications, while deletions dominate BRCA2 cancers. Additionally, the telomeric loss-of-heterozygosity segments characteristic of homologous recombination deficiency, often appear to be delineated by unbalanced translocations ([example](https://chromoscope.bio/?demoIndex=9&domain=1683276173.7073574-1699032388.9649158&external=https://somatic-browser-test.s3.amazonaws.com/pathogenicBrca/configs/pathogenicBrca.all.config.json)). 
+Through Chromoscope, we can visualize and compare characteristics between the genome of BRCA1 or BRCA2 cancers. The visualization shows that while both display general chromosomal instability, BRCA1 cancers show the predominance of tandem duplications, while deletions dominate BRCA2 cancers. Additionally, the telomeric loss-of-heterozygosity segments characteristic of homologous recombination deficiency, often appear to be delineated by unbalanced translocations ([example](https://chromoscope.bio/app/?demoIndex=9&domain=1683276173.7073574-1699032388.9649158&external=https://somatic-browser-test.s3.amazonaws.com/pathogenicBrca/configs/pathogenicBrca.all.config.json)). 
 
 :::info
 The cohort of 44 cancer genomes with BRCA1/2 loss is accessible through the following Chromoscope configuration:
 
-https://chromoscope.bio/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/pathogenicBrca/configs/pathogenicBrca.all.config.json
+https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/pathogenicBrca/configs/pathogenicBrca.all.config.json
 
 :::
 
