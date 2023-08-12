@@ -23,7 +23,7 @@ function HomepageHeader() {
                     <Link className="button button--secondary button--lg" to="/category/use-cases">
                         Use Cases
                     </Link>
-                    <Link className="button button--secondary button--lg" to="https://chromoscope.bio">
+                    <Link className="button button--secondary button--lg" to="https://chromoscope.bio/app">
                         Try a Demo
                     </Link>
                 </div>
