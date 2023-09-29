@@ -604,8 +604,8 @@ function App(props: RouteComponentProps) {
         });
 
         return () => {
-            gosRef.current.api.unsubscribe('click');
-            gosRef.current.api.unsubscribe('mouseOver');
+            gosRef.current?.api.unsubscribe('click');
+            gosRef.current?.api.unsubscribe('mouseOver');
         };
     });
 
