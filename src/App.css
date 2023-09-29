@@ -634,7 +634,7 @@ a:hover {
 .overview-left {
     float: left;
     height: 100%;
-    width: 399px;
+    width: 398px;
     border-right: 1px solid lightgrey;
     overflow-y: auto;
     overflow-x: hidden;
