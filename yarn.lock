@@ -2438,10 +2438,10 @@ gosling-theme@^0.0.10:
   resolved "https://registry.yarnpkg.com/gosling-theme/-/gosling-theme-0.0.10.tgz#5a4c2d0d24f90fe47c293335cd67832be6cf4d54"
   integrity sha512-GRm+XGeSGhKBjM/bNyeUkwp6tjnFKpNbywr58WzzA2qSA4RFPOoitS03R7xpYxqLXBGMFgahkyYd9Mostd2Csw==
 
-gosling.js@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/gosling.js/-/gosling.js-0.10.0.tgz#351639960f9e092f6fe73dfe106ecd7155c247ed"
-  integrity sha512-PaFGaenF5zZ7jbzRt+W/0D5t9THNlK7yWUps9qvo4TIElHJALK68+A2xDpaiZX5JJQp/fgE6sOLnKMB95XaNeg==
+gosling.js@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/gosling.js/-/gosling.js-0.11.0.tgz#a9cca2db816cb03e487c85dfd1f575a1a0c9d5e0"
+  integrity sha512-i4aZF/mnZtgeyAS3pRFMrId75IpteuAziVqXR3mm4kaKimilIanXNfa2oxARGYynhSYh+CDcIc3ruAWOtYlhCQ==
   dependencies:
     "@gmod/bam" "^1.1.18"
     "@gmod/bbi" "^3.0.1"
@@ -2481,6 +2481,7 @@ gosling.js@^0.10.0:
     quick-lru "^6.1.1"
     rbush "^3.0.1"
     react-grid-layout "^1.2.5"
+    stream-browserify "^3.0.0"
     threads "^1.6.4"
     uuid "^8.3.2"
 
