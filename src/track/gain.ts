@@ -1,4 +1,4 @@
-import { SingleTrack } from 'gosling.js/dist/src/core/gosling.schema';
+import { SingleTrack } from 'gosling.js/dist/src/gosling-schema';
 import { TrackMode } from './index';
 
 export default function gain(

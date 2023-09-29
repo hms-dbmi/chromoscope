@@ -4,7 +4,7 @@ import {
     SingleTrack,
     StrReplaceTransform,
     SvTypeTransform
-} from 'gosling.js/dist/src/core/gosling.schema';
+} from 'gosling.js/dist/src/gosling-schema';
 import { consistentSv } from '../constants';
 import defaults from '../default-encoding';
 import { TrackMode } from '.';

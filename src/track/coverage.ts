@@ -1,4 +1,4 @@
-import { SingleTrack } from 'gosling.js/dist/src/core/gosling.schema';
+import { SingleTrack } from 'gosling.js/dist/src/gosling-schema';
 import { SpecOption } from '../main-spec';
 
 export default function coverage(option: SpecOption, isLeft: boolean): Partial<SingleTrack> {
