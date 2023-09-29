@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { GoslingComponent, GoslingRef, embed } from 'gosling.js';
 import { debounce, sample } from 'lodash';
 import type { RouteComponentProps } from 'react-router-dom';
@@ -197,110 +197,6 @@ function App(props: RouteComponentProps) {
             filterSampleBy === '' ? selectedSamples : selectedSamples.filter(d => d.id.includes(filterSampleBy))
         );
     }, [filterSampleBy]);
-
-    useEffect(() => {
-        if (!gosRef.current) return;
-
-        gosRef.current.api.subscribe('click', (_, e) => {
-            // console.log(e);
-
-            let x = +e.data[0].start1;
-            let xe = +e.data[0].end1;
-            let x1 = +e.data[0].start2;
-            let x1e = +e.data[0].end2;
-
-            // safetly swap
-            if (x > x1) {
-                x = +e.data[0].start2;
-                xe = +e.data[0].end2;
-                x1 = +e.data[0].start1;
-                x1e = +e.data[0].end1;
-            }
-
-            let zoomStart = x;
-            let zoomEnd = x1e;
-            let padding = (zoomEnd - zoomStart) / 4.0;
-            if (e.data[0].svclass === 'Translocation') {
-                zoomStart = x;
-                zoomEnd = xe;
-                padding = 10000;
-            }
-
-            gosRef.current.api.zoomTo(
-                `${demo.id}-mid-ideogram`,
-                `chr1:${zoomStart}-${zoomEnd}`,
-                padding,
-                ZOOM_DURATION
-            );
-
-            // we will show the bam files, so set the initial positions
-            setBreakpoints([+x - ZOOM_PADDING, +xe + ZOOM_PADDING, +x1 - ZOOM_PADDING, +x1e + ZOOM_PADDING]);
-            setBpIntervals([x, xe, x1, x1e]);
-            setSelectedSvId(e.data[0].sv_id + '');
-
-            // move to the bottom
-            setTimeout(
-                () => document.getElementById('gosling-panel')?.scrollTo({ top: 1000000, behavior: 'smooth' }),
-                2000
-            );
-
-            leftReads.current = [];
-            rightReads.current = [];
-        });
-
-        gosRef.current.api.subscribe('mouseOver', (_, e) => {
-            const sanitizedChr = (c: string | number) => {
-                return `${c}`.replace('chr', '');
-            };
-            const calDir = (c1: string | number, c2: string | number) => {
-                c1 = sanitizedChr(c1);
-                c2 = sanitizedChr(c2);
-                if (+c1 && +c1 <= 9) {
-                    c1 = '0' + c1;
-                }
-                if (+c2 && +c2 <= 9) {
-                    c2 = '0' + c2;
-                }
-                return c1 < c2 ? 'rightward' : 'leftward';
-            };
-            if (e.id.includes('-mid-sv') && e.data[0].svclass === 'Translocation') {
-                const { chromosome: c, position: p } = e.genomicPosition;
-                const padding = 100000;
-                if (sanitizedChr(c) === sanitizedChr(e.data[0].chrom1)) {
-                    const direction = calDir(c, e.data[0].chrom2);
-                    const id = e.data[0].sv_id + '-' + direction;
-                    if (id === prevJumpId.current) return;
-                    const { start2, end2 } = e.data[0];
-                    setJumpButtonInfo({
-                        id,
-                        x: mousePos.current.x,
-                        y: mousePos.current.y,
-                        direction,
-                        zoomTo: () => gosRef.current.api.zoomTo(e.id, `chr1:${start2}-${end2}`, padding, ZOOM_DURATION)
-                    });
-                } else {
-                    const direction = calDir(c, e.data[0].chrom1);
-                    const id = e.data[0].sv_id + '-' + direction;
-                    if (id === prevJumpId.current) return;
-                    const { start1, end1 } = e.data[0];
-                    setJumpButtonInfo({
-                        id,
-                        x: mousePos.current.x,
-                        y: mousePos.current.y,
-                        direction,
-                        zoomTo: () => gosRef.current.api.zoomTo(e.id, `chr1:${start1}-${end1}`, padding, ZOOM_DURATION)
-                    });
-                }
-            } else {
-                setJumpButtonInfo(undefined);
-            }
-        });
-
-        return () => {
-            gosRef.current.api.unsubscribe('click');
-            gosRef.current.api.unsubscribe('mouseOver');
-        };
-    }, [gosRef, drivers]); // !! instead of `[demo]`, we use drivers which are updated as a side effect of a demo
 
     useEffect(() => {
         if (!gosRef.current || !demo.bai || !demo.bam) return;
@@ -608,6 +504,110 @@ function App(props: RouteComponentProps) {
         );
         // !! Removed `demo` not to update twice since `drivers` are updated right after a demo update.
     }, [ready, xDomain, visPanelWidth, drivers, showOverview, showPutativeDriver, selectedSvId, breakpoints, svReads]);
+
+    useLayoutEffect(() => {
+        if (!gosRef.current) return;
+
+        gosRef.current.api.subscribe('click', (_, e) => {
+            // console.log(e);
+
+            let x = +e.data[0].start1;
+            let xe = +e.data[0].end1;
+            let x1 = +e.data[0].start2;
+            let x1e = +e.data[0].end2;
+
+            // safetly swap
+            if (x > x1) {
+                x = +e.data[0].start2;
+                xe = +e.data[0].end2;
+                x1 = +e.data[0].start1;
+                x1e = +e.data[0].end1;
+            }
+
+            let zoomStart = x;
+            let zoomEnd = x1e;
+            let padding = (zoomEnd - zoomStart) / 4.0;
+            if (e.data[0].svclass === 'Translocation') {
+                zoomStart = x;
+                zoomEnd = xe;
+                padding = 10000;
+            }
+
+            gosRef.current.api.zoomTo(
+                `${demo.id}-mid-ideogram`,
+                `chr1:${zoomStart}-${zoomEnd}`,
+                padding,
+                ZOOM_DURATION
+            );
+
+            // we will show the bam files, so set the initial positions
+            setBreakpoints([+x - ZOOM_PADDING, +xe + ZOOM_PADDING, +x1 - ZOOM_PADDING, +x1e + ZOOM_PADDING]);
+            setBpIntervals([x, xe, x1, x1e]);
+            setSelectedSvId(e.data[0].sv_id + '');
+
+            // move to the bottom
+            setTimeout(
+                () => document.getElementById('gosling-panel')?.scrollTo({ top: 1000000, behavior: 'smooth' }),
+                2000
+            );
+
+            leftReads.current = [];
+            rightReads.current = [];
+        });
+
+        gosRef.current.api.subscribe('mouseOver', (_, e) => {
+            const sanitizedChr = (c: string | number) => {
+                return `${c}`.replace('chr', '');
+            };
+            const calDir = (c1: string | number, c2: string | number) => {
+                c1 = sanitizedChr(c1);
+                c2 = sanitizedChr(c2);
+                if (+c1 && +c1 <= 9) {
+                    c1 = '0' + c1;
+                }
+                if (+c2 && +c2 <= 9) {
+                    c2 = '0' + c2;
+                }
+                return c1 < c2 ? 'rightward' : 'leftward';
+            };
+            if (e.id.includes('-mid-sv') && e.data[0].svclass === 'Translocation') {
+                const { chromosome: c, position: p } = e.genomicPosition;
+                const padding = 100000;
+                if (sanitizedChr(c) === sanitizedChr(e.data[0].chrom1)) {
+                    const direction = calDir(c, e.data[0].chrom2);
+                    const id = e.data[0].sv_id + '-' + direction;
+                    if (id === prevJumpId.current) return;
+                    const { start2, end2 } = e.data[0];
+                    setJumpButtonInfo({
+                        id,
+                        x: mousePos.current.x,
+                        y: mousePos.current.y,
+                        direction,
+                        zoomTo: () => gosRef.current.api.zoomTo(e.id, `chr1:${start2}-${end2}`, padding, ZOOM_DURATION)
+                    });
+                } else {
+                    const direction = calDir(c, e.data[0].chrom1);
+                    const id = e.data[0].sv_id + '-' + direction;
+                    if (id === prevJumpId.current) return;
+                    const { start1, end1 } = e.data[0];
+                    setJumpButtonInfo({
+                        id,
+                        x: mousePos.current.x,
+                        y: mousePos.current.y,
+                        direction,
+                        zoomTo: () => gosRef.current.api.zoomTo(e.id, `chr1:${start1}-${end1}`, padding, ZOOM_DURATION)
+                    });
+                }
+            } else {
+                setJumpButtonInfo(undefined);
+            }
+        });
+
+        return () => {
+            gosRef.current.api.unsubscribe('click');
+            gosRef.current.api.unsubscribe('mouseOver');
+        };
+    });
 
     return (
         <ErrorBoundary>

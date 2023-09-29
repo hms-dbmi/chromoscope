@@ -1,4 +1,4 @@
-import { OverlaidTracks } from 'gosling.js/dist/src/core/gosling.schema';
+import { OverlaidTracks } from 'gosling.js/dist/src/gosling-schema';
 import { TrackMode } from './index';
 
 export default function indel(
