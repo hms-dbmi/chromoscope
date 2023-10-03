@@ -30,7 +30,7 @@ For each sample, you need to prepare the following information in a JSON object.
 | `vcf2` | `string` | Optional. An URL of the the indel file (`.vcf`). |
 | `vcf2Index` | `string` | Optional. An URL of the indel index file (`.tbi`). |
 | `bam` | `string` | Optional. An URL of the BAM file (`.bam`). |
-| `bamIndex` | `string` | Optional. An URL of the BAM index file (`.bai`). |
+| `bai` | `string` | Optional. An URL of the BAM index file (`.bai`). |
 | `note` | `string` | Optional. A textual annotation. |
 
 A single-sample example:
