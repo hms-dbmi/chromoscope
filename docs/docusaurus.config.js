@@ -35,14 +35,12 @@ const config = {
     presets: [
         [
             'classic',
-            {
+            /** @type {import('@docusaurus/preset-classic').Options} */
+            ({
                 gtag: {
                     trackingID: 'G-ZDRLE55F73',
                     anonymizeIP: true,
                 },
-            },
-            /** @type {import('@docusaurus/preset-classic').Options} */
-            ({
                 docs: {
                     routeBasePath: '/',
                     sidebarPath: require.resolve('./sidebars.js'),
