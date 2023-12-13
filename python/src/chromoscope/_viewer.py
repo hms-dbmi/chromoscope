@@ -77,7 +77,7 @@ def resolve_config(config: list[dict]) -> str:
     return resource.url
 
 
-def render_html(config_url: str, chromoscope_url: str = "https://chromoscope.bio"):
+def render_html(config_url: str, chromoscope_url: str = "https://chromoscope.bio/app"):
     """Render a Chromoscope viewer as HTML.
 
     Parameters
@@ -85,7 +85,7 @@ def render_html(config_url: str, chromoscope_url: str = "https://chromoscope.bio
     config_url : str
         A URL to a JSON configuration file.
     chromoscope_url : str, optional
-        A URL to the Chromoscope website, by default "https://chromoscope.bio"
+        A URL to the Chromoscope website, by default "https://chromoscope.bio/app"
 
     Returns
     -------
@@ -104,7 +104,7 @@ class Viewer:
     """A Jupyter notebook viewer for Chromoscope."""
 
     def __init__(
-        self, config_url: str, chromoscope_url: str = "https://chromoscope.bio"
+        self, config_url: str, chromoscope_url: str = "https://chromoscope.bio/app"
     ):
         """Create a new viewer.
 
