@@ -1,4 +1,4 @@
-# Chromoscope [![Demo](https://img.shields.io/badge/demo-🧬-5CB6EA.svg)](https://chromoscope.bio/app) [![Documentation Status](https://img.shields.io/badge/documentation-📖-5CB6EA.svg)](https://chromoscope.bio) [![License: MIT](https://img.shields.io/badge/License-MIT-5CB6EA.svg)](https://opensource.org/licenses/MIT)
+# Chromoscope [![Demo](https://img.shields.io/badge/demo-🧬-5CB6EA.svg)](https://chromoscope.bio/app) [![Documentation Status](https://img.shields.io/badge/documentation-📖-5CB6EA.svg)](https://chromoscope.bio) [![License: MIT](https://img.shields.io/badge/License-MIT-5CB6EA.svg)](https://opensource.org/licenses/MIT) [![PyPI - Version](https://img.shields.io/pypi/v/chromoscope.svg)](https://pypi.org/project/chromoscope)
 
 Interactive multiscale visualization for structural variation in human genomes.
 
