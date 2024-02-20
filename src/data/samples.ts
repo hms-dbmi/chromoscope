@@ -20,7 +20,7 @@ export type SampleType = {
     cancer: string; // cancer type
     assembly: Assembly; // hg19 or 38
     sv: string; // URL of bedpe
-    cnv: string; // URL of txt
+    cnv?: string; // URL of txt
     drivers?: { [k: string]: string | number }[] | string;
     bam?: string;
     bai?: string;

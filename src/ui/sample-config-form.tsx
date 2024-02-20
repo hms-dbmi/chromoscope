@@ -24,8 +24,8 @@ const testOkay = {
     id: (_: SampleConfig) => _.id,
     cancer: (_: SampleConfig) => _.cancer,
     sv: (_: SampleConfig) => isValidUrl(_.sv),
-    cnv: (_: SampleConfig) => isValidUrl(_.cnv),
     // optional
+    cnv: (_: SampleConfig) => !_.cnv || isValidUrl(_.cnv),
     drivers: (_: SampleConfig) => !_.drivers || isValidUrl(_.drivers),
     vcf: (_: SampleConfig) => !_.vcf || isValidUrl(_.vcf),
     vcfIndex: (_: SampleConfig) => !_.vcfIndex || isValidUrl(_.vcfIndex),
@@ -155,14 +155,13 @@ export default function SampleConfigForm(props: { onAdd: (config: ValidSampleCon
                 />
 
                 <div className="menu-subtitle">
-                    CNV<sup>*</sup> <small>(.txt)</small>
+                    CNV <small>(.txt)</small>
                 </div>
                 {/* <span className="menu-subtitle-right">Required</span> */}
                 <input
                     type="text"
                     className={testOkay.cnv(sampleConfig) ? 'menu-text-input' : 'menu-text-input-invalid'}
                     placeholder="https://..."
-                    required
                     onChange={e => setSampleConfig({ ...sampleConfig, cnv: e.currentTarget.value })}
                     value={sampleConfig.cnv}
                 />
