@@ -315,9 +315,9 @@ function getOverviewSpec(option: SpecOption): View[] {
                 },
                 tracks.driver(id, driversToTsvUrl(drivers), width, 40, 'top'),
                 tracks.boundary('driver', 'top'),
-                cnv ? [tracks.gain(id, cnv, width, 40, 'top', cnFields)] : [],
+                ...(cnv ? [tracks.gain(id, cnv, width, 40, 'top', cnFields)] : []),
                 tracks.boundary('gain', 'top'),
-                cnv ? [tracks.loh(id, cnv, width, 40, 'top', cnFields)] : [],
+                ...(cnv ? [tracks.loh(id, cnv, width, 40, 'top', cnFields)] : []),
                 tracks.boundary('loh', 'top'),
                 tracks.sv(id, sv, width, 80, 'top', selectedSvId)
             ]
