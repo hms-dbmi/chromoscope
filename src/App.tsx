@@ -31,7 +31,6 @@ const DATABSE_THUMBNAILS = await db.get();
 const GENERATED_THUMBNAILS = {};
 
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
-let VIS_PADDING = 60;
 const ZOOM_PADDING = 200;
 const ZOOM_DURATION = 500;
 
@@ -48,14 +47,13 @@ const allDrivers = [
 function App(props: RouteComponentProps) {
     // URL parameters
     const urlParams = new URLSearchParams(props.location.search);
-
-    // Flag URL Parameter for "minimal_mode", which if true only shows the visualization panel
-    const minimal_mode = urlParams.get('minimal_mode');
-
-    // Overwrite the padding in minimal mode
-    if (minimal_mode) {
-        VIS_PADDING = 0;
-    }
+    const isMinimalMode = urlParams.get('minimal_mode');
+    const VIS_PADDING = {
+        top: 60,
+        right: isMinimalMode ? 20 : 60,
+        bottom: isMinimalMode ? 0 : 60,
+        left: isMinimalMode ? 20 : 60
+    };
 
     // !! instead of using `urlParams.get('external')`, we directly parse the external URL in order to include
     // any inlined parameters of the external link (e.g., private AWS link with authentication info.)
@@ -103,8 +101,8 @@ function App(props: RouteComponentProps) {
     const [filteredSamples, setFilteredSamples] = useState(selectedSamples);
     const [showOverview, setShowOverview] = useState(true);
     const [showPutativeDriver, setShowPutativeDriver] = useState(true);
-    const [interactiveMode, setInteractiveMode] = useState(minimal_mode ?? false);
-    const [visPanelWidth, setVisPanelWidth] = useState(INIT_VIS_PANEL_WIDTH - VIS_PADDING * 2);
+    const [interactiveMode, setInteractiveMode] = useState(isMinimalMode ?? false);
+    const [visPanelWidth, setVisPanelWidth] = useState(INIT_VIS_PANEL_WIDTH - VIS_PADDING.left * 2);
     const [overviewChr, setOverviewChr] = useState('');
     const [genomeViewChr, setGenomeViewChr] = useState('');
     const [drivers, setDrivers] = useState(
@@ -113,7 +111,7 @@ function App(props: RouteComponentProps) {
     const [selectedSvId, setSelectedSvId] = useState<string>('');
     const [breakpoints, setBreakpoints] = useState<[number, number, number, number]>([1, 100, 1, 100]);
     const [bpIntervals, setBpIntervals] = useState<[number, number, number, number] | undefined>();
-    const [mouseOnVis, setMouseOnVis] = useState(minimal_mode ?? false);
+    const [mouseOnVis, setMouseOnVis] = useState(isMinimalMode ?? false);
     const [jumpButtonInfo, setJumpButtonInfo] =
         useState<{ id: string; x: number; y: number; direction: 'leftward' | 'rightward'; zoomTo: () => void }>();
     const mousePos = useRef({ x: -100, y: -100 });
@@ -311,7 +309,7 @@ function App(props: RouteComponentProps) {
         window.addEventListener(
             'resize',
             debounce(() => {
-                setVisPanelWidth(window.innerWidth - VIS_PADDING * 2);
+                setVisPanelWidth(window.innerWidth - VIS_PADDING.left * 2);
             }, 500)
         );
     }, []);
@@ -618,308 +616,6 @@ function App(props: RouteComponentProps) {
         };
     });
 
-    if (minimal_mode) {
-        return (
-            <ErrorBoundary>
-                <div
-                    className="vis-panel-container"
-                    style={{ width: '100%', height: '100%' }}
-                    onMouseMove={e => {
-                        const top = e.clientY;
-                        const left = e.clientX;
-                        const width = window.innerWidth;
-                        const height = window.innerHeight;
-                        mousePos.current = { x: left, y: top };
-                    }}
-                    onWheel={() => setJumpButtonInfo(undefined)}
-                    onClick={() => {
-                        setJumpButtonInfo(undefined);
-                    }}
-                >
-                    <div id="vis-panel" className="vis-panel">
-                        <div
-                            id="gosling-panel"
-                            className="gosling-panel"
-                            style={{
-                                width: `calc(100% - ${VIS_PADDING * 2}px)`,
-                                height: `calc(100% - ${VIS_PADDING * 2}px)`,
-                                padding: VIS_PADDING
-                            }}
-                        >
-                            {goslingComponent}
-                            {jumpButtonInfo ? (
-                                <button
-                                    className="jump-to-bp-btn"
-                                    style={{
-                                        position: 'fixed',
-                                        left: `${
-                                            jumpButtonInfo.x + 20 + (jumpButtonInfo.direction === 'leftward' ? -60 : 0)
-                                        }px`,
-                                        top: `${jumpButtonInfo.y}px`
-                                    }}
-                                    onClick={() => jumpButtonInfo.zoomTo()}
-                                >
-                                    {jumpButtonInfo.direction === 'leftward' ? '←' : '→'}
-                                </button>
-                            ) : null}
-                            <div
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    top: VIS_PADDING,
-                                    left: VIS_PADDING,
-                                    opacity: 0.9,
-                                    zIndex: 2,
-                                    pointerEvents: interactiveMode ? 'none' : 'auto'
-                                }}
-                            />
-                            <div
-                                style={{
-                                    pointerEvents: 'none',
-                                    width: '100%',
-                                    height: '100%',
-                                    position: 'relative',
-                                    zIndex: 998
-                                }}
-                            >
-                                <select
-                                    style={{
-                                        pointerEvents: 'auto',
-                                        top: '3px'
-                                    }}
-                                    className="nav-dropdown"
-                                    onChange={e => {
-                                        setShowSamples(false);
-                                        const chr = e.currentTarget.value;
-                                        setTimeout(() => setOverviewChr(chr), 300);
-                                    }}
-                                    value={overviewChr}
-                                    disabled={!showOverview}
-                                >
-                                    {[WHOLE_CHROMOSOME_STR, ...CHROMOSOMES].map(chr => {
-                                        return (
-                                            <option key={chr} value={chr}>
-                                                {chr}
-                                            </option>
-                                        );
-                                    })}
-                                </select>
-                                <img
-                                    src={legend}
-                                    style={{
-                                        position: 'absolute',
-                                        right: '3px',
-                                        top: '3px',
-                                        zIndex: 998,
-                                        width: '120px'
-                                    }}
-                                />
-                                <select
-                                    style={{
-                                        pointerEvents: 'auto',
-                                        // !! This should be identical to how the height of circos determined.
-                                        top: `${Math.min(visPanelWidth, 600)}px`
-                                    }}
-                                    className="nav-dropdown"
-                                    onChange={e => {
-                                        setShowSamples(false);
-                                        const chr = e.currentTarget.value;
-                                        setTimeout(() => setGenomeViewChr(chr), 300);
-                                    }}
-                                    value={genomeViewChr}
-                                    disabled={!showOverview}
-                                >
-                                    {CHROMOSOMES.map(chr => {
-                                        return (
-                                            <option key={chr} value={chr}>
-                                                {chr}
-                                            </option>
-                                        );
-                                    })}
-                                </select>
-                                <svg
-                                    className="gene-search-icon"
-                                    viewBox="0 0 16 16"
-                                    style={{
-                                        top: `${Math.min(visPanelWidth, 600) + 6}px`
-                                        // visibility: demo.assembly === 'hg38' ? 'visible' : 'hidden'
-                                    }}
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-                                    />
-                                </svg>
-                                <input
-                                    type="text"
-                                    className="gene-search"
-                                    placeholder="Search Gene (e.g., MYC)"
-                                    // alt={demo.assembly === 'hg38' ? 'Search Gene' : 'Not currently available for this assembly.'}
-                                    style={{
-                                        pointerEvents: 'auto',
-                                        top: `${Math.min(visPanelWidth, 600)}px`
-                                        // cursor: demo.assembly === 'hg38' ? 'auto' : 'not-allowed',
-                                        // visibility: demo.assembly === 'hg38' ? 'visible' : 'hidden'
-                                    }}
-                                    // disabled={demo.assembly === 'hg38' ? false : true}
-                                    // onChange={(e) => {
-                                    //     const keyword = e.target.value;
-                                    //     if(keyword !== "" && !keyword.startsWith("c")) {
-                                    //         gosRef.current.api.suggestGene(keyword, (suggestions) => {
-                                    //             setGeneSuggestions(suggestions);
-                                    //         });
-                                    //         setSuggestionPosition({
-                                    //             left: searchBoxRef.current.getBoundingClientRect().left,
-                                    //             top: searchBoxRef.current.getBoundingClientRect().top + searchBoxRef.current.getBoundingClientRect().height,
-                                    //         });
-                                    //     } else {
-                                    //         setGeneSuggestions([]);
-                                    //     }
-                                    //     setSearchKeyword(keyword);
-                                    // }}
-                                    onKeyDown={e => {
-                                        const keyword = (e.target as HTMLTextAreaElement).value;
-                                        switch (e.key) {
-                                            case 'ArrowUp':
-                                                break;
-                                            case 'ArrowDown':
-                                                break;
-                                            case 'Enter':
-                                                // https://github.com/gosling-lang/gosling.js/blob/7555ab711023a0c3e2076a448756a9ba3eeb04f7/src/core/api.ts#L156
-                                                gosRef.current.hgApi.api.zoomToGene(
-                                                    `${demo.id}-mid-ideogram`,
-                                                    keyword,
-                                                    10000,
-                                                    1000
-                                                );
-                                                break;
-                                            case 'Esc':
-                                            case 'Escape':
-                                                break;
-                                        }
-                                    }}
-                                />
-                                <button
-                                    style={{
-                                        pointerEvents: 'auto',
-                                        // !! This should be identical to how the height of circos determined.
-                                        top: `${Math.min(visPanelWidth, 600)}px`
-                                    }}
-                                    className="zoom-in-button"
-                                    onClick={e => {
-                                        const trackId = `${demo.id}-mid-ideogram`;
-                                        const [start, end] = gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
-                                        if (end - start < 100) return;
-                                        const delta = (end - start) / 3.0;
-                                        gosRef.current.api.zoomTo(
-                                            trackId,
-                                            `chr1:${start + delta}-${end - delta}`,
-                                            0,
-                                            ZOOM_DURATION
-                                        );
-                                    }}
-                                >
-                                    +
-                                </button>
-                                <button
-                                    style={{
-                                        pointerEvents: 'auto',
-                                        // !! This should be identical to how the height of circos determined.
-                                        top: `${Math.min(visPanelWidth, 600)}px`
-                                    }}
-                                    className="zoom-out-button"
-                                    onClick={e => {
-                                        const trackId = `${demo.id}-mid-ideogram`;
-                                        const [start, end] = gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
-                                        const delta = (end - start) / 2.0;
-                                        gosRef.current.api.zoomTo(
-                                            trackId,
-                                            `chr1:${start}-${end}`,
-                                            delta,
-                                            ZOOM_DURATION
-                                        );
-                                    }}
-                                >
-                                    -
-                                </button>
-                                <button
-                                    style={{
-                                        pointerEvents: 'auto',
-                                        // !! This should be identical to how the height of circos determined.
-                                        top: `${Math.min(visPanelWidth, 600)}px`
-                                    }}
-                                    className="zoom-left-button"
-                                    onClick={e => {
-                                        const trackId = `${demo.id}-mid-ideogram`;
-                                        const [start, end] = gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
-                                        if (end - start < 100) return;
-                                        const delta = (end - start) / 4.0;
-                                        gosRef.current.api.zoomTo(
-                                            trackId,
-                                            `chr1:${start - delta}-${end - delta}`,
-                                            0,
-                                            ZOOM_DURATION
-                                        );
-                                    }}
-                                >
-                                    ←
-                                </button>
-                                <button
-                                    style={{
-                                        pointerEvents: 'auto',
-                                        // !! This should be identical to how the height of circos determined.
-                                        top: `${Math.min(visPanelWidth, 600)}px`
-                                    }}
-                                    className="zoom-right-button"
-                                    onClick={e => {
-                                        const trackId = `${demo.id}-mid-ideogram`;
-                                        const [start, end] = gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
-                                        const delta = (end - start) / 4.0;
-                                        gosRef.current.api.zoomTo(
-                                            trackId,
-                                            `chr1:${start + delta}-${end + delta}`,
-                                            0,
-                                            ZOOM_DURATION
-                                        );
-                                    }}
-                                >
-                                    →
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            visibility: 'collapse',
-                            boxShadow: interactiveMode ? 'inset 0 0 4px 2px #2399DB' : 'none',
-                            zIndex: 9999,
-                            background: 'none',
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            pointerEvents: 'none'
-                        }}
-                    />
-                    <div
-                        style={{
-                            background: 'none',
-                            position: 'absolute',
-                            bottom: 20,
-                            left: VIS_PADDING,
-                            pointerEvents: 'none',
-                            visibility: demo.bam ? 'collapse' : 'visible'
-                        }}
-                    >
-                        {'ⓘ No read alignment data available for this sample.'}
-                    </div>
-                    <div id="hidden-gosling" style={{ visibility: 'collapse', position: 'fixed' }} />
-                </div>
-            </ErrorBoundary>
-        );
-    }
-
     return (
         <ErrorBoundary>
             <div
@@ -930,10 +626,10 @@ function App(props: RouteComponentProps) {
                     const width = window.innerWidth;
                     const height = window.innerHeight;
                     if (
-                        VIS_PADDING < top &&
-                        top < height - VIS_PADDING &&
-                        VIS_PADDING < left &&
-                        left < width - VIS_PADDING
+                        VIS_PADDING.top < top &&
+                        top < height - VIS_PADDING.top &&
+                        VIS_PADDING.left < left &&
+                        left < width - VIS_PADDING.left
                     ) {
                         setMouseOnVis(true);
                     } else {
@@ -1258,9 +954,9 @@ function App(props: RouteComponentProps) {
                         id="gosling-panel"
                         className="gosling-panel"
                         style={{
-                            width: `calc(100% - ${VIS_PADDING * 2}px)`,
-                            height: `calc(100% - ${VIS_PADDING * 2}px)`,
-                            padding: VIS_PADDING
+                            width: `calc(100% - ${VIS_PADDING.left * 2}px)`,
+                            height: `calc(100% - ${VIS_PADDING.top * 2}px)`,
+                            padding: `${VIS_PADDING.top}px ${VIS_PADDING.right}px ${VIS_PADDING.bottom}px ${VIS_PADDING.left}px`
                         }}
                     >
                         {goslingComponent}
@@ -1292,55 +988,72 @@ function App(props: RouteComponentProps) {
                                         ? '#00000000'
                                         : 'lightgray'
                                 }`,
-                                top: VIS_PADDING,
-                                left: VIS_PADDING,
+                                top: VIS_PADDING.top,
+                                left: VIS_PADDING.left,
                                 opacity: 0.9,
                                 zIndex: 2,
                                 pointerEvents: interactiveMode ? 'none' : 'auto'
                             }}
                         />
+                        {isMinimalMode ? (
+                            <div
+                                className="navigation-buttons"
+                                style={{
+                                    position: 'fixed',
+                                    height: '500px',
+                                    width: '500px',
+                                    zIndex: 997
+                                }}
+                            >
+                                <button
+                                    onClick={() => {
+                                        setTimeout(
+                                            () =>
+                                                document
+                                                    .getElementById('gosling-panel')
+                                                    ?.scrollTo({ top: 0, behavior: 'smooth' }),
+                                            0
+                                        );
+                                    }}
+                                >
+                                    Circular View
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setTimeout(
+                                            () =>
+                                                document
+                                                    .getElementById('gosling-panel')
+                                                    ?.scrollTo({ top: 1000, behavior: 'smooth' }),
+                                            0
+                                        );
+                                    }}
+                                >
+                                    Linear View
+                                </button>
+                            </div>
+                        ) : null}
                         <div
                             style={{
                                 pointerEvents: 'none',
                                 width: '100%',
                                 height: '100%',
                                 position: 'relative',
-                                zIndex: 998
+                                zIndex: 997
                             }}
                         >
-                            <select
-                                style={{
-                                    pointerEvents: 'auto',
-                                    top: '3px'
-                                }}
-                                className="nav-dropdown"
-                                onChange={e => {
-                                    setShowSamples(false);
-                                    const chr = e.currentTarget.value;
-                                    setTimeout(() => setOverviewChr(chr), 300);
-                                }}
-                                value={overviewChr}
-                                disabled={!showOverview}
-                            >
-                                {[WHOLE_CHROMOSOME_STR, ...CHROMOSOMES].map(chr => {
-                                    return (
-                                        <option key={chr} value={chr}>
-                                            {chr}
-                                        </option>
-                                    );
-                                })}
-                            </select>
                             <img
                                 src={legend}
                                 style={{
                                     position: 'absolute',
                                     right: '3px',
                                     top: '3px',
-                                    zIndex: 998,
+                                    zIndex: 997,
                                     width: '120px'
                                 }}
                             />
                             <select
+                                id="linear-view"
                                 style={{
                                     pointerEvents: 'auto',
                                     // !! This should be identical to how the height of circos determined.
@@ -1516,7 +1229,7 @@ function App(props: RouteComponentProps) {
                                 ? 'visible'
                                 : 'collapse',
                         position: 'absolute',
-                        right: `${VIS_PADDING}px`,
+                        right: `${VIS_PADDING.right}px`,
                         top: '60px',
                         background: 'lightgray',
                         color: 'black',
@@ -1549,7 +1262,7 @@ function App(props: RouteComponentProps) {
                         background: 'none',
                         position: 'absolute',
                         bottom: 20,
-                        left: VIS_PADDING,
+                        left: VIS_PADDING.left,
                         pointerEvents: 'none',
                         visibility: demo.bam ? 'collapse' : 'visible'
                     }}
