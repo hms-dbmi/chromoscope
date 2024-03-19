@@ -52,8 +52,10 @@ function App(props: RouteComponentProps) {
     // Flag URL Parameter for "minimal_mode", which if true only shows the visualization panel
     const minimal_mode = urlParams.get('minimal_mode');
 
-    // Overwrite the padding
-    VIS_PADDING = 0;
+    // Overwrite the padding in minimal mode
+    if (minimal_mode) {
+        VIS_PADDING = 0;
+    }
 
     // !! instead of using `urlParams.get('external')`, we directly parse the external URL in order to include
     // any inlined parameters of the external link (e.g., private AWS link with authentication info.)
