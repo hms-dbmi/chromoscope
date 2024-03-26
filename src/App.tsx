@@ -996,17 +996,11 @@ function App(props: RouteComponentProps) {
                             }}
                         />
                         {isMinimalMode ? (
-                            <div
-                                className="navigation-buttons"
-                                style={{
-                                    position: 'fixed',
-                                    height: '500px',
-                                    width: '500px',
-                                    zIndex: 997
-                                }}
-                            >
+                            <div className="navigation-buttons">
                                 <button
-                                    onClick={() => {
+                                    className=" navigation-button navigation-button-circular"
+                                    onClick={e => {
+                                        console.log(e);
                                         setTimeout(
                                             () =>
                                                 document
@@ -1019,14 +1013,16 @@ function App(props: RouteComponentProps) {
                                     Circular View
                                 </button>
                                 <button
+                                    className="navigation-button navigation-button-linear"
                                     onClick={() => {
-                                        setTimeout(
-                                            () =>
-                                                document
-                                                    .getElementById('gosling-panel')
-                                                    ?.scrollTo({ top: 1000, behavior: 'smooth' }),
-                                            0
-                                        );
+                                        setTimeout(() => {
+                                            const scroll_height = document.getElementById('gosling-panel').scrollHeight;
+                                            console.log(scroll_height);
+                                            document
+                                                .getElementById('gosling-panel')
+                                                ?.scrollTo({ top: scroll_height, behavior: 'smooth' }),
+                                                0;
+                                        });
                                     }}
                                 >
                                     Linear View
