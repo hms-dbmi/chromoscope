@@ -224,6 +224,7 @@ a:hover {
     border: 1px solid grey;
     position: absolute;
     left: 3px;
+    scroll-margin-top: 50px;
 }
 
 .nav-dropdown:focus {
@@ -234,8 +235,6 @@ a:hover {
     position: fixed;
     z-index: 998;
     display: flex;
-    margin-top: 20px;
-    margin-left: 25px;
 }
 
 .navigation-button {
@@ -248,17 +247,20 @@ a:hover {
     box-shadow: #0000001a 5px 5px 10px;
 }
 
-.navigation-button:hover {
+.navigation-button:hover:not(:disabled) {
     background: lightgrey;
 }
-.navigation-button:active {
+.navigation-button:active:not(:disabled) {
     background: rgb(197, 197, 197);
 }
+.navigation-button:disabled:hover {
+    cursor: default;
+}
 
-.navigation-button-circular {
+.navigation-button:first-of-type {
     border-radius: 8px 0px 0px 8px;
 }
-.navigation-button-linear {
+.navigation-button:last-of-type {
     border-radius: 0px 8px 8px 0px;
 }
 
@@ -540,6 +542,11 @@ a:hover {
     font-size: 18px;
     z-index: 999;
     /* background: #ffffff99; */
+}
+
+.sample-label.minimal-mode {
+    left: 300px;
+    top: 8px;
 }
 
 .menu-title svg {
