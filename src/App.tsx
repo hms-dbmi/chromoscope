@@ -48,7 +48,6 @@ function App(props: RouteComponentProps) {
     // URL parameters
     const urlParams = new URLSearchParams(props.location.search);
     const isMinimalMode = urlParams.get('minimal_mode');
-    const [currentSection, setCurrentSection] = useState('circular');
     const VIS_PADDING = {
         top: isMinimalMode ? 0 : 60,
         right: isMinimalMode ? 0 : 60,
@@ -1024,7 +1023,6 @@ function App(props: RouteComponentProps) {
                                 <button
                                     className="navigation-button navigation-button-circular"
                                     onClick={() => {
-                                        setCurrentSection('circular');
                                         setTimeout(
                                             () =>
                                                 document
@@ -1033,14 +1031,12 @@ function App(props: RouteComponentProps) {
                                             0
                                         );
                                     }}
-                                    disabled={currentSection === 'circular'}
                                 >
                                     Circular View
                                 </button>
                                 <button
                                     className="navigation-button navigation-button-linear"
                                     onClick={() => {
-                                        setCurrentSection('linear');
                                         setTimeout(() => {
                                             document.getElementById('linear-view')?.scrollIntoView({
                                                 block: 'start',
@@ -1050,7 +1046,6 @@ function App(props: RouteComponentProps) {
                                                 0;
                                         });
                                     }}
-                                    disabled={currentSection === 'linear'}
                                 >
                                     Linear View
                                 </button>
