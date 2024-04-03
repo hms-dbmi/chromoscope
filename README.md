@@ -51,11 +51,11 @@ Open the browser to see the local documentation.
 ```sh
 http://localhost:3000/docs
 ```
-Chromoscope is funded in part through a grant awarded by [Innovation in Cancer Informatics.](https://www.the-ici-fund.org/)
-
-
 
 ## Citation
 
 Please cite the [following publication](10.31219/osf.io/pyqrx):
 > Sehi L’Yi, Dominika Maziec, Victoria Stevens, Trevor Manz, Alexander Veit, Michele Berselli, Peter J. Park, Dominik Głodzik, and Nils Gehlenborg. Chromoscope: interactive multiscale visualization for structural variation in human genomes. Nat Methods 20, 1834–1835 (2023). https://doi.org/10.1038/s41592-023-02056-x
+
+Chromoscope is funded in part through a grant awarded by [Innovation in Cancer Informatics.](https://www.the-ici-fund.org/)
+> 
