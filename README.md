@@ -51,6 +51,9 @@ Open the browser to see the local documentation.
 ```sh
 http://localhost:3000/docs
 ```
+Chromoscope is funded in part through a grant awarded by [Innovation in Cancer Informatics.](https://www.the-ici-fund.org/)
+
+
 
 ## Citation
 
