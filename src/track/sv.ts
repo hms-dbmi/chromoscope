@@ -102,18 +102,6 @@ export default function sv(
             url,
             type: 'csv',
             separator: '\t',
-            headerNames: [
-                'chrom1',
-                'start1',
-                'end1',
-                'chrom2',
-                'start2',
-                'end2',
-                'sv_id',
-                'pe_support',
-                'strand1',
-                'strand2'
-            ],
             genomicFieldsToConvert: [
                 {
                     chromosomeField: 'chrom1',
