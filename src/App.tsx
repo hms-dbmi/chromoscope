@@ -47,7 +47,7 @@ const allDrivers = [
 function App(props: RouteComponentProps) {
     // URL parameters
     const urlParams = new URLSearchParams(props.location.search);
-    const isMinimalMode = urlParams.get('minimal_mode');
+    const isMinimalMode = urlParams.get('minimal_mode') === 'true';
     const VIS_PADDING = {
         top: isMinimalMode ? 0 : 60,
         right: isMinimalMode ? 0 : 60,
