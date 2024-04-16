@@ -22,6 +22,7 @@ import HorizontalLine from './ui/horizontal-line';
 import SampleConfigForm from './ui/sample-config-form';
 import { BrowserDatabase } from './browser-log';
 import legend from './legend.png';
+import UrlsafeCodec from './lib/urlsafe-codec';
 
 const db = new Database();
 const log = new BrowserDatabase();
@@ -167,8 +168,12 @@ function App(props: RouteComponentProps) {
         rightReads.current = [];
     }, [demo]);
 
+    function isWebAddress(url) {
+        return url.startsWith('http://') || url.startsWith('https://');
+    }
+
     useEffect(() => {
-        if (externalUrl) {
+        if (externalUrl && isWebAddress(externalUrl)) {
             fetch(externalUrl).then(response =>
                 response.text().then(d => {
                     let externalDemo = JSON.parse(d);
@@ -186,6 +191,27 @@ function App(props: RouteComponentProps) {
                 })
             );
         }
+    }, []);
+    
+    useEffect(() => {
+        async function fetchAndSetData() {
+            if (externalUrl && !isWebAddress(externalUrl)) {
+                let externalDemo = await UrlsafeCodec.decode(externalUrl);
+                if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
+                    setFilteredSamples(externalDemo);
+                    externalDemo = externalDemo[demoIndex.current < externalDemo.length ? demoIndex.current : 0];
+                } else {
+                    setFilteredSamples([externalDemo]);
+                }
+                if (externalDemo) {
+                    setDemo(externalDemo);
+                }
+                setShowSmallMultiples(true);
+                setReady(true);
+            }
+        }
+    
+        fetchAndSetData();
     }, []);
 
     useEffect(() => {
