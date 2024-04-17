@@ -9,7 +9,7 @@ This page describes file formats used in Chromoscope. To find a list of required
 ## Structural Variants (BEDPE)
 <!-- https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format -->
 
-The structural variants are stored in a BEDPE file. The following columns are used in the browser:
+The structural variants are stored in a headed BEDPE file. The order of the columns does not need to be in the exact same order. This is a The following columns are used in the browser:
 
 | Property | Type | Note |
 |---|---|---|
@@ -43,7 +43,7 @@ In Chromosope, strands are mapped with the following types of SVs.
 ## CNV (TSV)
 <!-- https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format -->
 
-The CNV is stored in a tab-delimited file that is visualized as three tracks: CNV, Gain, and LOH.
+The CNV is stored in a headed tab-delimited file that is visualized as three tracks: CNV, Gain, and LOH. The order of the columns does not need to be in the exact same order.
 
 | Property | Type | Note |
 |---|---|---|
@@ -63,7 +63,7 @@ https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdb
 ## Drivers (TSV or JSON)
 <!-- https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format -->
 
-The drivers are stored in a tab-delimited file. When this file is present, the browser will show drivers that are included in the file only.
+The drivers are stored in a headed tab-delimited file. When this file is present, the browser will show drivers that are included in the file only.
 
 The order of the columns does not need to be in the exact same order.
 
