@@ -173,45 +173,35 @@ function App(props: RouteComponentProps) {
     }
 
     useEffect(() => {
-        if (externalUrl && isWebAddress(externalUrl)) {
-            fetch(externalUrl).then(response =>
-                response.text().then(d => {
-                    let externalDemo = JSON.parse(d);
-                    if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
-                        setFilteredSamples(externalDemo);
-                        externalDemo = externalDemo[demoIndex.current < externalDemo.length ? demoIndex.current : 0];
-                    } else {
-                        setFilteredSamples([externalDemo]);
-                    }
-                    if (externalDemo) {
-                        setDemo(externalDemo);
-                    }
-                    setShowSmallMultiples(true);
-                    setReady(true);
-                })
-            );
-        }
-    }, []);
-    
-    useEffect(() => {
-        async function fetchAndSetData() {
-            if (externalUrl && !isWebAddress(externalUrl)) {
-                let externalDemo = await UrlsafeCodec.decode(externalUrl);
-                if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
-                    setFilteredSamples(externalDemo);
-                    externalDemo = externalDemo[demoIndex.current < externalDemo.length ? demoIndex.current : 0];
-                } else {
-                    setFilteredSamples([externalDemo]);
-                }
-                if (externalDemo) {
-                    setDemo(externalDemo);
-                }
-                setShowSmallMultiples(true);
-                setReady(true);
+        const fetchData = async (url) => {
+            let responseText;
+            let externalDemo;
+            if (isWebAddress(url)) {
+                responseText = await fetch(url).then(response => response.text());
+                externalDemo = JSON.parse(responseText);
+            } else {
+                externalDemo = await UrlsafeCodec.decode(url);
             }
-        }
+            processDemoData(externalDemo);
+        };
     
-        fetchAndSetData();
+        function processDemoData(demoData){
+            if (Array.isArray(demoData) && demoData.length >= 0) {
+                setFilteredSamples(demoData);
+                demoData = demoData[demoIndex.current < demoData.length ? demoIndex.current : 0];
+            } else {
+                setFilteredSamples([demoData]);
+            }
+            if (demoData) {
+                setDemo(demoData);
+            }
+            setShowSmallMultiples(true);
+            setReady(true);
+        };
+    
+        if (externalUrl) {
+            fetchData(externalUrl);
+        }
     }, []);
 
     useEffect(() => {
