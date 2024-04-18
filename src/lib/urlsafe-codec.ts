@@ -11,18 +11,22 @@ class UrlsafeCodec {
      * Encodes a sample object into a URL-safe base64 string.
      * 
      * The method serializes the sample to a JSON string, compresses it using pako,
+     * By default, the header check is turned off. If headerCheck is set to true, the method
+     * will perform zlib/gzip header and checksum verification during decompression using pako.
      * converts the compressed data to a base64 string, and then modifies the base64 string
      * to make it URL-safe by replacing '+' with '.', '/' with '_', and '=' with '-'.
      *
      * @param {Object} sample - The sample object to encode.
+     * @param {boolean} headerCheck - Optional parameter to enable header and checksum verification.
      * @returns {string} A URL-safe base64 encoded string representing the sample.
      */
-     static encode(sample) {
+     static encode(sample, headerCheck = false) {
         try {
             const string = JSON.stringify(sample);
             const encoder = new TextEncoder();
             const stringAsUint8Array = encoder.encode(string);
-            const compressedUint8Array = pako.deflate(stringAsUint8Array);
+            // Set 'raw' to true if headerCheck is false
+            const compressedUint8Array = pako.deflate(stringAsUint8Array, {raw: !headerCheck });
             const base64Bytes = base64Js.fromByteArray(compressedUint8Array);
             const base64Blob = base64Bytes.toString();
             const base64UrlsafeBlob = base64Blob.replace(/\+/g, '.').replace(/\//g, '_').replace(/=/g, '-');
