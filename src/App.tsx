@@ -110,6 +110,11 @@ function App(props: RouteComponentProps) {
     const mousePos = useRef({ x: -100, y: -100 });
     const prevJumpId = useRef('');
 
+    /** Types of tracks supported in Chromoscope */
+    type Track = 'ideogram' | 'gene' | 'mutation' | 'cnv' | 'sv' | 'indel' | 'driver' | 'gain' | 'loh';
+    /** Position of tracks to show tooltip information */
+    const [tracksPosition, setTracksPosition] = useState<{ y: number; type: Track }[]>();
+
     // SV data
     const leftReads = useRef<{ [k: string]: number | string }[]>([]);
     const rightReads = useRef<{ [k: string]: number | string }[]>([]);
@@ -500,10 +505,56 @@ function App(props: RouteComponentProps) {
                 margin={0}
                 experimental={{ reactive: true }}
                 theme={THEME}
+                compiled={() => {
+                    // This is to show tooltip information for each track
+                    const tracksInBreakpointView = gosRef.current.api
+                        .getTracks()
+                        .filter(d => d.id.indexOf('-mid-') !== -1 && d.id.indexOf('boundary') === -1);
+                    const newTracksPosition = tracksInBreakpointView.map(d => ({
+                        y: d.shape.y,
+                        type: d.id.split('-mid-')[1]
+                    }));
+                    setTracksPosition(newTracksPosition);
+                }}
             />
         );
         // !! Removed `demo` not to update twice since `drivers` are updated right after a demo update.
     }, [ready, xDomain, visPanelWidth, drivers, showOverview, showPutativeDriver, selectedSvId, breakpoints, svReads]);
+
+    const trackTooltips = useMemo(() => {
+        return (
+            <div
+                style={{
+                    pointerEvents: 'none',
+                    width: '100%',
+                    height: '100%',
+                    position: 'relative',
+                    zIndex: 998
+                }}
+            >
+                {tracksPosition?.map((d, i) => (
+                    <div
+                        key={i}
+                        style={{ position: 'absolute', top: d.y - 1 + (d.type === 'ideogram' ? 30 : 0), left: 10 }}
+                    >
+                        <span
+                            style={{
+                                color: 'white',
+                                background: 'black',
+                                opacity: 0.8,
+                                fontSize: 10,
+                                paddingLeft: '5px',
+                                paddingRight: '5px',
+                                borderRadius: '30px'
+                            }}
+                        >
+                            i
+                        </span>
+                    </div>
+                ))}
+            </div>
+        );
+    }, [tracksPosition]);
 
     useLayoutEffect(() => {
         if (!gosRef.current) return;
@@ -988,6 +1039,7 @@ function App(props: RouteComponentProps) {
                                 pointerEvents: interactiveMode ? 'none' : 'auto'
                             }}
                         />
+                        {trackTooltips}
                         <div
                             style={{
                                 pointerEvents: 'none',

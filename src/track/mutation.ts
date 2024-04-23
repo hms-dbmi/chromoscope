@@ -11,7 +11,7 @@ export default function mutation(
 ): SingleTrack {
     return {
         id: `${sampleId}-${mode}-mutation`,
-        title: 'Point Mutation',
+        title: '  Point Mutation',
         style: { background: '#FFFFFF', inlineLegend: true },
         data: {
             type: 'vcf',

@@ -12,7 +12,7 @@ export default function cnv(
     const [total_cn, major_cn, minor_cn] = cnFields;
     return {
         id: `${sampleId}-${mode}-cnv`,
-        title: mode === 'small' ? '' : 'Copy Number Variants',
+        title: mode === 'small' ? '' : '  Copy Number Variants',
         style: { background: '#FFFFFF' },
         data: {
             separator: '\t',
@@ -27,7 +27,7 @@ export default function cnv(
         alignment: 'overlay',
         tracks: [
             {
-                y: { field: total_cn, type: 'quantitative', axis: 'right', grid: true, range: [0 + 10, height - 10] },
+                y: { field: total_cn, type: 'quantitative', axis: 'left', grid: true, range: [0 + 10, height - 10] },
                 color: { value: '#808080' }
             }
             // {

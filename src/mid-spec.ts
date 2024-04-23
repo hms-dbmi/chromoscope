@@ -31,6 +31,7 @@ export default function getMidView(option: SpecOption): View[] {
                 {
                     id: `${id}-mid-ideogram`,
                     alignment: 'overlay',
+                    title: '  Ideogram',
                     data: {
                         url:
                             assembly === 'hg38'
@@ -85,11 +86,11 @@ export default function getMidView(option: SpecOption): View[] {
                 {
                     id: `${id}-mid-gene`,
                     template: 'gene',
+                    title: '  Gene Annotation',
                     data: {
                         url:
                             assembly === 'hg19'
-                                ? // TODO: change to gosling's one
-                                  'https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation-hg19'
+                                ? 'https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation-hg19'
                                 : 'https://server.gosling-lang.org/api/v1/tileset_info/?d=gene-annotation',
                         type: 'beddb',
                         genomicFields: [
