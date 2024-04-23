@@ -1,7 +1,7 @@
 [
     {
         "chr": "chr2",
-        "pos": 47806320,
+        "pos": 47795017,
         "ref": "G",
         "alt": "A",
         "gene": "MSH6",
@@ -13,7 +13,7 @@
     },
     {
         "chr": "chr6",
-        "pos": 157133136,
+        "pos": 156993402,
         "ref": "G",
         "alt": "C",
         "gene": "ARID1B",
@@ -26,7 +26,7 @@
     },
     {
         "chr": "chr8",
-        "pos": 38428420,
+        "pos": 38439986,
         "ref": "G",
         "alt": "A",
         "gene": "FGFR1",
@@ -38,7 +38,7 @@
     },
     {
         "chr": "chr13",
-        "pos": 32339132,
+        "pos": 32357888,
         "ref": "G",
         "alt": "T",
         "gene": "BRCA2",
@@ -51,7 +51,7 @@
     },
     {
         "chr": "chr17",
-        "pos": 7675088,
+        "pos": 7677976,
         "ref": "C",
         "alt": "T",
         "gene": "TP53",
@@ -64,7 +64,7 @@
     },
     {
         "chr": "chrX",
-        "pos": 77681733,
+        "pos": 77645546,
         "ref": "T",
         "alt": "C",
         "gene": "ATRX",
@@ -78,19 +78,19 @@
     {
         "gene": "CDKN2A",
         "chr": "chr9",
-        "pos": 21981527,
+        "pos": 21981538,
         "category": "deletion"
     },
     {
         "gene": "MET",
         "chr": "chr7",
-        "pos": 116735291,
+        "pos": 116735286,
         "category": "amplification"
     },
     {
         "gene": "PTEN",
         "chr": "chr10",
-        "pos": 89677278,
+        "pos": 87917777,
         "category": "deletion",
         "biallelic": "yes"
     }
