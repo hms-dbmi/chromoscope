@@ -333,5 +333,16 @@ export const ICONS: Record<string, ICON_INFO> = {
         ],
         stroke: 'currentColor',
         fill: 'none'
+    },
+    TRIANGLE_DOWN: {
+        width: 11,
+        height: 7,
+        viewBox: '0 0 11 7',
+        path: [
+            'M0.5 1H10.5L5.5 6L0.5 1Z',
+            'M5.5 6L0.5 1H10.5L5.5 6ZM5.5 6V5.28571'
+        ],
+        stroke: 'currentColor',
+        fill: 'none'
     }
 };
