@@ -11,5 +11,5 @@ The genome view shows the selected sample in a circular visualization. This uses
 
 ## Interactions
 
-- You can move or resize an interactive brush (light blue) using the mouse. This is linked with a [variant view](./cohort-view) that is shown on the bottom of the genome view.
+- You can move or resize an interactive brush (light blue) using the mouse. This is linked with a [variant view](./variant-view) that is shown on the bottom of the genome view.
 - You can move your mouse on top of a structural variant to see detailed information on a tooltip.
