@@ -22,6 +22,7 @@ import HorizontalLine from './ui/horizontal-line';
 import SampleConfigForm from './ui/sample-config-form';
 import { BrowserDatabase } from './browser-log';
 import legend from './legend.png';
+import { ExportDropdown } from './ui/ExportDropdown';
 
 const db = new Database();
 const log = new BrowserDatabase();
@@ -102,7 +103,7 @@ function App(props: RouteComponentProps) {
     const [showOverview, setShowOverview] = useState(true);
     const [showPutativeDriver, setShowPutativeDriver] = useState(true);
     const [interactiveMode, setInteractiveMode] = useState(isMinimalMode ?? false);
-    const [visPanelWidth, setVisPanelWidth] = useState(INIT_VIS_PANEL_WIDTH - VIS_PADDING.left * 2);
+    const [visPanelWidth, setVisPanelWidth] = useState(INIT_VIS_PANEL_WIDTH - ( isMinimalMode ? 10 : VIS_PADDING.left * 2) );
     const [overviewChr, setOverviewChr] = useState('');
     const [genomeViewChr, setGenomeViewChr] = useState('');
     const [drivers, setDrivers] = useState(
@@ -304,7 +305,7 @@ function App(props: RouteComponentProps) {
         }
     }, [genomeViewChr]);
 
-    // change the width of the visualization panel
+    // change the width of the visualization panel and register intersection observer
     useEffect(() => {
         window.addEventListener(
             'resize',
@@ -312,6 +313,23 @@ function App(props: RouteComponentProps) {
                 setVisPanelWidth(window.innerWidth - VIS_PADDING.left * 2);
             }, 500)
         );
+        
+        // In minimal mode, lower opacity of legend image as circular view 
+        // moves out of the screen
+        if (isMinimalMode) {
+            const legendElement = document.querySelector<HTMLElement>(".circular-view-legend");
+            let options = {
+                root: document.querySelector(".minimal_mode"),
+                rootMargin: "-250px 0px 0px 0px",
+                threshold: [1, 0.5, 0.25, 0],
+            };
+    
+            let observer = new IntersectionObserver((entry) => {
+                legendElement.style.opacity = "" + entry[0].intersectionRatio ** 2;
+            }, options);
+    
+            observer.observe(legendElement);
+        }
     }, []);
 
     const getThumbnail = (d: SampleType) => {
@@ -619,6 +637,7 @@ function App(props: RouteComponentProps) {
     return (
         <ErrorBoundary>
             <div
+                className={isMinimalMode ? "minimal_mode" : ""}
                 style={{ width: '100%', height: '100%' }}
                 onMouseMove={e => {
                     const top = e.clientY;
@@ -674,7 +693,7 @@ function App(props: RouteComponentProps) {
                         />
                     </svg>
                 )}
-                <div className={'sample-label' + (isMinimalMode ? ' minimal-mode' : '')}>
+                <div className="sample-label">
                     {!isMinimalMode && (
                         <>
                             <a className="chromoscope-title" href="./">
@@ -703,90 +722,94 @@ function App(props: RouteComponentProps) {
                             <small>{demo.id}</small>
                         </>
                     )}
-                    <span className="title-btn" onClick={() => gosRef.current?.api.exportPng()}>
-                        <svg className="button" viewBox="0 0 16 16">
-                            <title>Export Image</title>
-                            {ICONS.PNG.path.map(p => (
-                                <path fill="currentColor" key={p} d={p} />
-                            ))}
-                        </svg>
-                    </span>
-                    <span
-                        className="title-btn"
-                        onClick={() => {
-                            const a = document.createElement('a');
-                            a.setAttribute(
-                                'href',
-                                `data:text/plain;charset=utf-8,${encodeURIComponent(
-                                    getHtmlTemplate(currentSpec.current)
-                                )}`
-                            );
-                            a.download = 'visualization.html';
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
-                        }}
-                        style={{ marginLeft: 40 }}
-                    >
-                        <svg className="button" viewBox="0 0 16 16">
-                            <title>Export HTML</title>
-                            {ICONS.HTML.path.map(p => (
-                                <path fill="currentColor" key={p} d={p} />
-                            ))}
-                        </svg>
-                    </span>
-                    <span
-                        className="title-btn"
-                        onClick={() => {
-                            const a = document.createElement('a');
-                            a.setAttribute(
-                                'href',
-                                `data:text/plain;charset=utf-8,${encodeURIComponent(currentSpec.current)}`
-                            );
-                            a.download = 'visualization.json';
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
-                        }}
-                        style={{ marginLeft: 70 }}
-                    >
-                        <svg className="button" viewBox="0 0 16 16">
-                            <title>Export Gosling Spec (JSON)</title>
-                            {ICONS.JSON.path.map(p => (
-                                <path fill="currentColor" key={p} d={p} />
-                            ))}
-                        </svg>
-                    </span>
-                    <span
-                        className="title-btn"
-                        onClick={() => {
-                            const { xDomain } = gosRef.current.hgApi.api.getLocation(`${demo.id}-mid-ideogram`);
-                            if (xDomain) {
-                                // urlParams.set('demoIndex', demoIndex.current + '');
-                                // urlParams.set('domain', xDomain.join('-'));
-                                let newUrl = window.location.origin + window.location.pathname + '?';
-                                newUrl += `demoIndex=${demoIndex.current}`;
-                                newUrl += `&domain=${xDomain.join('-')}`;
-                                if (externalDemoUrl.current) {
-                                    newUrl += `&external=${externalDemoUrl.current}`;
-                                } else if (externalUrl) {
-                                    newUrl += `&external=${externalUrl}`;
-                                }
-                                navigator.clipboard
-                                    .writeText(newUrl)
-                                    .then(() =>
-                                        alert('The URL of the current session has been copied to your clipboard.')
+                    { !isMinimalMode && (
+                        <>
+                            <span className="title-btn" onClick={() => gosRef.current?.api.exportPng()}>
+                                <svg className="button" viewBox="0 0 16 16">
+                                    <title>Export Image</title>
+                                    {ICONS.PNG.path.map(p => (
+                                        <path fill="currentColor" key={p} d={p} />
+                                    ))}
+                                </svg>
+                            </span>
+                            <span
+                                className="title-btn"
+                                onClick={() => {
+                                    const a = document.createElement('a');
+                                    a.setAttribute(
+                                        'href',
+                                        `data:text/plain;charset=utf-8,${encodeURIComponent(
+                                            getHtmlTemplate(currentSpec.current)
+                                        )}`
                                     );
-                            }
-                        }}
-                        style={{ marginLeft: 100 }}
-                    >
-                        <svg className="button" viewBox="0 0 16 16">
-                            <title>Export Link</title>
-                            <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
-                            <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z" />
-                        </svg>
-                    </span>
+                                    a.download = 'visualization.html';
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    document.body.removeChild(a);
+                                }}
+                                style={{ marginLeft: 40 }}
+                            >
+                                <svg className="button" viewBox="0 0 16 16">
+                                    <title>Export HTML</title>
+                                    {ICONS.HTML.path.map(p => (
+                                        <path fill="currentColor" key={p} d={p} />
+                                    ))}
+                                </svg>
+                            </span>
+                            <span
+                                className="title-btn"
+                                onClick={() => {
+                                    const a = document.createElement('a');
+                                    a.setAttribute(
+                                        'href',
+                                        `data:text/plain;charset=utf-8,${encodeURIComponent(currentSpec.current)}`
+                                    );
+                                    a.download = 'visualization.json';
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    document.body.removeChild(a);
+                                }}
+                                style={{ marginLeft: 70 }}
+                            >
+                                <svg className="button" viewBox="0 0 16 16">
+                                    <title>Export Gosling Spec (JSON)</title>
+                                    {ICONS.JSON.path.map(p => (
+                                        <path fill="currentColor" key={p} d={p} />
+                                    ))}
+                                </svg>
+                            </span>
+                            <span
+                                className="title-btn"
+                                onClick={() => {
+                                    const { xDomain } = gosRef.current.hgApi.api.getLocation(`${demo.id}-mid-ideogram`);
+                                    if (xDomain) {
+                                        // urlParams.set('demoIndex', demoIndex.current + '');
+                                        // urlParams.set('domain', xDomain.join('-'));
+                                        let newUrl = window.location.origin + window.location.pathname + '?';
+                                        newUrl += `demoIndex=${demoIndex.current}`;
+                                        newUrl += `&domain=${xDomain.join('-')}`;
+                                        if (externalDemoUrl.current) {
+                                            newUrl += `&external=${externalDemoUrl.current}`;
+                                        } else if (externalUrl) {
+                                            newUrl += `&external=${externalUrl}`;
+                                        }
+                                        navigator.clipboard
+                                            .writeText(newUrl)
+                                            .then(() =>
+                                                alert('The URL of the current session has been copied to your clipboard.')
+                                            );
+                                    }
+                                }}
+                                style={{ marginLeft: 100 }}
+                            >
+                                <svg className="button" viewBox="0 0 16 16">
+                                    <title>Export Link</title>
+                                    <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
+                                    <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z" />
+                                </svg>
+                            </span>
+                        </>
+                    )}
                     {!isChrome() ? (
                         <a
                             style={{
@@ -1051,6 +1074,26 @@ function App(props: RouteComponentProps) {
                                 </button>
                             </div>
                         ) : null}
+                        {
+                            // External links and export buttons
+                            isMinimalMode ? (
+                                <div className="external-links">
+                                    <nav className="external-links-nav">
+                                        <a className="open-in-chromoscope-link" href="">
+                                            <div className="link-group">
+                                                <span>Open in Chromoscope</span>
+                                                <svg className="external-link-icon" width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M9.8212 1.73104L10.6894 0.875H9.47015H7.66727C7.55064 0.875 7.46966 0.784774 7.46966 0.6875C7.46966 0.590226 7.55064 0.5 7.66727 0.5H11.1553C11.2719 0.5 11.3529 0.590226 11.3529 0.6875V4.125C11.3529 4.22227 11.2719 4.3125 11.1553 4.3125C11.0387 4.3125 10.9577 4.22228 10.9577 4.125V2.34824V1.15307L10.1067 1.9922L5.71834 6.31907C5.71831 6.3191 5.71828 6.31913 5.71825 6.31916C5.64039 6.39579 5.51053 6.39576 5.43271 6.31907C5.35892 6.24635 5.35892 6.1308 5.43271 6.05808L5.4328 6.05799L9.8212 1.73104ZM1.19116 2.40625C1.19116 1.73964 1.74085 1.1875 2.43519 1.1875H4.87682C4.99345 1.1875 5.07443 1.27773 5.07443 1.375C5.07443 1.47227 4.99345 1.5625 4.87682 1.5625H2.43519C1.97411 1.5625 1.58638 1.93419 1.58638 2.40625V9.28125C1.58638 9.75331 1.97411 10.125 2.43519 10.125H9.41129C9.87237 10.125 10.2601 9.75331 10.2601 9.28125V6.875C10.2601 6.77773 10.3411 6.6875 10.4577 6.6875C10.5743 6.6875 10.6553 6.77773 10.6553 6.875V9.28125C10.6553 9.94786 10.1056 10.5 9.41129 10.5H2.43519C1.74085 10.5 1.19116 9.94786 1.19116 9.28125V2.40625Z" fill="black" stroke="black"/>
+                                                </svg>
+                                            </div>
+                                        </a>
+                                        <div className="export-links">
+                                            <ExportDropdown gosRef={gosRef} currentSpec={currentSpec} />
+                                        </div>
+                                    </nav>
+                                </div>
+                            ) : null
+                        }
                         <div
                             style={{
                                 pointerEvents: 'none',
@@ -1061,11 +1104,12 @@ function App(props: RouteComponentProps) {
                             }}
                         >
                             <img
+                                className="circular-view-legend"
                                 src={legend}
                                 style={{
                                     position: 'absolute',
-                                    right: '3px',
-                                    top: '3px',
+                                    right: isMinimalMode ? '10px' : '3px',
+                                    top: isMinimalMode ? '425px' : '3px',
                                     zIndex: 997,
                                     width: '120px'
                                 }}
