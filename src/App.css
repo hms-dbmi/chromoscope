@@ -756,25 +756,26 @@ a:hover {
     flex-direction: row;
     height: 30px;
     justify-content: center;
-    left: 50%;
-    transform: translate(-50%, 0px);
+    left: 3px;
     
     .chromosome-select {
         position: relative;
         height: auto;
+        left: 0px;
     }
     .gene-search {
         position: relative;
         left: 0px;
-        padding: 0px 0px 0px 10px;
+        padding: 0px;
         width: auto;
         height: auto;
         display: flex;
 
         svg {
-            position: relative;
-            top: auto;
-            left: auto;
+            position: absolute;
+            top: 50%;
+            transform: translate(0px, -50%);
+            left: 8px;
             margin: auto;
             margin-left: 0px;
         }
@@ -783,7 +784,8 @@ a:hover {
             left: 0;
             margin-left: 0;
             border: none;
-            width: 175px;
+            width: 180px;
+            padding-left: 35px;
         }
     }
     .directional-controls {
@@ -791,6 +793,7 @@ a:hover {
         margin: auto 0px auto 16px;
         gap: 16px;
         .control-group {
+            display: flex;
             .control {
                 position: relative;
                 left: 0px;
@@ -1003,9 +1006,9 @@ a:hover {
     }
 
     .linear-view-controls {
-        .chromosome-select {
-            left: 0px;
-        }
+        left: 50%;
+        transform: translate(-50%, 0px);
+        
     }
     
 }
