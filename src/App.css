@@ -224,7 +224,7 @@ a:hover {
     border: 1px solid grey;
     position: absolute;
     left: 3px;
-    scroll-margin-top: 100px;
+    scroll-margin-top: 50px;
 }
 
 .nav-dropdown:focus {
@@ -749,6 +749,58 @@ a:hover {
     background-color: #7aaded;
 }
 
+/* Styles for the linear view controls */
+.linear-view-controls {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+    justify-content: center;
+    left: 50%;
+    transform: translate(-50%, 0px);
+    
+    .chromosome-select {
+        position: relative;
+        height: auto;
+    }
+    .gene-search {
+        position: relative;
+        left: 0px;
+        padding: 0px 0px 0px 10px;
+        width: auto;
+        height: auto;
+        display: flex;
+
+        svg {
+            position: relative;
+            top: auto;
+            left: auto;
+            margin: auto;
+            margin-left: 0px;
+        }
+        input {
+            position: relative;
+            left: 0;
+            margin-left: 0;
+            border: none;
+            width: 175px;
+        }
+    }
+    .directional-controls {
+        display: flex;
+        margin: auto 0px auto 16px;
+        gap: 16px;
+        .control-group {
+            .control {
+                position: relative;
+                left: 0px;
+                margin-left: 0px;
+                line-height: 28px;
+            }
+        }
+    }
+}
+
 /* Minimal Mode styles */
 .minimal_mode {
 
@@ -949,4 +1001,11 @@ a:hover {
         }
 
     }
+
+    .linear-view-controls {
+        .chromosome-select {
+            left: 0px;
+        }
+    }
+    
 }
