@@ -19,10 +19,11 @@ export interface SpecOption extends SampleType {
     svReads: { name: string; type: string }[];
     crossChr: boolean;
     bpIntervals: [number, number, number, number] | undefined;
+    spacing: number;
 }
 
 function generateSpec(opt: SpecOption): GoslingSpec {
-    const { assembly, id, bam, bai, width, selectedSvId, breakpoints, bpIntervals } = opt;
+    const { assembly, id, bam, bai, width, selectedSvId, breakpoints, bpIntervals, spacing } = opt;
 
     const topViewWidth = Math.min(width, 600);
     const midViewWidth = width;
@@ -39,7 +40,7 @@ function generateSpec(opt: SpecOption): GoslingSpec {
         arrangement: 'vertical',
         centerRadius: 0.5,
         assembly,
-        spacing: 40,
+        spacing,
         style: {
             outlineWidth: 1,
             outline: 'lightgray',
