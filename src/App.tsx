@@ -22,6 +22,7 @@ import HorizontalLine from './ui/horizontal-line';
 import SampleConfigForm from './ui/sample-config-form';
 import { BrowserDatabase } from './browser-log';
 import legend from './legend.png';
+import UrlsafeCodec from './lib/urlsafe-codec';
 
 const db = new Database();
 const log = new BrowserDatabase();
@@ -167,24 +168,39 @@ function App(props: RouteComponentProps) {
         rightReads.current = [];
     }, [demo]);
 
+    function isWebAddress(url) {
+        return url.startsWith('http://') || url.startsWith('https://');
+    }
+
     useEffect(() => {
+        const fetchData = async (url) => {
+            let responseText;
+            let externalDemo;
+            if (isWebAddress(url)) {
+                responseText = await fetch(url).then(response => response.text());
+                externalDemo = JSON.parse(responseText);
+            } else {
+                externalDemo = await UrlsafeCodec.decode(url);
+            }
+            processDemoData(externalDemo);
+        };
+    
+        function processDemoData(demoData){
+            if (Array.isArray(demoData) && demoData.length >= 0) {
+                setFilteredSamples(demoData);
+                demoData = demoData[demoIndex.current < demoData.length ? demoIndex.current : 0];
+            } else {
+                setFilteredSamples([demoData]);
+            }
+            if (demoData) {
+                setDemo(demoData);
+            }
+            setShowSmallMultiples(true);
+            setReady(true);
+        };
+    
         if (externalUrl) {
-            fetch(externalUrl).then(response =>
-                response.text().then(d => {
-                    let externalDemo = JSON.parse(d);
-                    if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
-                        setFilteredSamples(externalDemo);
-                        externalDemo = externalDemo[demoIndex.current < externalDemo.length ? demoIndex.current : 0];
-                    } else {
-                        setFilteredSamples([externalDemo]);
-                    }
-                    if (externalDemo) {
-                        setDemo(externalDemo);
-                    }
-                    setShowSmallMultiples(true);
-                    setReady(true);
-                })
-            );
+            fetchData(externalUrl);
         }
     }, []);
 
@@ -493,6 +509,7 @@ function App(props: RouteComponentProps) {
         currentSpec.current = JSON.stringify(spec);
         // console.log('spec', spec);
         return (
+            <div>
             <GoslingComponent
                 ref={gosRef}
                 spec={spec}
@@ -501,6 +518,7 @@ function App(props: RouteComponentProps) {
                 experimental={{ reactive: true }}
                 theme={THEME}
             />
+            </div>
         );
         // !! Removed `demo` not to update twice since `drivers` are updated right after a demo update.
     }, [ready, xDomain, visPanelWidth, drivers, showOverview, showPutativeDriver, selectedSvId, breakpoints, svReads]);
