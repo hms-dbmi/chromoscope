@@ -35,7 +35,7 @@ export const ExportDropdown = ({ gosRef, currentSpec }: ExportDropdownProps) => 
             <button className="export-button">
                 <span className="export-title">Export</span>
                 <svg className="button triangle-down" viewBox={ICONS.TRIANGLE_DOWN.viewBox}>
-                    <title>Triange Down</title>
+                    <title>Triangle Down</title>
                     {ICONS.TRIANGLE_DOWN.path.map(p => (
                         <path fill="currentColor" key={p} d={p} />
                     ))}

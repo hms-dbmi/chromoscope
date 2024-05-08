@@ -1084,7 +1084,30 @@ function App(props: RouteComponentProps) {
                             isMinimalMode ? (
                                 <div className="external-links">
                                     <nav className="external-links-nav">
-                                        <a className="open-in-chromoscope-link" href="">
+                                        <button
+                                            className="open-in-chromoscope-link"
+                                            tabIndex={0}
+                                            onClick={e => {
+                                                e.preventDefault();
+                                                const { xDomain } = gosRef.current.hgApi.api.getLocation(
+                                                    `${demo.id}-mid-ideogram`
+                                                );
+                                                if (xDomain) {
+                                                    // urlParams.set('demoIndex', demoIndex.current + '');
+                                                    // urlParams.set('domain', xDomain.join('-'));
+                                                    let newUrl =
+                                                        window.location.origin + window.location.pathname + '?';
+                                                    newUrl += `demoIndex=${demoIndex.current}`;
+                                                    newUrl += `&domain=${xDomain.join('-')}`;
+                                                    if (externalDemoUrl.current) {
+                                                        newUrl += `&external=${externalDemoUrl.current}`;
+                                                    } else if (externalUrl) {
+                                                        newUrl += `&external=${externalUrl}`;
+                                                    }
+                                                    window.open(newUrl, '_blank');
+                                                }
+                                            }}
+                                        >
                                             <div className="link-group">
                                                 <span>Open in Chromoscope</span>
                                                 <svg
@@ -1102,7 +1125,7 @@ function App(props: RouteComponentProps) {
                                                     />
                                                 </svg>
                                             </div>
-                                        </a>
+                                        </button>
                                         <div className="export-links">
                                             <ExportDropdown gosRef={gosRef} currentSpec={currentSpec} />
                                         </div>
