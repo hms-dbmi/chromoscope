@@ -103,7 +103,9 @@ function App(props: RouteComponentProps) {
     const [showOverview, setShowOverview] = useState(true);
     const [showPutativeDriver, setShowPutativeDriver] = useState(true);
     const [interactiveMode, setInteractiveMode] = useState(isMinimalMode ?? false);
-    const [visPanelWidth, setVisPanelWidth] = useState(INIT_VIS_PANEL_WIDTH - ( isMinimalMode ? 10 : VIS_PADDING.left * 2) );
+    const [visPanelWidth, setVisPanelWidth] = useState(
+        INIT_VIS_PANEL_WIDTH - (isMinimalMode ? 10 : VIS_PADDING.left * 2)
+    );
     const [overviewChr, setOverviewChr] = useState('');
     const [genomeViewChr, setGenomeViewChr] = useState('');
     const [drivers, setDrivers] = useState(
@@ -313,21 +315,21 @@ function App(props: RouteComponentProps) {
                 setVisPanelWidth(window.innerWidth - VIS_PADDING.left * 2);
             }, 500)
         );
-        
-        // In minimal mode, lower opacity of legend image as circular view 
-        // moves out of the screen
+
+        // Lower opacity of legend image as it leaves viewport
         if (isMinimalMode) {
-            const legendElement = document.querySelector<HTMLElement>(".circular-view-legend");
-            let options = {
-                root: document.querySelector(".minimal_mode"),
-                rootMargin: "-250px 0px 0px 0px",
-                threshold: [1, 0.5, 0.25, 0],
+            const legendElement = document.querySelector<HTMLElement>('.genome-view-legend');
+            const options = {
+                root: document.querySelector('.minimal_mode'),
+                rootMargin: '-250px 0px 0px 0px',
+                threshold: [0.9, 0.75, 0.5, 0.25, 0]
             };
-    
-            let observer = new IntersectionObserver((entry) => {
-                legendElement.style.opacity = "" + entry[0].intersectionRatio ** 2;
+
+            const observer = new IntersectionObserver(entry => {
+                // Set intersection ratio as opacity (round up to one decimal place)
+                legendElement.style.opacity = '' + Math.ceil(10 * entry[0].intersectionRatio) / 10;
             }, options);
-    
+
             observer.observe(legendElement);
         }
     }, []);
@@ -638,7 +640,7 @@ function App(props: RouteComponentProps) {
     return (
         <ErrorBoundary>
             <div
-                className={isMinimalMode ? "minimal_mode" : ""}
+                className={isMinimalMode ? 'minimal_mode' : ''}
                 style={{ width: '100%', height: '100%' }}
                 onMouseMove={e => {
                     const top = e.clientY;
@@ -723,7 +725,7 @@ function App(props: RouteComponentProps) {
                             <small>{demo.id}</small>
                         </>
                     )}
-                    { !isMinimalMode && (
+                    {!isMinimalMode && (
                         <>
                             <span className="title-btn" onClick={() => gosRef.current?.api.exportPng()}>
                                 <svg className="button" viewBox="0 0 16 16">
@@ -797,7 +799,9 @@ function App(props: RouteComponentProps) {
                                         navigator.clipboard
                                             .writeText(newUrl)
                                             .then(() =>
-                                                alert('The URL of the current session has been copied to your clipboard.')
+                                                alert(
+                                                    'The URL of the current session has been copied to your clipboard.'
+                                                )
                                             );
                                     }
                                 }}
@@ -1056,13 +1060,13 @@ function App(props: RouteComponentProps) {
                                         );
                                     }}
                                 >
-                                    Circular View
+                                    Genome View
                                 </button>
                                 <button
-                                    className="navigation-button navigation-button-linear"
+                                    className="navigation-button navigation-button-variant"
                                     onClick={() => {
                                         setTimeout(() => {
-                                            document.getElementById('linear-view')?.scrollIntoView({
+                                            document.getElementById('variant-view')?.scrollIntoView({
                                                 block: 'start',
                                                 inline: 'nearest',
                                                 behavior: 'smooth'
@@ -1071,7 +1075,7 @@ function App(props: RouteComponentProps) {
                                         });
                                     }}
                                 >
-                                    Linear View
+                                    Variant View
                                 </button>
                             </div>
                         ) : null}
@@ -1083,8 +1087,19 @@ function App(props: RouteComponentProps) {
                                         <a className="open-in-chromoscope-link" href="">
                                             <div className="link-group">
                                                 <span>Open in Chromoscope</span>
-                                                <svg className="external-link-icon" width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M9.8212 1.73104L10.6894 0.875H9.47015H7.66727C7.55064 0.875 7.46966 0.784774 7.46966 0.6875C7.46966 0.590226 7.55064 0.5 7.66727 0.5H11.1553C11.2719 0.5 11.3529 0.590226 11.3529 0.6875V4.125C11.3529 4.22227 11.2719 4.3125 11.1553 4.3125C11.0387 4.3125 10.9577 4.22228 10.9577 4.125V2.34824V1.15307L10.1067 1.9922L5.71834 6.31907C5.71831 6.3191 5.71828 6.31913 5.71825 6.31916C5.64039 6.39579 5.51053 6.39576 5.43271 6.31907C5.35892 6.24635 5.35892 6.1308 5.43271 6.05808L5.4328 6.05799L9.8212 1.73104ZM1.19116 2.40625C1.19116 1.73964 1.74085 1.1875 2.43519 1.1875H4.87682C4.99345 1.1875 5.07443 1.27773 5.07443 1.375C5.07443 1.47227 4.99345 1.5625 4.87682 1.5625H2.43519C1.97411 1.5625 1.58638 1.93419 1.58638 2.40625V9.28125C1.58638 9.75331 1.97411 10.125 2.43519 10.125H9.41129C9.87237 10.125 10.2601 9.75331 10.2601 9.28125V6.875C10.2601 6.77773 10.3411 6.6875 10.4577 6.6875C10.5743 6.6875 10.6553 6.77773 10.6553 6.875V9.28125C10.6553 9.94786 10.1056 10.5 9.41129 10.5H2.43519C1.74085 10.5 1.19116 9.94786 1.19116 9.28125V2.40625Z" fill="black" stroke="black"/>
+                                                <svg
+                                                    className="external-link-icon"
+                                                    width="12"
+                                                    height="11"
+                                                    viewBox="0 0 12 11"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                        d="M9.8212 1.73104L10.6894 0.875H9.47015H7.66727C7.55064 0.875 7.46966 0.784774 7.46966 0.6875C7.46966 0.590226 7.55064 0.5 7.66727 0.5H11.1553C11.2719 0.5 11.3529 0.590226 11.3529 0.6875V4.125C11.3529 4.22227 11.2719 4.3125 11.1553 4.3125C11.0387 4.3125 10.9577 4.22228 10.9577 4.125V2.34824V1.15307L10.1067 1.9922L5.71834 6.31907C5.71831 6.3191 5.71828 6.31913 5.71825 6.31916C5.64039 6.39579 5.51053 6.39576 5.43271 6.31907C5.35892 6.24635 5.35892 6.1308 5.43271 6.05808L5.4328 6.05799L9.8212 1.73104ZM1.19116 2.40625C1.19116 1.73964 1.74085 1.1875 2.43519 1.1875H4.87682C4.99345 1.1875 5.07443 1.27773 5.07443 1.375C5.07443 1.47227 4.99345 1.5625 4.87682 1.5625H2.43519C1.97411 1.5625 1.58638 1.93419 1.58638 2.40625V9.28125C1.58638 9.75331 1.97411 10.125 2.43519 10.125H9.41129C9.87237 10.125 10.2601 9.75331 10.2601 9.28125V6.875C10.2601 6.77773 10.3411 6.6875 10.4577 6.6875C10.5743 6.6875 10.6553 6.77773 10.6553 6.875V9.28125C10.6553 9.94786 10.1056 10.5 9.41129 10.5H2.43519C1.74085 10.5 1.19116 9.94786 1.19116 9.28125V2.40625Z"
+                                                        fill="black"
+                                                        stroke="black"
+                                                    />
                                                 </svg>
                                             </div>
                                         </a>
@@ -1105,21 +1120,24 @@ function App(props: RouteComponentProps) {
                             }}
                         >
                             <img
-                                className="circular-view-legend"
+                                className="genome-view-legend"
                                 src={legend}
                                 style={{
                                     position: 'absolute',
                                     right: isMinimalMode ? '10px' : '3px',
-                                    top: isMinimalMode ? '425px' : '3px',
+                                    top: isMinimalMode ? '350px' : '3px',
                                     zIndex: 997,
                                     width: '120px'
                                 }}
                             />
-                            <div className="linear-view-controls" style={{ top: `${ Math.min(visPanelWidth, isMinimalMode ? 650 : 600)}px` }}>
+                            <div
+                                className="variant-view-controls"
+                                style={{ top: `${Math.min(visPanelWidth, isMinimalMode ? 650 : 600)}px` }}
+                            >
                                 <select
-                                    id="linear-view"
+                                    id="variant-view"
                                     style={{
-                                        pointerEvents: 'auto',
+                                        pointerEvents: 'auto'
                                         // !! This should be identical to how the height of circos determined.
                                         // top: `${Math.min(visPanelWidth, 600)}px`
                                     }}
@@ -1144,10 +1162,12 @@ function App(props: RouteComponentProps) {
                                     <svg
                                         className="gene-search-icon"
                                         viewBox="0 0 16 16"
-                                        style={{
-                                            // top: `${Math.min(visPanelWidth, 600) + 6}px`
-                                            // visibility: demo.assembly === 'hg38' ? 'visible' : 'hidden'
-                                        }}
+                                        style={
+                                            {
+                                                // top: `${Math.min(visPanelWidth, 600) + 6}px`
+                                                // visibility: demo.assembly === 'hg38' ? 'visible' : 'hidden'
+                                            }
+                                        }
                                     >
                                         <path
                                             fillRule="evenodd"
@@ -1160,7 +1180,7 @@ function App(props: RouteComponentProps) {
                                         placeholder="Search Gene (e.g., MYC)"
                                         // alt={demo.assembly === 'hg38' ? 'Search Gene' : 'Not currently available for this assembly.'}
                                         style={{
-                                            pointerEvents: 'auto',
+                                            pointerEvents: 'auto'
                                             // top: `${Math.min(visPanelWidth, 600)}px`
                                             // cursor: demo.assembly === 'hg38' ? 'auto' : 'not-allowed',
                                             // visibility: demo.assembly === 'hg38' ? 'visible' : 'hidden'
@@ -1204,18 +1224,19 @@ function App(props: RouteComponentProps) {
                                         }}
                                     />
                                 </div>
-                                <div className='directional-controls'>
-                                    <div className='control-group zoom'>
+                                <div className="directional-controls">
+                                    <div className="control-group zoom">
                                         <button
                                             style={{
-                                                pointerEvents: 'auto',
+                                                pointerEvents: 'auto'
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
                                             className="zoom-in-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
-                                                const [start, end] = gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
+                                                const [start, end] =
+                                                    gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
                                                 if (end - start < 100) return;
                                                 const delta = (end - start) / 3.0;
                                                 gosRef.current.api.zoomTo(
@@ -1230,32 +1251,39 @@ function App(props: RouteComponentProps) {
                                         </button>
                                         <button
                                             style={{
-                                                pointerEvents: 'auto',
+                                                pointerEvents: 'auto'
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
                                             className="zoom-out-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
-                                                const [start, end] = gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
+                                                const [start, end] =
+                                                    gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
                                                 const delta = (end - start) / 2.0;
-                                                gosRef.current.api.zoomTo(trackId, `chr1:${start}-${end}`, delta, ZOOM_DURATION);
+                                                gosRef.current.api.zoomTo(
+                                                    trackId,
+                                                    `chr1:${start}-${end}`,
+                                                    delta,
+                                                    ZOOM_DURATION
+                                                );
                                             }}
                                         >
                                             -
                                         </button>
                                     </div>
-                                    <div className='control-group pan'>
+                                    <div className="control-group pan">
                                         <button
                                             style={{
-                                                pointerEvents: 'auto',
+                                                pointerEvents: 'auto'
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
                                             className="zoom-left-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
-                                                const [start, end] = gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
+                                                const [start, end] =
+                                                    gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
                                                 if (end - start < 100) return;
                                                 const delta = (end - start) / 4.0;
                                                 gosRef.current.api.zoomTo(
@@ -1270,14 +1298,15 @@ function App(props: RouteComponentProps) {
                                         </button>
                                         <button
                                             style={{
-                                                pointerEvents: 'auto',
+                                                pointerEvents: 'auto'
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
                                             className="zoom-right-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
-                                                const [start, end] = gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
+                                                const [start, end] =
+                                                    gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
                                                 const delta = (end - start) / 4.0;
                                                 gosRef.current.api.zoomTo(
                                                     trackId,
