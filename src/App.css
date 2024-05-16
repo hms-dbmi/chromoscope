@@ -17,7 +17,6 @@ body,
         'Segoe UI Symbol';
     height: 100%;
     overflow: hidden;
-    z-index: 0;
 }
 
 body {
