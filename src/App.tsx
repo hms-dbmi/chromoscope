@@ -24,6 +24,9 @@ import { BrowserDatabase } from './browser-log';
 import legend from './legend.png';
 import { ExportDropdown } from './ui/ExportDropdown';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
 const db = new Database();
 const log = new BrowserDatabase();
 
@@ -1048,35 +1051,69 @@ function App(props: RouteComponentProps) {
                         )}
                         {isMinimalMode ? (
                             <div className="navigation-buttons">
-                                <button
-                                    className="navigation-button navigation-button-circular"
-                                    onClick={() => {
-                                        setTimeout(
-                                            () =>
-                                                document
-                                                    .getElementById('gosling-panel')
-                                                    ?.scrollTo({ top: 0, behavior: 'smooth' }),
-                                            0
-                                        );
-                                    }}
-                                >
-                                    Genome View
-                                </button>
-                                <button
-                                    className="navigation-button navigation-button-variant"
-                                    onClick={() => {
-                                        setTimeout(() => {
-                                            document.getElementById('variant-view')?.scrollIntoView({
-                                                block: 'start',
-                                                inline: 'nearest',
-                                                behavior: 'smooth'
-                                            }),
-                                                0;
-                                        });
-                                    }}
-                                >
-                                    Variant View
-                                </button>
+                                <div className="navigation-button-container split navigation-button-genome">
+                                    <button
+                                        className="navigation-button split-left"
+                                        onClick={() => {
+                                            setTimeout(
+                                                () =>
+                                                    document
+                                                        .getElementById('gosling-panel')
+                                                        ?.scrollTo({ top: 0, behavior: 'smooth' }),
+                                                0
+                                            );
+                                        }}
+                                    >
+                                        Genome View
+                                    </button>
+                                    <button
+                                        className="navigation-button split-right"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#genome-view-modal"
+                                    >
+                                        <svg
+                                            className="button question-mark"
+                                            viewBox={ICONS.QUESTION_CIRCLE_FILL.viewBox}
+                                        >
+                                            <title>Question Mark</title>
+                                            {ICONS.QUESTION_CIRCLE_FILL.path.map(p => (
+                                                <path fill="currentColor" key={p} d={p} />
+                                            ))}
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div className="navigation-button-container split navigation-button-variant">
+                                    <button
+                                        className="navigation-button split-left"
+                                        onClick={() => {
+                                            setTimeout(() => {
+                                                document.getElementById('variant-view')?.scrollIntoView({
+                                                    block: 'start',
+                                                    inline: 'nearest',
+                                                    behavior: 'smooth'
+                                                }),
+                                                    0;
+                                            });
+                                        }}
+                                    >
+                                        Variant View
+                                    </button>
+                                    <button
+                                        className="navigation-button split-right"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#variant-view-modal"
+                                    >
+                                        <svg
+                                            className="button question-mark"
+                                            viewBox={ICONS.QUESTION_CIRCLE_FILL.viewBox}
+                                        >
+                                            <title>Question Mark</title>
+                                            {ICONS.QUESTION_CIRCLE_FILL.path.map(p => (
+                                                <path fill="currentColor" key={p} d={p} />
+                                            ))}
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         ) : null}
                         {
@@ -1527,6 +1564,75 @@ function App(props: RouteComponentProps) {
                     </svg>
                 </div>
                 <div id="hidden-gosling" style={{ visibility: 'collapse', position: 'fixed' }} />
+
+                {isMinimalMode && (
+                    <div className="instructions-modals-container">
+                        <div
+                            className="modal fade"
+                            id="genome-view-modal"
+                            tabIndex={-1}
+                            aria-labelledby="Genome View Instruction Modal"
+                            aria-hidden="true"
+                        >
+                            <div className="modal-dialog modal-lg">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h1 className="modal-title fs-5" id="exampleModalLabel">
+                                            Genome View Instruction
+                                        </h1>
+                                        <button
+                                            type="button"
+                                            className="btn-close"
+                                            data-bs-dismiss="modal"
+                                            aria-label="Close"
+                                        ></button>
+                                    </div>
+                                    <div className="modal-body">Modal</div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+                                            Close
+                                        </button>
+                                        <button type="button" className="btn btn-primary">
+                                            Save changes
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            className="modal fade"
+                            id="variant-view-modal"
+                            tabIndex={-1}
+                            aria-labelledby="Variant View Instruction Modal"
+                            aria-hidden="true"
+                        >
+                            <div className="modal-dialog modal-lg">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h1 className="modal-title fs-5" id="exampleModalLabel">
+                                            Variant View Instruction
+                                        </h1>
+                                        <button
+                                            type="button"
+                                            className="btn-close"
+                                            data-bs-dismiss="modal"
+                                            aria-label="Close"
+                                        ></button>
+                                    </div>
+                                    <div className="modal-body">Modal</div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+                                            Close
+                                        </button>
+                                        <button type="button" className="btn btn-primary">
+                                            Save changes
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </ErrorBoundary>
     );

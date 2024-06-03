@@ -829,13 +829,39 @@ a:hover {
         left: 3px;
     }
 
+    .navigation-button-container {
+        display: flex;
+        height: auto;
+        padding: 0px;
+    }
+    .navigation-button-container.split {
+        display: flex;
+        height: auto;
+        padding: 0px;
+
+        .split-left {
+            border-radius: 8px 0px 0px 8px;
+            border-right: none;
+        }
+        .split-right {
+            width: 40px;
+            border-radius: 0px 8px 8px 0px;
+            border-left: none;
+
+            .button.question-mark {
+                width: 15px;
+                margin: auto;
+                color: black;
+            }
+        }
+    }
     .navigation-button {
         background-color: #f6f6f6;
         cursor: pointer;
         font-size: 1rem;
         font-family: Inter;
         height: 40px;
-        width: 210px;
+        width: 160px;
         padding: 2px 10px;
         border: 1px solid #d3d3d3;
     }
@@ -845,12 +871,6 @@ a:hover {
     }
     .navigation-button:active:not(:disabled) {
         background-color: #e6e4e4;
-    }
-    .navigation-button:first-of-type {
-        border-radius: 8px 8px 0px 0px;
-    }
-    .navigation-button:last-of-type {
-        border-radius: 0px 0px 8px 8px;
     }
 
     /* Force scrollbar to show */
@@ -1006,5 +1026,17 @@ a:hover {
     .variant-view-controls {
         left: 50%;
         transform: translate(-50%, 0px);
+
+        .gene-search {
+            width: 210px;
+        }
+    }
+
+    .instructions-modals-container {
+        .modal {
+            .modal-dialog {
+                width: 100%;
+            }
+        }
     }
 }
