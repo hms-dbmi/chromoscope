@@ -87,7 +87,7 @@ function generateSpec(opt: SpecOption): GoslingSpec {
                                           : []),
                                       {
                                           id: `${id}-bottom-left-sequence`,
-                                          title: 'Sequence',
+                                          title: '  Sequence',
                                           alignment: 'overlay',
                                           data: {
                                               url: 'https://server.gosling-lang.org/api/v1/tileset_info/?d=sequence-multivec',
@@ -180,7 +180,7 @@ function generateSpec(opt: SpecOption): GoslingSpec {
                                           : []),
                                       {
                                           id: `${id}-bottom-right-sequence`,
-                                          title: 'Sequence',
+                                          title: '  Sequence',
                                           alignment: 'overlay',
                                           data: {
                                               url: 'https://server.gosling-lang.org/api/v1/tileset_info/?d=sequence-multivec',
@@ -279,6 +279,7 @@ function getOverviewSpec(option: SpecOption): View[] {
             },
             tracks: [
                 {
+                    name: 'Ideogram',
                     id: `${id}-top-ideogram`,
                     alignment: 'overlay',
                     data: {

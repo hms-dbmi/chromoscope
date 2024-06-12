@@ -29,6 +29,7 @@ export default function getMidView(option: SpecOption): View[] {
             layout: 'linear',
             tracks: [
                 {
+                    title: '  Ideogram',
                     id: `${id}-mid-ideogram`,
                     alignment: 'overlay',
                     data: {
@@ -84,6 +85,7 @@ export default function getMidView(option: SpecOption): View[] {
                 tracks.boundary('driver', 'mid'),
                 {
                     id: `${id}-mid-gene`,
+                    title: '  Gene Annotation',
                     template: 'gene',
                     data: {
                         url:
