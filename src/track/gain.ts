@@ -12,7 +12,7 @@ export default function gain(
     const [total_cn, major_cn, minor_cn] = cnFields;
     return {
         id: `${sampleId}-${mode}-gain`,
-        title: mode === 'small' ? '' : 'Gain',
+        title: mode === 'small' ? '' : '  Gain',
         style: { background: '#F6F6F6' },
         data: {
             separator: '\t',

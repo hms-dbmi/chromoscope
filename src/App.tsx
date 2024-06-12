@@ -533,6 +533,101 @@ function App(props: RouteComponentProps) {
         // !! Removed `demo` not to update twice since `drivers` are updated right after a demo update.
     }, [ready, xDomain, visPanelWidth, drivers, showOverview, showPutativeDriver, selectedSvId, breakpoints, svReads]);
 
+    const trackTooltips = useMemo(() => {
+        type Track =
+            | 'ideogram'
+            | 'gene'
+            | 'mutation'
+            | 'cnv'
+            | 'sv'
+            | 'indel'
+            | 'driver'
+            | 'gain'
+            | 'loh'
+            | 'coverage'
+            | 'sequence'
+            | 'alignment';
+        // calculate the offset by the Genome View
+        const genomeViewHeight = Math.min(600, visPanelWidth);
+        const gap = isMinimalMode ? 100 : 40;
+        const offset = genomeViewHeight + gap - 2;
+
+        // TODO: Not ideal to hard coded!
+        // The heights of each track
+        const TRACK_HEIGHTS: { height: number; type: Track }[] = [
+            { height: 50, type: 'ideogram' },
+            { height: 40, type: 'driver' },
+            { height: 60, type: 'gene' },
+            { height: 60, type: 'mutation' },
+            { height: 40, type: 'indel' },
+            { height: 60, type: 'cnv' },
+            { height: 20, type: 'gain' },
+            { height: 20, type: 'loh' },
+            { height: 250 + gap + 30, type: 'sv' },
+            { height: 80, type: 'coverage' },
+            { height: 40, type: 'sequence' },
+            { height: 500, type: 'alignment' }
+        ];
+
+        // Infer the tracks shown
+        const tracksShown: Track[] = ['driver', 'ideogram', 'gene', 'sv'];
+        if (demo.cnv) tracksShown.push('cnv', 'gain', 'loh');
+        if (demo.vcf && demo.vcfIndex) tracksShown.push('mutation');
+        if (demo.vcf2 && demo.vcf2Index) tracksShown.push('indel');
+        if (selectedSvId !== '') tracksShown.push('sequence');
+        if (demo.bam && demo.bai && selectedSvId !== '') tracksShown.push('coverage', 'alignment');
+        const HEIGHTS_OF_TRACKS_SHOWN = TRACK_HEIGHTS.filter(d => tracksShown.includes(d.type));
+
+        // Calculate the positions of the tracks
+        const trackPositions = tracksShown.flatMap((t, i) => {
+            const indexOfTrack = HEIGHTS_OF_TRACKS_SHOWN.findIndex(d => d.type === t);
+            const cumHeight = HEIGHTS_OF_TRACKS_SHOWN.slice(0, indexOfTrack).reduce((acc, d) => acc + d.height, 0);
+            const position = { y: offset + cumHeight, type: t };
+            if (t === 'alignment' || t === 'coverage' || t === 'sequence') {
+                return [position, { ...position, x: visPanelWidth / 2 + 10 }];
+            } else {
+                return [position];
+            }
+        });
+
+        return (
+            <div
+                style={{
+                    pointerEvents: 'none',
+                    width: '100%',
+                    height: '100%',
+                    position: 'relative',
+                    zIndex: 998
+                }}
+            >
+                {trackPositions?.map((d, i) => (
+                    <div
+                        key={i}
+                        style={{
+                            position: 'absolute',
+                            top: d.y + (d.type === 'ideogram' ? 32 : 0),
+                            left: ('x' in d && d.x ? d.x : 0) + 10
+                        }}
+                    >
+                        <span
+                            style={{
+                                color: 'white',
+                                background: 'black',
+                                opacity: 0.8,
+                                fontSize: 10,
+                                paddingLeft: '5px',
+                                paddingRight: '5px',
+                                borderRadius: '30px'
+                            }}
+                        >
+                            i
+                        </span>
+                    </div>
+                ))}
+            </div>
+        );
+    }, [demo, visPanelWidth, selectedSvId]);
+
     useLayoutEffect(() => {
         if (!gosRef.current) return;
 
@@ -1009,6 +1104,7 @@ function App(props: RouteComponentProps) {
                         }}
                     >
                         {goslingComponent}
+                        {trackTooltips}
                         {jumpButtonInfo ? (
                             <button
                                 className="jump-to-bp-btn"
