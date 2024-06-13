@@ -10,7 +10,7 @@ export default function driver(
 ): SingleTrack {
     return {
         id: `${sampleId}-${mode}-driver`,
-        title: 'Putative Driver',
+        title: '  Putative Driver',
         // TODO: click events are not supported for layered tracks
         // experimental: {
         //     mouseEvents: {

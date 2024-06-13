@@ -12,7 +12,7 @@ export default function loh(
     const [total_cn, major_cn, minor_cn] = cnFields;
     return {
         id: `${sampleId}-${mode}-loh`,
-        title: mode !== 'small' ? 'Loss of Heterozygosity (LOH)' : '',
+        title: mode !== 'small' ? '  Loss of Heterozygosity (LOH)' : '',
         style: { background: '#F6F6F6' },
         data: {
             separator: '\t',

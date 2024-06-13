@@ -98,7 +98,7 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
     return {
         id: `${id}-bottom-${isLeft ? 'left' : 'right'}-bam`,
         alignment: 'overlay',
-        title: 'Alignment',
+        title: '  Alignment',
         data: { type: 'bam', url: bam, indexUrl: bai, loadMates: false },
         mark: 'rect',
         experimental: {

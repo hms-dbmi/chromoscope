@@ -11,7 +11,7 @@ export default function mutation(
 ): SingleTrack {
     return {
         id: `${sampleId}-${mode}-mutation`,
-        title: 'Point Mutation',
+        title: '  Point Mutation',
         style: { background: '#FFFFFF', inlineLegend: true },
         data: {
             type: 'vcf',
@@ -23,7 +23,7 @@ export default function mutation(
         mark: 'point',
         x: { field: 'POS', type: 'genomic' },
         color: { field: 'SUBTYPE', type: 'nominal', legend: true, domain: ['C>A', 'C>G', 'C>T', 'T>A', 'T>C', 'T>G'] },
-        y: { field: 'DISTPREVLOGE', type: 'quantitative', axis: 'left', range: [10, height - 10] },
+        y: { field: 'DISTPREVLOGE', type: 'quantitative', axis: 'right', range: [10, height - 10] },
         opacity: { value: 0.9 },
         tooltip: [
             { field: 'DISTPREV', type: 'nominal', format: 's1', alt: 'Distance To Previous Mutation (BP)' },
