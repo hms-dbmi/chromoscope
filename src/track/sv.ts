@@ -89,6 +89,7 @@ export default function sv(
     const svs = [...defaults.color.svclass.domain];
     return {
         id: `${sampleId}-${mode}-sv`,
+        title: mode === 'mid' ? '  Structural Variants' : '',
         alignment: 'overlay',
         experimental: {
             mouseEvents: {

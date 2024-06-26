@@ -11,7 +11,8 @@ export default function indel(
 ): OverlaidTracks {
     return {
         id: `${sampleId}-${mode}-indel`,
-        style: { background: '#F6F6F6' },
+        title: '  Indel',
+        style: { background: '#F6F6F6', inlineLegend: true },
         data: {
             url,
             indexUrl,
@@ -89,13 +90,13 @@ export default function indel(
         color: {
             field: 'MUTTYPE',
             type: 'nominal',
-            legend: false,
+            legend: true,
             domain: ['Insertion', 'Deletion']
         },
         row: {
             field: 'MUTTYPE',
             type: 'nominal',
-            legend: true,
+            legend: false,
             domain: ['Insertion', 'Deletion']
         },
         tooltip: [
