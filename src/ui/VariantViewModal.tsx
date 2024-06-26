@@ -1,4 +1,9 @@
 import React from 'react';
+import variant_interpretation_1 from '../script/img/modal_images/variant_view/interpretation_1.png';
+import variant_interactions_1 from '../script/img/modal_images/variant_view/interactions_1.png';
+import variant_interactions_2 from '../script/img/modal_images/variant_view/interactions_2.png';
+import variant_interactions_3 from '../script/img/modal_images/variant_view/interactions_3.png';
+import variant_interactions_4 from '../script/img/modal_images/variant_view/interactions_4.png';
 
 export const VariantViewModal = () => {
     return (
@@ -17,7 +22,83 @@ export const VariantViewModal = () => {
                         </h1>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div className="modal-body"></div>
+                    <div className="modal-body">
+                        <div className="popover-content">
+                            <div className="section interpretation">
+                                <h4>Interpretation</h4>
+                                <hr className="header" />
+                                <div className="section-content">
+                                    <div className="block with-image">
+                                        <img src={variant_interpretation_1} alt="" />
+                                        <div className="text">
+                                            <p>
+                                                A structural variant may leave a footprint on the copy number profile
+                                                and may perturb genes.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="section interactions">
+                                <h4>Interactions</h4>
+                                <hr className="header" />
+                                <div className="section-content">
+                                    <div className="block with-image">
+                                        <img src={variant_interactions_1} alt="" />
+                                        <div className="text">
+                                            <p>
+                                                <b>Hover</b> - over a structural variant to see detailed information.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="block with-image">
+                                        <img src={variant_interactions_2} alt="" />
+                                        <div className="text">
+                                            <p>
+                                                <b>Click</b> - on a structural variant to show its breakpoints in the
+                                                Read View.
+                                            </p>
+                                            <p>
+                                                The positions of breakpoints are highlighted by dashed, vertical lines.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="block with-image">
+                                        <img src={variant_interactions_3} alt="" />
+                                        <div className="text">
+                                            <p>
+                                                <b>Zoom in and out</b> on chromosomal regions by clicking the{' '}
+                                                <span className="text-button-example">
+                                                    <b>+</b>
+                                                </span>{' '}
+                                                and{' '}
+                                                <span className="text-button-example right">
+                                                    <b>-</b>
+                                                </span>{' '}
+                                                buttons.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="block with-image">
+                                        <img src={variant_interactions_4} alt="" />
+                                        <div className="text">
+                                            <p>
+                                                <b>Pan left and right</b> around the current region by clicking the{' '}
+                                                <span className="text-button-example">
+                                                    <b>&larr;</b>
+                                                </span>{' '}
+                                                and{' '}
+                                                <span className="text-button-example right">
+                                                    <b>&rarr;</b>
+                                                </span>{' '}
+                                                buttons.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

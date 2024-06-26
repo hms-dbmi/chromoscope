@@ -1,5 +1,8 @@
 import React from 'react';
 import genome_interactions_1 from '../script/img/modal_images/genome_view/interactions_1.png';
+import genome_interactions_2 from '../script/img/modal_images/genome_view/interactions_2.png';
+import genome_interactions_3 from '../script/img/modal_images/genome_view/interactions_3.png';
+import genome_interactions_4 from '../script/img/modal_images/genome_view/interactions_4.png';
 
 export const GenomeViewModal = () => {
     return (
@@ -28,18 +31,34 @@ export const GenomeViewModal = () => {
                                         <img src={genome_interactions_1} alt="" />
                                         <div className="text">
                                             <p>
-                                                <b>Circle with a dot</b> - denotes bi-allelic gene loss.
-                                            </p>
-                                            <p>
-                                                <b>Circle without a dot</b> - denotes one mutation in gene.
+                                                <b>Click and drag</b> the blue selection brush to highlight regions of
+                                                the genome.
                                             </p>
                                         </div>
                                     </div>
-                                    <hr />
                                     <div className="block with-image">
-                                        <img src={genome_interactions_1} alt="" />
+                                        <img src={genome_interactions_2} alt="" />
                                         <div className="text">
-                                            <p>Driver mutations are also annotated by name in the genome view.</p>
+                                            <p>
+                                                <b>Click and drag</b> the edges of the selection brush to resize it.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="block with-image">
+                                        <img src={genome_interactions_3} alt="" />
+                                        <div className="text">
+                                            <p>
+                                                <b>Hover</b> over a structural variant to see detailed information.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="block with-image">
+                                        <img src={genome_interactions_4} alt="" />
+                                        <div className="text">
+                                            <p>
+                                                <b>Click</b> on a structural variant to inspect breakpoints in other
+                                                views.
+                                            </p>
                                         </div>
                                     </div>
                                 </div>

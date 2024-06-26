@@ -794,10 +794,8 @@ function App(props: RouteComponentProps) {
                                     <p>When showing large chromosomal regions, Chromoscope selects 500 indels in each visible tile (see documentation on sampling).</p>
                                 </div>
                             </div>
-                            <hr />
                         </div>
                     </div>
-                    <hr />
                     <div class='section interactions'>
                         <h4>Interactions</h4>
                         <hr class="header" />
