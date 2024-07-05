@@ -23,7 +23,7 @@ import SampleConfigForm from './ui/sample-config-form';
 import { BrowserDatabase } from './browser-log';
 import legend from './legend.png';
 import UrlsafeCodec from './lib/urlsafe-codec';
-//import GenomicTable from './ui/genomic-table';
+import GenomicTable from './ui/genomic-table';
 
 const db = new Database();
 const log = new BrowserDatabase();
