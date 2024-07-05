@@ -24,6 +24,7 @@ export type SampleType = {
     drivers?: { [k: string]: string | number }[] | string;
     bam?: string;
     bai?: string;
+    baf?: string;
     vcf?: string;
     vcfIndex?: string;
     vcf2?: string;
