@@ -10,10 +10,9 @@ import genes_interactions_2 from '../script/img/popover-images/genes/interaction
 import mutations_interpretation_1 from '../script/img/popover-images/mutations/interpretation_1.png';
 import mutations_interactions_1 from '../script/img/popover-images/mutations/interactions_1.png';
 import mutations_interactions_2 from '../script/img/popover-images/mutations/interactions_2.png';
-import insertions_interpretation_1 from '../script/img/popover-images/insertions/interpretation_1.png';
-import insertions_interpretation_2 from '../script/img/popover-images/insertions/interpretation_2.png';
-import deletions_interpretation_1 from '../script/img/popover-images/deletions/interpretation_1.png';
-import deletions_interactions_1 from '../script/img/popover-images/deletions/interactions_1.png';
+import indel_interpretation_1 from '../script/img/popover-images/indel/interpretation_1.png';
+import indel_interpretation_2 from '../script/img/popover-images/indel/interpretation_2.png';
+import indel_interactions_1 from '../script/img/popover-images/indel/interactions_1.png';
 import copy_number_variants_interpretation_1 from '../script/img/popover-images/copy_number_variants/interpretation_1.png';
 import copy_number_variants_interpretation_2 from '../script/img/popover-images/copy_number_variants/interpretation_2.png';
 import copy_number_variants_interactions_1 from '../script/img/popover-images/copy_number_variants/interactions_1.png';
@@ -207,10 +206,7 @@ export const getTrackData = (
                     <hr class="header" />
                     <div class="section-content">
                         <div class="block with-image">
-                            <div class="image-container two-image">
-                                <img src="${insertions_interpretation_1}" alt="" />
-                                <img src="${deletions_interpretation_1}" alt="" />
-                            </div>
+                            <img src="${indel_interpretation_1}" alt="" />
                             <div class="text">
                                 <p><span class="orange"><b>Orange lines</b></span> - mark insertions.</p>
                                 <p><span class="green"><b>Green lines</b></span> - mark deletions.</p>
@@ -218,9 +214,7 @@ export const getTrackData = (
                         </div>
                         <hr />
                         <div class="block with-image">
-                            <div class="image-container">
-                                <img src="${insertions_interpretation_2}" alt="" />
-                            </div>
+                            <img src="${indel_interpretation_2}" alt="" />
                             <div class="text">
                                 <p>When showing large chromosomal regions, Chromoscope selects 500 indels in each visible tile (<a href="https://chromoscope.bio/visualizations/data-sampling/#vcf--tbi" target="_blank" rel="noreferrer">see documentation on sampling</a>).</p>
                             </div>
@@ -231,7 +225,7 @@ export const getTrackData = (
                     <h3>Interactions</h3>
                     <hr class="header" />
                     <div class="block with-image">
-                        <img src="${deletions_interactions_1}" alt="" />
+                        <img src="${indel_interactions_1}" alt="" />
                         <div class="text">
                             <p><b>Hover</b> - on a deletion to see the deleted sequence.</p>
                             <p>Deletions are identified where an alternative allele is longer than reference.</p>
@@ -261,7 +255,6 @@ export const getTrackData = (
                             <img src="${copy_number_variants_interpretation_2}" alt="" />
                             <div class="text">
                                 <p>Copy number variants often coincide with structural variants.</p>
-                                <p>Structural variants often demarcate copy number changes.</p>
                             </div>
                         </div>
                     </div>
