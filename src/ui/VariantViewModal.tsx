@@ -1,9 +1,11 @@
 import React from 'react';
+
 import variant_interpretation_1 from '../script/img/modal_images/variant_view/interpretation_1.png';
 import variant_interactions_1 from '../script/img/modal_images/variant_view/interactions_1.png';
 import variant_interactions_2 from '../script/img/modal_images/variant_view/interactions_2.png';
 import variant_interactions_3 from '../script/img/modal_images/variant_view/interactions_3.png';
 import variant_interactions_4 from '../script/img/modal_images/variant_view/interactions_4.png';
+import variant_interactions_5 from '../script/img/modal_images/variant_view/interactions_5.png';
 
 export const VariantViewModal = () => {
     return (
@@ -25,7 +27,7 @@ export const VariantViewModal = () => {
                     <div className="modal-body">
                         <div className="modal-body-content">
                             <div className="section interpretation">
-                                <h4>Interpretation</h4>
+                                <h3>Interpretation</h3>
                                 <hr className="header" />
                                 <div className="section-content">
                                     <div className="block with-image">
@@ -40,11 +42,20 @@ export const VariantViewModal = () => {
                                 </div>
                             </div>
                             <div className="section interactions">
-                                <h4>Interactions</h4>
+                                <h3>Interactions</h3>
                                 <hr className="header" />
                                 <div className="section-content">
                                     <div className="block with-image">
                                         <img src={variant_interactions_1} alt="" />
+                                        <div className="text">
+                                            <p>
+                                                <b>The black vertical line</b> indicates region in focus.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div className="block with-image">
+                                        <img src={variant_interactions_2} alt="" />
                                         <div className="text">
                                             <p>
                                                 <b>Hover</b> - over a structural variant to see detailed information.
@@ -53,7 +64,7 @@ export const VariantViewModal = () => {
                                     </div>
                                     <hr />
                                     <div className="block with-image">
-                                        <img src={variant_interactions_2} alt="" />
+                                        <img src={variant_interactions_3} alt="" />
                                         <div className="text">
                                             <p>
                                                 <b>Click</b> - on a structural variant to show its breakpoints in the
@@ -66,7 +77,7 @@ export const VariantViewModal = () => {
                                     </div>
                                     <hr />
                                     <div className="block with-image">
-                                        <img src={variant_interactions_3} alt="" />
+                                        <img src={variant_interactions_4} alt="" />
                                         <div className="text">
                                             <p>
                                                 <b>Zoom in and out</b> - on chromosomal regions by clicking the{' '}
@@ -83,7 +94,7 @@ export const VariantViewModal = () => {
                                     </div>
                                     <hr />
                                     <div className="block with-image">
-                                        <img src={variant_interactions_4} alt="" />
+                                        <img src={variant_interactions_5} alt="" />
                                         <div className="text">
                                             <p>
                                                 <b>Pan left and right</b> - around the current region by clicking the{' '}

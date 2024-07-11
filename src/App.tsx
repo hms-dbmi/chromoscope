@@ -608,7 +608,7 @@ function App(props: RouteComponentProps) {
                 popover_content: `
                     <div class='popover-content'>
                         <div class='section interpretation'>
-                            <h4>Interpretation</h4>
+                            <h3>Interpretation</h3>
                             <hr />
                             <div class="block with-image">
                                 <img src="${ideogram_interpretation_1}" alt="" />
@@ -624,7 +624,8 @@ function App(props: RouteComponentProps) {
                                 </div>
                             </div>
                         </div>
-                    </div>`
+                    </div>
+                `
             },
             {
                 height: 40,
@@ -633,7 +634,7 @@ function App(props: RouteComponentProps) {
                 popover_content: `
                     <div class='popover-content'>
                         <div class='section interpretation'>
-                            <h4>Interpretation</h4>
+                            <h3>Interpretation</h3>
                             <hr class="header" />
                             <div class="section-content">
                                 <div class="block with-image">
@@ -658,7 +659,7 @@ function App(props: RouteComponentProps) {
                         </div>
                         <hr />
                         <div class='section interactions'>
-                            <h4>Interactions</h4>
+                            <h3>Interactions</h3>
                             <hr class="header" />
                             <div class="block with-image">
                                 <img src="${driver_interactions_1}" alt="" />
@@ -676,7 +677,7 @@ function App(props: RouteComponentProps) {
                 popover_content: `
                     <div class='popover-content'>
                         <div class='section interpretation'>
-                            <h4>Interpretation</h4>
+                            <h3>Interpretation</h3>
                             <hr class="header" />
                             <div class="block with-image">
                                 <img src="${genes_interpretation_1}" alt="" />
@@ -694,7 +695,7 @@ function App(props: RouteComponentProps) {
                             </div>
                         </div>
                         <div class='section interactions'>
-                            <h4>Interactions</h4>
+                            <h3>Interactions</h3>
                             <hr class="header"/>
                             <div class="block with-image">
                                 <img src="${genes_interactions_1}" alt="" />
@@ -719,7 +720,7 @@ function App(props: RouteComponentProps) {
                 popover_content: `
                 <div class='popover-content'>
                     <div class='section interpretation'>
-                        <h4>Interpretation</h4>
+                        <h3>Interpretation</h3>
                         <hr class="header"/>
                         <div class="block with-image column">
                             <img src="${mutations_interpretation_1}" alt="" />
@@ -731,7 +732,7 @@ function App(props: RouteComponentProps) {
                         </div>
                     </div>
                     <div class='section interactions'>
-                        <h4>Interactions</h4>
+                        <h3>Interactions</h3>
                         <hr class="header" />
                         <div class="block with-image">
                             <img src="${mutations_interactions_1}" alt="" />
@@ -758,7 +759,7 @@ function App(props: RouteComponentProps) {
                 popover_content: `
                 <div class='popover-content'>
                     <div class='section interpretation'>
-                        <h4>Interpretation</h4>
+                        <h3>Interpretation</h3>
                         <hr class="header" />
                         <div class="section-content">
                             <div class="block with-image">
@@ -783,7 +784,7 @@ function App(props: RouteComponentProps) {
                         </div>
                     </div>
                     <div class='section interactions'>
-                        <h4>Interactions</h4>
+                        <h3>Interactions</h3>
                         <hr class="header" />
                         <div class="block with-image">
                             <img src="${deletions_interactions_1}" alt="" />
@@ -802,7 +803,7 @@ function App(props: RouteComponentProps) {
                 popover_content: `
                     <div class='popover-content'>
                         <div class='section interpretation'>
-                            <h4>Interpretation</h4>
+                            <h3>Interpretation</h3>
                             <hr class="header" />
                             <div class="block with-image">
                                 <img src="${copy_number_variants_interpretation_1}" alt="" />
@@ -821,7 +822,7 @@ function App(props: RouteComponentProps) {
                             </div>
                         </div>
                         <div class='section interactions'>
-                            <h4>Interactions</h4>
+                            <h3>Interactions</h3>
                             <hr class="header" />
                             <div class="block with-image">
                                 <img src="${copy_number_variants_interactions_1}" alt="" />
@@ -842,7 +843,7 @@ function App(props: RouteComponentProps) {
                 popover_content: `
                 <div class='popover-content'>
                     <div class='section interpretation'>
-                        <h4>Interpretation</h4>
+                        <h3>Interpretation</h3>
                         <hr class="header" />
                         <div class="block with-image">
                             <img src="${gains_interpretation_1}" alt="" />
@@ -868,7 +869,7 @@ function App(props: RouteComponentProps) {
                 popover_content: `
                 <div class='popover-content'>
                     <div class='section interpretation'>
-                    <h4>Interpretation</h4>
+                    <h3>Interpretation</h3>
                     <hr class="header" />
                         <div class='block text-only'>
                             <p>LOH is declared in regions where a chromosome copy from one of the parents was entirely lost (minor copy number of 0).</p>
@@ -896,7 +897,7 @@ function App(props: RouteComponentProps) {
                 popover_content: `
                  <div class='popover-content'>
                      <div class='section interpretation'>
-                         <h4>Interpretation</h4>
+                         <h3>Interpretation</h3>
                          <hr class="header"/>
                          <div class="block with-image column">
                              <img src="${structural_variants_interpretation_1}" alt="" />
@@ -907,7 +908,7 @@ function App(props: RouteComponentProps) {
                          </div>
                      </div>
                      <div class='section interactions'>
-                         <h4>Interactions</h4>
+                         <h3>Interactions</h3>
                          <hr class="header" />
                          <div class="block with-image">
                              <img src="${structural_variants_interactions_1}" alt="" />
@@ -982,6 +983,16 @@ function App(props: RouteComponentProps) {
                             className="track-tooltip btn btn-sm"
                             data-bs-trigger="focus"
                             data-bs-toggle="popover"
+                            data-bs-template={`
+                                    <div class="popover" role="tooltip">
+                                    <div class="popover-arrow">
+                                    </div>
+                                    <h2 class="popover-header">
+                                    </h2>
+                                    <div class="popover-body">
+                                    </div>
+                                    </div>
+                                `}
                             data-bs-title={d.title}
                             data-bs-custom-class={'track-tooltip-popover popover-for-' + d.type}
                             data-bs-html="true"

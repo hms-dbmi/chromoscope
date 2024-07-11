@@ -1080,7 +1080,7 @@ a:hover {
                         padding: 0px 55px;
                     }
 
-                    h4 {
+                    h3 {
                         font-size: 1.25rem;
                         font-weight: 600;
                         margin-bottom: 4px;
@@ -1159,6 +1159,7 @@ a:hover {
     max-width: none;
     box-shadow: 0px 0px 10px 0px #22252954;
     z-index: 998;
+
     .popover-header {
         font-size: 1.25rem;
         font-family: 'Inter';
@@ -1180,7 +1181,7 @@ a:hover {
             display: flex;
             justify-content: space-between;
             gap: 24px;
-            h4 {
+            h3 {
                 font-size: 1rem;
                 font-weight: 600;
                 margin-bottom: 4px;

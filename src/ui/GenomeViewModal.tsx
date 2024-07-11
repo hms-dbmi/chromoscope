@@ -24,7 +24,7 @@ export const GenomeViewModal = () => {
                     <div className="modal-body">
                         <div className="modal-body-content">
                             <div className="section interactions">
-                                <h4>Interactions</h4>
+                                <h3>Interactions</h3>
                                 <hr className="header" />
                                 <div className="section-content">
                                     <div className="block with-image">
