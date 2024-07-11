@@ -23,7 +23,7 @@ export const VariantViewModal = () => {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        <div className="popover-content">
+                        <div className="modal-body-content">
                             <div className="section interpretation">
                                 <h4>Interpretation</h4>
                                 <hr className="header" />
@@ -32,8 +32,8 @@ export const VariantViewModal = () => {
                                         <img src={variant_interpretation_1} alt="" />
                                         <div className="text">
                                             <p>
-                                                A structural variant may leave a footprint on the copy number profile
-                                                and may perturb genes.
+                                                A structural variant &#40;SV&#41; may leave a footprint on the copy
+                                                number profile and may perturb genes.
                                             </p>
                                         </div>
                                     </div>
@@ -51,6 +51,7 @@ export const VariantViewModal = () => {
                                             </p>
                                         </div>
                                     </div>
+                                    <hr />
                                     <div className="block with-image">
                                         <img src={variant_interactions_2} alt="" />
                                         <div className="text">
@@ -63,11 +64,12 @@ export const VariantViewModal = () => {
                                             </p>
                                         </div>
                                     </div>
+                                    <hr />
                                     <div className="block with-image">
                                         <img src={variant_interactions_3} alt="" />
                                         <div className="text">
                                             <p>
-                                                <b>Zoom in and out</b> on chromosomal regions by clicking the{' '}
+                                                <b>Zoom in and out</b> - on chromosomal regions by clicking the{' '}
                                                 <span className="text-button-example">
                                                     <b>+</b>
                                                 </span>{' '}
@@ -79,11 +81,12 @@ export const VariantViewModal = () => {
                                             </p>
                                         </div>
                                     </div>
+                                    <hr />
                                     <div className="block with-image">
                                         <img src={variant_interactions_4} alt="" />
                                         <div className="text">
                                             <p>
-                                                <b>Pan left and right</b> around the current region by clicking the{' '}
+                                                <b>Pan left and right</b> - around the current region by clicking the{' '}
                                                 <span className="text-button-example">
                                                     <b>&larr;</b>
                                                 </span>{' '}

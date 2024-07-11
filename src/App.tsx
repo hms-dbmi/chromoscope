@@ -29,6 +29,8 @@ import { VariantViewModal } from './ui/VariantViewModal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min';
 
+import ideogram_interpretation_1 from './script/img/popover-images/ideogram/interpretation_1.png';
+import ideogram_interpretation_2 from './script/img/popover-images/ideogram/interpretation_2.png';
 import driver_interpretation_1 from './script/img/popover-images/driver/interpretation_1.png';
 import driver_interpretation_2 from './script/img/popover-images/driver/interpretation_2.png';
 import driver_interactions_1 from './script/img/popover-images/driver/interactions_1.png';
@@ -602,45 +604,27 @@ function App(props: RouteComponentProps) {
             {
                 height: 50,
                 type: 'ideogram',
-                title: 'Ideogram'
-                // popover_content: `
-                //     <div class='popover-content'>
-                //         <div class='section interpretation'>
-                //             <h4>Interpretation</h4>
-                //             <hr />
-                //             <div class="block with-image">
-                //                 <img src="${driver_interpretation_1}" alt="" />
-                //                 <div class="text">
-                //                     <p><b>Circle with a dot</b> - denotes bi-allelic gene loss</p>
-                //                     <p><b>Circle without a dot</b> - denotes one mutation in gene</p>
-                //                 </div>
-                //             </div>
-                //             <hr />
-                //             <div class="block with-image">
-                //                 <img src="${driver_interpretation_2}" alt="" />
-                //                 <div class="text">
-                //                     <p>Driver mutations are also annotated by name in the genome view</p>
-                //                 </div>
-                //             </div>
-                //         </div>
-                //         <hr />
-                //         <div class="section">
-                //             <div class='block text-only'>
-                //                 <p>Driver mutations need to be curated and pre-specified as part of Chromoscope configuration <a href="">data specification</a></p>
-                //             </div>
-                //         </div>
-                //         <hr />
-                //         <div class='section interactions'>
-                //             <h4>Interactions</h4>
-                //             <hr/>
-                //             <div class="block with-image">
-                //             <img src="${driver_interactions_1}" alt="" />
-                //             <div class="text">
-                //                 <p><b>Click</b> - on driver variant to see the annotation details</p>
-                //             </div>
-                //             </div>
-                //         </div>
-                //     </div>`
+                title: 'Ideogram',
+                popover_content: `
+                    <div class='popover-content'>
+                        <div class='section interpretation'>
+                            <h4>Interpretation</h4>
+                            <hr />
+                            <div class="block with-image">
+                                <img src="${ideogram_interpretation_1}" alt="" />
+                                <div class="text">
+                                    <p><b>Black stripes</b> - indicate chromosome bands (cytobands) obtained from chromosome staining viewing under microscope.</p>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="block with-image">
+                                <img src="${ideogram_interpretation_2}" alt="" />
+                                <div class="text">
+                                    <p><span class="text-red"><b>Red Triangles</b></span> - represent chromosome centromeres.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
             },
             {
                 height: 40,
@@ -668,7 +652,7 @@ function App(props: RouteComponentProps) {
                                 </div>
                                 <hr />
                                 <div class='block text-only'>
-                                    <p>Driver mutations need to be curated and pre-specified as part of Chromoscope configuration <a href="">data specification</a>.</p>
+                                    <p>Driver mutations need to be curated and pre-specified as part of Chromoscope configuration <a href="https://chromoscope.bio/loading-data/through-data-config" target="_blank" rel="noreferrer">data specification</a>.</p>
                                 </div>
                             </div>
                         </div>
@@ -697,14 +681,15 @@ function App(props: RouteComponentProps) {
                             <div class="block with-image">
                                 <img src="${genes_interpretation_1}" alt="" />
                                 <div class="text">
-                                    <p>Genes are marked as <b>arrows</b>; <b>direction</b> denotes gene strand</p>
+                                    <p><b>Arrows</b> - represent genes.</p>
+                                    <p><b>Direction</b> - denotes gene strand.</p>
                                 </div>
                             </div>
                             <hr />
                             <div class="block with-image">
                                 <img src="${genes_interpretation_2}" alt="" />
                                 <div class="text">
-                                    <p>Exons are marked with <b>thicker lines</b></p>
+                                    <p><b>Thicker lines</b> - represent Exons.</p>
                                 </div>
                             </div>
                         </div>
@@ -714,7 +699,7 @@ function App(props: RouteComponentProps) {
                             <div class="block with-image">
                                 <img src="${genes_interactions_1}" alt="" />
                                 <div class="text">
-                                    <p><b>Zoom out</b> - only selected genes are shown <a href="">sampling info</a>. </p>
+                                    <p><b>Zoom out</b> - only selected genes are shown <a href="https://chromoscope.bio/visualizations/data-sampling/" target="_blank" rel="noreferrer">sampling info</a>.</p>
                                 </div>
                             </div>
                             <hr />
@@ -739,8 +724,9 @@ function App(props: RouteComponentProps) {
                         <div class="block with-image column">
                             <img src="${mutations_interpretation_1}" alt="" />
                             <div class="text">
-                                <p><b>y-axis</b> shows the distance (in kb) between adjacent point mutations, on a logarithmic scale;
-                                at this magnification, they might have been sampled (info on sampling)</p>
+                                <p><b>Y-axis</b> shows the distance (in kb) between adjacent point mutations, on a logarithmic scale.</p>
+                                <hr class="my-3" />
+                                <p>At this magnification, they <a href="https://chromoscope.bio/visualizations/data-sampling/" target="_blank" rel="noreferrer">might have been sampled</a>.</p>
                             </div>
                         </div>
                     </div>
@@ -751,7 +737,7 @@ function App(props: RouteComponentProps) {
                             <img src="${mutations_interactions_1}" alt="" />
                             <div class="text">
                                 <p>
-                                    <b>Zoom in</b> - to see all point mutations; all of the appear only at the level of zoom when showing them all would not be overwhelming.
+                                    <b>Zoom in</b> - to reveal more point mutations.
                                 </p>
                             </div>
                         </div>
@@ -781,8 +767,8 @@ function App(props: RouteComponentProps) {
                                     <img src="${deletions_interpretation_1}" alt="" />
                                 </div>
                                 <div class="text">
-                                    <p>Insertions are marked as <span class="orange">orange lines</span>.</p>
-                                    <p>Deletions are marked as <span class="green">green lines</span>.</p>
+                                    <p><span class="orange"><b>Orange lines</b></span> - mark insertions.</p>
+                                    <p><span class="green"><b>Green lines</b></span> - mark deletions.</p>
                                 </div>
                             </div>
                             <hr />
@@ -791,7 +777,7 @@ function App(props: RouteComponentProps) {
                                     <img src="${insertions_interpretation_2}" alt="" />
                                 </div>
                                 <div class="text">
-                                    <p>When showing large chromosomal regions, Chromoscope selects 500 indels in each visible tile (see documentation on sampling).</p>
+                                    <p>When showing large chromosomal regions, Chromoscope selects 500 indels in each visible tile (<a href="https://chromoscope.bio/visualizations/data-sampling/#vcf--tbi" target="_blank" rel="noreferrer">see documentation on sampling</a>).</p>
                                 </div>
                             </div>
                         </div>
@@ -803,7 +789,7 @@ function App(props: RouteComponentProps) {
                             <img src="${deletions_interactions_1}" alt="" />
                             <div class="text">
                                 <p><b>Hover</b> - on a deletion to see the deleted sequence.</p>
-                                <p>Deletions are identified where alternative allele is longer than reference.</p>
+                                <p>Deletions are identified where an alternative allele is longer than reference.</p>
                             </div>
                         </div>
                     </div>
@@ -821,15 +807,16 @@ function App(props: RouteComponentProps) {
                             <div class="block with-image">
                                 <img src="${copy_number_variants_interpretation_1}" alt="" />
                                 <div class="text">
-                                    <p>Copy number profiles are shown as <b class="text-gray">thick gray lines</b>.</p>
-                                    <p><b>y-axis</b> represents the number of chromosome copies.</p>
+                                    <p><span class="text-gray"><b></span>Thick gray lines</b> - represent copy number profiles.</p>
+                                    <p><b>Y-axis</b> - represents the number of chromosome copies.</p>
                                 </div>
                             </div>
                             <hr />
                             <div class="block with-image">
                                 <img src="${copy_number_variants_interpretation_2}" alt="" />
                                 <div class="text">
-                                    <p>Copy number variants often coincide with structural variants; structural variants often demarcate copy number changes.</p>
+                                    <p>Copy number variants often coincide with structural variants.</p>
+                                    <p>Structural variants often demarcate copy number changes.</p>
                                 </div>
                             </div>
                         </div>
@@ -840,7 +827,7 @@ function App(props: RouteComponentProps) {
                                 <img src="${copy_number_variants_interactions_1}" alt="" />
                                 <div class="text">
                                     <p>
-                                        <b>Hover</b>- over the copy number segment to see the number of copies of each chromosomal regions.
+                                        <b>Hover</b> - over the copy number segment to see the number of copies of each chromosomal regions.
                                     </p>
                                 </div>
                             </div>
@@ -867,7 +854,7 @@ function App(props: RouteComponentProps) {
                         <div class="block with-image">
                             <img src="${gains_interpretation_2}" alt="" />
                             <div class="text">
-                                <p>Regions with 'gains' are marked in blue; on both Genome and Variant Views</p>
+                                <p>Regions with gains are marked in <span class="text-blue"><b>blue</b></span> on both Genome and Variant Views.</p>
                             </div>
                         </div>
                     </div>
@@ -889,14 +876,14 @@ function App(props: RouteComponentProps) {
                         <div class="block with-image">
                             <img src="${loh_interpretation_1}" alt="" />
                             <div class="text">
-                                <p>Regions with LOH are marked in coral in Variant View</p>
+                                <p>Regions with LOH are marked in <span class="text-coral"><b>coral</b></span> in Variant View.</p>
                             </div>
                         </div>
                         <hr />
                         <div class="block with-image">
                             <img src="${loh_interpretation_2}" alt="" />
                             <div class="text">
-                                <p>Regions with LOH are marked in coral in Genome View</p>
+                                <p>Regions with LOH are marked in <span class="text-coral"><b>coral</b></span> in Genome View.</p>
                             </div>
                         </div>
                     </div>
@@ -914,7 +901,8 @@ function App(props: RouteComponentProps) {
                          <div class="block with-image column">
                              <img src="${structural_variants_interpretation_1}" alt="" />
                              <div class="text">
-                                 <p>Chromoscope shows structural variants (SVs) as <b>arches</b>; their colors denote different types of SVs.</p>
+                                 <p><b>Arches</b> - represent structural variants (SVs).</p>
+                                 <p><b>Colors</b> - denote different types of SVs.</p>
                              </div>
                          </div>
                      </div>
@@ -992,7 +980,7 @@ function App(props: RouteComponentProps) {
                             tabIndex={0}
                             role="button"
                             className="track-tooltip btn btn-sm"
-                            data-bs-trigger="click"
+                            data-bs-trigger="focus"
                             data-bs-toggle="popover"
                             data-bs-title={d.title}
                             data-bs-custom-class={'track-tooltip-popover popover-for-' + d.type}

@@ -22,7 +22,7 @@ export const GenomeViewModal = () => {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        <div className="popover-content">
+                        <div className="modal-body-content">
                             <div className="section interactions">
                                 <h4>Interactions</h4>
                                 <hr className="header" />
@@ -31,32 +31,35 @@ export const GenomeViewModal = () => {
                                         <img src={genome_interactions_1} alt="" />
                                         <div className="text">
                                             <p>
-                                                <b>Click and drag</b> the blue selection brush to highlight regions of
+                                                <b>Click and drag</b> - the blue selection brush to highlight regions of
                                                 the genome.
                                             </p>
                                         </div>
                                     </div>
+                                    <hr />
                                     <div className="block with-image">
                                         <img src={genome_interactions_2} alt="" />
                                         <div className="text">
                                             <p>
-                                                <b>Click and drag</b> the edges of the selection brush to resize it.
+                                                <b>Click and drag</b> - the edges of the selection brush to resize it.
                                             </p>
                                         </div>
                                     </div>
+                                    <hr />
                                     <div className="block with-image">
                                         <img src={genome_interactions_3} alt="" />
                                         <div className="text">
                                             <p>
-                                                <b>Hover</b> over a structural variant to see detailed information.
+                                                <b>Hover</b> - over a structural variant to see detailed information.
                                             </p>
                                         </div>
                                     </div>
+                                    <hr />
                                     <div className="block with-image">
                                         <img src={genome_interactions_4} alt="" />
                                         <div className="text">
                                             <p>
-                                                <b>Click</b> on a structural variant to inspect breakpoints in other
+                                                <b>Click</b> - on a structural variant to inspect breakpoints in other
                                                 views.
                                             </p>
                                         </div>

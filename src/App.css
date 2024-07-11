@@ -1061,9 +1061,24 @@ a:hover {
             .modal-body {
                 max-height: 80vh;
                 overflow-y: scroll;
+                display: flex;
+                justify-content: center;
                 padding: 24px 36px;
+                width: 100%;
+
+                .modal-body-content {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                }
                 .section {
+                    display: flex;
+                    flex-direction: column;
                     /* margin-bottom: 20px; */
+
+                    .section-content {
+                        padding: 0px 55px;
+                    }
 
                     h4 {
                         font-size: 1.25rem;
@@ -1082,12 +1097,13 @@ a:hover {
                     }
 
                     .block {
-                        margin: 32px 0px;
+                        flex: 1;
                         display: flex;
+                        margin: 32px 0px;
                         min-height: 120px;
                     }
                     .block.with-image {
-                        justify-content: flex-start;
+                        justify-content: center;
                         height: auto;
 
                         .image-container.two-image {
@@ -1096,7 +1112,7 @@ a:hover {
                         }
 
                         img {
-                            width: 300px;
+                            width: 250px;
                             height: fit-content;
                             margin: auto 0px;
                             border: 2px solid #ebebeb;
@@ -1105,7 +1121,7 @@ a:hover {
 
                         .text {
                             display: flex;
-                            width: 400px;
+                            width: 300px;
                             flex-direction: column;
                             justify-content: space-evenly;
                             margin-left: 60px;
@@ -1194,6 +1210,18 @@ a:hover {
                         span.green {
                             font-weight: 500;
                             color: #469c77;
+                        }
+                        span.text-gray {
+                            color: #757575;
+                        }
+                        span.text-blue {
+                            color: #71b5f5;
+                        }
+                        span.text-coral {
+                            color: #c96a33;
+                        }
+                        span.text-red {
+                            color: #d73c3a;
                         }
                     }
                 }
