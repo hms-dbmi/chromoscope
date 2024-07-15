@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+    box-sizing: content-box !important;
+}
+
 body {
     margin: 0;
     /* font-family: 'Roboto Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
@@ -557,7 +563,6 @@ a:hover {
 }
 
 .vis-overview-panel .title {
-    height: 51px;
     padding: 10px;
     font-size: 18px;
     border-bottom: 1px solid lightgray;
@@ -842,6 +847,7 @@ a:hover {
     }
 
     .navigation-buttons {
+        box-sizing: border-box;
         position: fixed;
         z-index: 997;
         display: flex;
@@ -877,6 +883,7 @@ a:hover {
         }
     }
     .navigation-button {
+        box-sizing: border-box !important;
         background-color: #f6f6f6;
         cursor: pointer;
         font-size: 1rem;
@@ -971,6 +978,7 @@ a:hover {
                     overflow: hidden;
 
                     .export-button {
+                        box-sizing: border-box !important;
                         width: 210px;
                         height: 35px;
                         border-radius: inherit;
@@ -1059,6 +1067,7 @@ a:hover {
                 width: 100%;
             }
             .modal-body {
+                box-sizing: border-box !important;
                 max-height: 80vh;
                 overflow-y: scroll;
                 display: flex;
