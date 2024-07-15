@@ -135,18 +135,22 @@ a:hover {
     display: inline-block;
     position: fixed;
     right: 200px;
+    text-decoration: none;
 }
 
 .title-doc-link {
     display: inline-block;
     position: fixed;
     right: 20px;
+    text-decoration: none;
 }
 
 .title-about-link {
     margin: auto 12px;
     font-size: 12px;
     cursor: pointer;
+    color: black;
+    text-decoration: none;
 }
 
 .title-github-link svg,
@@ -243,6 +247,7 @@ a:hover {
     cursor: pointer;
     position: absolute;
     font-size: 14px;
+    font-family: Inter;
     height: 30px;
     width: 30px;
     margin-left: 20px;
@@ -350,6 +355,10 @@ a:hover {
     cursor: pointer;
     z-index: 999;
     color: #333333;
+
+    svg {
+        vertical-align: inherit;
+    }
 }
 
 .tag-parent {
@@ -513,6 +522,7 @@ a:hover {
     text-shadow: 0px 0px 6px white;
     font-size: 18px;
     z-index: 999;
+    line-height: normal;
     /* background: #ffffff99; */
 }
 
@@ -803,6 +813,7 @@ a:hover {
         .control-group {
             display: flex;
             .control {
+                box-sizing: border-box !important;
                 position: relative;
                 left: 0px;
                 margin-left: 0px;
