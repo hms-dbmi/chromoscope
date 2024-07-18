@@ -1224,11 +1224,11 @@ a:hover {
                     min-height: 120px;
 
                     p {
-                        span.orange {
+                        span.text-orange {
                             font-weight: 500;
                             color: #e1aa4c;
                         }
-                        span.green {
+                        span.text-green {
                             font-weight: 500;
                             color: #469c77;
                         }
@@ -1256,6 +1256,11 @@ a:hover {
                         padding: 0px 10px;
                         margin-bottom: 0px;
                     }
+                }
+                .block.text-only.multi-paragraph {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
                 }
                 .block.with-image {
                     justify-content: center;

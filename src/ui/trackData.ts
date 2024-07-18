@@ -114,7 +114,7 @@ export const getTrackData = (
                         <div class="block with-image">
                             <img src="${driver_interactions_1}" alt="" />
                             <div class="text">
-                                <p><b>Click</b> - on driver variant to see the annotation details.</p>
+                                <p><b>Hover</b> - over driver variants to see annotation details.</p>
                             </div>
                         </div>
                     </div>
@@ -180,7 +180,7 @@ export const getTrackData = (
                     </div>
                     <hr class="my-3" />
                     <div class="block text-only">
-                        <p>At this magnification, they <a href="https://chromoscope.bio/visualizations/data-sampling/" target="_blank" rel="noreferrer">might have been sampled</a>.</p>
+                        <p>At low magnification, only selected mutations are visible. More information on sampling <a href="https://chromoscope.bio/visualizations/data-sampling/" target="_blank" rel="noreferrer">here</a>.</p>
                     </div>
                 </div>
                 <div class='section interactions'>
@@ -214,11 +214,16 @@ export const getTrackData = (
                     <h3>Interpretation</h3>
                     <hr class="header" />
                     <div class="section-content">
+                        <div class="block text-only multi-paragraph">
+                            <p><span class="text-orange"><b>Insertions</b></span> are identified when the alternative allele is longer than the reference allele by the number of basepairs inserted.</p>
+                            <p><span class="text-green"><b>Deletions</b></span> are identified where the alternative allele is shorter by the number of basepairs that were deleted.</p>
+                        </div>
+                        <hr />
                         <div class="block with-image">
                             <img src="${indel_interpretation_1}" alt="" />
                             <div class="text">
-                                <p><span class="orange"><b>Orange lines</b></span> - mark insertions.</p>
-                                <p><span class="green"><b>Green lines</b></span> - mark deletions.</p>
+                                <p><span class="text-orange"><b>Orange lines</b></span> - mark insertions.</p>
+                                <p><span class="text-green"><b>Green lines</b></span> - mark deletions.</p>
                             </div>
                         </div>
                         <hr />
@@ -237,7 +242,6 @@ export const getTrackData = (
                         <img src="${indel_interactions_1}" alt="" />
                         <div class="text">
                             <p><b>Hover</b> - on a deletion to see the deleted sequence.</p>
-                            <p>Deletions are identified where an alternative allele is longer than reference.</p>
                         </div>
                     </div>
                 </div>
