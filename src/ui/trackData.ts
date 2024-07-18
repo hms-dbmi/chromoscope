@@ -61,14 +61,14 @@ export const getTrackData = (
                         <h3>Interpretation</h3>
                         <hr />
                         <div class="block with-image">
-                            <img src="${ideogram_interpretation_1}" alt="" />
+                            <img src="${ideogram_interpretation_1}" alt="Chromosome bands on Ideogram track." />
                             <div class="text">
                                 <p><b>Black stripes</b> - indicate chromosome bands (cytobands) obtained from chromosome staining viewing under microscope.</p>
                             </div>
                         </div>
                         <hr />
                         <div class="block with-image">
-                            <img src="${ideogram_interpretation_2}" alt="" />
+                            <img src="${ideogram_interpretation_2}" alt="Chromosome centromeres on Ideogram track." />
                             <div class="text">
                                 <p><span class="text-red"><b>Red Triangles</b></span> - represent chromosome centromeres.</p>
                             </div>
@@ -88,7 +88,7 @@ export const getTrackData = (
                         <hr class="header" />
                         <div class="section-content">
                             <div class="block with-image">
-                                <img src="${driver_interpretation_1}" alt="" />
+                                <img src="${driver_interpretation_1}" alt="Bi-allelic gene loss on Putative Driver track." />
                                 <div class="text">
                                     <p><b>Circle with a dot</b> - denotes bi-allelic gene loss.</p>
                                     <p><b>Circle without a dot</b> - denotes one mutation in gene.</p>
@@ -96,7 +96,7 @@ export const getTrackData = (
                             </div>
                             <hr />
                             <div class="block with-image">
-                            <img src="${driver_interpretation_2}" alt="" />
+                            <img src="${driver_interpretation_2}" alt="Driver mutation names on Genome View." />
                                 <div class="text">
                                     <p>Driver mutations are also annotated by name in the genome view.</p>
                                 </div>
@@ -112,7 +112,7 @@ export const getTrackData = (
                         <h3>Interactions</h3>
                         <hr class="header" />
                         <div class="block with-image">
-                            <img src="${driver_interactions_1}" alt="" />
+                            <img src="${driver_interactions_1}" alt="Putative Driver track annotation details pop up." />
                             <div class="text">
                                 <p><b>Hover</b> - over driver variants to see annotation details.</p>
                             </div>
@@ -130,7 +130,7 @@ export const getTrackData = (
                         <h3>Interpretation</h3>
                         <hr class="header" />
                         <div class="block with-image">
-                            <img src="${genes_interpretation_1}" alt="" />
+                            <img src="${genes_interpretation_1}" alt="Gene Annotation track." />
                             <div class="text">
                                 <p><b>Arrows</b> - represent genes.</p>
                                 <p><b>Direction</b> - denotes gene strand.</p>
@@ -138,7 +138,7 @@ export const getTrackData = (
                         </div>
                         <hr />
                         <div class="block with-image">
-                            <img src="${genes_interpretation_2}" alt="" />
+                            <img src="${genes_interpretation_2}" alt="Exons on the Gene Annotation track." />
                             <div class="text">
                                 <p><b>Thicker lines</b> - represent Exons.</p>
                             </div>
@@ -148,14 +148,14 @@ export const getTrackData = (
                         <h3>Interactions</h3>
                         <hr class="header"/>
                         <div class="block with-image">
-                            <img src="${genes_interactions_1}" alt="" />
+                            <img src="${genes_interactions_1}" alt="Gene Annotation track at low magnification." />
                             <div class="text">
-                                <p><b>Zoom out</b> - only selected genes are shown <a href="https://chromoscope.bio/visualizations/data-sampling/" target="_blank" rel="noreferrer">sampling info</a>.</p>
+                                <p><b>Zoom out</b> - to see only selected genes <a href="https://chromoscope.bio/visualizations/data-sampling/" target="_blank" rel="noreferrer">sampling info</a>.</p>
                             </div>
                         </div>
                         <hr />
                         <div class="block with-image">
-                            <img src="${genes_interactions_2}" alt="" />
+                            <img src="${genes_interactions_2}" alt="Gene Annotation track at high magnification." />
                             <div class="text">
                                 <p><b>Zoom in</b> - to a smaller region to see all genes in that region.</p>
                             </div>
@@ -173,7 +173,7 @@ export const getTrackData = (
                     <h3>Interpretation</h3>
                     <hr class="header"/>
                     <div class="block with-image">
-                        <img src="${mutations_interpretation_1}" alt="" />
+                        <img src="${mutations_interpretation_1}" alt="Point Mutation track y-axis." />
                         <div class="text">
                             <p><b>Y-axis</b> shows the distance (in kb) between adjacent point mutations, on a logarithmic scale.</p>
                         </div>
@@ -187,7 +187,7 @@ export const getTrackData = (
                     <h3>Interactions</h3>
                     <hr class="header" />
                     <div class="block with-image">
-                        <img src="${mutations_interactions_1}" alt="" />
+                        <img src="${mutations_interactions_1}" alt="Point Mutation track at high magnification." />
                         <div class="text">
                             <p>
                                 <b>Zoom in</b> - to reveal more point mutations.
@@ -196,7 +196,7 @@ export const getTrackData = (
                     </div>
                     <hr/>
                     <div class="block with-image">
-                        <img src="${mutations_interactions_2}" alt="" />
+                        <img src="${mutations_interactions_2}" alt="Point Mutation track details pop up." />
                         <div class="text">
                             <p><b>Hover</b> - over a point mutation to see details.</p>
                         </div>
@@ -220,7 +220,7 @@ export const getTrackData = (
                         </div>
                         <hr />
                         <div class="block with-image">
-                            <img src="${indel_interpretation_1}" alt="" />
+                            <img src="${indel_interpretation_1}" alt="Indel track." />
                             <div class="text">
                                 <p><span class="text-orange"><b>Orange lines</b></span> - mark insertions.</p>
                                 <p><span class="text-green"><b>Green lines</b></span> - mark deletions.</p>
@@ -228,7 +228,7 @@ export const getTrackData = (
                         </div>
                         <hr />
                         <div class="block with-image">
-                            <img src="${indel_interpretation_2}" alt="" />
+                            <img src="${indel_interpretation_2}" alt="Indel track." />
                             <div class="text">
                                 <p>When showing large chromosomal regions, Chromoscope selects 500 indels in each visible tile (<a href="https://chromoscope.bio/visualizations/data-sampling/#vcf--tbi" target="_blank" rel="noreferrer">see documentation on sampling</a>).</p>
                             </div>
@@ -239,9 +239,9 @@ export const getTrackData = (
                     <h3>Interactions</h3>
                     <hr class="header" />
                     <div class="block with-image">
-                        <img src="${indel_interactions_1}" alt="" />
+                        <img src="${indel_interactions_1}" alt="Indel track details pop up." />
                         <div class="text">
-                            <p><b>Hover</b> - on a deletion to see the deleted sequence.</p>
+                            <p><b>Hover</b> - on an insertion or deletion to see details.</p>
                         </div>
                     </div>
                 </div>
@@ -257,7 +257,7 @@ export const getTrackData = (
                         <h3>Interpretation</h3>
                         <hr class="header" />
                         <div class="block with-image">
-                            <img src="${copy_number_variants_interpretation_1}" alt="" />
+                            <img src="${copy_number_variants_interpretation_1}" alt="Copy Number Variants track." />
                             <div class="text">
                                 <p><span class="text-gray"><b>Thick gray lines</b></span> - represent copy number profiles.</p>
                                 <p><b>Y-axis</b> - represents the number of chromosome copies.</p>
@@ -265,7 +265,7 @@ export const getTrackData = (
                         </div>
                         <hr />
                         <div class="block with-image">
-                            <img src="${copy_number_variants_interpretation_2}" alt="" />
+                            <img src="${copy_number_variants_interpretation_2}" alt="Copy Number Variants track." />
                             <div class="text">
                                 <p>Copy number variants often coincide with structural variants.</p>
                             </div>
@@ -275,7 +275,7 @@ export const getTrackData = (
                         <h3>Interactions</h3>
                         <hr class="header" />
                         <div class="block with-image">
-                            <img src="${copy_number_variants_interactions_1}" alt="" />
+                            <img src="${copy_number_variants_interactions_1}" alt="Copy number segment details pop up." />
                             <div class="text">
                                 <p>
                                     <b>Hover</b> - over the copy number segment to see the number of copies of each chromosomal regions.
@@ -296,14 +296,14 @@ export const getTrackData = (
                     <h3>Interpretation</h3>
                     <hr class="header" />
                     <div class="block with-image">
-                        <img src="${gains_interpretation_1}" alt="" />
+                        <img src="${gains_interpretation_1}" alt="Gain track." />
                         <div class="text">
                             <p>Gains are declared in chromosomal regions where total number of copies exceeds 5.</p>
                         </div>
                     </div>
                     <hr />
                     <div class="block with-image">
-                        <img src="${gains_interpretation_2}" alt="" />
+                        <img src="${gains_interpretation_2}" alt="Region with Gains in Genome View." />
                         <div class="text">
                             <p>Regions with gains are marked in <span class="text-blue"><b>blue</b></span> on both Genome and Variant Views.</p>
                         </div>
@@ -325,14 +325,14 @@ export const getTrackData = (
                         <p>LOH is declared in regions where a chromosome copy from one of the parents was entirely lost (minor copy number of 0).</p>
                     </div>
                     <div class="block with-image">
-                        <img src="${loh_interpretation_1}" alt="" />
+                        <img src="${loh_interpretation_1}" alt="Loss of Heterozygosity region in Variant View." />
                         <div class="text">
                             <p>Regions with LOH are marked in <span class="text-coral"><b>coral</b></span> in Variant View.</p>
                         </div>
                     </div>
                     <hr />
                     <div class="block with-image">
-                        <img src="${loh_interpretation_2}" alt="" />
+                        <img src="${loh_interpretation_2}" alt="Loss of Heterozygosity region in Genome View." />
                         <div class="text">
                             <p>Regions with LOH are marked in <span class="text-coral"><b>coral</b></span> in Genome View.</p>
                         </div>
@@ -350,7 +350,7 @@ export const getTrackData = (
                      <h3>Interpretation</h3>
                      <hr class="header"/>
                      <div class="block with-image">
-                         <img src="${structural_variants_interpretation_1}" alt="" />
+                         <img src="${structural_variants_interpretation_1}" alt="Structural Variants track." />
                          <div class="text">
                              <p><b>Arches</b> - represent structural variants (SVs).</p>
                              <p><b>Colors</b> - denote different types of SVs.</p>
@@ -361,14 +361,14 @@ export const getTrackData = (
                      <h3>Interactions</h3>
                      <hr class="header" />
                      <div class="block with-image">
-                         <img src="${structural_variants_interactions_1}" alt="" />
+                         <img src="${structural_variants_interactions_1}" alt="Structural Variants track with event highlighted." />
                          <div class="text">
                              <p><b>Click</b> - on an SV to show its breakpoints in the read view.</p>
                          </div>
                      </div>
                      <hr/>
                      <div class="block with-image">
-                         <img src="${structural_variants_interactions_2}" alt="" />
+                         <img src="${structural_variants_interactions_2}" alt="Event details pop up on Structural Variants track." />
                          <div class="text">
                              <p><b>Hover</b> - over a SV to see more information about each event.</p>
                          </div>

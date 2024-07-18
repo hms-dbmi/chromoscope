@@ -28,7 +28,10 @@ export const GenomeViewModal = () => {
                                 <hr className="header" />
                                 <div className="section-content">
                                     <div className="block with-image">
-                                        <img src={genome_interactions_1} alt="" />
+                                        <img
+                                            src={genome_interactions_1}
+                                            alt="Grab cursor over blue, selected region in Genome View."
+                                        />
                                         <div className="text">
                                             <p>
                                                 <b>Click and drag</b> - the blue selection brush to highlight regions of
@@ -38,7 +41,10 @@ export const GenomeViewModal = () => {
                                     </div>
                                     <hr />
                                     <div className="block with-image">
-                                        <img src={genome_interactions_2} alt="" />
+                                        <img
+                                            src={genome_interactions_2}
+                                            alt="Move cursor over edge of blue, selected region in Genome View."
+                                        />
                                         <div className="text">
                                             <p>
                                                 <b>Click and drag</b> - the edges of the selection brush to resize it.
@@ -47,7 +53,10 @@ export const GenomeViewModal = () => {
                                     </div>
                                     <hr />
                                     <div className="block with-image">
-                                        <img src={genome_interactions_3} alt="" />
+                                        <img
+                                            src={genome_interactions_3}
+                                            alt="Structural Variant detail pop up in Genome View."
+                                        />
                                         <div className="text">
                                             <p>
                                                 <b>Hover</b> - over a structural variant to see detailed information.
@@ -56,7 +65,10 @@ export const GenomeViewModal = () => {
                                     </div>
                                     <hr />
                                     <div className="block with-image">
-                                        <img src={genome_interactions_4} alt="" />
+                                        <img
+                                            src={genome_interactions_4}
+                                            alt="Highlighted structural variant strand in Genome View."
+                                        />
                                         <div className="text">
                                             <p>
                                                 <b>Click</b> - on a structural variant to inspect breakpoints in other

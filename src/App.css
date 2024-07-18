@@ -492,10 +492,15 @@ a:hover {
     cursor: pointer;
     z-index: 998;
     opacity: 0.5;
+    border: none;
 }
 
 .move-to-top-btn:hover {
     opacity: 1;
+}
+
+.move-to-top-btn:focus-visible {
+    outline-offset: 2px;
 }
 
 .interaction-toggle-button {
@@ -903,6 +908,10 @@ a:hover {
         width: 160px;
         padding: 2px 10px;
         border: 1px solid #d3d3d3;
+    }
+
+    .navigation-button:focus-visible {
+        outline-offset: -1px;
     }
 
     .navigation-button:hover:not(:disabled) {

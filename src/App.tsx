@@ -319,7 +319,7 @@ function App(props: RouteComponentProps) {
         window.addEventListener(
             'resize',
             debounce(() => {
-                setVisPanelWidth(window.innerWidth - VIS_PADDING.left * 2);
+                setVisPanelWidth(window.innerWidth - (isMinimalMode ? 10 : VIS_PADDING.left * 2));
             }, 500)
         );
 
@@ -553,10 +553,12 @@ function App(props: RouteComponentProps) {
         const offset = genomeViewHeight + (isMinimalMode ? 100 : 40) - 2;
 
         // Infer the tracks shown
-        const tracksShown: Track[] = ['driver', 'ideogram', 'gene', 'sv'];
-        if (demo.cnv) tracksShown.push('cnv', 'gain', 'loh');
+        const tracksShown: Track[] = ['ideogram', 'driver', 'gene'];
         if (demo.vcf && demo.vcfIndex) tracksShown.push('mutation');
         if (demo.vcf2 && demo.vcf2Index) tracksShown.push('indel');
+        if (demo.cnv) tracksShown.push('cnv', 'gain', 'loh');
+        // Pushing this after the others to match order of tracks in UI
+        tracksShown.push('sv');
         if (selectedSvId !== '') tracksShown.push('sequence');
         if (demo.bam && demo.bai && selectedSvId !== '') tracksShown.push('coverage', 'alignment');
         const HEIGHTS_OF_TRACKS_SHOWN = TRACK_DATA.filter(d => tracksShown.includes(d.type));
@@ -584,7 +586,7 @@ function App(props: RouteComponentProps) {
                     return (
                         <a
                             key={i}
-                            tabIndex={0}
+                            tabIndex={4}
                             role="button"
                             className="track-tooltip btn btn-sm"
                             data-bs-trigger="focus"
@@ -1141,6 +1143,7 @@ function App(props: RouteComponentProps) {
                                 <div className="navigation-button-container split navigation-button-genome">
                                     <button
                                         className="navigation-button split-left"
+                                        tabIndex={1}
                                         onClick={() => {
                                             setTimeout(
                                                 () =>
@@ -1155,6 +1158,7 @@ function App(props: RouteComponentProps) {
                                     </button>
                                     <button
                                         className="navigation-button split-right"
+                                        tabIndex={1}
                                         data-bs-toggle="modal"
                                         data-bs-target="#genome-view-modal"
                                     >
@@ -1172,6 +1176,7 @@ function App(props: RouteComponentProps) {
                                 <div className="navigation-button-container split navigation-button-variant">
                                     <button
                                         className="navigation-button split-left"
+                                        tabIndex={1}
                                         onClick={() => {
                                             setTimeout(() => {
                                                 document.getElementById('variant-view')?.scrollIntoView({
@@ -1187,6 +1192,7 @@ function App(props: RouteComponentProps) {
                                     </button>
                                     <button
                                         className="navigation-button split-right"
+                                        tabIndex={1}
                                         data-bs-toggle="modal"
                                         data-bs-target="#variant-view-modal"
                                     >
@@ -1210,7 +1216,7 @@ function App(props: RouteComponentProps) {
                                     <nav className="external-links-nav">
                                         <button
                                             className="open-in-chromoscope-link"
-                                            tabIndex={0}
+                                            tabIndex={2}
                                             onClick={e => {
                                                 e.preventDefault();
                                                 const { xDomain } = gosRef.current.hgApi.api.getLocation(
@@ -1283,6 +1289,7 @@ function App(props: RouteComponentProps) {
                             >
                                 <select
                                     id="variant-view"
+                                    tabIndex={3}
                                     style={{
                                         pointerEvents: 'auto'
                                         // !! This should be identical to how the height of circos determined.
@@ -1323,6 +1330,7 @@ function App(props: RouteComponentProps) {
                                     </svg>
                                     <input
                                         type="text"
+                                        tabIndex={3}
                                         className="gene-search"
                                         placeholder="Search Gene (e.g., MYC)"
                                         // alt={demo.assembly === 'hg38' ? 'Search Gene' : 'Not currently available for this assembly.'}
@@ -1379,6 +1387,7 @@ function App(props: RouteComponentProps) {
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
+                                            tabIndex={3}
                                             className="zoom-in-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
@@ -1402,6 +1411,7 @@ function App(props: RouteComponentProps) {
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
+                                            tabIndex={3}
                                             className="zoom-out-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
@@ -1426,6 +1436,7 @@ function App(props: RouteComponentProps) {
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
+                                            tabIndex={3}
                                             className="zoom-left-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
@@ -1449,6 +1460,7 @@ function App(props: RouteComponentProps) {
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
+                                            tabIndex={3}
                                             className="zoom-right-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
@@ -1636,8 +1648,10 @@ function App(props: RouteComponentProps) {
                         </div>
                     </div>
                 )}
-                <div
+                <button
                     className="move-to-top-btn"
+                    tabIndex={5}
+                    aria-label="Scroll to top."
                     onClick={() => {
                         setTimeout(
                             () => document.getElementById('gosling-panel')?.scrollTo({ top: 0, behavior: 'smooth' }),
@@ -1649,7 +1663,7 @@ function App(props: RouteComponentProps) {
                         <title>Scroll To Top</title>
                         <path fill="currentColor" d={ICONS.ARROW_UP.path[0]} />
                     </svg>
-                </div>
+                </button>
                 <div id="hidden-gosling" style={{ visibility: 'collapse', position: 'fixed' }} />
 
                 {isMinimalMode && (
