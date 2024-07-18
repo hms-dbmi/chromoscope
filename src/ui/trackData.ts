@@ -23,6 +23,13 @@ import loh_interpretation_2 from '../script/img/popover-images/loh/interpretatio
 import structural_variants_interpretation_1 from '../script/img/popover-images/structural_variants/interpretation_1.png';
 import structural_variants_interactions_1 from '../script/img/popover-images/structural_variants/interactions_1.png';
 import structural_variants_interactions_2 from '../script/img/popover-images/structural_variants/interactions_2.png';
+import coverage_interpretation_1 from '../script/img/popover-images/coverage/interpretation_1.png';
+import coverage_interpretation_2 from '../script/img/popover-images/coverage/interpretation_2.png';
+import alignment_interpretation_1 from '../script/img/popover-images/alignment/interpretation_1.png';
+import alignment_interpretation_2 from '../script/img/popover-images/alignment/interpretation_2.png';
+import alignment_interpretation_3 from '../script/img/popover-images/alignment/interpretation_3.png';
+import alignment_interactions_1 from '../script/img/popover-images/alignment/interactions_1.png';
+import sequence_interpretation_1 from '../script/img/popover-images/sequence/interpretation_1.png';
 
 export type Track =
     | 'ideogram'
@@ -165,13 +172,15 @@ export const getTrackData = (
                 <div class='section interpretation'>
                     <h3>Interpretation</h3>
                     <hr class="header"/>
-                    <div class="block with-image column">
+                    <div class="block with-image">
                         <img src="${mutations_interpretation_1}" alt="" />
                         <div class="text">
                             <p><b>Y-axis</b> shows the distance (in kb) between adjacent point mutations, on a logarithmic scale.</p>
-                            <hr class="my-3" />
-                            <p>At this magnification, they <a href="https://chromoscope.bio/visualizations/data-sampling/" target="_blank" rel="noreferrer">might have been sampled</a>.</p>
                         </div>
+                    </div>
+                    <hr class="my-3" />
+                    <div class="block text-only">
+                        <p>At this magnification, they <a href="https://chromoscope.bio/visualizations/data-sampling/" target="_blank" rel="noreferrer">might have been sampled</a>.</p>
                     </div>
                 </div>
                 <div class='section interactions'>
@@ -246,7 +255,7 @@ export const getTrackData = (
                         <div class="block with-image">
                             <img src="${copy_number_variants_interpretation_1}" alt="" />
                             <div class="text">
-                                <p><span class="text-gray"><b></span>Thick gray lines</b> - represent copy number profiles.</p>
+                                <p><span class="text-gray"><b>Thick gray lines</b></span> - represent copy number profiles.</p>
                                 <p><b>Y-axis</b> - represents the number of chromosome copies.</p>
                             </div>
                         </div>
@@ -336,7 +345,7 @@ export const getTrackData = (
                  <div class='section interpretation'>
                      <h3>Interpretation</h3>
                      <hr class="header"/>
-                     <div class="block with-image column">
+                     <div class="block with-image">
                          <img src="${structural_variants_interpretation_1}" alt="" />
                          <div class="text">
                              <p><b>Arches</b> - represent structural variants (SVs).</p>
@@ -366,20 +375,100 @@ export const getTrackData = (
         {
             height: 80,
             type: 'coverage',
-            title: 'Coverage'
-            // popover_content:
+            title: 'Coverage',
+            popover_content: `
+                <div class='popover-content'>
+                    <div class='section interpretation'>
+                        <h3>Interpretation</h3>
+                        <hr class="header"/>
+                        <div class="block with-image">
+                            <img src="${coverage_interpretation_1}" alt="" />
+                            <div class="text">
+                                <p>Sequencing coverage track quantifies the number of sequencing reads covering each position.</p>
+                                <p>A vertical line denotes the breakpoint (if selected).</p>
+                            </div>
+                        </div>
+                        <div class="block with-image">
+                            <img src="${coverage_interpretation_2}" alt="" />
+                            <div class="text">
+                                <p>Sequencing coverage is derived from the data on sequencing reads aligning to each position.</p>
+                                <p>Black reads (those parts of reads that were split) do not contribute to the coverage sum.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='section interactions'>
+                        <h3>Interactions</h3>
+                        <hr class="header" />
+                        <div class="block with-image">
+                            <img src="${coverage_interpretation_2}" alt="" />
+                            <div class="text">
+                                <p><b>Click</b> - on an SV to show its breakpoints in the read view.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
         },
         {
             height: 40,
             type: 'sequence',
-            title: 'Sequence'
-            // popover_content:
+            title: 'Sequence',
+            popover_content: `
+                <div class='popover-content'>
+                    <div class='section interpretation'>
+                        <h3>Interpretation</h3>
+                        <hr class="header"/>
+                        <div class="block with-image">
+                            <img src="${sequence_interpretation_1}" alt="" />
+                            <div class="text">
+                                <p>Colors represent DNA base-pairs in human reference genome.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
         },
         {
-            height: 500,
+            height: 50,
             type: 'alignment',
-            title: 'Alignment'
-            // popover_content:
+            title: 'Alignment',
+            popover_content: `
+                <div class='popover-content'>
+                    <div class='section interpretation'>
+                        <h3>Interpretation</h3>
+                        <hr class="header"/>
+                        <div class="block with-image">
+                            <img src="${alignment_interpretation_1}" alt="" />
+                            <div class="text">
+                                <p><span class="text-gray"><b>Gray rectangles</b></span> - denote normally-mapping reads.</p>
+                                <p><span><b>Black rectangles</b></span> - denote split reads, used as evidence for structural variants.</p>
+                            </div>
+                        </div>
+                        <div class="block with-image">
+                            <img src="${alignment_interpretation_2}" alt="" />
+                            <div class="text">
+                                <p>Other read colors (here, green) denote aberrantly mapping reads, which are also used as evidence for structural variants <a href="https://chromoscope.bio/visualizations/breakpoint-view">(see more info)</a>.</p>
+                            </div>
+                        </div>
+                        <div class="block with-image">
+                            <img src="${alignment_interpretation_3}" alt="" />
+                            <div class="text">
+                                <p>Vertical dashed line denotes a SV breakpoint.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='section interactions'>
+                        <h3>Interactions</h3>
+                        <hr class="header" />
+                        <div class="block with-image">
+                            <img src="${alignment_interactions_1}" alt="" />
+                            <div class="text">
+                                <p><b>Hover</b> - over a sequencing read to see more details.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
         }
     ];
 };
