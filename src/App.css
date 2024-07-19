@@ -493,6 +493,8 @@ a:hover {
     z-index: 998;
     opacity: 0.5;
     border: none;
+    background: none;
+    padding: 0px;
 }
 
 .move-to-top-btn:hover {
