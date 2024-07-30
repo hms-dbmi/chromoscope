@@ -385,18 +385,22 @@ export const getTrackDocData = (
                     <div class='section interpretation'>
                         <h3>Interpretation</h3>
                         <hr class="header"/>
+                        <div class="block text-only">
+                            <p>The sequencing coverage track quantifies the number of sequencing reads covering each position.</p>
+                        </div>
+                        <hr />
                         <div class="block with-image">
-                            <img src="${coverage_interpretation_1}" alt="" />
+                            <img src="${coverage_interpretation_1}" alt="Coverage track." />
                             <div class="text">
-                                <p>Sequencing coverage track quantifies the number of sequencing reads covering each position.</p>
-                                <p>A vertical line denotes the breakpoint (if selected).</p>
+                                <p><b>Black vertical dashed line</b> - denotes the selected breakpoint.</p>
                             </div>
                         </div>
+                        <hr />
                         <div class="block with-image">
-                            <img src="${coverage_interpretation_2}" alt="" />
+                            <img src="${coverage_interpretation_2}" alt="Coverage, Sequence, and Alignment tracks." />
                             <div class="text">
                                 <p>Sequencing coverage is derived from the data on sequencing reads aligning to each position.</p>
-                                <p>Black reads (those parts of reads that were split) do not contribute to the coverage sum.</p>
+                                <p><b>Black reads</b> - (those parts of reads that were split) do not contribute to the coverage sum.</p>
                             </div>
                         </div>
                     </div>
@@ -404,7 +408,7 @@ export const getTrackDocData = (
                         <h3>Interactions</h3>
                         <hr class="header" />
                         <div class="block with-image">
-                            <img src="${coverage_interpretation_2}" alt="" />
+                            <img src="${coverage_interpretation_2}" alt="Coverage, Sequence, and Alignment tracks." />
                             <div class="text">
                                 <p><b>Click</b> - on an SV to show its breakpoints in the read view.</p>
                             </div>
@@ -423,9 +427,9 @@ export const getTrackDocData = (
                         <h3>Interpretation</h3>
                         <hr class="header"/>
                         <div class="block with-image">
-                            <img src="${sequence_interpretation_1}" alt="" />
+                            <img src="${sequence_interpretation_1}" alt="Color legend for the Sequence track." />
                             <div class="text">
-                                <p>Colors represent DNA base-pairs in human reference genome.</p>
+                                <p><b>Colors</b> - represent DNA base-pairs in human reference genome.</p>
                             </div>
                         </div>
                     </div>
@@ -442,22 +446,24 @@ export const getTrackDocData = (
                         <h3>Interpretation</h3>
                         <hr class="header"/>
                         <div class="block with-image">
-                            <img src="${alignment_interpretation_1}" alt="" />
+                            <img src="${alignment_interpretation_1}" alt="Coverage, Sequence, and Alignment tracks." />
                             <div class="text">
                                 <p><span class="text-gray"><b>Gray rectangles</b></span> - denote normally-mapping reads.</p>
                                 <p><span><b>Black rectangles</b></span> - denote split reads, used as evidence for structural variants.</p>
                             </div>
                         </div>
+                        <hr />
                         <div class="block with-image">
-                            <img src="${alignment_interpretation_2}" alt="" />
+                            <img src="${alignment_interpretation_2}" alt="Green read colors in the Alignment track." />
                             <div class="text">
-                                <p>Other read colors (here, green) denote aberrantly mapping reads, which are also used as evidence for structural variants <a href="https://chromoscope.bio/visualizations/breakpoint-view">(see more info)</a>.</p>
+                                <p>Other read colors (e.g. <span class="text-green"><b>green</b></span>) denote aberrantly mapping reads, which are also used as evidence for structural variants <a href="https://chromoscope.bio/visualizations/breakpoint-view">(see more info)</a>.</p>
                             </div>
                         </div>
+                        <hr />
                         <div class="block with-image">
-                            <img src="${alignment_interpretation_3}" alt="" />
+                            <img src="${alignment_interpretation_3}" alt="Black vertical dashed line in the Alignment track." />
                             <div class="text">
-                                <p>Vertical dashed line denotes a SV breakpoint.</p>
+                                <p><b>Black vertical dashed line</b> - denotes a SV breakpoint.</p>
                             </div>
                         </div>
                     </div>
@@ -465,7 +471,7 @@ export const getTrackDocData = (
                         <h3>Interactions</h3>
                         <hr class="header" />
                         <div class="block with-image">
-                            <img src="${alignment_interactions_1}" alt="" />
+                            <img src="${alignment_interactions_1}" alt="ALignment track details pop up." />
                             <div class="text">
                                 <p><b>Hover</b> - over a sequencing read to see more details.</p>
                             </div>

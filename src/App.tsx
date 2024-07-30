@@ -323,10 +323,6 @@ function App(props: RouteComponentProps) {
             }, 500)
         );
 
-        // Enable Bootstrap popovers for track tooltips
-        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
-
         // Lower opacity of legend image as it leaves viewport
         if (isMinimalMode) {
             const legendElement = document.querySelector<HTMLElement>('.genome-view-legend');
@@ -344,6 +340,13 @@ function App(props: RouteComponentProps) {
             observer.observe(legendElement);
         }
     }, []);
+
+    // Enable Bootstrap popovers for track tooltips, update for selected SV tracks
+    useEffect(() => {
+        console.log('update popovers');
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+    }, [selectedSvId]);
 
     const getThumbnail = (d: SampleType) => {
         return (

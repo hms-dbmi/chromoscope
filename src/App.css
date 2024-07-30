@@ -1245,6 +1245,9 @@ a:hover {
                             font-weight: 500;
                             color: #469c77;
                         }
+                        span.text-green-alignment {
+                            color: #5a9c7c;
+                        }
                         span.text-gray {
                             color: #757575;
                         }
