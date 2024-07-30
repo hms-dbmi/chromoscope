@@ -47,7 +47,7 @@ export type Track =
 
 // TODO: Not ideal to hard coded!
 // The heights of each track
-export const getTrackData = (
+export const getTrackDocData = (
     isMinimalMode: boolean
 ): { height: number; type: Track; title: string; popover_content?: string }[] => {
     return [

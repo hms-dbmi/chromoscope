@@ -29,7 +29,7 @@ import { VariantViewModal } from './ui/VariantViewModal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min';
 
-import { Track, getTrackData } from './ui/trackData.js';
+import { Track, getTrackDocData } from './ui/trackData.js';
 
 const db = new Database();
 const log = new BrowserDatabase();
@@ -59,7 +59,7 @@ function App(props: RouteComponentProps) {
     const VIS_PADDING = {
         top: isMinimalMode ? 0 : 60,
         right: isMinimalMode ? 0 : 60,
-        bottom: isMinimalMode ? 0 : 60,
+        bottom: 0,
         left: isMinimalMode ? 0 : 60
     };
 
@@ -323,6 +323,10 @@ function App(props: RouteComponentProps) {
             }, 500)
         );
 
+        // Enable Bootstrap popovers for track tooltips
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+
         // Lower opacity of legend image as it leaves viewport
         if (isMinimalMode) {
             const legendElement = document.querySelector<HTMLElement>('.genome-view-legend');
@@ -338,12 +342,6 @@ function App(props: RouteComponentProps) {
             }, options);
 
             observer.observe(legendElement);
-
-            // Enable Bootstrap popovers for track tooltips
-            const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-            const popoverList = [...popoverTriggerList].map(
-                popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl)
-            );
         }
     }, []);
 
@@ -549,7 +547,7 @@ function App(props: RouteComponentProps) {
     const trackTooltips = useMemo(() => {
         // calculate the offset by the Genome View
         const genomeViewHeight = Math.min(600, visPanelWidth);
-        const TRACK_DATA = getTrackData(isMinimalMode);
+        const TRACK_DATA = getTrackDocData(isMinimalMode);
         const offset = genomeViewHeight + (isMinimalMode ? 100 : 40) - 2;
 
         // Infer the tracks shown
@@ -588,19 +586,19 @@ function App(props: RouteComponentProps) {
                             key={i}
                             tabIndex={4}
                             role="button"
-                            className="track-tooltip btn btn-sm"
+                            className="track-tooltip"
                             data-bs-trigger="focus"
                             data-bs-toggle="popover"
                             data-bs-template={`
-                                    <div class="popover" role="tooltip">
-                                    <div class="popover-arrow">
-                                    </div>
-                                    <h2 class="popover-header">
-                                    </h2>
-                                    <div class="popover-body">
-                                    </div>
-                                    </div>
-                                `}
+                                <div class="popover" role="tooltip">
+                                <div class="popover-arrow">
+                                </div>
+                                <h2 class="popover-header">
+                                </h2>
+                                <div class="popover-body">
+                                </div>
+                                </div>
+                            `}
                             data-bs-title={d.title}
                             data-bs-custom-class={'track-tooltip-popover popover-for-' + d.type}
                             data-bs-html="true"
@@ -1100,7 +1098,7 @@ function App(props: RouteComponentProps) {
                         }}
                     >
                         {goslingComponent}
-                        {isMinimalMode && trackTooltips}
+                        {trackTooltips}
                         {jumpButtonInfo ? (
                             <button
                                 className="jump-to-bp-btn"
