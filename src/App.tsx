@@ -29,7 +29,7 @@ import { VariantViewModal } from './ui/VariantViewModal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min';
 
-import { Track, getTrackDocData } from './ui/trackData.js';
+import { Track, getTrackDocData } from './ui/getTrackDocData.js';
 
 const db = new Database();
 const log = new BrowserDatabase();
@@ -565,7 +565,7 @@ function App(props: RouteComponentProps) {
         const HEIGHTS_OF_TRACKS_SHOWN = TRACK_DATA.filter(d => tracksShown.includes(d.type));
 
         // Calculate the positions of the tracks
-        const trackPositions = tracksShown.flatMap((t, i) => {
+        const trackPositions = tracksShown.map((t, i) => {
             const indexOfTrack = HEIGHTS_OF_TRACKS_SHOWN.findIndex(d => d.type === t);
             const cumHeight = HEIGHTS_OF_TRACKS_SHOWN.slice(0, indexOfTrack).reduce((acc, d) => acc + d.height, 0);
             const position = {
@@ -574,11 +574,7 @@ function App(props: RouteComponentProps) {
                 title: HEIGHTS_OF_TRACKS_SHOWN[indexOfTrack].title,
                 popover_content: HEIGHTS_OF_TRACKS_SHOWN[indexOfTrack].popover_content
             };
-            if (t === 'alignment' || t === 'coverage' || t === 'sequence') {
-                return [position, { ...position, x: visPanelWidth / 2 + 10 }];
-            } else {
-                return [position];
-            }
+            return position;
         });
 
         return (
@@ -608,8 +604,8 @@ function App(props: RouteComponentProps) {
                             data-bs-content={d.popover_content}
                             style={{
                                 position: 'absolute',
-                                top: d.y + (d.type === 'ideogram' ? 32 : 0),
-                                left: ('x' in d && d.x ? d.x : 0) + 10
+                                top: d.y + (d.type === 'ideogram' ? 32 : 0) - 1,
+                                left: 10
                             }}
                         >
                             <svg className="button question-mark" viewBox={ICONS.QUESTION_CIRCLE_FILL.viewBox}>
@@ -1139,77 +1135,69 @@ function App(props: RouteComponentProps) {
                                 }}
                             />
                         )}
-                        {isMinimalMode ? (
-                            <div className="navigation-buttons">
-                                <div className="navigation-button-container split navigation-button-genome">
-                                    <button
-                                        className="navigation-button split-left"
-                                        tabIndex={1}
-                                        onClick={() => {
-                                            setTimeout(
-                                                () =>
-                                                    document
-                                                        .getElementById('gosling-panel')
-                                                        ?.scrollTo({ top: 0, behavior: 'smooth' }),
-                                                0
-                                            );
-                                        }}
-                                    >
-                                        Genome View
-                                    </button>
-                                    <button
-                                        className="navigation-button split-right"
-                                        tabIndex={1}
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#genome-view-modal"
-                                    >
-                                        <svg
-                                            className="button question-mark"
-                                            viewBox={ICONS.QUESTION_CIRCLE_FILL.viewBox}
-                                        >
-                                            <title>Question Mark</title>
-                                            {ICONS.QUESTION_CIRCLE_FILL.path.map(p => (
-                                                <path fill="currentColor" key={p} d={p} />
-                                            ))}
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div className="navigation-button-container split navigation-button-variant">
-                                    <button
-                                        className="navigation-button split-left"
-                                        tabIndex={1}
-                                        onClick={() => {
-                                            setTimeout(() => {
-                                                document.getElementById('variant-view')?.scrollIntoView({
-                                                    block: 'start',
-                                                    inline: 'nearest',
-                                                    behavior: 'smooth'
-                                                }),
-                                                    0;
-                                            });
-                                        }}
-                                    >
-                                        Variant View
-                                    </button>
-                                    <button
-                                        className="navigation-button split-right"
-                                        tabIndex={1}
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#variant-view-modal"
-                                    >
-                                        <svg
-                                            className="button question-mark"
-                                            viewBox={ICONS.QUESTION_CIRCLE_FILL.viewBox}
-                                        >
-                                            <title>Question Mark</title>
-                                            {ICONS.QUESTION_CIRCLE_FILL.path.map(p => (
-                                                <path fill="currentColor" key={p} d={p} />
-                                            ))}
-                                        </svg>
-                                    </button>
-                                </div>
+                        <div className="navigation-buttons">
+                            <div className="navigation-button-container split navigation-button-genome">
+                                <button
+                                    className="navigation-button split-left"
+                                    tabIndex={1}
+                                    onClick={() => {
+                                        setTimeout(
+                                            () =>
+                                                document
+                                                    .getElementById('gosling-panel')
+                                                    ?.scrollTo({ top: 0, behavior: 'smooth' }),
+                                            0
+                                        );
+                                    }}
+                                >
+                                    Genome View
+                                </button>
+                                <button
+                                    className="navigation-button split-right"
+                                    tabIndex={1}
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#genome-view-modal"
+                                >
+                                    <svg className="button question-mark" viewBox={ICONS.QUESTION_CIRCLE_FILL.viewBox}>
+                                        <title>Question Mark</title>
+                                        {ICONS.QUESTION_CIRCLE_FILL.path.map(p => (
+                                            <path fill="currentColor" key={p} d={p} />
+                                        ))}
+                                    </svg>
+                                </button>
                             </div>
-                        ) : null}
+                            <div className="navigation-button-container split navigation-button-variant">
+                                <button
+                                    className="navigation-button split-left"
+                                    tabIndex={1}
+                                    onClick={() => {
+                                        setTimeout(() => {
+                                            document.getElementById('variant-view')?.scrollIntoView({
+                                                block: 'start',
+                                                inline: 'nearest',
+                                                behavior: 'smooth'
+                                            }),
+                                                0;
+                                        });
+                                    }}
+                                >
+                                    Variant View
+                                </button>
+                                <button
+                                    className="navigation-button split-right"
+                                    tabIndex={1}
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#variant-view-modal"
+                                >
+                                    <svg className="button question-mark" viewBox={ICONS.QUESTION_CIRCLE_FILL.viewBox}>
+                                        <title>Question Mark</title>
+                                        {ICONS.QUESTION_CIRCLE_FILL.path.map(p => (
+                                            <path fill="currentColor" key={p} d={p} />
+                                        ))}
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
                         {
                             // External links and export buttons
                             isMinimalMode ? (

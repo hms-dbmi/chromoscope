@@ -392,7 +392,7 @@ export const getTrackDocData = (
                         <div class="block with-image">
                             <img src="${coverage_interpretation_1}" alt="Coverage track." />
                             <div class="text">
-                                <p><b>Black vertical dashed line</b> - denotes the selected breakpoint.</p>
+                                <p><b>Black vertical dashed line</b> - denotes the selected breakpoint (if selected).</p>
                             </div>
                         </div>
                         <hr />
@@ -400,17 +400,8 @@ export const getTrackDocData = (
                             <img src="${coverage_interpretation_2}" alt="Coverage, Sequence, and Alignment tracks." />
                             <div class="text">
                                 <p>Sequencing coverage is derived from the data on sequencing reads aligning to each position.</p>
+                                <br />
                                 <p><b>Black reads</b> - (those parts of reads that were split) do not contribute to the coverage sum.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class='section interactions'>
-                        <h3>Interactions</h3>
-                        <hr class="header" />
-                        <div class="block with-image">
-                            <img src="${coverage_interpretation_2}" alt="Coverage, Sequence, and Alignment tracks." />
-                            <div class="text">
-                                <p><b>Click</b> - on an SV to show its breakpoints in the read view.</p>
                             </div>
                         </div>
                     </div>
