@@ -59,7 +59,7 @@ function App(props: RouteComponentProps) {
     const VIS_PADDING = {
         top: isMinimalMode ? 0 : 60,
         right: isMinimalMode ? 0 : 60,
-        bottom: 0,
+        bottom: isMinimalMode ? 0 : 60,
         left: isMinimalMode ? 0 : 60
     };
 
