@@ -343,7 +343,6 @@ function App(props: RouteComponentProps) {
 
     // Enable Bootstrap popovers for track tooltips, update for selected SV tracks
     useEffect(() => {
-        console.log('update popovers');
         const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
         const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
     }, [selectedSvId]);
