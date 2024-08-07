@@ -234,7 +234,7 @@ a:hover {
     border: 1px solid grey;
     position: absolute;
     left: 3px;
-    scroll-margin-top: 50px;
+    scroll-margin-top: 155px;
 }
 
 .nav-dropdown:focus {
@@ -902,6 +902,11 @@ a:hover {
     border: 1px solid #d3d3d3;
 }
 
+.navigation-button-variant,
+.navigation-button-read {
+    margin-top: 4px;
+}
+
 .navigation-button:focus-visible {
     outline-offset: -1px;
 }
@@ -923,6 +928,10 @@ a:hover {
     .sample-label {
         left: 300px;
         top: 8px;
+    }
+
+    .nav-dropdown {
+        scroll-margin-top: 50px;
     }
 
     .navigation-buttons {
