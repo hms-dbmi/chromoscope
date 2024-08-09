@@ -23,6 +23,14 @@ import SampleConfigForm from './ui/sample-config-form';
 import { BrowserDatabase } from './browser-log';
 import legend from './legend.png';
 import { ExportDropdown } from './ui/ExportDropdown';
+import { GenomeViewModal } from './ui/GenomeViewModal';
+import { VariantViewModal } from './ui/VariantViewModal';
+import { NavigationButtons } from './ui/NavigationButtons';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import * as bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min';
+
+import { Track, getTrackDocData } from './ui/getTrackDocData.js';
 
 const db = new Database();
 const log = new BrowserDatabase();
@@ -312,7 +320,7 @@ function App(props: RouteComponentProps) {
         window.addEventListener(
             'resize',
             debounce(() => {
-                setVisPanelWidth(window.innerWidth - VIS_PADDING.left * 2);
+                setVisPanelWidth(window.innerWidth - (isMinimalMode ? 10 : VIS_PADDING.left * 2));
             }, 500)
         );
 
@@ -333,6 +341,12 @@ function App(props: RouteComponentProps) {
             observer.observe(legendElement);
         }
     }, []);
+
+    // Enable Bootstrap popovers for track tooltips, update for selected SV tracks
+    useEffect(() => {
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+    }, [selectedSvId]);
 
     const getThumbnail = (d: SampleType) => {
         return (
@@ -532,6 +546,80 @@ function App(props: RouteComponentProps) {
         );
         // !! Removed `demo` not to update twice since `drivers` are updated right after a demo update.
     }, [ready, xDomain, visPanelWidth, drivers, showOverview, showPutativeDriver, selectedSvId, breakpoints, svReads]);
+
+    const trackTooltips = useMemo(() => {
+        // calculate the offset by the Genome View
+        const genomeViewHeight = Math.min(600, visPanelWidth);
+        const TRACK_DATA = getTrackDocData(isMinimalMode);
+        const offset = genomeViewHeight + (isMinimalMode ? 100 : 40) - 2;
+
+        // Infer the tracks shown
+        const tracksShown: Track[] = ['ideogram', 'driver', 'gene'];
+        if (demo.vcf && demo.vcfIndex) tracksShown.push('mutation');
+        if (demo.vcf2 && demo.vcf2Index) tracksShown.push('indel');
+        if (demo.cnv) tracksShown.push('cnv', 'gain', 'loh');
+        // Pushing this after the others to match order of tracks in UI
+        tracksShown.push('sv');
+        if (selectedSvId !== '') tracksShown.push('sequence');
+        if (demo.bam && demo.bai && selectedSvId !== '') tracksShown.push('coverage', 'alignment');
+        const HEIGHTS_OF_TRACKS_SHOWN = TRACK_DATA.filter(d => tracksShown.includes(d.type));
+
+        // Calculate the positions of the tracks
+        const trackPositions = tracksShown.map((t, i) => {
+            const indexOfTrack = HEIGHTS_OF_TRACKS_SHOWN.findIndex(d => d.type === t);
+            const cumHeight = HEIGHTS_OF_TRACKS_SHOWN.slice(0, indexOfTrack).reduce((acc, d) => acc + d.height, 0);
+            const position = {
+                y: offset + cumHeight - 100,
+                type: t,
+                title: HEIGHTS_OF_TRACKS_SHOWN[indexOfTrack].title,
+                popover_content: HEIGHTS_OF_TRACKS_SHOWN[indexOfTrack].popover_content
+            };
+            return position;
+        });
+
+        return (
+            <div className="track-tooltips-container">
+                {trackPositions?.map((d, i) => {
+                    return (
+                        <a
+                            key={i}
+                            tabIndex={4}
+                            role="button"
+                            className="track-tooltip"
+                            data-bs-trigger="focus"
+                            data-bs-toggle="popover"
+                            data-bs-template={`
+                                <div class="popover" role="tooltip">
+                                <div class="popover-arrow">
+                                </div>
+                                <h2 class="popover-header">
+                                </h2>
+                                <div class="popover-body">
+                                </div>
+                                </div>
+                            `}
+                            data-bs-title={d.title}
+                            data-bs-custom-class={'track-tooltip-popover popover-for-' + d.type}
+                            data-bs-html="true"
+                            data-bs-content={d.popover_content}
+                            style={{
+                                position: 'absolute',
+                                top: d.y + (d.type === 'ideogram' ? 32 : 0) - 1,
+                                left: 10
+                            }}
+                        >
+                            <svg className="button question-mark" viewBox={ICONS.QUESTION_CIRCLE_FILL.viewBox}>
+                                <title>Question Mark</title>
+                                {ICONS.QUESTION_CIRCLE_FILL.path.map(p => (
+                                    <path fill="black" key={p} d={p} />
+                                ))}
+                            </svg>
+                        </a>
+                    );
+                })}
+            </div>
+        );
+    }, [demo, visPanelWidth, selectedSvId]);
 
     useLayoutEffect(() => {
         if (!gosRef.current) return;
@@ -1009,6 +1097,7 @@ function App(props: RouteComponentProps) {
                         }}
                     >
                         {goslingComponent}
+                        {trackTooltips}
                         {jumpButtonInfo ? (
                             <button
                                 className="jump-to-bp-btn"
@@ -1046,39 +1135,7 @@ function App(props: RouteComponentProps) {
                                 }}
                             />
                         )}
-                        {isMinimalMode ? (
-                            <div className="navigation-buttons">
-                                <button
-                                    className="navigation-button navigation-button-circular"
-                                    onClick={() => {
-                                        setTimeout(
-                                            () =>
-                                                document
-                                                    .getElementById('gosling-panel')
-                                                    ?.scrollTo({ top: 0, behavior: 'smooth' }),
-                                            0
-                                        );
-                                    }}
-                                >
-                                    Genome View
-                                </button>
-                                <button
-                                    className="navigation-button navigation-button-variant"
-                                    onClick={() => {
-                                        setTimeout(() => {
-                                            document.getElementById('variant-view')?.scrollIntoView({
-                                                block: 'start',
-                                                inline: 'nearest',
-                                                behavior: 'smooth'
-                                            }),
-                                                0;
-                                        });
-                                    }}
-                                >
-                                    Variant View
-                                </button>
-                            </div>
-                        ) : null}
+                        <NavigationButtons isMinimalMode={isMinimalMode} />
                         {
                             // External links and export buttons
                             isMinimalMode ? (
@@ -1086,7 +1143,7 @@ function App(props: RouteComponentProps) {
                                     <nav className="external-links-nav">
                                         <button
                                             className="open-in-chromoscope-link"
-                                            tabIndex={0}
+                                            tabIndex={2}
                                             onClick={e => {
                                                 e.preventDefault();
                                                 const { xDomain } = gosRef.current.hgApi.api.getLocation(
@@ -1159,6 +1216,7 @@ function App(props: RouteComponentProps) {
                             >
                                 <select
                                     id="variant-view"
+                                    tabIndex={3}
                                     style={{
                                         pointerEvents: 'auto'
                                         // !! This should be identical to how the height of circos determined.
@@ -1199,6 +1257,7 @@ function App(props: RouteComponentProps) {
                                     </svg>
                                     <input
                                         type="text"
+                                        tabIndex={3}
                                         className="gene-search"
                                         placeholder="Search Gene (e.g., MYC)"
                                         // alt={demo.assembly === 'hg38' ? 'Search Gene' : 'Not currently available for this assembly.'}
@@ -1255,6 +1314,7 @@ function App(props: RouteComponentProps) {
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
+                                            tabIndex={3}
                                             className="zoom-in-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
@@ -1278,6 +1338,7 @@ function App(props: RouteComponentProps) {
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
+                                            tabIndex={3}
                                             className="zoom-out-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
@@ -1302,6 +1363,7 @@ function App(props: RouteComponentProps) {
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
+                                            tabIndex={3}
                                             className="zoom-left-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
@@ -1325,6 +1387,7 @@ function App(props: RouteComponentProps) {
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
+                                            tabIndex={3}
                                             className="zoom-right-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
@@ -1512,8 +1575,10 @@ function App(props: RouteComponentProps) {
                         </div>
                     </div>
                 )}
-                <div
+                <button
                     className="move-to-top-btn"
+                    tabIndex={5}
+                    aria-label="Scroll to top."
                     onClick={() => {
                         setTimeout(
                             () => document.getElementById('gosling-panel')?.scrollTo({ top: 0, behavior: 'smooth' }),
@@ -1525,8 +1590,12 @@ function App(props: RouteComponentProps) {
                         <title>Scroll To Top</title>
                         <path fill="currentColor" d={ICONS.ARROW_UP.path[0]} />
                     </svg>
-                </div>
+                </button>
                 <div id="hidden-gosling" style={{ visibility: 'collapse', position: 'fixed' }} />
+                <div className="instructions-modals-container">
+                    <GenomeViewModal />
+                    <VariantViewModal />
+                </div>
             </div>
         </ErrorBoundary>
     );

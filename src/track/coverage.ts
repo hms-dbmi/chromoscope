@@ -5,7 +5,7 @@ export default function coverage(option: SpecOption, isLeft: boolean): Partial<S
     const { id, bam, bai, width, svReads, crossChr, bpIntervals } = option;
     return {
         id: `${id}-bottom-${isLeft ? 'left' : 'right'}-coverage`,
-        title: 'Coverage',
+        title: isLeft ? '  Coverage' : ' Coverage',
         data: {
             type: 'bam',
             url: bam,
