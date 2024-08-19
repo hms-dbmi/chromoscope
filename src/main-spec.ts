@@ -1,5 +1,5 @@
 import { GoslingSpec } from 'gosling.js';
-import { Assembly, MultipleViews, SingleTrack, SingleView, View } from 'gosling.js/dist/src/core/gosling.schema';
+import { Assembly, MultipleViews, SingleTrack, SingleView, View } from 'gosling.js/dist/src/gosling-schema';
 import getMidView from './mid-spec';
 import { alignment } from './alignment';
 import { verticalGuide } from './vertical-guide';
@@ -40,7 +40,7 @@ function generateSpec(opt: SpecOption): GoslingSpec {
         arrangement: 'vertical',
         centerRadius: 0.5,
         assembly,
-        spacing,
+        spacing: 40,
         style: {
             outlineWidth: 1,
             outline: 'lightgray',

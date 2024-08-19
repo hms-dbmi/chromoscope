@@ -21,6 +21,9 @@ export type SampleType = {
     assembly: Assembly; // hg19 or 38
     sv: string; // URL of bedpe
     cnv?: string; // URL of txt
+    me?: string;
+    me2?: string;
+    pm?: string;
     drivers?: { [k: string]: string | number }[] | string;
     bam?: string;
     bai?: string;
@@ -49,6 +52,9 @@ const samples: SampleType[] = [
         vcf2Index: 'https://somatic-browser-test.s3.amazonaws.com/INDEL_test_tumor_normal_with_panel.vcf.gz.tbi',
         sv: 'https://somatic-browser-test.s3.amazonaws.com/SVTYPE_SV_test_tumor_normal_with_panel.bedpe',
         cnv: 'https://gist.githubusercontent.com/sehilyi/6fbceae35756b13472332d6b81b10803/raw/596428a8b0ebc00e7f8cbc52b050db0fbd6e19a5/SRR7890943.ascat.v3.cnv.tsv',
+        me: 'https://gist.githubusercontent.com/Maximvan/e235c862e2e05330428bfc1593709f41/raw/794d148d7820dd1b5aff1377fdf5e106fd4cd6c3/x.csv',
+        me2: 'https://gist.githubusercontent.com/Maximvan/e4fdc9ad80ed9477a793f1ccdeeca298/raw/2d7283e83039e63e72da77fb32f966da7e787ec3/x_detail.csv',
+        pm: 'https://gist.githubusercontent.com/Maximvan/09b840919ff017ddc0c1e33bc48152c0/raw/874d04ad1dbce4504da23ec487afbb83ec0e8f51/parentmapping.csv',
         bam: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam',
         bai: 'https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam.bai',
         note: 'CNV profile - ASCAT. SVs - Sentieon. Mutations and indels - Sentieon',

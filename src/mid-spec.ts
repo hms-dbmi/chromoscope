@@ -15,7 +15,9 @@ export default function getMidView(option: SpecOption): View[] {
         cnv,
         sv,
         baf,
-        baf1,
+        me,
+        me2,
+        pm,
         width,
         showPutativeDriver,
         showOverview,
@@ -129,11 +131,6 @@ export default function getMidView(option: SpecOption): View[] {
                     width,
                     height: 60
                 },
-                //...(!baf1
-                //    ? []
-                //    : [
-                //        tracks.biAlleleFrequency(id, baf1, width, 120, 'mid'),
-                //    ]),
                 ...(!baf 
                     ? [] 
                     :[tracks.baf(id, baf, width, 240, 'mid')]),
@@ -149,7 +146,18 @@ export default function getMidView(option: SpecOption): View[] {
                 tracks.boundary('gain', 'mid'),
                 tracks.loh(id, cnv, width, 20, 'mid', cnFields),
                 tracks.boundary('loh', 'mid'),
-                tracks.sv(id, sv, width, 250, 'mid', selectedSvId)
+                tracks.sv(id, sv, width, 250, 'mid', selectedSvId),
+                ...(!me
+                   ? []
+                    : [tracks.mendelianErrors(id, me, me2, width, 60, 'mid', cnFields),
+                        tracks.boundary('me', 'mid'),
+                    ]),
+                ...(!pm
+                    ? []
+                    : [tracks.parentMapping(id, pm, width, 40, 'mid'),
+                        tracks.boundary('pm', 'mid'),
+                    ]),
+                
                 // {
                 //     id: `${id}-${'mid'}-sv`,
                 //     data: {
@@ -171,6 +179,58 @@ export default function getMidView(option: SpecOption): View[] {
                 //     width,
                 //     height: 250
                 // },
+                {
+                    id: `${id}-mid-ideogram-bottom`,
+                    alignment: 'overlay',
+                    data: {
+                        url:
+                            assembly === 'hg38'
+                                ? 'https://raw.githubusercontent.com/sehilyi/gemini-datasets/master/data/UCSC.HG38.Human.CytoBandIdeogram.csv'
+                                : 'https://raw.githubusercontent.com/sehilyi/gemini-datasets/master/data/UCSC.HG19.Human.CytoBandIdeogram.csv',
+                        type: 'csv',
+                        chromosomeField: 'Chromosome',
+                        genomicFields: ['chromStart', 'chromEnd']
+                    },
+                    tracks: [
+                        {
+                            mark: 'rect',
+                            dataTransform: [
+                                {
+                                    type: 'filter',
+                                    field: 'Stain',
+                                    oneOf: ['acen'],
+                                    not: true
+                                }
+                            ]
+                        },
+                        {
+                            mark: 'triangleRight',
+                            dataTransform: [
+                                { type: 'filter', field: 'Stain', oneOf: ['acen'] },
+                                { type: 'filter', field: 'Name', include: 'q' }
+                            ]
+                        },
+                        {
+                            mark: 'triangleLeft',
+                            dataTransform: [
+                                { type: 'filter', field: 'Stain', oneOf: ['acen'] },
+                                { type: 'filter', field: 'Name', include: 'p' }
+                            ]
+                        }
+                    ],
+                    color: {
+                        field: 'Stain',
+                        type: 'nominal',
+                        domain: ['gneg', 'gpos25', 'gpos50', 'gpos75', 'gpos100', 'gvar', 'acen'],
+                        range: ['white', 'lightgray', 'gray', 'gray', 'black', '#7B9CC8', '#DC4542']
+                    },
+                    size: { value: 18 },
+                    x: { field: 'chromStart', type: 'genomic', axis: 'bottom' },
+                    xe: { field: 'chromEnd', type: 'genomic' },
+                    strokeWidth: { value: 0 },
+                    width,
+                    height: 18
+                },
             ]
         }
     ];
