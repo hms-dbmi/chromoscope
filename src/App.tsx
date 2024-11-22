@@ -43,6 +43,8 @@ const INIT_VIS_PANEL_WIDTH = window.innerWidth;
 const ZOOM_PADDING = 200;
 const ZOOM_DURATION = 500;
 
+const FEEDBACK_EMAIL_ADDRESS = 'dominik_glodzik@hms.harvard.edu';
+
 const allDrivers = [
     ...(_allDrivers as any),
     ..._customDrivers.map(d => {
@@ -1135,14 +1137,14 @@ function App(props: RouteComponentProps) {
                                 }}
                             />
                         )}
-                        <NavigationButtons isMinimalMode={isMinimalMode} />
+                        <NavigationButtons />
                         {
                             // External links and export buttons
                             isMinimalMode ? (
                                 <div className="external-links">
                                     <nav className="external-links-nav">
                                         <button
-                                            className="open-in-chromoscope-link"
+                                            className="open-in-chromoscope-link link-button"
                                             tabIndex={2}
                                             onClick={e => {
                                                 e.preventDefault();
@@ -1183,8 +1185,22 @@ function App(props: RouteComponentProps) {
                                                 </svg>
                                             </div>
                                         </button>
-                                        <div className="export-links">
-                                            <ExportDropdown gosRef={gosRef} currentSpec={currentSpec} />
+                                        <div className="button-group">
+                                            <div className="export-links">
+                                                <ExportDropdown gosRef={gosRef} currentSpec={currentSpec} />
+                                            </div>
+                                            <div className="feedback">
+                                                <a
+                                                    href={`mailto:${FEEDBACK_EMAIL_ADDRESS}?subject=Chromoscope%20Feedback&body=Feedback%20Type%3A%20General%20Feedback%0D%0A%0D%0AComments%3A%0D%0A%0D%0A%0D%0A`}
+                                                    className="link-button"
+                                                >
+                                                    <svg className="button" viewBox={ICONS.MAIL.viewBox}>
+                                                        <title>Mail</title>
+                                                        <path fill="currentColor" d={ICONS.MAIL.path[0]} />
+                                                    </svg>
+                                                    <span>Feedback</span>
+                                                </a>
+                                            </div>
                                         </div>
                                     </nav>
                                 </div>
