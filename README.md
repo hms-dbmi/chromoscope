@@ -9,6 +9,10 @@ Interactive multiscale visualization for structural variation in human genomes.
 
 > The Chromoscope interface consists of four views for analyzing structural variation in cancer genomes at multiple scales (a–d). Chromoscope uses a "data config" to load datasets via HTTP requests and does not require setting up a server (e). The data can be either stored privately or publicly (e.g., cloud buckets or local servers). Chromoscope captures distinct patterns of structural variations and their copy number footprint in samples with different types of chromosomal instability, such as chromothripsis, or associated with loss of BRCA1 -/-, BRCA2 -/-, or CCNE1 amplification (f-g).
 
+## Slack channel
+
+Ask for help and propose or discuss new features. Please email dominik_glodzik@hms.harvard.edu if you would like to join.
+
 ## Development
 
 Clone this repo on your local machine first.
