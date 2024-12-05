@@ -994,97 +994,147 @@ a:hover {
 
             .open-in-chromoscope-link:hover {
                 text-decoration: none;
-                cursor: pointer;
-                background-color: #ebebeb;
             }
 
             .open-in-chromoscope-link:active {
                 background-color: #e6e4e4;
             }
 
-            .export-links {
-                border-radius: 4px;
-                margin-top: 4px;
+            .button-group {
+                display: flex;
+                gap: 4px;
 
-                .export-dropdown {
-                    height: auto;
-                    background-color: #f6f6f6;
-                    right: 0px;
-                    border-radius: 8px;
-                    border: 1px solid #d3d3d3;
-                    transition: all 100ms;
-                    overflow: hidden;
+                .export-links {
+                    position: relative;
+                    border-radius: 4px;
+                    margin-top: 4px;
 
-                    .export-button {
-                        box-sizing: border-box !important;
-                        width: 210px;
-                        height: 35px;
-                        border-radius: inherit;
-                        border: 0px solid;
-                        font-weight: 400;
-                        background-color: transparent;
+                    .export-dropdown {
+                        height: auto;
+                        /* background-color: #f6f6f6; */
+                        right: 0px;
+                        border-radius: 8px;
+                        transition: all 100ms;
+                        overflow: hidden;
 
-                        .export-title {
-                            font-size: 0.9rem;
-                            font-family: Inter;
-                        }
-
-                        .button.triangle-down {
-                            width: 11px;
-                            height: 7px;
-                            margin-left: 8px;
-                        }
-                    }
-
-                    .export-button:hover {
-                        cursor: pointer;
-                        background-color: #ebebeb;
-                    }
-
-                    .export-button:active {
-                        background-color: #e6e4e4;
-                    }
-
-                    .nav-list {
-                        list-style-type: none;
-                        padding: 0px 10px;
-                        display: flex;
-                        flex-direction: row;
-                        height: 50px;
-                        background-color: white;
-                        margin: 0px 8px 8px 8px;
-                        border-radius: 3px;
-
-                        .nav-list-item {
-                            display: flex;
-                            margin: auto;
-                        }
-
-                        .title-btn {
-                            display: flex;
+                        .export-button {
                             position: relative;
-                            width: 25px;
-                            height: 25px;
-                            margin-left: 0px;
+                            box-sizing: border-box !important;
+                            width: 120px;
+                            height: 35px;
+                            border: 1px solid #d3d3d3;
+                            border-radius: inherit;
+                            font-weight: 400;
+
+                            .export-title {
+                                font-size: 0.9rem;
+                                font-family: Inter;
+                            }
+
+                            .button.triangle-down {
+                                width: 11px;
+                                height: 7px;
+                                margin-left: 8px;
+                            }
                         }
 
-                        .title-btn.png {
+                        .nav-list {
+                            list-style-type: none;
                             padding: 0px;
+                            display: flex;
+                            flex-direction: row;
+                            height: 50px;
+                            background-color: white;
+                            border: 1px solid rgb(221, 221, 221);
+                            margin: 0px;
+                            border-radius: 10px;
+                            width: 150px;
+                            position: absolute;
+                            /* left: 50%; */
+                            /* transform: translate(-50%, 0px); */
+                            top: 105%;
+
+                            .nav-list-item {
+                                display: flex;
+                                margin: auto;
+                                padding: 8px;
+                            }
+
+                            .nav-list-item:hover {
+                                cursor: pointer;
+                                background-color: #f4f4f4;
+                                border-radius: 5px;
+                            }
+
+                            .title-btn {
+                                display: flex;
+                                position: relative;
+                                width: 25px;
+                                height: 25px;
+                                margin-left: 0px;
+                            }
+
+                            .title-btn.png {
+                                padding: 0px;
+                                border: none;
+                                background-color: transparent;
+                            }
+
+                            svg.button:focus-visible {
+                                outline-offset: 3px;
+                            }
+                        }
+                    }
+
+                    .export-dropdown.open {
+                        background-color: #f9f9f9;
+                        border-radius: 8px;
+                        transition: all 100ms;
+
+                        .export-button {
                             border: none;
-                            background-color: transparent;
                         }
                     }
                 }
 
-                .export-dropdown.open {
-                    background-color: #ebebeb;
-                    border-radius: 8px;
-                    border: 1px solid #c3c3c3;
-                    transition: all 100ms;
+                .feedback {
+                    display: flex;
+                    justify-content: center;
+                    margin-top: 4px;
 
-                    .export-button {
-                        border: none;
+                    a {
+                        box-sizing: border-box !important;
+                        display: flex;
+                        background-color: #f6f6f6;
+                        font-size: 0.9rem;
+                        font-family: Inter;
+                        font-weight: 400;
+                        width: 120px;
+                        height: 35px;
+                        border-radius: 8px;
+                        padding: 1px 6px;
+                        border: 1px solid #d3d3d3;
+                        text-decoration: none;
+                        color: #000000;
+
+                        svg {
+                            width: 12px;
+                            margin: auto;
+                            margin-right: 8px;
+                        }
+                        span {
+                            margin: auto;
+                            margin-left: 0px;
+                        }
                     }
+                }
+
+                .link-button:hover {
+                    cursor: pointer;
+                    background-color: #ebebeb;
+                }
+                .link-button:active {
+                    background-color: #e6e4e4;
                 }
             }
         }
