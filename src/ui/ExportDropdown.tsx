@@ -7,9 +7,9 @@ type ExportButtonProps = {
     icon: string;
 };
 
-const ExportButton = ({ title, icon }: ExportButtonProps) => {
+export const ExportButton = ({ title, icon }: ExportButtonProps) => {
     return (
-        <svg className="button" viewBox="0 0 16 16" tabIndex={2}>
+        <svg className="button" viewBox="0 0 16 16">
             <title>{title}</title>
             {ICONS[icon].path.map(p => (
                 <path fill="currentColor" key={p} d={p} />
@@ -32,7 +32,7 @@ export const ExportDropdown = ({ gosRef, currentSpec }: ExportDropdownProps) => 
             onClick={() => setIsOpen(!isOpen)}
             aria-expanded={isOpen}
         >
-            <button className="export-button" tabIndex={2}>
+            <button className="export-button">
                 <span className="export-title">Export</span>
                 <svg className="button triangle-down" viewBox={ICONS.TRIANGLE_DOWN.viewBox}>
                     <title>Triangle Down</title>

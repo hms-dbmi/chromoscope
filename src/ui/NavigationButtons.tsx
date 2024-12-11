@@ -1,13 +1,19 @@
 import React from 'react';
 import { ICONS } from '../icon';
 
-export const NavigationButtons = () => {
+type NavigationButtonsProps = {
+    showSamples: boolean;
+    isMinimalMode: boolean;
+}
+
+export const NavigationButtons = ({ showSamples, isMinimalMode } : NavigationButtonsProps) => {
+
     return (
         <div className="navigation-buttons">
             <div className="navigation-button-container split navigation-button-genome">
                 <button
                     className="navigation-button split-left"
-                    tabIndex={1}
+                    tabIndex={showSamples ? -1 : 0}
                     onClick={() => {
                         setTimeout(
                             () => document.getElementById('gosling-panel')?.scrollTo({ top: 0, behavior: 'smooth' }),
@@ -19,7 +25,7 @@ export const NavigationButtons = () => {
                 </button>
                 <button
                     className="navigation-button split-right"
-                    tabIndex={1}
+                    tabIndex={showSamples ? -1 : 0}
                     data-bs-toggle="modal"
                     data-bs-target="#genome-view-modal"
                 >
@@ -34,7 +40,7 @@ export const NavigationButtons = () => {
             <div className="navigation-button-container split navigation-button-variant">
                 <button
                     className="navigation-button split-left"
-                    tabIndex={1}
+                    tabIndex={showSamples ? -1 : 0}
                     onClick={() => {
                         setTimeout(() => {
                             document.getElementById('variant-view')?.scrollIntoView({
@@ -50,7 +56,7 @@ export const NavigationButtons = () => {
                 </button>
                 <button
                     className="navigation-button split-right"
-                    tabIndex={1}
+                    tabIndex={showSamples ? -1 : 0}
                     data-bs-toggle="modal"
                     data-bs-target="#variant-view-modal"
                 >
