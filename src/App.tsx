@@ -2,6 +2,8 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 're
 import { GoslingComponent, GoslingRef, embed } from 'gosling.js';
 import { debounce, sample } from 'lodash';
 import type { RouteComponentProps } from 'react-router-dom';
+import * as bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min';
+
 import generateSpec from './main-spec';
 import ErrorBoundary from './error';
 import _allDrivers from './data/driver.json';
@@ -10,7 +12,6 @@ import samples, { SampleType } from './data/samples';
 import getOneOfSmallMultiplesSpec from './small-multiples-spec';
 import { CHROMOSOMES, THEME, WHOLE_CHROMOSOME_STR } from './constants';
 import { ICONS } from './icon';
-import './App.css';
 import { INTERNAL_SAVED_THUMBNAILS } from './data/external-thumbnails';
 import { isChrome } from './utils';
 import THUMBNAIL_PLACEHOLDER from './script/img/placeholder.png';
@@ -26,12 +27,11 @@ import { ExportDropdown } from './ui/ExportDropdown';
 import { GenomeViewModal } from './ui/GenomeViewModal';
 import { VariantViewModal } from './ui/VariantViewModal';
 import { NavigationButtons } from './ui/NavigationButtons';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import * as bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min';
-
 import { Track, getTrackDocData } from './ui/getTrackDocData.js';
 import { NavigationBar } from './ui/NavigationBar';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './css/App.css';
 
 const db = new Database();
 const log = new BrowserDatabase();
@@ -586,7 +586,7 @@ function App(props: RouteComponentProps) {
                     return (
                         <a
                             key={i}
-                            tabIndex={4}
+                            tabIndex={showSamples ? -1 : 0}
                             role="button"
                             className="track-tooltip"
                             data-bs-trigger="focus"
@@ -607,7 +607,7 @@ function App(props: RouteComponentProps) {
                             data-bs-content={d.popover_content}
                             style={{
                                 position: 'absolute',
-                                top: d.y + (d.type === 'ideogram' ? 32 : 0) - 1,
+                                top: d.y + (d.type === 'ideogram' ? 32 : 0) + 5,
                                 left: 10
                             }}
                         >
@@ -622,7 +622,7 @@ function App(props: RouteComponentProps) {
                 })}
             </div>
         );
-    }, [demo, visPanelWidth, selectedSvId]);
+    }, [demo, visPanelWidth, selectedSvId, showSamples]);
 
     useLayoutEffect(() => {
         if (!gosRef.current) return;
@@ -764,6 +764,7 @@ function App(props: RouteComponentProps) {
                         demo={demo}
                         setShowAbout={setShowAbout}
                         showSmallMultiples={showSmallMultiples}
+                        showSamples={showSamples}
                         setShowSamples={setShowSamples}
                         gosRef={gosRef}
                         currentSpec={currentSpec}
@@ -785,22 +786,28 @@ function App(props: RouteComponentProps) {
                                         if (e.target === e.currentTarget) setShowSamples(false);
                                     }}
                                 >
-                                    <svg
+                                    <button
                                         className="config-button"
-                                        viewBox="0 0 16 16"
+                                        tabIndex={0}
                                         onClick={() => {
                                             setShowSamples(false);
                                         }}
                                     >
-                                        <title>Close</title>
-                                        <path
-                                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
-                                            fill="currentColor"
-                                        ></path>
-                                    </svg>
+                                        <svg viewBox="0 0 16 16">
+                                            <title>Close</title>
+                                            <path
+                                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+                                                fill="currentColor"
+                                            ></path>
+                                        </svg>
+                                    </button>
+
                                     <div className="sample-information">
-                                        <b>CHROMOSCOPE</b>
+                                        <a className="chromoscope-title" href="./" tabIndex={0}>
+                                            CHROMOSCOPE
+                                        </a>
                                         <a
+                                            tabIndex={0}
                                             className="title-about-link"
                                             onClick={() => {
                                                 setShowAbout(true);
@@ -833,6 +840,7 @@ function App(props: RouteComponentProps) {
                                         href="https://github.com/hms-dbmi/chromoscope"
                                         target="_blank"
                                         rel="noreferrer"
+                                        tabIndex={showSamples ? 0 : -1}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                             <title>GitHub</title>
@@ -848,6 +856,7 @@ function App(props: RouteComponentProps) {
                                         href="https://chromoscope.bio/"
                                         target="_blank"
                                         rel="noreferrer"
+                                        tabIndex={showSamples ? 0 : -1}
                                     >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -858,12 +867,13 @@ function App(props: RouteComponentProps) {
                                         >
                                             <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1z" />
                                         </svg>
-                                        <span>Documentation</span>
+                                        <span>Docs</span>
                                     </a>
                                     <div className="feedback">
                                         <a
                                             href={`mailto:${FEEDBACK_EMAIL_ADDRESS}?subject=Chromoscope%20Feedback&body=Feedback%20Type%3A%20General%20Feedback%0D%0A%0D%0AComments%3A%0D%0A%0D%0A%0D%0A`}
                                             className="link-button"
+                                            tabIndex={showSamples ? 0 : -1}
                                         >
                                             <svg className="button" viewBox={ICONS.MAIL.viewBox}>
                                                 <title>Mail</title>
@@ -935,7 +945,6 @@ function App(props: RouteComponentProps) {
                         }}
                     >
                         {goslingComponent}
-                        {trackTooltips}
                         {jumpButtonInfo ? (
                             <button
                                 className="jump-to-bp-btn"
@@ -973,7 +982,7 @@ function App(props: RouteComponentProps) {
                                 }}
                             />
                         )}
-                        <NavigationButtons />
+                        <NavigationButtons showSamples={!isMinimalMode && showSamples} isMinimalMode={isMinimalMode} />
                         {
                             // External links and export buttons
                             isMinimalMode ? (
@@ -981,7 +990,7 @@ function App(props: RouteComponentProps) {
                                     <nav className="external-links-nav">
                                         <button
                                             className="open-in-chromoscope-link link-button"
-                                            tabIndex={2}
+                                            // tabIndex={2}
                                             onClick={e => {
                                                 e.preventDefault();
                                                 const { xDomain } = gosRef.current.hgApi.api.getLocation(
@@ -1068,7 +1077,7 @@ function App(props: RouteComponentProps) {
                             >
                                 <select
                                     id="variant-view"
-                                    tabIndex={3}
+                                    tabIndex={showSamples ? -1 : 0}
                                     style={{
                                         pointerEvents: 'auto'
                                         // !! This should be identical to how the height of circos determined.
@@ -1109,7 +1118,7 @@ function App(props: RouteComponentProps) {
                                     </svg>
                                     <input
                                         type="text"
-                                        tabIndex={3}
+                                        tabIndex={showSamples ? -1 : 0}
                                         className="gene-search"
                                         placeholder="Search Gene (e.g., MYC)"
                                         // alt={demo.assembly === 'hg38' ? 'Search Gene' : 'Not currently available for this assembly.'}
@@ -1166,7 +1175,7 @@ function App(props: RouteComponentProps) {
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
-                                            tabIndex={3}
+                                            tabIndex={showSamples ? -1 : 0}
                                             className="zoom-in-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
@@ -1190,7 +1199,7 @@ function App(props: RouteComponentProps) {
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
-                                            tabIndex={3}
+                                            tabIndex={showSamples ? -1 : 0}
                                             className="zoom-out-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
@@ -1215,7 +1224,7 @@ function App(props: RouteComponentProps) {
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
-                                            tabIndex={3}
+                                            tabIndex={showSamples ? -1 : 0}
                                             className="zoom-left-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
@@ -1239,7 +1248,7 @@ function App(props: RouteComponentProps) {
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
-                                            tabIndex={3}
+                                            tabIndex={showSamples ? -1 : 0}
                                             className="zoom-right-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
@@ -1260,6 +1269,7 @@ function App(props: RouteComponentProps) {
                                 </div>
                             </div>
                         </div>
+                        {trackTooltips}
                     </div>
                 </div>
                 {!isMinimalMode && (
@@ -1429,7 +1439,7 @@ function App(props: RouteComponentProps) {
                 )}
                 <button
                     className="move-to-top-btn"
-                    tabIndex={5}
+                    tabIndex={showSamples ? -1 : 0}
                     aria-label="Scroll to top."
                     onClick={() => {
                         setTimeout(

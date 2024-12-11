@@ -1,3 +1,7 @@
+/* Import component-level CSS files */
+@import url('./NavigationBar.css');
+
+/* Overwrite Bootstrap's default box-sizing */
 *,
 *::before,
 *::after {
@@ -40,145 +44,6 @@ a:hover {
     text-decoration: 3px underline #5bb6ea;
 }
 
-/* NavigationBar styles */
-.navigation-container {
-    box-sizing: border-box !important;
-    position: absolute;
-    display: flex;
-    justify-content: space-between;
-    height: 50px;
-    width: 100%;
-    z-index: 999;
-    background-color: white;
-    padding: 0px 20px;
-
-    .navigation-links-container {
-        display: flex;
-        gap: 4px;
-
-        .title-github-link,
-        .title-doc-link,
-        .feedback {
-            display: flex;
-            justify-content: center;
-            background-color: transparent;
-            padding: 4px 10px;
-            border-radius: 4px;
-
-            svg {
-                height: 20px;
-                vertical-align: middle;
-                margin: auto 5px auto auto;
-                color: black;
-            }
-            span {
-                font-size: 1rem;
-            }
-        }
-
-        .title-github-link:hover,
-        .title-doc-link:hover,
-        .feedback:hover {
-            background-color: #f6f6f6;
-        }
-
-        .title-github-link {
-            position: relative;
-            text-decoration: none;
-        }
-
-        .title-doc-link {
-            color: black;
-            position: relative;
-            text-decoration: none;
-        }
-
-        .feedback {
-            display: flex;
-            justify-content: center;
-
-            a {
-                box-sizing: border-box !important;
-                display: flex;
-                font-size: 0.9rem;
-                font-family: Inter;
-                font-weight: 400;
-                text-decoration: none;
-                color: #000000;
-
-                svg.button {
-                    position: relative;
-                    height: 16px;
-                    margin: auto;
-                    margin-right: 5px;
-                    top: auto;
-                    right: auto;
-                }
-                span {
-                    margin: auto;
-                    margin-left: 0px;
-                }
-            }
-        }
-    }
-
-    .links-left {
-        display: flex;
-
-        .config-button {
-            position: relative;
-            margin: auto;
-            width: 25px;
-            height: 25px;
-            cursor: pointer;
-            z-index: 999;
-            color: black;
-            stroke: black;
-            stroke-width: 0.5px;
-        }
-        .sample-information {
-            position: relative;
-            display: flex;
-            align-items: center;
-            margin-left: 18px;
-            text-shadow: 0px 0px 6px white;
-            font-size: 18px;
-            z-index: 999;
-
-            .dimed {
-                margin-right: 12px;
-            }
-
-            small {
-                margin-left: 12px;
-                font-size: 12px;
-                color: gray;
-                margin-right: 10px;
-            }
-
-            .title-btn {
-                position: relative;
-                height: 25px;
-                width: 25px;
-                font-size: 14px;
-                margin-left: 10px;
-                cursor: pointer;
-                z-index: 999;
-                color: #333333;
-
-                svg {
-                    vertical-align: inherit;
-                }
-            }
-        }
-    }
-
-    .links-right {
-        display: flex;
-        justify-content: end;
-        align-items: center;
-    }
-}
 
 .vis-panel {
     .vis-overview-panel {
@@ -190,18 +55,49 @@ a:hover {
         overflow-y: none;
         z-index: 999;
         left: 0px;
-        transition: left 0.2s ease;
+        transition-property: left, display;
+        transition-duration: 0.2s;
+        transition-timing-function: ease;
+        transition-behavior: allow-discrete;
 
         .navigation-container {
-            padding: 10px;
+            display: flex;
+            align-items: center;
+            padding: 0px 20px;
             font-size: 18px;
             border-bottom: 1px solid lightgray;
             background: #f6f6f6;
+
+        
+            .config-button {
+                svg {
+                    vertical-align: unset;
+                }
+            }
+            .config-button:hover {
+                background-color: #eaeaea;
+            }
+            .config-button:active {
+                background-color: #e3e3e3;
+            }
+
+            .title-github-link:hover,
+            .title-doc-link:hover,
+            .feedback a:hover {
+                background-color: #eaeaea;
+            }
+            
+            .title-github-link:active,
+            .title-doc-link:active,
+            .feedback a:active {
+                background-color: #e3e3e3;
+            }
         }
     }
 
     .hide {
         left: -100%;
+        display: none;
     }
 
     .vis-overview-panel .gosling-component {
@@ -233,26 +129,6 @@ a:hover {
         top: 12px;
     }
 
-    .vis-overview-panel .config {
-        min-height: 100px;
-        background: #f6f6f6;
-        border-top: 1px solid lightgray;
-        position: relative;
-        padding: 30px;
-    }
-
-    .vis-overview-panel .config .button {
-        font-size: 14px;
-        height: 30px;
-        width: calc(100% - 20px);
-        text-align: center;
-        line-height: 30px;
-        border: 1px solid black;
-        border-radius: 3px;
-        background: white;
-        cursor: pointer;
-        left: 10px;
-    }
 
     .vis-overview-panel .overview-container {
         display: flex;
@@ -354,7 +230,14 @@ a:hover {
 .chromoscope-title {
     font-weight: bold;
     text-decoration: none;
+    padding: 5px;
+    cursor: pointer;
 }
+
+.chromoscope-title:focus, .chromoscope-title:focus-visible {
+    /* padding: 5px; */
+}
+
 .dimed {
     color: lightgrey;
 }
@@ -447,11 +330,12 @@ a:hover {
     cursor: pointer;
     color: black;
     text-decoration: none;
+    padding: 6px;
 }
 
 .title-about-link svg {
     height: 16px;
-    padding-right: 4px;
+    padding: 4px 4px 4px 0px;
     vertical-align: middle;
     color: black;
 }
@@ -933,6 +817,7 @@ a:hover {
 }
 
 .track-tooltip {
+    display: flex;
     padding: 0px;
     border: none;
 
@@ -944,6 +829,9 @@ a:hover {
 }
 .track-tooltip:hover {
     cursor: pointer;
+}
+.track-tooltip:focus, .track-tooltip:focus-visible {
+    outline-offset: 2px;
 }
 
 .navigation-buttons {
@@ -1152,7 +1040,6 @@ a:hover {
                             .nav-list-item {
                                 display: flex;
                                 margin: auto;
-                                padding: 8px;
                             }
 
                             .nav-list-item:hover {
@@ -1168,17 +1055,17 @@ a:hover {
                                 height: 25px;
                                 margin-left: 0px;
                                 color: black;
+                                padding: 6px;
                             }
 
                             .title-btn.png {
-                                padding: 0px;
                                 border: none;
                                 background-color: transparent;
                             }
 
                             svg.button:focus,
                             svg.button:focus-visible {
-                                outline-offset: 6px;
+                                outline-offset: 0px;
                             }
                         }
                     }

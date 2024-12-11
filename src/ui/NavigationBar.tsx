@@ -1,6 +1,7 @@
 import React, { MutableRefObject } from 'react';
 
 import { ICONS } from '../icon';
+import { ExportButton } from './ExportDropdown';
 
 type NavigationBarProps = {
     demo: any;
@@ -11,6 +12,7 @@ type NavigationBarProps = {
     externalUrl: string;
     externalDemoUrl: MutableRefObject<string>;
     FEEDBACK_EMAIL_ADDRESS: string;
+    showSamples: boolean;
     isChrome: () => boolean;
     setShowAbout: (show: boolean) => void;
     setShowSamples: (show: boolean) => void;
@@ -25,8 +27,9 @@ export const NavigationBar = ({
     currentSpec,
     externalUrl,
     externalDemoUrl,
-    isChrome,
     FEEDBACK_EMAIL_ADDRESS,
+    showSamples,
+    isChrome,
     setShowAbout,
     setShowSamples,
     getHtmlTemplate
@@ -34,22 +37,27 @@ export const NavigationBar = ({
     return (
         <div className="navigation-container">
             <div className="title links-left">
-                <svg
+                <button 
                     className="config-button"
-                    viewBox={ICONS.MENU.viewBox}
-                    visibility={showSmallMultiples ? 'visible' : 'collapse'}
+                    tabIndex={showSamples ? -1 : 0}
                     onClick={() => {
                         setShowSamples(true);
                     }}
                 >
-                    <title>Menu</title>
-                    <path fill="currentColor" d={ICONS.MENU.path[0]} />
-                </svg>
+                    <svg
+                        viewBox={ICONS.MENU.viewBox}
+                        visibility={showSmallMultiples ? 'visible' : 'collapse'}
+                    >
+                        <title>Menu</title>
+                        <path fill="currentColor" d={ICONS.MENU.path[0]} />
+                    </svg>
+                </button>
                 <div className="sample-information">
-                    <a className="chromoscope-title" href="./">
+                    <a className="chromoscope-title" href="./" tabIndex={showSamples ? -1 : 0}>
                         CHROMOSCOPE
                     </a>
                     <a
+                        tabIndex={showSamples ? -1 : 0}
                         className="title-about-link"
                         onClick={() => {
                             setShowAbout(true);
@@ -71,89 +79,82 @@ export const NavigationBar = ({
                     <span>{demo.cancer.charAt(0).toUpperCase() + demo.cancer.slice(1)}</span>
                     <small>{demo.id}</small>
 
-                    <>
-                        <span className="title-btn" onClick={() => gosRef.current?.api.exportPng()}>
-                            <svg className="button" viewBox="0 0 16 16">
-                                <title>Export Image</title>
-                                {ICONS.PNG.path.map(p => (
-                                    <path fill="currentColor" key={p} d={p} />
-                                ))}
-                            </svg>
-                        </span>
-                        <span
-                            className="title-btn"
-                            onClick={() => {
-                                const a = document.createElement('a');
-                                a.setAttribute(
-                                    'href',
-                                    `data:text/plain;charset=utf-8,${encodeURIComponent(
-                                        getHtmlTemplate(currentSpec.current)
-                                    )}`
-                                );
-                                a.download = 'visualization.html';
-                                document.body.appendChild(a);
-                                a.click();
-                                document.body.removeChild(a);
-                            }}
-                        >
-                            <svg className="button" viewBox="0 0 16 16">
-                                <title>Export HTML</title>
-                                {ICONS.HTML.path.map(p => (
-                                    <path fill="currentColor" key={p} d={p} />
-                                ))}
-                            </svg>
-                        </span>
-                        <span
-                            className="title-btn"
-                            onClick={() => {
-                                const a = document.createElement('a');
-                                a.setAttribute(
-                                    'href',
-                                    `data:text/plain;charset=utf-8,${encodeURIComponent(currentSpec.current)}`
-                                );
-                                a.download = 'visualization.json';
-                                document.body.appendChild(a);
-                                a.click();
-                                document.body.removeChild(a);
-                            }}
-                        >
-                            <svg className="button" viewBox="0 0 16 16">
-                                <title>Export Gosling Spec (JSON)</title>
-                                {ICONS.JSON.path.map(p => (
-                                    <path fill="currentColor" key={p} d={p} />
-                                ))}
-                            </svg>
-                        </span>
-                        <span
-                            className="title-btn"
-                            onClick={() => {
-                                const { xDomain } = gosRef.current.hgApi.api.getLocation(`${demo.id}-mid-ideogram`);
-                                if (xDomain) {
-                                    // urlParams.set('demoIndex', demoIndex.current + '');
-                                    // urlParams.set('domain', xDomain.join('-'));
-                                    let newUrl = window.location.origin + window.location.pathname + '?';
-                                    newUrl += `demoIndex=${demoIndex.current}`;
-                                    newUrl += `&domain=${xDomain.join('-')}`;
-                                    if (externalDemoUrl.current) {
-                                        newUrl += `&external=${externalDemoUrl.current}`;
-                                    } else if (externalUrl) {
-                                        newUrl += `&external=${externalUrl}`;
+                    <ul className="nav-list">
+                        <li className="nav-list-item">
+                            <button
+                                tabIndex={showSamples ? -1 : 0}
+                                className="title-btn png"
+                                onClick={e => {
+                                    e.stopPropagation();
+                                    gosRef.current?.api.exportPng();
+                                }}
+                            >
+                                <ExportButton title="Export PNG" icon="PNG" />
+                            </button>
+                        </li>
+
+                        <li className="nav-list-item">
+                            <a
+                                className="title-btn"
+                                tabIndex={showSamples ? -1 : 0}
+                                href={`data:text/plain;charset=utf-8,${encodeURIComponent(
+                                    getHtmlTemplate(currentSpec.current)
+                                )}`}
+                                download="visualization.html"
+                                onClick={e => {
+                                    e.stopPropagation();
+                                }}
+                            >
+                                <ExportButton title="Export HTML" icon="HTML" />
+                            </a>
+                        </li>
+                        <li className="nav-list-item">
+                            <a
+                                className="title-btn"
+                                tabIndex={showSamples ? -1 : 0}
+                                href={`data:text/plain;charset=utf-8,${encodeURIComponent(currentSpec.current)}`}
+                                download="visualization.json"
+                                onClick={e => {
+                                    e.stopPropagation();
+                                }}
+                            >
+                                <ExportButton title="Export JSON" icon="JSON" />
+                            </a>
+                        </li>
+                        <li className="nav-list-item">
+                            <button
+                                className="title-btn clipboard"
+                                tabIndex={showSamples ? -1 : 0}
+                                onClick={() => {
+                                    const { xDomain } = gosRef.current.hgApi.api.getLocation(`${demo.id}-mid-ideogram`);
+                                    if (xDomain) {
+                                        // urlParams.set('demoIndex', demoIndex.current + '');
+                                        // urlParams.set('domain', xDomain.join('-'));
+                                        let newUrl = window.location.origin + window.location.pathname + '?';
+                                        newUrl += `demoIndex=${demoIndex.current}`;
+                                        newUrl += `&domain=${xDomain.join('-')}`;
+                                        if (externalDemoUrl.current) {
+                                            newUrl += `&external=${externalDemoUrl.current}`;
+                                        } else if (externalUrl) {
+                                            newUrl += `&external=${externalUrl}`;
+                                        }
+                                        navigator.clipboard
+                                            .writeText(newUrl)
+                                            .then(() =>
+                                                alert('The URL of the current session has been copied to your clipboard.')
+                                            );
                                     }
-                                    navigator.clipboard
-                                        .writeText(newUrl)
-                                        .then(() =>
-                                            alert('The URL of the current session has been copied to your clipboard.')
-                                        );
-                                }
-                            }}
-                        >
-                            <svg className="button" viewBox="0 0 16 16">
-                                <title>Export Link</title>
-                                <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
-                                <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z" />
-                            </svg>
-                        </span>
-                    </>
+                                }}
+                            >
+                                <svg className="button" viewBox="0 0 16 16">
+                                    <title>Export Link</title>
+                                    <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
+                                    <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z" />
+                                </svg>
+                            </button>
+                        </li>
+                    </ul>
+
                 </div>
                 {!isChrome() ? (
                     <a
@@ -175,6 +176,7 @@ export const NavigationBar = ({
                     href="https://github.com/hms-dbmi/chromoscope"
                     target="_blank"
                     rel="noreferrer"
+                    tabIndex={showSamples ? -1 : 0}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <title>GitHub</title>
@@ -185,7 +187,13 @@ export const NavigationBar = ({
                     </svg>
                     <span>GitHub</span>
                 </a>
-                <a className="title-doc-link" href="https://chromoscope.bio/" target="_blank" rel="noreferrer">
+                <a 
+                    className="title-doc-link" 
+                    href="https://chromoscope.bio/" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    tabIndex={showSamples ? -1 : 0}
+                >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="20"
@@ -201,6 +209,7 @@ export const NavigationBar = ({
                     <a
                         href={`mailto:${FEEDBACK_EMAIL_ADDRESS}?subject=Chromoscope%20Feedback&body=Feedback%20Type%3A%20General%20Feedback%0D%0A%0D%0AComments%3A%0D%0A%0D%0A%0D%0A`}
                         className="link-button"
+                        tabIndex={showSamples ? -1 : 0}
                     >
                         <svg className="button" viewBox={ICONS.MAIL.viewBox}>
                             <title>Mail</title>

@@ -1,0 +1,220 @@
+/* NavigationBar styles */
+.navigation-container {
+    box-sizing: border-box !important;
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    width: 100%;
+    z-index: 999;
+    background-color: white;
+    padding: 0px 20px;
+
+    .navigation-links-container {
+        display: flex;
+        gap: 4px;
+
+        .title-github-link,
+        .title-doc-link,
+        .feedback {
+            display: flex;
+            justify-content: center;
+            background-color: transparent;
+            padding: 4px 10px;
+            border-radius: 4px;
+
+            svg {
+                vertical-align: middle;
+                margin: auto 5px auto auto;
+                color: black;
+                width: min-content;
+            }
+            span {
+                font-size: 1rem;
+            }
+        }
+
+        .title-github-link:hover,
+        .title-doc-link:hover,
+        .feedback a:hover {
+            background-color: #f6f6f6;
+        }
+
+        .title-github-link:active,
+        .title-doc-link:active,
+        .feedback a:active {
+            background-color: #e6e4e4;
+        }
+
+        .title-github-link {
+            position: relative;
+            text-decoration: none;
+
+            svg {
+                height: 16px;
+            }
+        }
+
+        .title-doc-link {
+            color: black;
+            position: relative;
+            text-decoration: none;
+
+            svg {
+                height: 15px;
+                margin-right: 4px;
+            }
+        }
+
+        .feedback {
+            display: flex;
+            justify-content: center;
+            padding: 0px;
+            border-radius: 0px;
+
+            a {
+                box-sizing: border-box !important;
+                display: flex;
+                font-size: 0.9rem;
+                font-family: Inter;
+                font-weight: 400;
+                text-decoration: none;
+                color: #000000;
+                padding: 4px 10px;
+                border-radius: 4px;
+
+                svg.button {
+                    position: relative;
+                    height: 12px;
+                    margin: auto;
+                    margin-right: 6px;
+                    top: auto;
+                    right: auto;
+                }
+                span {
+                    margin: auto;
+                    margin-left: 0px;
+                }
+            }
+        }
+    }
+
+    .links-left {
+        display: flex;
+
+        .config-button {
+            position: relative;
+            margin: auto;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            z-index: 999;
+            color: black;
+            stroke: black;
+            stroke-width: 0.5px;
+            border: none;
+            padding: 6px;
+            border-radius: 4px;
+            background-color: transparent;
+        }
+        
+        .config-button:hover {
+            background-color: #f6f6f6;
+        }
+        .config-button:active {
+            background-color: #e6e4e4;
+        }
+
+        .config-button:focus-visible, .config-button:focus {
+            outline-offset: 0px;
+        }
+
+        .sample-information {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-left: 18px;
+            text-shadow: 0px 0px 6px white;
+            font-size: 18px;
+            z-index: 999;
+
+            .dimed {
+                margin-right: 12px;
+            }
+
+            small {
+                margin-left: 12px;
+                font-size: 12px;
+                color: gray;
+                margin-right: 10px;
+            }
+
+            .title-btn {
+                position: relative;
+                height: 25px;
+                width: 25px;
+                font-size: 14px;
+                margin-left: 10px;
+                cursor: pointer;
+                z-index: 999;
+                color: #333333;
+
+                svg {
+                    vertical-align: inherit;
+                }
+            }
+
+            .nav-list {
+                list-style-type: none;
+                padding: 0px;
+                display: flex;
+                flex-direction: row;
+                height: 50px;
+                background-color: transparent;
+                margin: auto;
+
+                .nav-list-item {
+                    display: flex;
+                    margin: auto;
+                }
+
+                .nav-list-item:hover {
+                    cursor: pointer;
+                    background-color: #f4f4f4;
+                    border-radius: 5px;
+                }
+
+                .title-btn {
+                    display: flex;
+                    position: relative;
+                    padding: 6px;
+                    width: 25px;
+                    height: 25px;
+                    margin-left: 0px;
+                    color: black;
+                }
+
+                .title-btn.png {
+                    border: none;
+                    background-color: transparent;
+                }
+                
+                .title-btn.clipboard {
+                    border: none;
+                    background-color: transparent;
+                }
+
+                svg.button:focus,
+                svg.button:focus-visible {
+                    outline-offset: 6px;
+                }
+            }
+        }
+    }
+
+    .links-right {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+    }
+}
