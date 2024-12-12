@@ -2,6 +2,8 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 're
 import { GoslingComponent, GoslingRef, embed } from 'gosling.js';
 import { debounce, sample } from 'lodash';
 import type { RouteComponentProps } from 'react-router-dom';
+import * as bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min';
+
 import generateSpec from './main-spec';
 import ErrorBoundary from './error';
 import _allDrivers from './data/driver.json';
@@ -10,7 +12,6 @@ import samples, { SampleType } from './data/samples';
 import getOneOfSmallMultiplesSpec from './small-multiples-spec';
 import { CHROMOSOMES, THEME, WHOLE_CHROMOSOME_STR } from './constants';
 import { ICONS } from './icon';
-import './App.css';
 import { INTERNAL_SAVED_THUMBNAILS } from './data/external-thumbnails';
 import { isChrome } from './utils';
 import THUMBNAIL_PLACEHOLDER from './script/img/placeholder.png';
@@ -26,11 +27,11 @@ import { ExportDropdown } from './ui/ExportDropdown';
 import { GenomeViewModal } from './ui/GenomeViewModal';
 import { VariantViewModal } from './ui/VariantViewModal';
 import { NavigationButtons } from './ui/NavigationButtons';
+import { Track, getTrackDocData } from './ui/getTrackDocData.js';
+import { NavigationBar } from './ui/NavigationBar';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import * as bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min';
-
-import { Track, getTrackDocData } from './ui/getTrackDocData.js';
+import './css/App.css';
 
 const db = new Database();
 const log = new BrowserDatabase();
@@ -42,6 +43,8 @@ const GENERATED_THUMBNAILS = {};
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
 const ZOOM_PADDING = 200;
 const ZOOM_DURATION = 500;
+
+const FEEDBACK_EMAIL_ADDRESS = 'dominik_glodzik@hms.harvard.edu';
 
 const allDrivers = [
     ...(_allDrivers as any),
@@ -583,7 +586,7 @@ function App(props: RouteComponentProps) {
                     return (
                         <a
                             key={i}
-                            tabIndex={4}
+                            tabIndex={showSamples ? -1 : 0}
                             role="button"
                             className="track-tooltip"
                             data-bs-trigger="focus"
@@ -604,7 +607,7 @@ function App(props: RouteComponentProps) {
                             data-bs-content={d.popover_content}
                             style={{
                                 position: 'absolute',
-                                top: d.y + (d.type === 'ideogram' ? 32 : 0) - 1,
+                                top: d.y + (d.type === 'ideogram' ? 32 : 0) + 5,
                                 left: 10
                             }}
                         >
@@ -619,7 +622,7 @@ function App(props: RouteComponentProps) {
                 })}
             </div>
         );
-    }, [demo, visPanelWidth, selectedSvId]);
+    }, [demo, visPanelWidth, selectedSvId, showSamples]);
 
     useLayoutEffect(() => {
         if (!gosRef.current) return;
@@ -757,231 +760,103 @@ function App(props: RouteComponentProps) {
                 }}
             >
                 {!isMinimalMode && (
-                    <span
-                        style={{
-                            height: '50px',
-                            width: '100%',
-                            background: 'white',
-                            position: 'absolute',
-                            zIndex: 999,
-                            opacity: 0.8
-                        }}
-                    ></span>
+                    <NavigationBar
+                        demo={demo}
+                        setShowAbout={setShowAbout}
+                        showSmallMultiples={showSmallMultiples}
+                        showSamples={showSamples}
+                        setShowSamples={setShowSamples}
+                        gosRef={gosRef}
+                        currentSpec={currentSpec}
+                        getHtmlTemplate={getHtmlTemplate}
+                        demoIndex={demoIndex}
+                        externalDemoUrl={externalDemoUrl}
+                        externalUrl={externalUrl}
+                        isChrome={isChrome}
+                        FEEDBACK_EMAIL_ADDRESS={FEEDBACK_EMAIL_ADDRESS}
+                    />
                 )}
-                {!isMinimalMode && (
-                    <svg
-                        className="config-button"
-                        viewBox="0 0 16 16"
-                        visibility={showSmallMultiples ? 'visible' : 'collapse'}
-                        onClick={() => {
-                            setShowSamples(true);
-                        }}
-                    >
-                        <title>Menu</title>
-                        <path
-                            fillRule="evenodd"
-                            d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
-                        />
-                    </svg>
-                )}
-                <div className="sample-label">
-                    {!isMinimalMode && (
-                        <>
-                            <a className="chromoscope-title" href="./">
-                                CHROMOSCOPE
-                            </a>
-                            <a
-                                className="title-about-link"
-                                onClick={() => {
-                                    setShowAbout(true);
-                                }}
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="20"
-                                    height="20"
-                                    fill="currentColor"
-                                    viewBox="0 0 16 16"
-                                >
-                                    <path d="M5.933.87a2.89 2.89 0 0 1 4.134 0l.622.638.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636zM7.002 11a1 1 0 1 0 2 0 1 1 0 0 0-2 0zm1.602-2.027c.04-.534.198-.815.846-1.26.674-.475 1.05-1.09 1.05-1.986 0-1.325-.92-2.227-2.262-2.227-1.02 0-1.792.492-2.1 1.29A1.71 1.71 0 0 0 6 5.48c0 .393.203.64.545.64.272 0 .455-.147.564-.51.158-.592.525-.915 1.074-.915.61 0 1.03.446 1.03 1.084 0 .563-.208.885-.822 1.325-.619.433-.926.914-.926 1.64v.111c0 .428.208.745.585.745.336 0 .504-.24.554-.627z" />
-                                </svg>
-                                About
-                            </a>
-                            <span className="dimed">{' | '}</span>
-                            {/* {demo.cancer.charAt(0).toUpperCase() + demo.cancer.slice(1) + ' • ' + demo.id} */}
-                            {demo.cancer.charAt(0).toUpperCase() + demo.cancer.slice(1)}
-                            <small>{demo.id}</small>
-                        </>
-                    )}
-                    {!isMinimalMode && (
-                        <>
-                            <span className="title-btn" onClick={() => gosRef.current?.api.exportPng()}>
-                                <svg className="button" viewBox="0 0 16 16">
-                                    <title>Export Image</title>
-                                    {ICONS.PNG.path.map(p => (
-                                        <path fill="currentColor" key={p} d={p} />
-                                    ))}
-                                </svg>
-                            </span>
-                            <span
-                                className="title-btn"
-                                onClick={() => {
-                                    const a = document.createElement('a');
-                                    a.setAttribute(
-                                        'href',
-                                        `data:text/plain;charset=utf-8,${encodeURIComponent(
-                                            getHtmlTemplate(currentSpec.current)
-                                        )}`
-                                    );
-                                    a.download = 'visualization.html';
-                                    document.body.appendChild(a);
-                                    a.click();
-                                    document.body.removeChild(a);
-                                }}
-                                style={{ marginLeft: 40 }}
-                            >
-                                <svg className="button" viewBox="0 0 16 16">
-                                    <title>Export HTML</title>
-                                    {ICONS.HTML.path.map(p => (
-                                        <path fill="currentColor" key={p} d={p} />
-                                    ))}
-                                </svg>
-                            </span>
-                            <span
-                                className="title-btn"
-                                onClick={() => {
-                                    const a = document.createElement('a');
-                                    a.setAttribute(
-                                        'href',
-                                        `data:text/plain;charset=utf-8,${encodeURIComponent(currentSpec.current)}`
-                                    );
-                                    a.download = 'visualization.json';
-                                    document.body.appendChild(a);
-                                    a.click();
-                                    document.body.removeChild(a);
-                                }}
-                                style={{ marginLeft: 70 }}
-                            >
-                                <svg className="button" viewBox="0 0 16 16">
-                                    <title>Export Gosling Spec (JSON)</title>
-                                    {ICONS.JSON.path.map(p => (
-                                        <path fill="currentColor" key={p} d={p} />
-                                    ))}
-                                </svg>
-                            </span>
-                            <span
-                                className="title-btn"
-                                onClick={() => {
-                                    const { xDomain } = gosRef.current.hgApi.api.getLocation(`${demo.id}-mid-ideogram`);
-                                    if (xDomain) {
-                                        // urlParams.set('demoIndex', demoIndex.current + '');
-                                        // urlParams.set('domain', xDomain.join('-'));
-                                        let newUrl = window.location.origin + window.location.pathname + '?';
-                                        newUrl += `demoIndex=${demoIndex.current}`;
-                                        newUrl += `&domain=${xDomain.join('-')}`;
-                                        if (externalDemoUrl.current) {
-                                            newUrl += `&external=${externalDemoUrl.current}`;
-                                        } else if (externalUrl) {
-                                            newUrl += `&external=${externalUrl}`;
-                                        }
-                                        navigator.clipboard
-                                            .writeText(newUrl)
-                                            .then(() =>
-                                                alert(
-                                                    'The URL of the current session has been copied to your clipboard.'
-                                                )
-                                            );
-                                    }
-                                }}
-                                style={{ marginLeft: 100 }}
-                            >
-                                <svg className="button" viewBox="0 0 16 16">
-                                    <title>Export Link</title>
-                                    <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
-                                    <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z" />
-                                </svg>
-                            </span>
-                        </>
-                    )}
-                    {!isChrome() ? (
-                        <a
-                            style={{
-                                marginLeft: '200px',
-                                color: '#E6A01B',
-                                fontWeight: 'bold',
-                                textDecoration: 'none'
-                            }}
-                            href="https://www.google.com/chrome/downloads/"
-                        >
-                            ⚠️ Chromoscope is optimized for Google Chrome
-                        </a>
-                    ) : null}
-                    {!isMinimalMode && (
-                        <>
-                            <a
-                                className="title-github-link"
-                                href="https://github.com/hms-dbmi/chromoscope"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <title>GitHub</title>
-                                    <path
-                                        fill="currentColor"
-                                        d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
-                                    ></path>
-                                </svg>
-                                GitHub
-                            </a>
-                            <a
-                                className="title-doc-link"
-                                href="https://chromoscope.bio/"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="20"
-                                    height="20"
-                                    fill="currentColor"
-                                    viewBox="0 0 16 16"
-                                >
-                                    <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1z" />
-                                </svg>
-                                Documentation
-                            </a>
-                        </>
-                    )}
-                </div>
                 <div id="vis-panel" className="vis-panel">
                     {!isMinimalMode && (
                         <div className={'vis-overview-panel ' + (!showSamples ? 'hide' : '')}>
-                            <div
-                                className="title"
-                                onClick={e => {
-                                    if (e.target === e.currentTarget) setShowSamples(false);
-                                }}
-                            >
-                                <svg
-                                    className="config-button"
-                                    viewBox="0 0 16 16"
-                                    onClick={() => {
-                                        setShowSamples(false);
+                            <div className="navigation-container">
+                                <div
+                                    className="links-left"
+                                    onClick={e => {
+                                        if (e.target === e.currentTarget) setShowSamples(false);
                                     }}
                                 >
-                                    <title>Close</title>
-                                    <path
-                                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
-                                        fill="currentColor"
-                                    ></path>
-                                </svg>
-                                <div className="sample-label">
-                                    <b>CHROMOSCOPE</b>
-                                    <a
-                                        className="title-about-link"
+                                    <button
+                                        className="config-button"
+                                        tabIndex={0}
                                         onClick={() => {
-                                            setShowAbout(true);
+                                            setShowSamples(false);
                                         }}
+                                    >
+                                        <svg viewBox="0 0 16 16">
+                                            <title>Close</title>
+                                            <path
+                                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+                                                fill="currentColor"
+                                            ></path>
+                                        </svg>
+                                    </button>
+
+                                    <div className="sample-information">
+                                        <a className="chromoscope-title" href="./" tabIndex={0}>
+                                            CHROMOSCOPE
+                                        </a>
+                                        <a
+                                            tabIndex={0}
+                                            className="title-about-link"
+                                            onClick={() => {
+                                                setShowAbout(true);
+                                            }}
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="20"
+                                                height="20"
+                                                fill="currentColor"
+                                                viewBox="0 0 16 16"
+                                            >
+                                                <path d="M5.933.87a2.89 2.89 0 0 1 4.134 0l.622.638.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636zM7.002 11a1 1 0 1 0 2 0 1 1 0 0 0-2 0zm1.602-2.027c.04-.534.198-.815.846-1.26.674-.475 1.05-1.09 1.05-1.986 0-1.325-.92-2.227-2.262-2.227-1.02 0-1.792.492-2.1 1.29A1.71 1.71 0 0 0 6 5.48c0 .393.203.64.545.64.272 0 .455-.147.564-.51.158-.592.525-.915 1.074-.915.61 0 1.03.446 1.03 1.084 0 .563-.208.885-.822 1.325-.619.433-.926.914-.926 1.64v.111c0 .428.208.745.585.745.336 0 .504-.24.554-.627z" />
+                                            </svg>
+                                            <span>About</span>
+                                        </a>
+                                        <span className="dimed">{' | '}</span> Samples
+                                        <input
+                                            type="text"
+                                            className="sample-text-box"
+                                            placeholder="Search samples by ID"
+                                            onChange={e => setFilterSampleBy(e.target.value)}
+                                            hidden
+                                        />
+                                    </div>
+                                </div>
+                                <div className="navigation-links-container links-right">
+                                    <a
+                                        className="title-github-link"
+                                        href="https://github.com/hms-dbmi/chromoscope"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        tabIndex={showSamples ? 0 : -1}
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <title>GitHub</title>
+                                            <path
+                                                fill="currentColor"
+                                                d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+                                            ></path>
+                                        </svg>
+                                        <span>GitHub</span>
+                                    </a>
+                                    <a
+                                        className="title-doc-link"
+                                        href="https://chromoscope.bio/"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        tabIndex={showSamples ? 0 : -1}
                                     >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -990,60 +865,33 @@ function App(props: RouteComponentProps) {
                                             fill="currentColor"
                                             viewBox="0 0 16 16"
                                         >
-                                            <path d="M5.933.87a2.89 2.89 0 0 1 4.134 0l.622.638.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636zM7.002 11a1 1 0 1 0 2 0 1 1 0 0 0-2 0zm1.602-2.027c.04-.534.198-.815.846-1.26.674-.475 1.05-1.09 1.05-1.986 0-1.325-.92-2.227-2.262-2.227-1.02 0-1.792.492-2.1 1.29A1.71 1.71 0 0 0 6 5.48c0 .393.203.64.545.64.272 0 .455-.147.564-.51.158-.592.525-.915 1.074-.915.61 0 1.03.446 1.03 1.084 0 .563-.208.885-.822 1.325-.619.433-.926.914-.926 1.64v.111c0 .428.208.745.585.745.336 0 .504-.24.554-.627z" />
+                                            <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1z" />
                                         </svg>
-                                        About
+                                        <span>Docs</span>
                                     </a>
-                                    <span className="dimed">{' | '}</span> Samples
-                                    <input
-                                        type="text"
-                                        className="sample-text-box"
-                                        placeholder="Search samples by ID"
-                                        onChange={e => setFilterSampleBy(e.target.value)}
-                                        hidden
-                                    />
-                                </div>
-                                <a
-                                    className="title-github-link"
-                                    style={{ position: 'absolute' }}
-                                    href="https://github.com/hms-dbmi/chromoscope"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                        <title>GitHub</title>
-                                        <path
-                                            fill="currentColor"
-                                            d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
-                                        ></path>
-                                    </svg>
-                                    GitHub
-                                </a>
-                                <a
-                                    className="title-doc-link"
-                                    href="https://chromoscope.bio/"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    style={{ position: 'absolute' }}
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="20"
-                                        height="20"
-                                        fill="currentColor"
-                                        viewBox="0 0 16 16"
+                                    <div className="feedback">
+                                        <a
+                                            href={`mailto:${FEEDBACK_EMAIL_ADDRESS}?subject=Chromoscope%20Feedback&body=Feedback%20Type%3A%20General%20Feedback%0D%0A%0D%0AComments%3A%0D%0A%0D%0A%0D%0A`}
+                                            className="link-button"
+                                            tabIndex={showSamples ? 0 : -1}
+                                        >
+                                            <svg className="button" viewBox={ICONS.MAIL.viewBox}>
+                                                <title>Mail</title>
+                                                <path fill="currentColor" d={ICONS.MAIL.path[0]} />
+                                            </svg>
+                                            <span>Feedback</span>
+                                        </a>
+                                    </div>
+                                    <button
+                                        className="thumbnail-generate-button"
+                                        onClick={() => setGenerateThumbnails(!generateThumbnails)}
+                                        style={{ display: doneGeneratingThumbnails ? 'none' : 'flex' }}
                                     >
-                                        <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1z" />
-                                    </svg>
-                                    Documentation
-                                </a>
-                                <button
-                                    className="thumbnail-generate-button"
-                                    onClick={() => setGenerateThumbnails(!generateThumbnails)}
-                                    style={{ visibility: doneGeneratingThumbnails ? 'hidden' : 'visible' }}
-                                >
-                                    {generateThumbnails ? 'Stop Generating Thumbnails' : 'Generate Missing Thumbnails'}
-                                </button>
+                                        {generateThumbnails
+                                            ? 'Stop Generating Thumbnails'
+                                            : 'Generate Missing Thumbnails'}
+                                    </button>
+                                </div>
                             </div>
                             <div className="overview-root">
                                 <div className="overview-left">
@@ -1097,7 +945,6 @@ function App(props: RouteComponentProps) {
                         }}
                     >
                         {goslingComponent}
-                        {trackTooltips}
                         {jumpButtonInfo ? (
                             <button
                                 className="jump-to-bp-btn"
@@ -1135,15 +982,15 @@ function App(props: RouteComponentProps) {
                                 }}
                             />
                         )}
-                        <NavigationButtons isMinimalMode={isMinimalMode} />
+                        <NavigationButtons showSamples={!isMinimalMode && showSamples} isMinimalMode={isMinimalMode} />
                         {
                             // External links and export buttons
                             isMinimalMode ? (
                                 <div className="external-links">
                                     <nav className="external-links-nav">
                                         <button
-                                            className="open-in-chromoscope-link"
-                                            tabIndex={2}
+                                            className="open-in-chromoscope-link link-button"
+                                            // tabIndex={2}
                                             onClick={e => {
                                                 e.preventDefault();
                                                 const { xDomain } = gosRef.current.hgApi.api.getLocation(
@@ -1183,8 +1030,22 @@ function App(props: RouteComponentProps) {
                                                 </svg>
                                             </div>
                                         </button>
-                                        <div className="export-links">
-                                            <ExportDropdown gosRef={gosRef} currentSpec={currentSpec} />
+                                        <div className="button-group">
+                                            <div className="export-links">
+                                                <ExportDropdown gosRef={gosRef} currentSpec={currentSpec} />
+                                            </div>
+                                            <div className="feedback">
+                                                <a
+                                                    href={`mailto:${FEEDBACK_EMAIL_ADDRESS}?subject=Chromoscope%20Feedback&body=Feedback%20Type%3A%20General%20Feedback%0D%0A%0D%0AComments%3A%0D%0A%0D%0A%0D%0A`}
+                                                    className="link-button"
+                                                >
+                                                    <svg className="button" viewBox={ICONS.MAIL.viewBox}>
+                                                        <title>Mail</title>
+                                                        <path fill="currentColor" d={ICONS.MAIL.path[0]} />
+                                                    </svg>
+                                                    <span>Feedback</span>
+                                                </a>
+                                            </div>
                                         </div>
                                     </nav>
                                 </div>
@@ -1216,7 +1077,7 @@ function App(props: RouteComponentProps) {
                             >
                                 <select
                                     id="variant-view"
-                                    tabIndex={3}
+                                    tabIndex={showSamples ? -1 : 0}
                                     style={{
                                         pointerEvents: 'auto'
                                         // !! This should be identical to how the height of circos determined.
@@ -1257,7 +1118,7 @@ function App(props: RouteComponentProps) {
                                     </svg>
                                     <input
                                         type="text"
-                                        tabIndex={3}
+                                        tabIndex={showSamples ? -1 : 0}
                                         className="gene-search"
                                         placeholder="Search Gene (e.g., MYC)"
                                         // alt={demo.assembly === 'hg38' ? 'Search Gene' : 'Not currently available for this assembly.'}
@@ -1314,7 +1175,7 @@ function App(props: RouteComponentProps) {
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
-                                            tabIndex={3}
+                                            tabIndex={showSamples ? -1 : 0}
                                             className="zoom-in-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
@@ -1338,7 +1199,7 @@ function App(props: RouteComponentProps) {
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
-                                            tabIndex={3}
+                                            tabIndex={showSamples ? -1 : 0}
                                             className="zoom-out-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
@@ -1363,7 +1224,7 @@ function App(props: RouteComponentProps) {
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
-                                            tabIndex={3}
+                                            tabIndex={showSamples ? -1 : 0}
                                             className="zoom-left-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
@@ -1387,7 +1248,7 @@ function App(props: RouteComponentProps) {
                                                 // !! This should be identical to how the height of circos determined.
                                                 // top: `${Math.min(visPanelWidth, 600)}px`
                                             }}
-                                            tabIndex={3}
+                                            tabIndex={showSamples ? -1 : 0}
                                             className="zoom-right-button control"
                                             onClick={e => {
                                                 const trackId = `${demo.id}-mid-ideogram`;
@@ -1408,6 +1269,7 @@ function App(props: RouteComponentProps) {
                                 </div>
                             </div>
                         </div>
+                        {trackTooltips}
                     </div>
                 </div>
                 {!isMinimalMode && (
@@ -1577,7 +1439,7 @@ function App(props: RouteComponentProps) {
                 )}
                 <button
                     className="move-to-top-btn"
-                    tabIndex={5}
+                    tabIndex={showSamples ? -1 : 0}
                     aria-label="Scroll to top."
                     onClick={() => {
                         setTimeout(
