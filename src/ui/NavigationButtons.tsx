@@ -4,10 +4,9 @@ import { ICONS } from '../icon';
 type NavigationButtonsProps = {
     showSamples: boolean;
     isMinimalMode: boolean;
-}
+};
 
-export const NavigationButtons = ({ showSamples, isMinimalMode } : NavigationButtonsProps) => {
-
+export const NavigationButtons = ({ showSamples, isMinimalMode }: NavigationButtonsProps) => {
     return (
         <div className="navigation-buttons">
             <div className="navigation-button-container split navigation-button-genome">

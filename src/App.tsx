@@ -29,6 +29,7 @@ import { VariantViewModal } from './ui/VariantViewModal';
 import { NavigationButtons } from './ui/NavigationButtons';
 import { Track, getTrackDocData } from './ui/getTrackDocData.js';
 import { NavigationBar } from './ui/NavigationBar';
+import { ClinicalPanel } from './ui/ClinicalPanel';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/App.css';
@@ -103,6 +104,9 @@ function App(props: RouteComponentProps) {
 
     const currentSpec = useRef<string>();
 
+    const [isClinicalPanelOpen, setIsClinicalPanelOpen] = useState(false);
+    const CLINICAL_PANEL_WIDTH = isMinimalMode || !demo?.clinicalInfo ? 0 : isClinicalPanelOpen ? 250 : 45;
+
     // interactions
     const [showSamples, setShowSamples] = useState(urlParams.get('showSamples') !== 'false' && !xDomain);
     const [showAbout, setShowAbout] = useState(false);
@@ -115,7 +119,7 @@ function App(props: RouteComponentProps) {
     const [showPutativeDriver, setShowPutativeDriver] = useState(true);
     const [interactiveMode, setInteractiveMode] = useState(isMinimalMode ?? false);
     const [visPanelWidth, setVisPanelWidth] = useState(
-        INIT_VIS_PANEL_WIDTH - (isMinimalMode ? 10 : VIS_PADDING.left * 2)
+        INIT_VIS_PANEL_WIDTH - (isMinimalMode ? 10 : VIS_PADDING.left + VIS_PADDING.right + CLINICAL_PANEL_WIDTH)
     );
     const [overviewChr, setOverviewChr] = useState('');
     const [genomeViewChr, setGenomeViewChr] = useState('');
@@ -139,6 +143,10 @@ function App(props: RouteComponentProps) {
     function getFilteredDrivers(demoId: string) {
         return (allDrivers as any).filter((d: any) => d.sample_id === demoId && +d.pos);
     }
+
+    useEffect(() => {
+        setVisPanelWidth(INIT_VIS_PANEL_WIDTH - (VIS_PADDING.left + VIS_PADDING.right + CLINICAL_PANEL_WIDTH));
+    }, [isClinicalPanelOpen]);
 
     // update demo
     useEffect(() => {
@@ -186,6 +194,9 @@ function App(props: RouteComponentProps) {
         setSelectedSvId('');
         leftReads.current = [];
         rightReads.current = [];
+
+        // Update the appearance of the clinical panel
+        setIsClinicalPanelOpen(!!demo?.clinicalInfo);
     }, [demo]);
 
     useEffect(() => {
@@ -323,13 +334,14 @@ function App(props: RouteComponentProps) {
         window.addEventListener(
             'resize',
             debounce(() => {
-                setVisPanelWidth(window.innerWidth - (isMinimalMode ? 10 : VIS_PADDING.left * 2));
+                setVisPanelWidth(window.innerWidth - (isMinimalMode ? 10 : VIS_PADDING.left + VIS_PADDING.right));
             }, 500)
         );
 
-        // Lower opacity of legend image as it leaves viewport
+        // Lower opacity of legend image as it leaves viewport in minimal mode
         if (isMinimalMode) {
             const legendElement = document.querySelector<HTMLElement>('.genome-view-legend');
+
             const options = {
                 root: document.querySelector('.minimal_mode'),
                 rootMargin: '-250px 0px 0px 0px',
@@ -342,6 +354,10 @@ function App(props: RouteComponentProps) {
             }, options);
 
             observer.observe(legendElement);
+
+            return () => {
+                observer.unobserve(legendElement);
+            };
         }
     }, []);
 
@@ -740,10 +756,10 @@ function App(props: RouteComponentProps) {
                     const height = window.innerHeight;
                     if (!isMinimalMode) {
                         if (
-                            VIS_PADDING.top < top &&
-                            top < height - VIS_PADDING.top &&
-                            VIS_PADDING.left < left &&
-                            left < width - VIS_PADDING.left
+                            VIS_PADDING.top < top && // past top margin
+                            top < height - VIS_PADDING.top && // before bottom margin
+                            VIS_PADDING.left < left && // past left margin
+                            left < width - (VIS_PADDING.right + CLINICAL_PANEL_WIDTH) // before right margin
                         ) {
                             setMouseOnVis(true);
                         } else {
@@ -939,7 +955,9 @@ function App(props: RouteComponentProps) {
                         id="gosling-panel"
                         className="gosling-panel"
                         style={{
-                            width: `calc(100% - ${VIS_PADDING.left * 2}px)`,
+                            width: isMinimalMode
+                                ? `calc(100% - ${VIS_PADDING.left + VIS_PADDING.right}px)`
+                                : `calc(100% - ${VIS_PADDING.left + VIS_PADDING.right + CLINICAL_PANEL_WIDTH}px)`,
                             height: `calc(100% - ${VIS_PADDING.top * 2}px)`,
                             padding: `${VIS_PADDING.top}px ${VIS_PADDING.right}px ${VIS_PADDING.bottom}px ${VIS_PADDING.left}px`
                         }}
@@ -963,7 +981,7 @@ function App(props: RouteComponentProps) {
                         {!isMinimalMode && (
                             <div
                                 style={{
-                                    width: '100%',
+                                    width: `calc(100% - ${0}px)`,
                                     height: '100%',
                                     boxShadow: `inset 0 0 0 3px ${
                                         interactiveMode && mouseOnVis
@@ -1061,6 +1079,7 @@ function App(props: RouteComponentProps) {
                             }}
                         >
                             <img
+                                id="genome-view-legend"
                                 className="genome-view-legend"
                                 src={legend}
                                 style={{
@@ -1072,6 +1091,7 @@ function App(props: RouteComponentProps) {
                                 }}
                             />
                             <div
+                                id="variant-view-controls"
                                 className="variant-view-controls"
                                 style={{ top: `${Math.min(visPanelWidth, isMinimalMode ? 650 : 600)}px` }}
                             >
@@ -1280,13 +1300,13 @@ function App(props: RouteComponentProps) {
                                     ? 'visible'
                                     : 'collapse',
                             position: 'absolute',
-                            right: `${VIS_PADDING.right}px`,
+                            right: `${VIS_PADDING.right + CLINICAL_PANEL_WIDTH}px`,
                             top: '60px',
                             background: 'lightgray',
                             color: 'black',
                             padding: '6px',
                             pointerEvents: 'none',
-                            zIndex: 9999,
+                            zIndex: 999,
                             boxShadow: '0 0 20px 2px rgba(0, 0, 0, 0.2)'
                         }}
                     >
@@ -1302,7 +1322,7 @@ function App(props: RouteComponentProps) {
                             height: '100%',
                             visibility: 'collapse',
                             boxShadow: interactiveMode ? 'inset 0 0 4px 2px #2399DB' : 'none',
-                            zIndex: 9999,
+                            zIndex: 999,
                             background: 'none',
                             position: 'absolute',
                             top: 0,
@@ -1441,6 +1461,9 @@ function App(props: RouteComponentProps) {
                     className="move-to-top-btn"
                     tabIndex={showSamples ? -1 : 0}
                     aria-label="Scroll to top."
+                    style={{
+                        right: isMinimalMode ? '10px' : `${VIS_PADDING.right + CLINICAL_PANEL_WIDTH}px`
+                    }}
                     onClick={() => {
                         setTimeout(
                             () => document.getElementById('gosling-panel')?.scrollTo({ top: 0, behavior: 'smooth' }),
@@ -1458,6 +1481,17 @@ function App(props: RouteComponentProps) {
                     <GenomeViewModal />
                     <VariantViewModal />
                 </div>
+                {!isMinimalMode && demo?.clinicalInfo && (
+                    <ClinicalPanel
+                        demo={demo}
+                        gosRef={gosRef}
+                        filteredSamples={filteredSamples}
+                        hasClinicalInfo={!!demo?.clinicalInfo}
+                        isClinicalPanelOpen={isClinicalPanelOpen}
+                        setIsClinicalPanelOpen={setIsClinicalPanelOpen}
+                        setInteractiveMode={setInteractiveMode}
+                    />
+                )}
             </div>
         </ErrorBoundary>
     );
