@@ -212,7 +212,7 @@ const MutationalSignatures = ({ data }: PanelSectionProps) => {
             </div>
             <div tabIndex={isExpanded ? 0 : -1} className="section-body">
                 <ToggleRowGroup
-                    callout={'Click to show in the visualization'}
+                    // callout={'Click to show in the visualization'}
                     header={'HRD-related Features Found'}
                     data={hrDetectData}
                 />
