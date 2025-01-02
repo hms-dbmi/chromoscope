@@ -258,7 +258,6 @@ export const ClinicalPanel = ({
 
     useEffect(() => {
         if (hasClinicalInfo && demo?.clinicalInfo) {
-            console.log('demo.clinicalInfo', demo.clinicalInfo);
             setClinicalInformation(demo.clinicalInfo);
         }
     }, [demo]);
