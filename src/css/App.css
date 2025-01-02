@@ -1386,7 +1386,6 @@ a:hover {
     .gosling-panel {
         overflow-y: scroll;
         overflow-x: hidden;
-        padding: 60px 300px 60px 60px;
     }
 
     .sample-label {
@@ -1632,7 +1631,6 @@ a:hover {
 .instructions-modals-container {
     .modal {
         .modal-dialog {
-            display: flex;
             width: 100%;
         }
         .modal-body {
