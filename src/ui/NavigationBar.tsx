@@ -37,17 +37,14 @@ export const NavigationBar = ({
     return (
         <div className="navigation-container">
             <div className="title links-left">
-                <button 
+                <button
                     className="config-button"
                     tabIndex={showSamples ? -1 : 0}
                     onClick={() => {
                         setShowSamples(true);
                     }}
                 >
-                    <svg
-                        viewBox={ICONS.MENU.viewBox}
-                        visibility={showSmallMultiples ? 'visible' : 'collapse'}
-                    >
+                    <svg viewBox={ICONS.MENU.viewBox} visibility={showSmallMultiples ? 'visible' : 'collapse'}>
                         <title>Menu</title>
                         <path fill="currentColor" d={ICONS.MENU.path[0]} />
                     </svg>
@@ -141,7 +138,9 @@ export const NavigationBar = ({
                                         navigator.clipboard
                                             .writeText(newUrl)
                                             .then(() =>
-                                                alert('The URL of the current session has been copied to your clipboard.')
+                                                alert(
+                                                    'The URL of the current session has been copied to your clipboard.'
+                                                )
                                             );
                                     }
                                 }}
@@ -154,7 +153,6 @@ export const NavigationBar = ({
                             </button>
                         </li>
                     </ul>
-
                 </div>
                 {!isChrome() ? (
                     <a
@@ -187,10 +185,10 @@ export const NavigationBar = ({
                     </svg>
                     <span>GitHub</span>
                 </a>
-                <a 
-                    className="title-doc-link" 
-                    href="https://chromoscope.bio/" 
-                    target="_blank" 
+                <a
+                    className="title-doc-link"
+                    href="https://chromoscope.bio/"
+                    target="_blank"
                     rel="noreferrer"
                     tabIndex={showSamples ? -1 : 0}
                 >
