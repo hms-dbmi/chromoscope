@@ -1101,6 +1101,7 @@ a:hover {
                             font-size: 0.75rem;
                             color: #502d07;
                             margin: auto;
+                            text-align: center;
                         }
                     }
                 }
@@ -1640,7 +1641,7 @@ a:hover {
             overflow-y: scroll;
             display: flex;
             justify-content: start;
-            padding: 0px;
+            padding: 24px 36px;
             width: 100%;
 
             .modal-body-content {
