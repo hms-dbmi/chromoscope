@@ -1076,8 +1076,8 @@ a:hover {
                     }
 
                     .data-row.clickable:hover {
-                        background-color: #d5dce2 !important;
                         cursor: pointer;
+                        font-weight: 600;
                     }
                 }
             }
