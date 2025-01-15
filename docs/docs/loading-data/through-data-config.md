@@ -72,3 +72,143 @@ A multi-sample example:
     }
 ]
 ```
+
+# Genome Interpretation Panel
+
+The data for the genome interpretation panel can be recorded as additional features of the configuration file.
+![Screenshot 2025-01-15 at 10 46 28 AM](https://github.com/user-attachments/assets/02d15e04-0986-4e8e-8da8-2a07eb1119a4)
+For each sample, there is an optional field: `clinicalInfo`, which will display the clinical info if present.
+The `clinicalInfo` has the following fields:
+`summary`, `variants`, `signatures`
+
+The `summary` field is a list of elements with two fields: `label` and `value`. Label can be any string, and will be displayed next to `value` which can also be any string.
+
+The `variants` field is a list of variants, each with the following fields:
+| Property | Type | Note |
+|---|---|---|
+| `gene` | `string` | Required. Gene name |
+| `chr` | `string` | Required. Chromosome with the variant, including the chr prefix|
+| `position` | `int` | Required. Chromosomal coordinate of the mutation|
+| `type` | `string` | Optional. Type of variant, eg. bi-allelic, germline, deletion |
+| `cDNA` | `string` | Optional. cDNA coordinate of the mutation, eg. c.524G>A |
+| `protein change` | `string` | Optional. protein consequence of the mutation, eg. p.Arg175His |
+| `VAF` | `float` | Optional. Variant allele fraction of a mutation in the sample, eg. 0.45 |
+| `mutation` | `string` | Optional. Reference and alternative allele in genomic DNA, eg. G>T |
+
+Example of a configuration with the information necessary for the genome interpretation panel
+```js
+[
+    {
+        id: "SRR7890905_Hartwig",
+        cancer: "breast",
+        assembly: "hg38",
+        vcf: "https://somatic-browser-test.s3.amazonaws.com/SNV_test_tumor_normal_with_panel.vcf.gz",
+        vcfIndex: "https://somatic-browser-test.s3.amazonaws.com/SNV_test_tumor_normal_with_panel.vcf.gz.tbi",
+        vcf2: "https://somatic-browser-test.s3.amazonaws.com/INDEL_test_tumor_normal_with_panel.vcf.gz",
+        vcf2Index: "https://somatic-browser-test.s3.amazonaws.com/INDEL_test_tumor_normal_with_panel.vcf.gz.tbi",
+        sv: "https://somatic-browser-test.s3.amazonaws.com/SRR7890905/SRR7890905.gripss.filtered.bedpe",
+        cnv: "https://somatic-browser-test.s3.amazonaws.com/SRR7890905/SRR7890905.purple.cnv.somatic.reformatted.tsv",
+        bam: "https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam",
+        bai: "https://somatic-browser-test.s3.amazonaws.com/SRR7890905_GAPFI2USVS21.bam.bai",
+        note: "CNV profile - Purple. SVs - Gridss. Mutations and indels - Sentieon",
+    clinicalInfo: {
+    summary: [
+        {
+            label: "grade",
+            value: "2"
+        },
+        {
+            label: "age",
+            value: "32"
+        },
+        {
+            label: "AIMS Subtype",
+            value: "Basal"
+        },
+        {
+            label: "Treatment",
+            value: "None"
+        },
+        {
+            label: "Lymph node status",
+            value: "Negative"
+        }
+        ],
+        variants: [
+        {
+            gene: "TP53",
+            type: "biallelic",
+            cDNA: "c.524G>A",
+            protein change: "p.Arg175His",
+            VAF: "0.97",
+            chr: "chr17",
+            position: "7677976",
+            mutation: "C>T"
+        },
+        {
+            gene: "BRCA2",
+            cDNA: "c.4777G>T",
+            protein change: "p.Glu1593Ter",
+            VAF: "0.45",
+            chr: "chr13",
+            position: "32357888",
+            mutation: "G>T"
+        },
+        {
+            gene: "PTEN",
+            type: "deletion",
+            chr: "chr10",
+            position: "87917777"
+        },
+        {
+            gene: "CDKN2A",
+            type: "deletion",
+            chr: "chr9",
+            position: "21981538"
+        },
+        {
+            gene: "MET",
+            type: "amplification",
+            chr: "chr7",
+            position: "116735286"
+        }
+        ],
+        signatures: [
+        {
+            type: "point_mutations",
+            count: "5100",
+            label: "HRD-attributed point mutations",
+            hrDetect: true
+        },
+        {
+            type: "indels",
+            count: "500",
+            label: "HRD-attributed small deletions with micro-homology",
+            hrDetect: true
+        },
+        {
+            type: "svs_duplications",
+            count: "120",
+            label: "HRD-attributed small tandem duplications",
+            hrDetect: true
+        },
+        {
+            type: "svs_deletions",
+            count: "50",
+            label: "HRD-attributed small deletions",
+            hrDetect: true
+        },
+        {
+            type: "point_mutations",
+            count: "1000",
+            label: "APOBEC-attributed small substitutions",
+            hrDetect: false
+        }
+        ]
+        }
+    }
+]
+```
+
+
+
