@@ -104,7 +104,8 @@ function App(props: RouteComponentProps) {
 
     const currentSpec = useRef<string>();
 
-    const [isClinicalPanelOpen, setIsClinicalPanelOpen] = useState(false);
+    // Clinical Panel will only render in non-minimal mode and if the demo has clinical info
+    const [isClinicalPanelOpen, setIsClinicalPanelOpen] = useState(true);
     const CLINICAL_PANEL_WIDTH = isMinimalMode || !demo?.clinicalInfo ? 0 : isClinicalPanelOpen ? 250 : 45;
 
     // interactions
@@ -145,8 +146,8 @@ function App(props: RouteComponentProps) {
     }
 
     useEffect(() => {
-        setVisPanelWidth(INIT_VIS_PANEL_WIDTH - (VIS_PADDING.left + VIS_PADDING.right + CLINICAL_PANEL_WIDTH));
-    }, [isClinicalPanelOpen]);
+        setVisPanelWidth(INIT_VIS_PANEL_WIDTH - (VIS_PADDING.left + VIS_PADDING.right + CLINICAL_PANEL_WIDTH + 6));
+    }, [demo, isClinicalPanelOpen]);
 
     // update demo
     useEffect(() => {
@@ -196,7 +197,7 @@ function App(props: RouteComponentProps) {
         rightReads.current = [];
 
         // Update the appearance of the clinical panel
-        setIsClinicalPanelOpen(!!demo?.clinicalInfo);
+        setIsClinicalPanelOpen(!!demo?.clinicalInfo && isClinicalPanelOpen);
     }, [demo]);
 
     useEffect(() => {
@@ -564,7 +565,18 @@ function App(props: RouteComponentProps) {
             />
         );
         // !! Removed `demo` not to update twice since `drivers` are updated right after a demo update.
-    }, [ready, xDomain, visPanelWidth, drivers, showOverview, showPutativeDriver, selectedSvId, breakpoints, svReads]);
+    }, [
+        ready,
+        xDomain,
+        visPanelWidth,
+        drivers,
+        showOverview,
+        showPutativeDriver,
+        selectedSvId,
+        breakpoints,
+        svReads,
+        isClinicalPanelOpen
+    ]);
 
     const trackTooltips = useMemo(() => {
         // calculate the offset by the Genome View
@@ -981,7 +993,7 @@ function App(props: RouteComponentProps) {
                         {!isMinimalMode && (
                             <div
                                 style={{
-                                    width: `calc(100% - ${0}px)`,
+                                    width: '100%',
                                     height: '100%',
                                     boxShadow: `inset 0 0 0 3px ${
                                         interactiveMode && mouseOnVis
@@ -1481,7 +1493,7 @@ function App(props: RouteComponentProps) {
                     <GenomeViewModal />
                     <VariantViewModal />
                 </div>
-                {!isMinimalMode && demo?.clinicalInfo && (
+                {!isMinimalMode && !!demo?.clinicalInfo && (
                     <ClinicalPanel
                         demo={demo}
                         gosRef={gosRef}
