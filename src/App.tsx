@@ -105,7 +105,7 @@ function App(props: RouteComponentProps) {
     const currentSpec = useRef<string>();
 
     // Clinical Panel will only render in non-minimal mode and if the demo has clinical info
-    const [isClinicalPanelOpen, setIsClinicalPanelOpen] = useState(true);
+    const [isClinicalPanelOpen, setIsClinicalPanelOpen] = useState(false);
     const CLINICAL_PANEL_WIDTH = isMinimalMode || !demo?.clinicalInfo ? 0 : isClinicalPanelOpen ? 250 : 45;
 
     // interactions
