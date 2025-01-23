@@ -15,12 +15,42 @@ export type DataRowProps = {
     handleClick?: () => void;
 };
 
+export type ClinicalInfo = {
+    summary: SummaryItem[];
+    variants: VariantItem[];
+    signatures: SignatureItem[];
+};
+
+export type SummaryItem = {
+    label: string;
+    value: string;
+};
+
+export type VariantItem = {
+    gene: string;
+    type?: string; // if we know all the possible types, we can narrow down further, i.e., type: "Germline" | "homozygous loss" | ...;
+    cDNA?: string;
+    chr: string;
+    start: string | number;
+    end: string | number;
+    position: string | number;
+    handleClick?: () => void;
+};
+
+export type SignatureItem = {
+    type: string; // if we know all the possible types, we can narrow down further, i.e., type: "indels" | "point_mutations" | ...;
+    count: string | number;
+    label: string;
+    hrDetect: boolean;
+};
+
 // Data row with label and value
 const DataRow = ({ handleClick, label, value }: DataRowProps) => {
-    // Format label to be capitalized
-    let capitalizedLabel: string;
-    if (label) {
-        capitalizedLabel = label.charAt(0).toUpperCase() + label.slice(1);
+    let formattedLabel = label;
+
+    // Format label to be capitalized if string
+    if (label && typeof label === 'string') {
+        formattedLabel = label.charAt(0).toUpperCase() + label.slice(1);
     }
 
     return (
@@ -29,7 +59,7 @@ const DataRow = ({ handleClick, label, value }: DataRowProps) => {
             onClick={handleClick ? () => handleClick() : null}
             role={handleClick ? 'button' : ''}
         >
-            {label ? <span className="data-label">{capitalizedLabel}</span> : null}
+            {label ? <span className="data-label">{formattedLabel}</span> : null}
             <span className="data-value">{value}</span>
         </li>
     );
@@ -82,11 +112,12 @@ const ToggleRowGroup = ({ callout = null, header, data }: ToggleRowGroupProps) =
 
 type PanelSectionProps = {
     data: DataRowProps[];
+    callout?: string;
     handleZoomToGene?: (gene: string) => void;
 };
 
 // Panel section for Clinical Summary data
-const ClinicalSummary = ({ data }: PanelSectionProps) => {
+const ClinicalSummary = ({ data, callout = null }: PanelSectionProps) => {
     const [isExpanded, setIsExpanded] = useState(true);
 
     return (
@@ -101,11 +132,13 @@ const ClinicalSummary = ({ data }: PanelSectionProps) => {
                 </div>
             </button>
             <div tabIndex={isExpanded ? 0 : -1} className="section-body">
-                <div className="callout">
-                    <div className="content">
-                        <span>Invasive Ductal Carcinoma</span>
+                {callout && (
+                    <div className="callout">
+                        <div className="content">
+                            <span>{callout}</span>
+                        </div>
                     </div>
-                </div>
+                )}
                 <ul className="data-list">
                     {data.map((row: DataRowProps, i: number) => {
                         return <DataRow key={i} label={row.label} value={row.value} />;
@@ -240,7 +273,15 @@ export const ClinicalPanel = ({
     setInteractiveMode,
     setIsClinicalPanelOpen
 }: ClinicalPanelProps) => {
-    const [clinicalInformation, setClinicalInformation] = useState(null);
+    const { clinicalInfo: clinicalInformation, cancer } = demo;
+
+    // Format cancer label to add as callout
+    const formattedCancerLabel = cancer
+        ? cancer
+              .split(' ')
+              .map((s: string) => s.charAt(0).toUpperCase() + s.slice(1))
+              .join(' ')
+        : null;
 
     const handleZoomToGene = (gene: string) => {
         setInteractiveMode(true);
@@ -255,12 +296,6 @@ export const ClinicalPanel = ({
 
         gosRef.current.api.zoomToGene(`${demo.id}-mid-ideogram`, `${gene}`, 1000);
     };
-
-    useEffect(() => {
-        if (hasClinicalInfo && demo?.clinicalInfo) {
-            setClinicalInformation(demo.clinicalInfo);
-        }
-    }, [demo]);
 
     return (
         <div
@@ -285,7 +320,7 @@ export const ClinicalPanel = ({
 
                 {hasClinicalInfo && clinicalInformation ? (
                     <div className="content">
-                        <ClinicalSummary data={clinicalInformation?.summary ?? []} />
+                        <ClinicalSummary data={clinicalInformation?.summary ?? []} callout={formattedCancerLabel} />
                         <ClinicallyRelevantVariants
                             handleZoomToGene={handleZoomToGene}
                             data={clinicalInformation?.variants ?? []}
