@@ -112,11 +112,12 @@ const ToggleRowGroup = ({ callout = null, header, data }: ToggleRowGroupProps) =
 
 type PanelSectionProps = {
     data: DataRowProps[];
+    callout?: string;
     handleZoomToGene?: (gene: string) => void;
 };
 
 // Panel section for Clinical Summary data
-const ClinicalSummary = ({ data }: PanelSectionProps) => {
+const ClinicalSummary = ({ data, callout = null }: PanelSectionProps) => {
     const [isExpanded, setIsExpanded] = useState(true);
 
     return (
@@ -131,11 +132,13 @@ const ClinicalSummary = ({ data }: PanelSectionProps) => {
                 </div>
             </button>
             <div tabIndex={isExpanded ? 0 : -1} className="section-body">
-                <div className="callout">
-                    <div className="content">
-                        <span>Invasive Ductal Carcinoma</span>
+                {callout && (
+                    <div className="callout">
+                        <div className="content">
+                            <span>{callout}</span>
+                        </div>
                     </div>
-                </div>
+                )}
                 <ul className="data-list">
                     {data.map((row: DataRowProps, i: number) => {
                         return <DataRow key={i} label={row.label} value={row.value} />;
@@ -270,7 +273,15 @@ export const ClinicalPanel = ({
     setInteractiveMode,
     setIsClinicalPanelOpen
 }: ClinicalPanelProps) => {
-    const { clinicalInfo: clinicalInformation } = demo;
+    const { clinicalInfo: clinicalInformation, cancer } = demo;
+
+    // Format cancer label to add as callout
+    const formattedCancerLabel = cancer
+        ? cancer
+              .split(' ')
+              .map((s: string) => s.charAt(0).toUpperCase() + s.slice(1))
+              .join(' ')
+        : null;
 
     const handleZoomToGene = (gene: string) => {
         setInteractiveMode(true);
@@ -309,7 +320,7 @@ export const ClinicalPanel = ({
 
                 {hasClinicalInfo && clinicalInformation ? (
                     <div className="content">
-                        <ClinicalSummary data={clinicalInformation?.summary ?? []} />
+                        <ClinicalSummary data={clinicalInformation?.summary ?? []} callout={formattedCancerLabel} />
                         <ClinicallyRelevantVariants
                             handleZoomToGene={handleZoomToGene}
                             data={clinicalInformation?.variants ?? []}
