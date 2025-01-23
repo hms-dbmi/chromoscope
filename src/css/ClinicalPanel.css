@@ -170,6 +170,7 @@
                         .data-value {
                             flex: 2;
                             color: #000000;
+                            word-break: break-all;
                         }
                     }
 
