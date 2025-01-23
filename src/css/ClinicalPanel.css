@@ -157,6 +157,7 @@
                     .data-row {
                         box-sizing: border-box !important;
                         display: flex;
+                        gap: 8px;
                         justify-content: flex-start;
                         padding: 8px 0px;
                         border-bottom: 1px solid #e0e6eb;
