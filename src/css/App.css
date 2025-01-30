@@ -548,11 +548,16 @@ a:hover {
 }
 
 .thumbnail-generate-button {
-    margin-left: 400px;
     line-height: 30px;
     border-radius: 0px;
-    border: 1px solid grey;
+    border: 1px solid lightgray;
+    background-color: transparent;
     cursor: pointer;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+.thumbnail-generate-button:hover {
+    background-color: #eaeaea;
 }
 
 .thumbnail-loading-message {
@@ -1045,22 +1050,6 @@ a:hover {
 }
 .navigation-button:active:not(:disabled) {
     background-color: #e6e4e4;
-}
-
-.clinical-panel {
-    position: fixed;
-    width: 60px;
-    padding: 10px 5px;
-    border-radius: 10px 0px 0px 10px;
-    height: 100%;
-    top: 60px;
-    right: 0px;
-    background-color: #eef2f6;
-    border: 1px solid #d7dfe4;
-}
-
-.clinical-panel.open {
-    width: 180px;
 }
 
 /* Minimal Mode styles */
