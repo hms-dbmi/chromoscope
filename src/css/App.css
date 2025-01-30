@@ -833,6 +833,155 @@ a:hover {
     outline-offset: 2px;
 }
 
+/* Styles for the navigation panel */
+
+.navigation-panel {
+    position: fixed;
+    z-index: 998;
+    display: flex;
+    flex-direction: column;
+    top: 60px;
+    left: 0px;
+    width: 100px;
+    height: min-content;
+    padding: 20px 10px;
+    box-sizing: border-box !important;
+
+    .navigation-buttons {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        left: 0px;
+        top: 0px;
+        background-color: #ffffff;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        padding: 4px 4px;
+        gap: 15px;
+        box-shadow: -1px 1px 4px 1px #e5e5e5;
+
+        .active-backdrop {
+            background-color: #e4eeff;
+            width: 70px;
+            height: 70px;
+            border-radius: 8px;
+            position: absolute;
+            transition: top 100ms linear;
+            z-index: -1;
+        }
+        .active-backdrop.genome {
+            top: 5px;
+        }
+        .active-backdrop.variant {
+            top: 90px;
+        }
+        .active-backdrop.read {
+            top: 174px;
+        }
+
+        .navigation-button-container {
+            display: flex;
+            margin: auto;
+
+            .navigation-button {
+                margin: auto;
+                width: 70px;
+                height: 70px;
+                border-radius: 8px;
+                border: 1px solid;
+                padding: 5px 0px;
+                background-color: transparent;
+                border: none;
+
+                .navigation-button-content {
+                    display: flex;
+                    flex-direction: column;
+                    color: #5e5e5e;
+                    justify-content: center;
+                    font-size: 0.875rem;
+
+                    .section-icon {
+                        margin: auto;
+                        width: 30px;
+                    }
+                }
+            }
+            .navigation-button:hover {
+                background-color: #f8f8f8;
+                transition: background-color 50ms ease-out;
+                .navigation-button-content {
+                    font-weight: 500;
+                    color: #5e5e5e;
+                }
+            }
+            .navigation-button:active {
+                background-color: #f4f4f4;
+            }
+            .navigation-button.active {
+                .navigation-button-content {
+                    font-weight: 500;
+                    color: #5286c9;
+                    /* transition-delay: 250ms; */
+                    /* transition-property: color; */
+                    transition: color 50ms ease-out;
+                }
+            }
+            .navigation-button.active:hover {
+                background-color: transparent;
+            }
+            .navigation-button:disabled {
+                .navigation-button-content {
+                    color: #c3c3c3;
+                }
+            }
+            .navigation-button:disabled:hover {
+                background-color: #ffffff;
+            }
+        }
+    }
+
+    .help-button-container {
+        padding: 20px 5px;
+        display: flex;
+        justify-content: center;
+
+        .help-button {
+            background-color: white;
+            border: 1px solid #5e5e5e;
+            border-radius: 100%;
+            height: 20px;
+            width: 20px;
+            display: flex;
+            justify-content: center;
+            padding: 5px;
+            box-shadow: -1px 1px 4px 1px #5e5e5e33;
+
+            .help-button-icon {
+                width: 15px;
+                height: 15px;
+                margin: auto;
+
+                path {
+                    fill: #5e5e5e;
+                }
+            }
+        }
+        .help-button:hover {
+            background-color: #5e5e5e;
+            transition: background-color 150ms ease-out, box-shadow 150ms ease-out;
+            .help-button-icon {
+                path {
+                    fill: white;
+                    transition: fill 150ms ease-out;
+                }
+            }
+        }
+        .help-button:active {
+            box-shadow: none;
+        }
+    }
+}
+
 .navigation-buttons {
     box-sizing: border-box;
     position: fixed;
@@ -898,11 +1047,28 @@ a:hover {
     background-color: #e6e4e4;
 }
 
+.clinical-panel {
+    position: fixed;
+    width: 60px;
+    padding: 10px 5px;
+    border-radius: 10px 0px 0px 10px;
+    height: 100%;
+    top: 60px;
+    right: 0px;
+    background-color: #eef2f6;
+    border: 1px solid #d7dfe4;
+}
+
+.clinical-panel.open {
+    width: 180px;
+}
+
 /* Minimal Mode styles */
 .minimal_mode {
     .gosling-panel {
         overflow-y: scroll;
         overflow-x: hidden;
+        padding: 60px 300px 60px 100px;
     }
 
     .sample-label {
@@ -974,8 +1140,6 @@ a:hover {
 
             .open-in-chromoscope-link:hover {
                 text-decoration: none;
-                cursor: pointer;
-                background-color: #ebebeb;
             }
 
             .open-in-chromoscope-link:active {
@@ -1150,6 +1314,10 @@ a:hover {
         .modal-dialog {
             width: 100%;
         }
+
+        .modal-content {
+            border-radius: 20px;
+        }
         .modal-body {
             box-sizing: border-box !important;
             max-height: 80vh;
@@ -1158,11 +1326,80 @@ a:hover {
             justify-content: start;
             padding: 24px 36px;
             width: 100%;
+            border-radius: 19px;
+
+            .modal-navigation-panel {
+                display: flex;
+                flex-direction: column;
+                justify-content: start;
+                padding: 100px 20px 20px 20px;
+                border-right: 1px solid #b0b0b0;
+                width: 200px;
+                background-color: #202f48;
+
+                .modal-navigation-panel-title {
+                    font-size: 0.75rem;
+                    letter-spacing: 0.9px;
+                    font-weight: 600;
+                    color: white;
+                    padding: 10px;
+                }
+
+                .modal-navigation-panel-links {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    /* margin: auto; */
+                    height: min-content;
+
+                    .modal-navigation-link {
+                        display: flex;
+                        width: 160px;
+                        /* background-color: #f2f9ff; */
+                        /* border: 1px solid #cce0f1; */
+                        border-radius: 4px;
+                        color: white;
+                        padding: 5px 10px;
+                        text-decoration: none;
+                        border: 1px solid transparent;
+
+                        svg {
+                            width: 18px;
+                            height: auto;
+                        }
+                        span {
+                            font-weight: 600;
+                            margin-left: 16px;
+                            text-align: center;
+                        }
+                    }
+                    .modal-navigation-link:hover {
+                        text-decoration: none;
+                        color: #1e3c75;
+                        background-color: #f2f9ff;
+                        border-color: #cce0f1;
+                    }
+                }
+            }
+
+            .instructions-modal-body {
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+
+                .header {
+                    display: flex;
+                    justify-content: space-between;
+                    background-color: #eef2f6;
+                    padding: 20px;
+                }
+            }
 
             .modal-body-content {
                 display: flex;
                 flex-direction: column;
                 width: 100%;
+                padding: 20px;
             }
             .section {
                 display: flex;
