@@ -1491,7 +1491,7 @@ function App(props: RouteComponentProps) {
                     </svg>
                 </button>
                 <div id="hidden-gosling" style={{ visibility: 'collapse', position: 'fixed' }} />
-                <div className="instructions-modals-container">
+                <div className={`instructions-modals-container ${isMinimalMode ? 'minimal' : 'vanilla'}`}>
                     {isMinimalMode ? (
                         <>
                             <GenomeViewModal />
@@ -1510,6 +1510,7 @@ function App(props: RouteComponentProps) {
                         isClinicalPanelOpen={isClinicalPanelOpen}
                         setIsClinicalPanelOpen={setIsClinicalPanelOpen}
                         setInteractiveMode={setInteractiveMode}
+                        setSelectedSvId={setSelectedSvId}
                     />
                 )}
             </div>
