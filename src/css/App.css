@@ -1346,32 +1346,6 @@ a:hover {
                     margin: 16px 0px;
                     display: flex;
                     min-height: 120px;
-
-                    p {
-                        span.text-orange {
-                            font-weight: 500;
-                            color: #e1aa4c;
-                        }
-                        span.text-green {
-                            font-weight: 500;
-                            color: #469c77;
-                        }
-                        span.text-green-alignment {
-                            color: #5a9c7c;
-                        }
-                        span.text-gray {
-                            color: #757575;
-                        }
-                        span.text-blue {
-                            color: #71b5f5;
-                        }
-                        span.text-coral {
-                            color: #c96a33;
-                        }
-                        span.text-red {
-                            color: #d73c3a;
-                        }
-                    }
                 }
                 .block:last-of-type {
                     margin-bottom: 0px;
@@ -1438,4 +1412,37 @@ a:hover {
             }
         }
     }
+}
+
+.text-orange {
+    font-weight: 500;
+    color: #e1aa4c;
+}
+.text-green {
+    font-weight: 500;
+    color: #469c77;
+}
+.text-green-alignment {
+    font-weight: 500;
+    color: #5a9c7c;
+}
+.text-gray {
+    font-weight: 500;
+    color: #757575;
+}
+.text-blue {
+    font-weight: 500;
+    color: #71b5f5;
+}
+.text-dark-blue {
+    font-weight: 500;
+    color: #2c6aab;
+}
+.text-coral {
+    font-weight: 500;
+    color: #c96a33;
+}
+.text-red {
+    font-weight: 500;
+    color: #d73c3a;
 }

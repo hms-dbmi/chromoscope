@@ -287,7 +287,7 @@ export const ClinicalPanel = ({
               .join(' ')
         : null;
 
-    const handleZoomToGene = (gene: string, svId: string = "") => {
+    const handleZoomToGene = (gene: string, svId = '') => {
         setTimeout(() => {
             document.getElementById('variant-view')?.scrollIntoView({
                 block: 'start',

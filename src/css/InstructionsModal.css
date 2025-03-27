@@ -1,6 +1,5 @@
 .instructions-modals-container.vanilla {
     .modal {
-
         .modal-dialog {
             margin: 30px auto;
             width: 95%;
@@ -115,8 +114,8 @@
                 .section-header {
                     border-bottom: 1px solid black;
                     padding-bottom: 10px;
-                    background-color: #F3F8FE;
-                    border-bottom: 1px solid #BBC5E1;
+                    background-color: #f3f8fe;
+                    border-bottom: 1px solid #bbc5e1;
                     color: black;
                     margin: 0px;
                     padding: 30px 20px 15px;
@@ -132,28 +131,27 @@
                         font-weight: 400;
                     }
                 }
-                
+
                 .section-labels {
                     display: flex;
                     position: sticky;
                     background-color: white;
-                    border-bottom: 1px solid #BBC5E1;
+                    border-bottom: 1px solid #bbc5e1;
                     top: 0px;
                     z-index: 1;
-                    padding: 0px 30px;
+                    padding: 0px 30px 0px 0px;
 
                     h4 {
                         display: flex;
                         flex: 1;
                         font-weight: 600;
-                        font-size: 1.25rem;
+                        font-size: 1rem;
                         padding: 15px 0px 15px 3rem;
                         margin-bottom: 0px;
-                        color: #0A2B47;
-
-                        &:first-of-type {
-                            background-color: transparent;
-                        }
+                        color: #0a2b47;
+                    }
+                    h4:first-of-type {
+                        justify-content: center;
                     }
                 }
 
@@ -164,7 +162,7 @@
                         position: relative;
                         display: flex;
                         flex-direction: column;
-                        border-top: 1px solid #DADADA;
+                        border-top: 1px solid #dadada;
                         margin: 0px 30px;
 
                         .block-header {
@@ -174,14 +172,14 @@
                             background-color: white;
                             transform: translate(0px, -50%);
                             width: max-content;
-                            
+
                             span {
-                                background-color: #E2EEFF;
+                                background-color: #e2eeff;
                                 padding: 8px 15px;
                                 font-size: 0.875rem;
                                 border-radius: 15px;
                                 font-weight: 300;
-                                
+
                                 b {
                                     font-weight: 600;
                                 }
@@ -202,7 +200,8 @@
                                     padding: 0rem 1rem 0rem 3rem;
 
                                     .example-link {
-                                        color: #3792FD;
+                                        color: #3792fd;
+                                        font-weight: 600;
                                     }
 
                                     .gene-search-image {
@@ -216,7 +215,7 @@
                                         height: 25px;
                                         border-radius: 10px 0px 0px 10px;
                                         border: 2px solid lightgray;
-        
+
                                         b {
                                             line-height: 20px;
                                             margin: auto auto 5px;
@@ -231,7 +230,7 @@
                                 .image {
                                     padding: 0px;
                                     margin: 0px;
-                                    border: 1px solid #E7E7E7;
+                                    border: 1px solid #e7e7e7;
                                 }
                             }
                         }
@@ -331,7 +330,7 @@
                     display: flex;
                     flex-direction: row;
                     justify-content: space-between;
-                    
+
                     .block-item {
                         display: flex;
                         flex: 1;
@@ -341,12 +340,12 @@
                             width: 100%;
                         }
                     }
-
                 }
             }
         }
     }
-    .modal.genome-view, .modal.variant-view {
+    .modal.genome-view,
+    .modal.variant-view {
         .modal-body {
             box-sizing: border-box !important;
             max-height: 80vh;
@@ -442,8 +441,8 @@
             }
         }
     }
-    
 }
+
 .instructions-modals-container.minimal {
     .modal-body {
         box-sizing: border-box !important;
