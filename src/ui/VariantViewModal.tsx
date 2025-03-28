@@ -9,7 +9,7 @@ import variant_interactions_5 from '../script/img/modal_images/variant_view/inte
 
 export const VariantViewModalContent = () => {
     return (
-        <div className="modal-body-content">
+        <div className="modal-body-content variant-view">
             <div className="section interpretation">
                 <h3>Interpretation</h3>
                 <hr className="header" />

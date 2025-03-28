@@ -6,7 +6,7 @@ import genome_interactions_4 from '../script/img/modal_images/genome_view/intera
 
 export const GenomeViewModalContent = () => {
     return (
-        <div className="modal-body-content">
+        <div className="modal-body-content genome-view">
             <div className="section interactions">
                 <h3>Interactions</h3>
                 <hr className="header" />

@@ -342,6 +342,29 @@
                     }
                 }
             }
+
+            .modal-body-content.genome-view,
+            .modal-body-content.variant-view,
+            .modal-body-content.read-view {
+                margin: 0rem 1rem;
+                width: auto;
+
+                .block {
+                    justify-content: space-evenly;
+                }
+                hr {
+                    /* display: none; */
+                    padding: 0px;
+                }
+
+                .section {
+                    h3 {
+                        color: #0a2b47;
+                        margin: 1rem;
+                        font-size: 1.5rem;
+                    }
+                }
+            }
         }
     }
     .modal.genome-view,

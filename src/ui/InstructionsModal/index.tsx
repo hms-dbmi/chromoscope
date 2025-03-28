@@ -11,13 +11,53 @@ import { ICONS } from '../../icon';
 const renderInstructionBody = (activeTab: string) => {
     switch (activeTab) {
         case 'getting-started':
-            return <GettingStartedModalContent />;
+            return (
+                <>
+                    <div className="section-header">
+                        <h4>
+                            <b>Getting Started:</b>
+                        </h4>
+                        <h3>How to interpret structural variants in a cancer genome with Chromoscope</h3>
+                    </div>
+                    <GettingStartedModalContent />
+                </>
+            );
         case 'genome-view':
-            return <GenomeViewModalContent />;
+            return (
+                <>
+                    <div className="section-header">
+                        <h4>
+                            <b>Genome View:</b>
+                        </h4>
+                        <h3>Overview of a single genome</h3>
+                    </div>
+                    <GenomeViewModalContent />
+                </>
+            );
         case 'variant-view':
-            return <VariantViewModalContent />;
+            return (
+                <>
+                    <div className="section-header">
+                        <h4>
+                            <b>Variant View:</b>
+                        </h4>
+                        <h3>Impact of structural variants on genes</h3>
+                    </div>
+                    <VariantViewModalContent />
+                </>
+            );
         case 'read-view':
-            return <ReadViewModalContent />;
+            return (
+                <>
+                    <div className="section-header">
+                        <h4>
+                            <b>Read View:</b>
+                        </h4>
+                        <h3>Sequencing read support of SVs</h3>
+                    </div>
+                    <ReadViewModalContent />
+                </>
+            );
         default:
             return null;
     }
@@ -35,6 +75,7 @@ export const InstructionsModalBody = ({ activeTab }: InstructionsModalBodyProps)
                 </h1>
                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             {renderInstructionBody(activeTab)}
         </div>
     );

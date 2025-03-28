@@ -13,13 +13,6 @@ export const GettingStartedModalContent: React.FC = () => {
     return (
         <div className="modal-body-content">
             <div className="section">
-                <div className="section-header">
-                    <h4>
-                        <b>Getting Started:</b>
-                    </h4>
-                    <h3>How to interpret structural variants in a cancer genome with Chromoscope</h3>
-                </div>
-
                 <div className="section-labels">
                     <h4>View</h4>
                     <h4>Interactions</h4>

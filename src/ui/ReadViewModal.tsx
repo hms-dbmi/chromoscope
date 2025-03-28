@@ -7,7 +7,7 @@ import read_interpretation_3 from '../script/img/modal_images/read_view/interpre
 
 export const ReadViewModalContent = () => {
     return (
-        <div className="modal-body-content">
+        <div className="modal-body-content read-view">
             <div className="section interpretation">
                 <h3>Interpretation</h3>
                 <hr className="header" />
