@@ -7,57 +7,61 @@ import { ReadViewModalContent } from '../ReadViewModal';
 
 import { ICONS } from '../../icon';
 
+// Helper for rendering the instruction header based on the active tab
+const renderInstructionHeader = (activeTab: string) => {
+    switch (activeTab) {
+        case 'getting-started':
+            return (
+                <div className="section-header">
+                    <h4>
+                        <b>Getting Started:</b>
+                    </h4>
+                    <h3>How to interpret structural variants in a cancer genome with Chromoscope</h3>
+                </div>
+            );
+        case 'genome-view':
+            return (
+                <div className="section-header">
+                    <h4>
+                        <b>Genome View:</b>
+                    </h4>
+                    <h3>Overview of a single genome</h3>
+                </div>
+            );
+        case 'variant-view':
+            return (
+                <div className="section-header">
+                    <h4>
+                        <b>Variant View:</b>
+                    </h4>
+                    <h3>Impact of structural variants on genes</h3>
+                </div>
+            );
+        case 'read-view':
+            return (
+                <div className="section-header">
+                    <h4>
+                        <b>Read View:</b>
+                    </h4>
+                    <h3>Sequencing read support of SVs</h3>
+                </div>
+            );
+        default:
+            return null;
+    }
+};
+
 // Helper for rendering the instruction body based on the active tab
 const renderInstructionBody = (activeTab: string) => {
     switch (activeTab) {
         case 'getting-started':
-            return (
-                <>
-                    <div className="section-header">
-                        <h4>
-                            <b>Getting Started:</b>
-                        </h4>
-                        <h3>How to interpret structural variants in a cancer genome with Chromoscope</h3>
-                    </div>
-                    <GettingStartedModalContent />
-                </>
-            );
+            return <GettingStartedModalContent />;
         case 'genome-view':
-            return (
-                <>
-                    <div className="section-header">
-                        <h4>
-                            <b>Genome View:</b>
-                        </h4>
-                        <h3>Overview of a single genome</h3>
-                    </div>
-                    <GenomeViewModalContent />
-                </>
-            );
+            return <GenomeViewModalContent />;
         case 'variant-view':
-            return (
-                <>
-                    <div className="section-header">
-                        <h4>
-                            <b>Variant View:</b>
-                        </h4>
-                        <h3>Impact of structural variants on genes</h3>
-                    </div>
-                    <VariantViewModalContent />
-                </>
-            );
+            return <VariantViewModalContent />;
         case 'read-view':
-            return (
-                <>
-                    <div className="section-header">
-                        <h4>
-                            <b>Read View:</b>
-                        </h4>
-                        <h3>Sequencing read support of SVs</h3>
-                    </div>
-                    <ReadViewModalContent />
-                </>
-            );
+            return <ReadViewModalContent />;
         default:
             return null;
     }
@@ -70,9 +74,7 @@ export const InstructionsModalBody = ({ activeTab }: InstructionsModalBodyProps)
     return (
         <div className="instructions-modal-body">
             <div className="header">
-                <h1 className="modal-title fs-5" id="exampleModalLabel">
-                    User Guide
-                </h1>
+                {renderInstructionHeader(activeTab)}
                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 

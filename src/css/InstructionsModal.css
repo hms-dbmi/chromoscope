@@ -106,19 +106,15 @@
 
                 .header {
                     display: flex;
-                    justify-content: space-between;
-                    background-color: #eef2f6;
-                    padding: 20px;
+                    background-color: #f3f8fe;
+                    border-bottom: 1px solid #bbc5e1;
+                    padding: 30px;
                 }
 
                 .section-header {
-                    border-bottom: 1px solid black;
-                    padding-bottom: 10px;
-                    background-color: #f3f8fe;
-                    border-bottom: 1px solid #bbc5e1;
                     color: black;
                     margin: 0px;
-                    padding: 30px 20px 15px;
+                    width: 100%;
 
                     h4 {
                         font-size: 1.125rem;
@@ -129,6 +125,7 @@
                     h3 {
                         font-size: 1.25rem;
                         font-weight: 400;
+                        margin-bottom: 0px;
                     }
                 }
 
