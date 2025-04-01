@@ -153,8 +153,6 @@
                 }
 
                 .section-content {
-                    padding-top: 50px;
-
                     .block.triad {
                         position: relative;
                         display: flex;
@@ -256,18 +254,19 @@
 
                 hr {
                     color: #cdcdcd;
-                    border-width: 1px;
+                    border-width: 2px;
                     margin: 0px;
                 }
                 hr.header {
                     color: #b0b0b0;
                     border-width: 2px;
+                    border-bottom: none;
                 }
 
                 .block {
                     flex: 1;
                     display: flex;
-                    margin: 32px 0px;
+                    margin: 40px 0px;
                     min-height: 120px;
 
                     p {
@@ -286,7 +285,7 @@
                     }
 
                     img {
-                        width: 250px;
+                        width: 400px;
                         height: fit-content;
                         margin: auto 0px;
                         border: 2px solid #ebebeb;

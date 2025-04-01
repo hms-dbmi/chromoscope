@@ -13,7 +13,7 @@ export const GettingStartedModalContent: React.FC = () => {
     return (
         <div className="modal-body-content">
             <div className="section">
-                <div className="section-labels">
+                <div className="section-labels mb-5">
                     <h4>View</h4>
                     <h4>Interactions</h4>
                     <h4>Interpretation</h4>
