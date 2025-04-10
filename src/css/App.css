@@ -1,6 +1,7 @@
 /* Import component-level CSS files */
 @import url('./NavigationBar.css');
 @import url('./ClinicalPanel.css');
+@import url('./InstructionsModal.css');
 
 /* Overwrite Bootstrap's default box-sizing */
 *,
@@ -548,11 +549,16 @@ a:hover {
 }
 
 .thumbnail-generate-button {
-    margin-left: 400px;
     line-height: 30px;
     border-radius: 0px;
-    border: 1px solid grey;
+    border: 1px solid lightgray;
+    background-color: transparent;
     cursor: pointer;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+.thumbnail-generate-button:hover {
+    background-color: #eaeaea;
 }
 
 .thumbnail-loading-message {
@@ -833,6 +839,155 @@ a:hover {
     outline-offset: 2px;
 }
 
+/* Styles for the navigation panel */
+
+.navigation-panel {
+    position: fixed;
+    z-index: 998;
+    display: flex;
+    flex-direction: column;
+    top: 60px;
+    left: 0px;
+    width: 100px;
+    height: min-content;
+    padding: 20px 10px;
+    box-sizing: border-box !important;
+
+    .navigation-buttons {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        left: 0px;
+        top: 0px;
+        background-color: #ffffff;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        padding: 4px 4px;
+        gap: 15px;
+        box-shadow: -1px 1px 4px 1px #e5e5e5;
+
+        .active-backdrop {
+            background-color: #e4eeff;
+            width: 70px;
+            height: 70px;
+            border-radius: 8px;
+            position: absolute;
+            transition: top 100ms linear;
+            z-index: -1;
+        }
+        .active-backdrop.genome {
+            top: 5px;
+        }
+        .active-backdrop.variant {
+            top: 90px;
+        }
+        .active-backdrop.read {
+            top: 174px;
+        }
+
+        .navigation-button-container {
+            display: flex;
+            margin: auto;
+
+            .navigation-button {
+                margin: auto;
+                width: 70px;
+                height: 70px;
+                border-radius: 8px;
+                border: 1px solid;
+                padding: 5px 0px;
+                background-color: transparent;
+                border: none;
+
+                .navigation-button-content {
+                    display: flex;
+                    flex-direction: column;
+                    color: #5e5e5e;
+                    justify-content: center;
+                    font-size: 0.875rem;
+
+                    .section-icon {
+                        margin: auto;
+                        width: 30px;
+                    }
+                }
+            }
+            .navigation-button:hover {
+                background-color: #f8f8f8;
+                transition: background-color 50ms ease-out;
+                .navigation-button-content {
+                    font-weight: 500;
+                    color: #5e5e5e;
+                }
+            }
+            .navigation-button:active {
+                background-color: #f4f4f4;
+            }
+            .navigation-button.active {
+                .navigation-button-content {
+                    font-weight: 500;
+                    color: #5286c9;
+                    /* transition-delay: 250ms; */
+                    /* transition-property: color; */
+                    transition: color 50ms ease-out;
+                }
+            }
+            .navigation-button.active:hover {
+                background-color: transparent;
+            }
+            .navigation-button:disabled {
+                .navigation-button-content {
+                    color: #c3c3c3;
+                }
+            }
+            .navigation-button:disabled:hover {
+                background-color: #ffffff;
+            }
+        }
+    }
+
+    .help-button-container {
+        padding: 20px 5px;
+        display: flex;
+        justify-content: center;
+
+        .help-button {
+            background-color: white;
+            border: 1px solid #5e5e5e;
+            border-radius: 100%;
+            height: 20px;
+            width: 20px;
+            display: flex;
+            justify-content: center;
+            padding: 5px;
+            box-shadow: -1px 1px 4px 1px #5e5e5e33;
+
+            .help-button-icon {
+                width: 15px;
+                height: 15px;
+                margin: auto;
+
+                path {
+                    fill: #5e5e5e;
+                }
+            }
+        }
+        .help-button:hover {
+            background-color: #5e5e5e;
+            transition: background-color 150ms ease-out, box-shadow 150ms ease-out;
+            .help-button-icon {
+                path {
+                    fill: white;
+                    transition: fill 150ms ease-out;
+                }
+            }
+        }
+        .help-button:active {
+            box-shadow: none;
+        }
+    }
+}
+
 .navigation-buttons {
     box-sizing: border-box;
     position: fixed;
@@ -903,6 +1058,7 @@ a:hover {
     .gosling-panel {
         overflow-y: scroll;
         overflow-x: hidden;
+        padding: 60px 300px 60px 100px;
     }
 
     .sample-label {
@@ -974,8 +1130,6 @@ a:hover {
 
             .open-in-chromoscope-link:hover {
                 text-decoration: none;
-                cursor: pointer;
-                background-color: #ebebeb;
             }
 
             .open-in-chromoscope-link:active {
@@ -1145,108 +1299,6 @@ a:hover {
     }
 }
 
-.instructions-modals-container {
-    .modal {
-        .modal-dialog {
-            width: 100%;
-        }
-        .modal-body {
-            box-sizing: border-box !important;
-            max-height: 80vh;
-            overflow-y: scroll;
-            display: flex;
-            justify-content: start;
-            padding: 24px 36px;
-            width: 100%;
-
-            .modal-body-content {
-                display: flex;
-                flex-direction: column;
-                width: 100%;
-            }
-            .section {
-                display: flex;
-                flex-direction: column;
-                /* margin-bottom: 20px; */
-
-                .section-content {
-                    padding: 0px 55px;
-                }
-
-                h3 {
-                    font-size: 1.25rem;
-                    font-weight: 600;
-                    margin-bottom: 4px;
-                }
-
-                hr {
-                    color: #cdcdcd;
-                    border-width: 1px;
-                    margin: 0px;
-                }
-                hr.header {
-                    color: #b0b0b0;
-                    border-width: 2px;
-                }
-
-                .block {
-                    flex: 1;
-                    display: flex;
-                    margin: 32px 0px;
-                    min-height: 120px;
-                }
-                .block.with-image {
-                    justify-content: center;
-                    height: auto;
-
-                    .image-container.two-image {
-                        display: flex;
-                        flex-direction: column;
-                    }
-
-                    img {
-                        width: 250px;
-                        height: fit-content;
-                        margin: auto 0px;
-                        border: 2px solid #ebebeb;
-                        object-fit: contain;
-                    }
-
-                    .text {
-                        display: flex;
-                        width: 300px;
-                        flex-direction: column;
-                        justify-content: space-evenly;
-                        margin-left: 60px;
-
-                        p {
-                            margin-bottom: 0px;
-
-                            span.text-button-example {
-                                display: inline-flex;
-                                justify-content: center;
-                                background-color: #efefef;
-                                width: 25px;
-                                height: 25px;
-                                border-radius: 10px 0px 0px 10px;
-                                border: 2px solid lightgray;
-
-                                b {
-                                    line-height: 20px;
-                                    margin: auto auto 5px;
-                                }
-                            }
-                            span.text-button-example.right {
-                                border-radius: 0px 10px 10px 0px;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 .popover.track-tooltip-popover {
     max-width: none;
     box-shadow: 0px 0px 10px 0px #22252954;
@@ -1294,32 +1346,6 @@ a:hover {
                     margin: 16px 0px;
                     display: flex;
                     min-height: 120px;
-
-                    p {
-                        span.text-orange {
-                            font-weight: 500;
-                            color: #e1aa4c;
-                        }
-                        span.text-green {
-                            font-weight: 500;
-                            color: #469c77;
-                        }
-                        span.text-green-alignment {
-                            color: #5a9c7c;
-                        }
-                        span.text-gray {
-                            color: #757575;
-                        }
-                        span.text-blue {
-                            color: #71b5f5;
-                        }
-                        span.text-coral {
-                            color: #c96a33;
-                        }
-                        span.text-red {
-                            color: #d73c3a;
-                        }
-                    }
                 }
                 .block:last-of-type {
                     margin-bottom: 0px;
@@ -1386,4 +1412,37 @@ a:hover {
             }
         }
     }
+}
+
+.text-orange {
+    font-weight: 500;
+    color: #e1aa4c;
+}
+.text-green {
+    font-weight: 500;
+    color: #469c77;
+}
+.text-green-alignment {
+    font-weight: 500;
+    color: #5a9c7c;
+}
+.text-gray {
+    font-weight: 500;
+    color: #757575;
+}
+.text-blue {
+    font-weight: 500;
+    color: #71b5f5;
+}
+.text-dark-blue {
+    font-weight: 500;
+    color: #2c6aab;
+}
+.text-coral {
+    font-weight: 500;
+    color: #c96a33;
+}
+.text-red {
+    font-weight: 500;
+    color: #d73c3a;
 }

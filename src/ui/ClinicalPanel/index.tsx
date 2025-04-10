@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { ICONS } from '../../icon';
 
@@ -11,6 +11,7 @@ export type DataRowProps = {
     position?: string;
     type?: string;
     count?: string;
+    sv_id?: string;
     hrDetect?: boolean;
     handleClick?: () => void;
 };
@@ -113,7 +114,7 @@ const ToggleRowGroup = ({ callout = null, header, data }: ToggleRowGroupProps) =
 type PanelSectionProps = {
     data: DataRowProps[];
     callout?: string;
-    handleZoomToGene?: (gene: string) => void;
+    handleZoomToGene?: (gene: string, sv_id: string) => void;
 };
 
 // Panel section for Clinical Summary data
@@ -181,10 +182,11 @@ const ClinicallyRelevantVariants = ({ handleZoomToGene, data }: PanelSectionProp
                         const gene = row?.gene ?? '';
                         const type = row?.type ?? '';
                         const cDNA = row?.cDNA ?? '';
+                        const svId = row?.sv_id ?? '';
                         const variantString = gene + ' ' + type + ' ' + cDNA;
 
                         const handleClick = () => {
-                            handleZoomToGene(gene);
+                            handleZoomToGene(gene, svId);
                         };
 
                         return <DataRow handleClick={handleClick} key={i} label={null} value={variantString} />;
@@ -263,6 +265,7 @@ type ClinicalPanelProps = {
     hasClinicalInfo: boolean;
     setInteractiveMode: (interactiveMode: boolean) => void;
     setIsClinicalPanelOpen: (isClinicalPanelOpen: boolean) => void;
+    setSelectedSvId: (selectedSv?: string) => void;
 };
 
 export const ClinicalPanel = ({
@@ -271,7 +274,8 @@ export const ClinicalPanel = ({
     gosRef,
     isClinicalPanelOpen,
     setInteractiveMode,
-    setIsClinicalPanelOpen
+    setIsClinicalPanelOpen,
+    setSelectedSvId
 }: ClinicalPanelProps) => {
     const { clinicalInfo: clinicalInformation, cancer } = demo;
 
@@ -283,18 +287,18 @@ export const ClinicalPanel = ({
               .join(' ')
         : null;
 
-    const handleZoomToGene = (gene: string) => {
-        setInteractiveMode(true);
+    const handleZoomToGene = (gene: string, svId = '') => {
         setTimeout(() => {
             document.getElementById('variant-view')?.scrollIntoView({
                 block: 'start',
                 inline: 'nearest',
                 behavior: 'smooth'
-            }),
-                0;
-        });
-
-        gosRef.current.api.zoomToGene(`${demo.id}-mid-ideogram`, `${gene}`, 1000);
+            });
+            gosRef.current.api.zoomToGene(`${demo.id}-mid-ideogram`, `${gene}`, 15000);
+            if (svId) {
+                setSelectedSvId(svId);
+            }
+        }, 0);
     };
 
     return (

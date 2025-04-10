@@ -29,6 +29,7 @@ import { VariantViewModal } from './ui/VariantViewModal';
 import { NavigationButtons } from './ui/NavigationButtons';
 import { Track, getTrackDocData } from './ui/getTrackDocData.js';
 import { NavigationBar } from './ui/NavigationBar';
+import { InstructionsModal } from './ui/InstructionsModal';
 import { ClinicalPanel } from './ui/ClinicalPanel';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -65,7 +66,7 @@ function App(props: RouteComponentProps) {
         top: isMinimalMode ? 0 : 60,
         right: isMinimalMode ? 0 : 60,
         bottom: isMinimalMode ? 0 : 60,
-        left: isMinimalMode ? 0 : 60
+        left: isMinimalMode ? 0 : 100
     };
 
     // !! instead of using `urlParams.get('external')`, we directly parse the external URL in order to include
@@ -614,6 +615,7 @@ function App(props: RouteComponentProps) {
                     return (
                         <a
                             key={i}
+                            id={`track-tooltip-${d.type}`}
                             tabIndex={showSamples ? -1 : 0}
                             role="button"
                             className="track-tooltip"
@@ -1012,7 +1014,7 @@ function App(props: RouteComponentProps) {
                                 }}
                             />
                         )}
-                        <NavigationButtons showSamples={!isMinimalMode && showSamples} isMinimalMode={isMinimalMode} />
+                        <NavigationButtons isMinimalMode={isMinimalMode} selectedSvId={selectedSvId} />
                         {
                             // External links and export buttons
                             isMinimalMode ? (
@@ -1489,9 +1491,15 @@ function App(props: RouteComponentProps) {
                     </svg>
                 </button>
                 <div id="hidden-gosling" style={{ visibility: 'collapse', position: 'fixed' }} />
-                <div className="instructions-modals-container">
-                    <GenomeViewModal />
-                    <VariantViewModal />
+                <div className={`instructions-modals-container ${isMinimalMode ? 'minimal' : 'vanilla'}`}>
+                    {isMinimalMode ? (
+                        <>
+                            <GenomeViewModal />
+                            <VariantViewModal />
+                        </>
+                    ) : (
+                        <InstructionsModal />
+                    )}
                 </div>
                 {!isMinimalMode && !!demo?.clinicalInfo && (
                     <ClinicalPanel
@@ -1502,6 +1510,7 @@ function App(props: RouteComponentProps) {
                         isClinicalPanelOpen={isClinicalPanelOpen}
                         setIsClinicalPanelOpen={setIsClinicalPanelOpen}
                         setInteractiveMode={setInteractiveMode}
+                        setSelectedSvId={setSelectedSvId}
                     />
                 )}
             </div>
