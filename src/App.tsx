@@ -995,7 +995,7 @@ function App(props: RouteComponentProps) {
                         {!isMinimalMode && (
                             <div
                                 style={{
-                                    width: `100%`,
+                                    width: '100%',
                                     height: '100%',
                                     boxShadow: `inset 0 0 0 3px ${
                                         interactiveMode && mouseOnVis

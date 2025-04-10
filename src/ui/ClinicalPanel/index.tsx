@@ -265,7 +265,7 @@ type ClinicalPanelProps = {
     hasClinicalInfo: boolean;
     setInteractiveMode: (interactiveMode: boolean) => void;
     setIsClinicalPanelOpen: (isClinicalPanelOpen: boolean) => void;
-    setSelectedSvId: (selectedSv: any) => void;
+    setSelectedSvId: (selectedSv?: string) => void;
 };
 
 export const ClinicalPanel = ({
@@ -316,7 +316,7 @@ export const ClinicalPanel = ({
                     <h2>Genome Interpretation</h2>
                     <button className="collapse-panel" onClick={() => setIsClinicalPanelOpen(!isClinicalPanelOpen)}>
                         <svg className="panel-icon-arrow" viewBox={ICONS.ARROW_RIGHT.viewBox}>
-                            <title>Arr</title>
+                            <title>ARROW RIGHT</title>
                             <path fill="currentColor" d={ICONS.ARROW_RIGHT.path[0]} />
                         </svg>
                     </button>
