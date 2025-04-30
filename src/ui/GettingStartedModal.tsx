@@ -41,7 +41,7 @@ export const GettingStartedModalContent: React.FC = () => {
                                     </p>
                                     <a
                                         className="example-link"
-                                        href="https://chromoscope.bio/app/?external=https://somatic-browser-test.s3.us-east-1.amazonaws.com/configs/cell.line.benchmark.v3.json"
+                                        href="https://chromoscope.bio/app/?external=https://somatic-browser-test.s3.us-east-1.amazonaws.com/configs/cell.line.benchmark.v4.json"
                                     >
                                         Go to example case &rarr;
                                     </a>
@@ -119,7 +119,7 @@ export const GettingStartedModalContent: React.FC = () => {
                                     </p>
                                     <a
                                         className="example-link"
-                                        href="https://chromoscope.bio/app/?demoIndex=1&domain=541618015.9608195-600308246.5181853&external=https://somatic-browser-test.s3.us-east-1.amazonaws.com/configs/cell.line.benchmark.v3.json"
+                                        href="https://chromoscope.bio/app/?demoIndex=1&domain=541618015.9608195-600308246.5181853&external=https://somatic-browser-test.s3.us-east-1.amazonaws.com/configs/cell.line.benchmark.v4.json"
                                     >
                                         Go to the region shown &rarr;
                                     </a>
@@ -216,7 +216,7 @@ export const GettingStartedModalContent: React.FC = () => {
                                     </p>
                                     <a
                                         className="example-link"
-                                        href="https://chromoscope.bio/app/?demoIndex=1&domain=1762699483.8734035-1762917689.7196426&external=https://somatic-browser-test.s3.us-east-1.amazonaws.com/configs/cell.line.benchmark.v3.json"
+                                        href="https://chromoscope.bio/app/?demoIndex=1&domain=1762699483.8734035-1762917689.7196426&external=https://somatic-browser-test.s3.us-east-1.amazonaws.com/configs/cell.line.benchmark.v4.json"
                                     >
                                         Go to PTEN SV &rarr;
                                     </a>
@@ -255,7 +255,7 @@ export const GettingStartedModalContent: React.FC = () => {
                                     </p>
                                     <a
                                         className="example-link"
-                                        href="https://chromoscope.bio/app/?demoIndex=1&domain=1762823513.7500365-1762908325.2499635&external=https://somatic-browser-test.s3.us-east-1.amazonaws.com/configs/cell.line.benchmark.v3.json"
+                                        href="https://chromoscope.bio/app/?demoIndex=1&domain=1762823513.7500365-1762908325.2499635&external=https://somatic-browser-test.s3.us-east-1.amazonaws.com/configs/cell.line.benchmark.v4.json"
                                     >
                                         PTEN SV in focus &rarr;
                                     </a>
