@@ -20,10 +20,11 @@ export interface SpecOption extends SampleType {
     crossChr: boolean;
     bpIntervals: [number, number, number, number] | undefined;
     spacing: number;
+    selectedMutation: number;
 }
 
 function generateSpec(opt: SpecOption): GoslingSpec {
-    const { assembly, id, bam, bai, width, selectedSvId, breakpoints, bpIntervals, spacing } = opt;
+    const { assembly, id, bam, bai, width, selectedSvId, breakpoints, bpIntervals, spacing, selectedMutation } = opt;
 
     const topViewWidth = Math.min(width, 600);
     const midViewWidth = width;
@@ -57,7 +58,8 @@ function generateSpec(opt: SpecOption): GoslingSpec {
                     }),
                     ...getMidView({
                         ...opt,
-                        width: midViewWidth
+                        width: midViewWidth,
+                        selectedMutation
                     })
                 ]
             },

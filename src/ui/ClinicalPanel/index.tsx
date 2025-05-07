@@ -1,20 +1,7 @@
 import React, { useState } from 'react';
 
 import { ICONS } from '../../icon';
-
-export type DataRowProps = {
-    label?: string;
-    value?: string;
-    cDNA?: string;
-    chr?: string;
-    gene?: string;
-    position?: string;
-    type?: string;
-    count?: string;
-    sv_id?: string;
-    hrDetect?: boolean;
-    handleClick?: () => void;
-};
+import { getAbsoluteMutationPosition } from '../../utils';
 
 export type ClinicalInfo = {
     summary: SummaryItem[];
@@ -23,7 +10,7 @@ export type ClinicalInfo = {
 };
 
 export type SummaryItem = {
-    label: string;
+    label?: string;
     value: string;
 };
 
@@ -35,6 +22,8 @@ export type VariantItem = {
     start: string | number;
     end: string | number;
     position: string | number;
+    sv_id?: string;
+    mutation: string;
     handleClick?: () => void;
 };
 
@@ -45,14 +34,25 @@ export type SignatureItem = {
     hrDetect: boolean;
 };
 
-// Data row with label and value
-const DataRow = ({ handleClick, label, value }: DataRowProps) => {
-    let formattedLabel = label;
+type DataRowProps = SummaryItem | VariantItem | SignatureItem;
 
-    // Format label to be capitalized if string
-    if (label && typeof label === 'string') {
-        formattedLabel = label.charAt(0).toUpperCase() + label.slice(1);
-    }
+// Data row with label and value
+const DataRow = (props: DataRowProps) => {
+    // Label element, conditionally formatted
+    const labelElement =
+        'label' in props ? (
+            <span className="data-label">
+                {typeof props.label === 'string'
+                    ? props.label.charAt(0).toUpperCase() + props.label.slice(1)
+                    : props.label}
+            </span>
+        ) : null;
+
+    // Value element
+    const valueElement = 'value' in props ? <span className="data-value">{props.value}</span> : null;
+
+    // handleClick function
+    const handleClick = 'handleClick' in props ? props.handleClick : null;
 
     return (
         <li
@@ -60,8 +60,8 @@ const DataRow = ({ handleClick, label, value }: DataRowProps) => {
             onClick={handleClick ? () => handleClick() : null}
             role={handleClick ? 'button' : ''}
         >
-            {label ? <span className="data-label">{formattedLabel}</span> : null}
-            <span className="data-value">{value}</span>
+            {labelElement}
+            {valueElement}
         </li>
     );
 };
@@ -102,7 +102,7 @@ const ToggleRowGroup = ({ callout = null, header, data }: ToggleRowGroupProps) =
             )}
             <div className="body">
                 <ul className="data-list">
-                    {data.map((row: DataRowProps, i: number) => {
+                    {data.map((row: SummaryItem, i: number) => {
                         return <DataRow key={i} label={row.label} value={row.value} />;
                     })}
                 </ul>
@@ -114,7 +114,7 @@ const ToggleRowGroup = ({ callout = null, header, data }: ToggleRowGroupProps) =
 type PanelSectionProps = {
     data: DataRowProps[];
     callout?: string;
-    handleZoomToGene?: (gene: string, sv_id: string) => void;
+    handleVariantSelect?: (row: VariantItem) => void;
 };
 
 // Panel section for Clinical Summary data
@@ -141,7 +141,7 @@ const ClinicalSummary = ({ data, callout = null }: PanelSectionProps) => {
                     </div>
                 )}
                 <ul className="data-list">
-                    {data.map((row: DataRowProps, i: number) => {
+                    {data.map((row: SummaryItem, i: number) => {
                         return <DataRow key={i} label={row.label} value={row.value} />;
                     })}
                 </ul>
@@ -151,7 +151,7 @@ const ClinicalSummary = ({ data, callout = null }: PanelSectionProps) => {
 };
 
 // Panel section for Clinically Relevant Variants data
-const ClinicallyRelevantVariants = ({ handleZoomToGene, data }: PanelSectionProps) => {
+const ClinicallyRelevantVariants = ({ handleVariantSelect, data }: PanelSectionProps) => {
     const [isExpanded, setIsExpanded] = useState(true);
 
     return (
@@ -178,18 +178,17 @@ const ClinicallyRelevantVariants = ({ handleZoomToGene, data }: PanelSectionProp
                     </div>
                 </div>
                 <ul className="data-list">
-                    {data.map((row: DataRowProps, i: number) => {
-                        const gene = row?.gene ?? '';
-                        const type = row?.type ?? '';
-                        const cDNA = row?.cDNA ?? '';
-                        const svId = row?.sv_id ?? '';
+                    {data.map((row: VariantItem, i: number) => {
+                        // Prepare variant string to display
+                        const { gene = '', type = '', cDNA = '' } = row;
                         const variantString = gene + ' ' + type + ' ' + cDNA;
 
+                        // Pass down handleClick function
                         const handleClick = () => {
-                            handleZoomToGene(gene, svId);
+                            handleVariantSelect(row);
                         };
 
-                        return <DataRow handleClick={handleClick} key={i} label={null} value={variantString} />;
+                        return <DataRow handleClick={handleClick} key={i} value={variantString} />;
                     })}
                 </ul>
             </div>
@@ -202,13 +201,13 @@ const MutationalSignatures = ({ data }: PanelSectionProps) => {
     const [isExpanded, setIsExpanded] = useState(true);
 
     // Check if HRDetect is positive
-    const isHrDetect = data.some((row: DataRowProps) => row.hrDetect);
+    const isHrDetect = data.some((row: SignatureItem) => row.hrDetect);
 
     // Split data into HRDetect and other data
     const hrDetectData = [];
     const otherData = [];
 
-    data.forEach((row: DataRowProps) => {
+    data.forEach((row: SignatureItem) => {
         const formattedData = {
             label: row.count,
             value: row.label
@@ -266,6 +265,7 @@ type ClinicalPanelProps = {
     setInteractiveMode: (interactiveMode: boolean) => void;
     setIsClinicalPanelOpen: (isClinicalPanelOpen: boolean) => void;
     setSelectedSvId: (selectedSv?: string) => void;
+    setSelectedMutation: (selectedMutation?: number) => void;
 };
 
 export const ClinicalPanel = ({
@@ -275,7 +275,8 @@ export const ClinicalPanel = ({
     isClinicalPanelOpen,
     setInteractiveMode,
     setIsClinicalPanelOpen,
-    setSelectedSvId
+    setSelectedSvId,
+    setSelectedMutation
 }: ClinicalPanelProps) => {
     const { clinicalInfo: clinicalInformation, cancer } = demo;
 
@@ -287,16 +288,23 @@ export const ClinicalPanel = ({
               .join(' ')
         : null;
 
-    const handleZoomToGene = (gene: string, svId = '') => {
+    const handleVariantSelect = (row: VariantItem) => {
         setTimeout(() => {
             document.getElementById('variant-view')?.scrollIntoView({
                 block: 'start',
                 inline: 'nearest',
                 behavior: 'smooth'
             });
-            gosRef.current.api.zoomToGene(`${demo.id}-mid-ideogram`, `${gene}`, 15000);
-            if (svId) {
-                setSelectedSvId(svId);
+
+            gosRef.current.api.zoomToGene(`${demo.id}-mid-ideogram`, `${row.gene}`, 15000);
+
+            // Select assocaited mutation if available
+            if (row.mutation) {
+                const position = getAbsoluteMutationPosition(demo?.assembly, row.chr, +row.position + 1);
+                setSelectedMutation(position);
+            }
+            if (row.sv_id) {
+                setSelectedSvId(row.sv_id);
             }
         }, 0);
     };
@@ -326,7 +334,7 @@ export const ClinicalPanel = ({
                     <div className="content">
                         <ClinicalSummary data={clinicalInformation?.summary ?? []} callout={formattedCancerLabel} />
                         <ClinicallyRelevantVariants
-                            handleZoomToGene={handleZoomToGene}
+                            handleVariantSelect={handleVariantSelect}
                             data={clinicalInformation?.variants ?? []}
                         />
                         <MutationalSignatures data={clinicalInformation?.signatures ?? []} />

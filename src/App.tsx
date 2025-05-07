@@ -106,6 +106,9 @@ function App(props: RouteComponentProps) {
 
     const currentSpec = useRef<string>();
 
+    // Selected Mutation
+    const [selectedMutation, setSelectedMutation] = useState<number>(null);
+
     // Clinical Panel will only render in non-minimal mode and if the demo has clinical info
     const [isClinicalPanelOpen, setIsClinicalPanelOpen] = useState(false);
     const CLINICAL_PANEL_WIDTH = isMinimalMode || !demo?.clinicalInfo ? 0 : isClinicalPanelOpen ? 250 : 45;
@@ -149,7 +152,7 @@ function App(props: RouteComponentProps) {
 
     useEffect(() => {
         setVisPanelWidth(INIT_VIS_PANEL_WIDTH - (VIS_PADDING.left + VIS_PADDING.right + CLINICAL_PANEL_WIDTH + 6));
-    }, [demo, isClinicalPanelOpen]);
+    }, [demo, isClinicalPanelOpen, selectedMutation]);
 
     // update demo
     useEffect(() => {
@@ -534,7 +537,8 @@ function App(props: RouteComponentProps) {
             crossChr: false,
             bpIntervals,
             svReads,
-            spacing: isMinimalMode ? 100 : 40
+            spacing: isMinimalMode ? 100 : 40,
+            selectedMutation
         });
         currentSpec.current = JSON.stringify(spec);
         // console.log('spec', spec);
@@ -559,7 +563,8 @@ function App(props: RouteComponentProps) {
         selectedSvId,
         breakpoints,
         svReads,
-        isClinicalPanelOpen
+        isClinicalPanelOpen,
+        selectedMutation
     ]);
 
     const trackTooltips = useMemo(() => {
@@ -1383,6 +1388,7 @@ function App(props: RouteComponentProps) {
                         setIsClinicalPanelOpen={setIsClinicalPanelOpen}
                         setInteractiveMode={setInteractiveMode}
                         setSelectedSvId={setSelectedSvId}
+                        setSelectedMutation={setSelectedMutation}
                     />
                 )}
             </div>
