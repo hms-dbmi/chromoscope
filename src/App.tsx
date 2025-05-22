@@ -1586,7 +1586,6 @@ function App(props: RouteComponentProps) {
                         clinicalInfoRef={clinicalInfoRef}
                         isClinicalPanelOpen={isClinicalPanelOpen}
                         setIsClinicalPanelOpen={setIsClinicalPanelOpen}
-                        setInteractiveMode={setInteractiveMode}
                         setSelectedSvId={setSelectedSvId}
                     />
                 )}
