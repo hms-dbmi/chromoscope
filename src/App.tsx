@@ -383,14 +383,14 @@ function App(props: RouteComponentProps) {
         window.addEventListener('resize', handleResize);
 
         // Lower opacity of legend image as it leaves viewport in minimal mode
-        let legendElement: HTMLElement;
-        let options: IntersectionObserverInit;
-        let observer: IntersectionObserver;
+        let legendElement: HTMLElement | null = null;
+
+        let observer: IntersectionObserver | null = null;
 
         if (isMinimalMode) {
             legendElement = document.querySelector<HTMLElement>('.genome-view-legend');
 
-            options = {
+            const options: IntersectionObserverInit = {
                 root: document.querySelector('.minimal_mode'),
                 rootMargin: '-250px 0px 0px 0px',
                 threshold: [0.9, 0.75, 0.5, 0.25, 0]
@@ -408,7 +408,10 @@ function App(props: RouteComponentProps) {
         return () => {
             window.removeEventListener('resize', handleResize);
             handleResize.cancel?.(); // cancel lodash rebounce
-            // observer.unobserve(legendElement); // unobserve the legend element
+
+            if (observer && legendElement) {
+                observer.unobserve(legendElement); // unobserve the legend element
+            }
         };
     }, [isClinicalPanelOpen]);
 
