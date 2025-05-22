@@ -53,7 +53,18 @@ export const CHROM_SIZE_HG19 = {
     chrM: 16571
 };
 
-function getChromInterval(chromSize: { [k: string]: number }) {
+export const getAbsoluteMutationPosition = (
+    assembly: string,
+    chromosome: string,
+    relativeMutationPosition: number
+): number => {
+    const chrIntervals = getChromInterval(assembly === 'hg19' ? CHROM_SIZE_HG19 : CHROM_SIZE_HG38); // assembly is defined in the Data Config of Chromoscope.
+    const [start, end] = chrIntervals[chromosome]; // start is the offset of chr10 in the linearlized genomic coordinates
+
+    return start + relativeMutationPosition; // information from the clinical data config
+};
+
+export function getChromInterval(chromSize: { [k: string]: number }) {
     const interval: { [k: string]: [number, number] } = {};
 
     Object.keys(chromSize).reduce((sum, k) => {
