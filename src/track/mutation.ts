@@ -46,7 +46,9 @@ export default function mutation(
         tooltip: [
             { field: 'DISTPREV', type: 'nominal', format: 's1', alt: 'Distance To Previous Mutation (BP)' },
             { field: 'POS', type: 'genomic' },
-            { field: 'SUBTYPE', type: 'nominal' }
+            { field: 'SUBTYPE', type: 'nominal' },
+            { field: 'REF', type: 'nominal' },
+            { field: 'ALT', type: 'nominal' }
         ],
         width,
         height
