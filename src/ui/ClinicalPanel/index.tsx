@@ -262,14 +262,14 @@ type ClinicalPanelProps = {
     gosRef: any;
     filteredSamples: any;
     isClinicalPanelOpen: boolean;
-    hasClinicalInfo: boolean;
+    clinicalInfoRef: React.RefObject<any>;
     setInteractiveMode: (interactiveMode: boolean) => void;
     setIsClinicalPanelOpen: (isClinicalPanelOpen: boolean) => void;
     setSelectedSvId: (selectedSv?: string) => void;
 };
 
 export const ClinicalPanel = ({
-    hasClinicalInfo,
+    clinicalInfoRef,
     demo,
     gosRef,
     isClinicalPanelOpen,
@@ -277,7 +277,8 @@ export const ClinicalPanel = ({
     setIsClinicalPanelOpen,
     setSelectedSvId
 }: ClinicalPanelProps) => {
-    const { clinicalInfo: clinicalInformation, cancer } = demo;
+    const clinicalInformation = clinicalInfoRef.current;
+    const cancer = demo?.cancer;
 
     // Format cancer label to add as callout
     const formattedCancerLabel = cancer
@@ -304,7 +305,7 @@ export const ClinicalPanel = ({
     return (
         <div
             className={`clinical-panel-container ${isClinicalPanelOpen ? 'open' : 'closed'} ${
-                hasClinicalInfo && clinicalInformation ? '' : 'disabled'
+                !!clinicalInfoRef.current && clinicalInformation ? '' : 'disabled'
             }`}
         >
             <div className={`clinical-panel`}>
@@ -322,7 +323,7 @@ export const ClinicalPanel = ({
                     </button>
                 </div>
 
-                {hasClinicalInfo && clinicalInformation ? (
+                {!!clinicalInfoRef.current && clinicalInformation ? (
                     <div className="content">
                         <ClinicalSummary data={clinicalInformation?.summary ?? []} callout={formattedCancerLabel} />
                         <ClinicallyRelevantVariants
