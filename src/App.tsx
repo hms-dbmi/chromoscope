@@ -164,18 +164,24 @@ function App(props: RouteComponentProps) {
     }
 
     useEffect(() => {
-        setVisPanelWidth(
-            window.innerWidth -
-                (isMinimalMode
-                    ? 0
-                    : VIS_PADDING.left +
-                      VIS_PADDING.right +
-                      (clinicalInfoRef.current
-                          ? isClinicalPanelOpen
-                              ? CLINICAL_PANEL_OPEN_WIDTH
-                              : CLINICAL_PANEL_CLOSED_WIDTH
-                          : 0))
-        );
+        // Initial padding for the visualization
+        let totalPadding = 0;
+
+        if (isMinimalMode) {
+            setVisPanelWidth(window.innerWidth);
+        } else {
+            totalPadding = VIS_PADDING.left + VIS_PADDING.right;
+
+            // Update the clinical info reference based on the current demo
+            clinicalInfoRef.current = demo.clinicalInfo ?? null;
+
+            // Add padding when clinical panel available
+            if (clinicalInfoRef.current) {
+                totalPadding += isClinicalPanelOpen ? CLINICAL_PANEL_OPEN_WIDTH : CLINICAL_PANEL_CLOSED_WIDTH;
+            }
+
+            setVisPanelWidth(window.innerWidth - totalPadding);
+        }
     }, [demo, isClinicalPanelOpen]);
 
     // update demo
@@ -234,6 +240,7 @@ function App(props: RouteComponentProps) {
             fetch(externalUrl).then(response =>
                 response.text().then(d => {
                     let externalDemo = JSON.parse(d);
+                    // External demo contains multiple samples
                     if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
                         setFilteredSamples(externalDemo);
                         externalDemo = externalDemo[demoIndex.current < externalDemo.length ? demoIndex.current : 0];
@@ -241,10 +248,10 @@ function App(props: RouteComponentProps) {
                         setFilteredSamples([externalDemo]);
                     }
                     if (externalDemo) {
+                        if (externalDemo?.clinicalInfo) {
+                            clinicalInfoRef.current = externalDemo.clinicalInfo;
+                        }
                         setDemo(externalDemo);
-                    }
-                    if (externalDemo?.clinicalInfo) {
-                        clinicalInfoRef.current = externalDemo.clinicalInfo;
                     }
                     setShowSmallMultiples(true);
                     setReady(true);
@@ -1380,7 +1387,7 @@ function App(props: RouteComponentProps) {
                             position: 'absolute',
                             right: `${
                                 VIS_PADDING.right +
-                                (!isMinimalMode && clinicalInfoRef.current !== null
+                                (!isMinimalMode && clinicalInfoRef.current
                                     ? isClinicalPanelOpen
                                         ? CLINICAL_PANEL_OPEN_WIDTH
                                         : CLINICAL_PANEL_CLOSED_WIDTH
