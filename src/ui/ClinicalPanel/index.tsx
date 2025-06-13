@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { ICONS } from '../../icon';
+import { getAbsoluteMutationPosition } from '../../utils';
 
 export type SummaryItem = {
     label?: string;
@@ -16,6 +17,7 @@ export type VariantItem = {
     end: string | number;
     position: string | number;
     sv_id?: string;
+    mutation: string;
     handleClick?: () => void;
 };
 
@@ -171,9 +173,11 @@ const ClinicallyRelevantVariants = ({ handleVariantSelect, data }: PanelSectionP
                 </div>
                 <ul className="data-list">
                     {data.map((row: VariantItem, i: number) => {
+                        // Prepare variant string to display
                         const { gene = '', type = '', cDNA = '' } = row;
                         const variantString = gene + ' ' + type + ' ' + cDNA;
 
+                        // Pass down handleClick function
                         const handleClick = () => {
                             handleVariantSelect(row);
                         };
@@ -260,6 +264,7 @@ type ClinicalPanelProps = {
     clinicalInfoRef: React.RefObject<ClinicalInfoType>;
     setIsClinicalPanelOpen: (isClinicalPanelOpen: boolean) => void;
     setSelectedSvId: (selectedSv?: string) => void;
+    setSelectedMutationAbsPos: (selectedMutationAbsPos?: number) => void;
 };
 
 export const ClinicalPanel = ({
@@ -268,7 +273,8 @@ export const ClinicalPanel = ({
     gosRef,
     isClinicalPanelOpen,
     setIsClinicalPanelOpen,
-    setSelectedSvId
+    setSelectedSvId,
+    setSelectedMutationAbsPos
 }: ClinicalPanelProps) => {
     const clinicalInformation = clinicalInfoRef.current;
     const cancer = demo?.cancer;
@@ -288,7 +294,14 @@ export const ClinicalPanel = ({
                 inline: 'nearest',
                 behavior: 'smooth'
             });
+
             gosRef.current.api.zoomToGene(`${demo.id}-mid-ideogram`, `${row.gene}`, 15000);
+
+            // Select assocaited mutation if available
+            if (row.mutation) {
+                const position = getAbsoluteMutationPosition(demo?.assembly, row.chr, +row.position + 1);
+                setSelectedMutationAbsPos(position);
+            }
             if (row.sv_id) {
                 setSelectedSvId(row.sv_id);
             }
