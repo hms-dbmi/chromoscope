@@ -8,7 +8,7 @@ export default function mutation(
     width: number,
     height: number,
     mode: TrackMode,
-    selectedMutation: number
+    selectedMutationAbsPos: number
 ): OverlaidTracks {
     return {
         id: `${sampleId}-${mode}-mutation`,
@@ -27,7 +27,7 @@ export default function mutation(
                 dataTransform: [{ field: 'DISTPREV', type: 'filter', oneOf: [0], not: true }]
             },
             {
-                dataTransform: [{ field: 'POS', type: 'filter', oneOf: [selectedMutation] }],
+                dataTransform: [{ field: 'POS', type: 'filter', oneOf: [selectedMutationAbsPos] }],
                 stroke: {
                     field: 'SUBTYPE',
                     type: 'nominal',

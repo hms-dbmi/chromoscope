@@ -21,7 +21,7 @@ export default function getMidView(option: SpecOption): View[] {
         selectedSvId,
         drivers,
         cnFields,
-        selectedMutation
+        selectedMutationAbsPos
     } = option;
     return [
         {
@@ -133,7 +133,7 @@ export default function getMidView(option: SpecOption): View[] {
                 ...(!vcf
                     ? []
                     : [
-                          tracks.mutation(id, vcf, vcfIndex, width, 60, 'mid', selectedMutation),
+                          tracks.mutation(id, vcf, vcfIndex, width, 60, 'mid', selectedMutationAbsPos),
                           tracks.boundary('mutation', 'mid')
                       ]),
                 ...(!vcf2

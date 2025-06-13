@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { ICONS } from '../../icon';
+import { getAbsoluteMutationPosition } from '../../utils';
 
 export type SummaryItem = {
     label?: string;
@@ -263,7 +264,7 @@ type ClinicalPanelProps = {
     clinicalInfoRef: React.RefObject<ClinicalInfoType>;
     setIsClinicalPanelOpen: (isClinicalPanelOpen: boolean) => void;
     setSelectedSvId: (selectedSv?: string) => void;
-    setSelectedMutation: (selectedMutation?: number) => void;
+    setSelectedMutationAbsPos: (selectedMutationAbsPos?: number) => void;
 };
 
 export const ClinicalPanel = ({
@@ -273,7 +274,7 @@ export const ClinicalPanel = ({
     isClinicalPanelOpen,
     setIsClinicalPanelOpen,
     setSelectedSvId,
-    setSelectedMutation
+    setSelectedMutationAbsPos
 }: ClinicalPanelProps) => {
     const clinicalInformation = clinicalInfoRef.current;
     const cancer = demo?.cancer;
@@ -299,7 +300,7 @@ export const ClinicalPanel = ({
             // Select assocaited mutation if available
             if (row.mutation) {
                 const position = getAbsoluteMutationPosition(demo?.assembly, row.chr, +row.position + 1);
-                setSelectedMutation(position);
+                setSelectedMutationAbsPos(position);
             }
             if (row.sv_id) {
                 setSelectedSvId(row.sv_id);
