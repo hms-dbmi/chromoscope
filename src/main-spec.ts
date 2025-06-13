@@ -60,7 +60,7 @@ function generateSpec(opt: SpecOption): GoslingSpec {
                     ...getMidView({
                         ...opt,
                         width: midViewWidth,
-                        selectedMutation
+                        selectedMutationAbsPos
                     })
                 ]
             },
