@@ -204,7 +204,7 @@ export default function CancerSelector(props: { onChange: (url: string) => void 
     // const
 
     return (
-        <div className="menu-container">
+        <div className="menu-container cancer-selector">
             <div className="menu-title">
                 Load a PCAWG Sample
                 {/* <span className="menu-icon">
