@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CancerSelector from '../cancer-selector';
+import { CancerSelector } from '../cancer-selector';
 import SampleConfigForm from '../sample-config-form';
 
 type OverviewPanelProps = {

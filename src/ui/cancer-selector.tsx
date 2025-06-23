@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './side-menu.css';
+import { ICONS } from '../icon';
 
 const PCAWG_SAMPLES = [
     {
@@ -199,43 +200,95 @@ const PCAWG_SAMPLES = [
     }
 ];
 
-export default function CancerSelector(props: { onChange: (url: string) => void }) {
+export const CancerSelector = (props: { onChange: (url: string) => void }) => {
+    const [selectedSample, setSelectedSample] = useState<string | null>(null);
+    const [showDropdown, setShowDropdown] = useState(false);
+
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
     const { onChange } = props;
-    // const
+
+    // Close on outside click
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            const clickedOutside = !dropdownRef.current || !dropdownRef.current.contains(event.target as Node);
+            if (clickedOutside) {
+                setShowDropdown(false);
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const handleSampleSelection = (value: string, url: string) => {
+        if (value) {
+            setSelectedSample(value);
+            onChange(url);
+            setShowDropdown(false);
+        }
+    };
 
     return (
         <div className="menu-container cancer-selector">
-            <div className="menu-title">
-                Load a PCAWG Sample
-                {/* <span className="menu-icon">
-                    <svg width={16} height={16} viewBox={ICONS.BOX_ARROW_UP_RIGHT.viewBox}>
-                        {ICONS.BOX_ARROW_UP_RIGHT.path.map(d => <path fill="currentColor" d={d} />)}
+            <div className="dropdown-container" ref={dropdownRef}>
+                <button
+                    className={`dropdown-button ${showDropdown ? 'toggle-open' : ''}`}
+                    onClick={e => setShowDropdown(!showDropdown)}
+                >
+                    <span className="">{selectedSample ?? 'PCAWG: Cancer Cohort'}</span>
+                    <svg className="icon" viewBox={ICONS.CHEVRON_UP.viewBox}>
+                        <title>Export Image</title>
+                        {ICONS.CHEVRON_UP.path.map(p => (
+                            <path fill="currentColor" key={p} d={p} />
+                        ))}
                     </svg>
-                </span> */}
+                </button>
+                <div className={`dropdown-items ${showDropdown ? 'd-flex' : 'd-none'}`}>
+                    {PCAWG_SAMPLES.sort((a, b) => (a.cancer > b.cancer ? 1 : -1)).map((sample, i) => {
+                        // const str = `${sample.cancer.split('] ')[1]} (${sample.count} samples)`;
+                        const str = `${sample.cancer.split('] ')[1]}`;
+                        const configUrl = sample.url.replace(
+                            'https://chromoscope.bio/app/?showSamples=true&external=',
+                            ''
+                        );
+
+                        return (
+                            <button key={i} onClick={e => handleSampleSelection(str, configUrl)}>
+                                <span>{str}</span>
+                                <span>{sample.count}</span>
+                            </button>
+                        );
+                    })}
+                </div>
             </div>
-            <select
+
+            {/* Previous implementation */}
+            {/* <select
                 className="dropdown"
                 onChange={e => {
+
+                    console.log(e)
                     const selectedValue = e.currentTarget.value;
                     if (selectedValue) {
                         onChange(e.currentTarget.value);
                     }
                 }}
-                // value={}
             >
-                <option key={'Not Selected'} value={null}>
-                    Not Selected
+                <option key={'PCAWG Cancer Cohort'} value={null}>
+                    PCAWG Cancer Cohort
                 </option>
                 {PCAWG_SAMPLES.sort((a, b) => (a.cancer > b.cancer ? 1 : -1)).map(sample => {
-                    const str = `${sample.cancer.split('] ')[1]} (${sample.count} samples)`;
+                    // const str = `${sample.cancer.split('] ')[1]} (${sample.count} samples)`;
+                    const str = `${sample.cancer.split('] ')[1]}`;
                     const configUrl = sample.url.replace('https://chromoscope.bio/app/?showSamples=true&external=', '');
                     return (
                         <option key={str} value={configUrl}>
-                            {str}
+                            <span>{str}</span>
                         </option>
                     );
                 })}
-            </select>
+            </select> */}
         </div>
     );
-}
+};

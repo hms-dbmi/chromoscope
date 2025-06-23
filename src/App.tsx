@@ -1320,7 +1320,9 @@ function App(props: RouteComponentProps) {
                             <VariantViewModal />
                         </>
                     ) : (
-                        <InstructionsModal />
+                        <>
+                            <InstructionsModal />
+                        </>
                     )}
                 </div>
                 {!isMinimalMode && !!clinicalInfoRef.current && (
