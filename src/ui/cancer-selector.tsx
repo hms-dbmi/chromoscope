@@ -221,6 +221,16 @@ export const CancerSelector = (props: { onChange: (url: string) => void }) => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
+    // Scroll to top when new sample is selected
+    useEffect(() => {
+        if (selectedSample) {
+            const container = document.querySelector('.overview-container');
+            if (container) {
+                container.scrollTo({ top: 0 });
+            }
+        }
+    }, [selectedSample]);
+
     const handleSampleSelection = (value: string, url: string) => {
         if (value) {
             setSelectedSample(value);

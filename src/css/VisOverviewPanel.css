@@ -83,6 +83,7 @@
             padding: 20px;
             gap: 20px;
             overflow-y: auto;
+            max-height: calc(100vh - 200px);
         }
 
         .overview-header {
