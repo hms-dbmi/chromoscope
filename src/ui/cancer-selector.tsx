@@ -18,7 +18,6 @@ export const CancerSelector = ({ selectedSample, setSelectedSample, onChange }: 
                         const selectedValue = e.currentTarget.value;
                         if (selectedValue) {
                             onChange(e.currentTarget.value);
-                            setSelectedSample(selectedValue);
                         }
                     }}
                 >
