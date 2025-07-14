@@ -3,6 +3,7 @@
 @import url('./ClinicalPanel.css');
 @import url('./InstructionsModal.css');
 @import url('./VisOverviewPanel.css');
+@import url('./SampleConfigForm.css');
 
 /* Overwrite Bootstrap's default box-sizing */
 *,
@@ -59,7 +60,7 @@ a:hover {
     }
 
     .gosling-component {
-        z-index: 1;
+        z-index: 0;
     }
 }
 
@@ -320,14 +321,19 @@ a:hover {
 }
 
 .gene-search-icon {
-    margin-top: 1px;
-    margin-left: 22px;
+    position: relative;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    top: auto;
+    left: auto;
+    right: auto;
+    margin: auto;
+    transform: none;
+    margin: auto 10px;
     width: 16px;
     height: 16px;
-    position: absolute;
-    left: 164px;
     cursor: pointer;
-    z-index: 999;
     fill: grey;
 }
 
@@ -481,7 +487,6 @@ a:hover {
     box-shadow: 0 0 10px 0px #00000032;
     bottom: 20px;
     cursor: pointer;
-    z-index: 998;
     opacity: 0.5;
     border: none;
     border-radius: 4px;
@@ -538,6 +543,7 @@ a:hover {
     /* http://iros.github.io/patternfills/sample_d3.html */
     background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1JyBoZWlnaHQ9JzUnPgo8cmVjdCB3aWR0aD0nNScgaGVpZ2h0PSc1JyBmaWxsPScjZmZmJy8+CjxyZWN0IHdpZHRoPScxJyBoZWlnaHQ9JzEnIGZpbGw9JyNjY2MnLz4KPC9zdmc+');
     background-repeat: repeat;
+    /* overflow-x: hidden; */
     overflow-y: auto;
     display: grid;
 }
@@ -629,7 +635,6 @@ a:hover {
             margin-left: 0;
             border: none;
             width: 180px;
-            padding-left: 35px;
         }
     }
     .directional-controls {
@@ -654,7 +659,6 @@ a:hover {
     width: 3%;
     height: min-content;
     position: relative;
-    z-index: 997;
 }
 
 .track-tooltip {
@@ -680,7 +684,6 @@ a:hover {
 
 .navigation-panel {
     position: fixed;
-    z-index: 998;
     display: flex;
     flex-direction: column;
     top: 60px;
@@ -828,7 +831,6 @@ a:hover {
 .navigation-buttons {
     box-sizing: border-box;
     position: fixed;
-    z-index: 998;
     display: flex;
     flex-direction: column;
     top: 63px;

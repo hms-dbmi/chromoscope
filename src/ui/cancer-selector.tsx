@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import './side-menu.css';
+import React from 'react';
 import { PCAWG_SAMPLES } from './VisOverviewPanel/OverviewPanel';
 
 type CancerSelectorProps = {
@@ -24,8 +23,8 @@ export const CancerSelector = ({ selectedSample, setSelectedSample, onChange }: 
                     <option key={'Curated Sample Sets'} value={null}>
                         Curated Sample Sets
                     </option>
-                    {PCAWG_SAMPLES.sort((a, b) => (a.cancer > b.cancer ? 1 : -1)).map(sample => {
-                        const str = `${sample.cancer.split('] ')[1]} (${sample.count} samples)`;
+                    {PCAWG_SAMPLES.sort((a, b) => (a.name > b.name ? 1 : -1)).map(sample => {
+                        const str = `${sample.name.split('] ')[1]} (${sample.count} samples)`;
                         const configUrl = sample.url.replace(
                             'https://chromoscope.bio/app/?showSamples=true&external=',
                             ''

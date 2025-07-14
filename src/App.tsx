@@ -30,6 +30,7 @@ import { InstructionsModal } from './ui/InstructionsModal';
 import { ClinicalPanel } from './ui/ClinicalPanel';
 import { AboutModal } from './ui/AboutModal';
 import { VisOverviewPanel } from './ui/VisOverviewPanel';
+import  SampleConfigForm from './ui/SampleConfigForm';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/App.css';
@@ -854,22 +855,35 @@ function App(props: RouteComponentProps) {
                 )}
                 <div id="vis-panel" className="vis-panel">
                     {!isMinimalMode && (
-                        <VisOverviewPanel
-                            FEEDBACK_EMAIL_ADDRESS={FEEDBACK_EMAIL_ADDRESS}
-                            showSamples={showSamples}
-                            generateThumbnails={generateThumbnails}
-                            smallOverviewWrapper={smallOverviewWrapper}
-                            demoIndex={demoIndex}
-                            externalDemoUrl={externalDemoUrl}
-                            filteredSamples={filteredSamples}
-                            doneGeneratingThumbnails={doneGeneratingThumbnails}
-                            setShowSamples={setShowSamples}
-                            setShowAbout={setShowAbout}
-                            setFilterSampleBy={setFilterSampleBy}
-                            setFilteredSamples={setFilteredSamples}
-                            setGenerateThumbnails={setGenerateThumbnails}
-                            setDemo={setDemo}
-                        />
+                        <>
+                            <SampleConfigForm
+                                onAdd={config => {
+                                    setFilteredSamples([
+                                        {
+                                            ...config,
+                                            group: 'default'
+                                        },
+                                        ...filteredSamples
+                                    ]);
+                                }}
+                            />
+                            <VisOverviewPanel
+                                FEEDBACK_EMAIL_ADDRESS={FEEDBACK_EMAIL_ADDRESS}
+                                showSamples={showSamples}
+                                generateThumbnails={generateThumbnails}
+                                smallOverviewWrapper={smallOverviewWrapper}
+                                demoIndex={demoIndex}
+                                externalDemoUrl={externalDemoUrl}
+                                filteredSamples={filteredSamples}
+                                doneGeneratingThumbnails={doneGeneratingThumbnails}
+                                setShowSamples={setShowSamples}
+                                setShowAbout={setShowAbout}
+                                setFilterSampleBy={setFilterSampleBy}
+                                setFilteredSamples={setFilteredSamples}
+                                setGenerateThumbnails={setGenerateThumbnails}
+                                setDemo={setDemo}
+                            />
+                        </>
                     )}
                     <div
                         id="gosling-panel"
@@ -924,7 +938,6 @@ function App(props: RouteComponentProps) {
                                     top: VIS_PADDING.top,
                                     left: VIS_PADDING.left,
                                     opacity: 0.9,
-                                    zIndex: 2,
                                     pointerEvents: interactiveMode ? 'none' : 'auto'
                                 }}
                             />
@@ -1004,7 +1017,6 @@ function App(props: RouteComponentProps) {
                                 width: '100%',
                                 height: '100%',
                                 position: 'relative',
-                                zIndex: 997
                             }}
                         >
                             <img
@@ -1015,7 +1027,6 @@ function App(props: RouteComponentProps) {
                                     position: 'absolute',
                                     right: `${GOSLING_VIS_COMPONENT_PADDING}px`,
                                     top: isMinimalMode ? '350px' : '3px',
-                                    zIndex: 997,
                                     width: '120px'
                                 }}
                             />
@@ -1242,7 +1253,6 @@ function App(props: RouteComponentProps) {
                             color: 'black',
                             padding: '6px',
                             pointerEvents: 'none',
-                            zIndex: 999,
                             boxShadow: '0 0 20px 2px rgba(0, 0, 0, 0.2)'
                         }}
                     >
@@ -1258,7 +1268,6 @@ function App(props: RouteComponentProps) {
                             height: '100%',
                             visibility: 'collapse',
                             boxShadow: interactiveMode ? 'inset 0 0 4px 2px #2399DB' : 'none',
-                            zIndex: 999,
                             background: 'none',
                             position: 'absolute',
                             top: 0,
