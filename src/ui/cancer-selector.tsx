@@ -2,12 +2,10 @@ import React from 'react';
 import { PCAWG_SAMPLES } from './VisOverviewPanel/OverviewPanel';
 
 type CancerSelectorProps = {
-    selectedSample: string;
-    setSelectedSample: (sample: string) => void;
     onChange: (url: string) => void;
 };
 
-export const CancerSelector = ({ selectedSample, setSelectedSample, onChange }: CancerSelectorProps) => {
+export const CancerSelector = ({ onChange }: CancerSelectorProps) => {
     return (
         <div className="filter">
             <div className="cancer-selector">

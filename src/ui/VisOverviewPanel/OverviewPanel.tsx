@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import { CancerSelector } from '../cancer-selector';
 import { ICONS } from '../../icon';
 import { OverviewFilter } from './OverviewFilter';
+
+import { samples, SampleType } from '../../data/samples';
 
 // Store example samples
 export const PCAWG_SAMPLES = [
@@ -205,27 +206,123 @@ export const PCAWG_SAMPLES = [
 
 export const CURATED_SAMPLE_SETS = [
     {
-        name: "Pathogenic BRCA1/2 mutations",
-        url: "https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/pathogenicBrca/configs/pathogenicBrca.all.config.json"
+        name: 'Pan-cancer Examples',
+        count: 13,
+        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.us-east-1.amazonaws.com/browserExamples/configs/default_config.json'
     },
     {
-        name: "Breast cancer co-amplifications",
-        url: "https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/coamps/configs/coamps.all.config.withnotes.json"
+        name: 'Pathogenic BRCA1/2 mutations',
+        count: 44,
+        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/pathogenicBrca/configs/pathogenicBrca.all.config.json'
     },
     {
-        name: "Bi-allelic loss of CDK12",
-        url: "https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/configs/allCDK12_fine.json"
+        name: 'Breast cancer co-amplifications',
+        count: 23,
+        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/coamps/configs/coamps.all.config.withnotes.json'
     },
     {
-        name: "CCNE1 amplifications",
-        url: "https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/ccne1_amp/configs/ccne1_amp.all.config.json"
+        name: 'Bi-allelic loss of CDK12',
+        count: 12,
+        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/configs/allCDK12_fine.json'
     },
     {
-        name: "Bi-allelic ATM mutations",
-        url: "https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/atm_bi/configs/atm_bi.all.config.json"
+        name: 'CCNE1 amplifications',
+        count: 58,
+        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/ccne1_amp/configs/ccne1_amp.all.config.json'
+    },
+    {
+        name: 'Bi-allelic ATM mutations',
+        count: 21,
+        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/atm_bi/configs/atm_bi.all.config.json'
     }
-    
 ];
+
+export type FilterOption = {
+    name: string;
+    url?: string;
+    count?: number;
+    samples?: SampleType[]; // Optionally pass samples directly
+};
+
+export type Filter = {
+    nullValue?: string;
+    title: string;
+    options: Array<FilterOption>;
+    active: boolean;
+};
+
+type FilterGroup = {
+    [key: string]: Filter;
+};
+
+const defaultFilters: FilterGroup = {
+    curatedSampleSets: {
+        title: 'Curated Sample Sets',
+        options: CURATED_SAMPLE_SETS,
+        active: true, // Show this filter selected by default
+        nullValue: 'Pan-cancer Examples'
+    },
+    cancerType: {
+        title: 'Cancer Type',
+        options: PCAWG_SAMPLES,
+        active: false
+    }
+};
+
+type SampleDropdownProps = {
+    selectedCohort: string | null;
+};
+
+const SampleDropdown = ({ selectedCohort }: SampleDropdownProps) => {
+    const [showDropdown, setShowDropdown] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // Close dropdown on outside click
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            const clickedOutside = !dropdownRef.current || !dropdownRef.current.contains(event.target as Node);
+            if (clickedOutside) {
+                setShowDropdown(false);
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    return (
+        <div className="dropdown-container" ref={dropdownRef}>
+            <button
+                className={`dropdown-button ${showDropdown ? 'toggle-open' : ''}`}
+                onClick={e => setShowDropdown(!showDropdown)}
+            >
+                <span className="">{selectedCohort ?? 'PCAWG: Cancer Cohort'}</span>
+                <svg className="icon" viewBox={ICONS.CHEVRON_UP.viewBox}>
+                    <title>{showDropdown ? 'Chevron Up' : 'Chevron Down'}</title>
+                    {ICONS.CHEVRON_UP.path.map(p => (
+                        <path fill="currentColor" key={p} d={p} />
+                    ))}
+                </svg>
+            </button>
+            <ul className={`dropdown-items ${showDropdown ? 'd-flex' : 'd-none'}`}>
+                <div className="sample-placeholder">
+                    <div className="icon-container">
+                        <svg className="icon" viewBox={ICONS.USERS.viewBox}>
+                            <title>Users</title>
+                            {ICONS.USERS.path.map(p => (
+                                <path fill="currentColor" key={p} d={p} />
+                            ))}
+                        </svg>
+                    </div>
+                    <div className="text">
+                        <h4>Cohorts Coming Soon</h4>
+                        <span>Create a New Cohort to browse cohorts on Chromoscope</span>
+                    </div>
+                </div>
+            </ul>
+        </div>
+    );
+};
 
 type OverviewPanelProps = {
     smallOverviewWrapper: React.ReactNode;
@@ -244,33 +341,19 @@ export const OverviewPanel = ({
     setFilteredSamples,
     setDemo
 }: OverviewPanelProps) => {
-    const [selectedSample, setSelectedSample] = useState<string | null>(null);
-    const [showDropdown, setShowDropdown] = useState(false);
-
-    const dropdownRef = useRef<HTMLDivElement>(null);
+    const [selectedCohort, setSelectedCohort] = useState<string | null>(null);
+    const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
     // Scroll to top when new sample is selected
     useEffect(() => {
-        if (selectedSample) {
+        // Scroll to top when new cohort is selected
+        if (selectedCohort) {
             const container = document.querySelector('.overview-container');
             if (container) {
                 container.scrollTo({ top: 0 });
             }
         }
-    }, [selectedSample]);
-
-    // Close dropdown on outside click
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            const clickedOutside = !dropdownRef.current || !dropdownRef.current.contains(event.target as Node);
-            if (clickedOutside) {
-                setShowDropdown(false);
-            }
-        }
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+    }, [selectedCohort]);
 
     const onChange = (url: string) => {
         fetch(url).then(response =>
@@ -288,32 +371,30 @@ export const OverviewPanel = ({
         );
     };
 
+    useEffect(() => {
+        // When no filters active, show default sample set
+        if (activeFilters.length === 0) {
+            setFilteredSamples(samples);
+        }
+    }, [activeFilters]);
+
+    // When a new sample is added, add a class to the overview container
+    useEffect(() => {
+        const overviewContainer = document.querySelector('.overview-container');
+        if (overviewContainer) {
+            overviewContainer.classList.add('new-sample-added');
+            setTimeout(() => {
+                overviewContainer.classList.remove('new-sample-added');
+            }, 3000);
+        }
+    }, [filteredSamples]);
+
     return (
         <div>
             <div className="overview-root">
                 <div className="overview-header">
-                    <div className="dropdown-container" ref={dropdownRef}>
-                        <button
-                            className={`dropdown-button ${showDropdown ? 'toggle-open' : ''}`}
-                            onClick={e => setShowDropdown(!showDropdown)}
-                        >
-                            <span className="">{selectedSample ?? 'PCAWG: Cancer Cohort'}</span>
-                            <svg className="icon" viewBox={ICONS.CHEVRON_UP.viewBox}>
-                                <title>Export Image</title>
-                                {ICONS.CHEVRON_UP.path.map(p => (
-                                    <path fill="currentColor" key={p} d={p} />
-                                ))}
-                            </svg>
-                        </button>
-                        <ul className={`dropdown-items ${showDropdown ? 'd-flex' : 'd-none'}`}>
-                            <li>Coming soon!</li>
-                        </ul>
-                    </div>
-                    <button
-                        className="upload-file-button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#upload-modal"
-                    >
+                    <SampleDropdown selectedCohort={selectedCohort} />
+                    <button className="upload-file-button" data-bs-toggle="modal" data-bs-target="#upload-modal">
                         <svg className="button" viewBox={ICONS.UPLOAD_FILE.viewBox}>
                             <title>Upload File</title>
                             {ICONS.UPLOAD_FILE.path.map(p => (
@@ -324,8 +405,21 @@ export const OverviewPanel = ({
                     </button>
                 </div>
                 <div className="overview-controls">
-                    <OverviewFilter title={"Curated Sample Sets"} options={CURATED_SAMPLE_SETS} onChange={onChange} />
-                    <OverviewFilter title={"Cancer Type"} options={PCAWG_SAMPLES} onChange={onChange} />
+                    {Object.keys(defaultFilters).map((filter, index) => {
+                        return (
+                            <OverviewFilter
+                                key={index}
+                                identifier={filter}
+                                title={defaultFilters[filter].title}
+                                options={defaultFilters[filter].options}
+                                active={activeFilters.includes(filter)}
+                                onChange={onChange}
+                                activeFilters={activeFilters}
+                                nullValue={defaultFilters[filter].nullValue}
+                                setActiveFilters={setActiveFilters}
+                            />
+                        );
+                    })}
                 </div>
                 <div className="overview-status">{`Total of ${filteredSamples.length} samples loaded`}</div>
                 <div className="overview-container">{smallOverviewWrapper}</div>

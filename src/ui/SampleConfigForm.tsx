@@ -41,7 +41,7 @@ const exampleConfigFields: SampleConfig = {
     assembly: 'hg19',
     sv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.pcawg_consensus_1.6.161022.somatic.sv.bedpe',
     cnv: 'https://s3.amazonaws.com/gosling-lang.org/data/SV/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.consensus.20170119.somatic.cna.annotated.txt'
-}
+};
 
 type UploadModalProps = {
     sampleConfig: SampleConfig;
@@ -61,20 +61,24 @@ export const UploadModal = ({
     sampleOkayToAdd
 }: UploadModalProps) => {
     const [showClearSampleButton, setShowClearSampleButton] = useState(false);
-    console.log("sample config", sampleConfig)
 
-    // useEffect(() => {
-    //     console.log('UploadModal mounted');
-    //     if (showClearSampleButton) {
-
-    //     }
-
-    //     if (
-            
-    //     ) {
-    //         setShowClearSampleButton(true);
-    //     }
-    // }, [sampleConfig])
+    // Function to clear sample configuration
+    const clearSampleConfig = () => {
+        setSampleConfig({
+            id: '',
+            cancer: '',
+            assembly: 'hg19',
+            sv: '',
+            cnv: '',
+            drivers: '',
+            vcf: '',
+            vcfIndex: '',
+            vcf2: '',
+            vcf2Index: '',
+            bam: '',
+            bai: ''
+        });
+    };
 
     return (
         <div
@@ -101,17 +105,22 @@ export const UploadModal = ({
                         <div className="upload-modal-content">
                             <div className="upload-modal-header">
                                 <div
-                                    className='sample-config-form'
+                                    className="sample-config-form"
                                     onClick={() => {
                                         showNewSampleConfig ? null : setShowNewSampleConfig(true);
                                     }}
                                 >
                                     <div className="form-header">
                                         <h2>Add a New Sample</h2>
-                                        <a href="https://chromoscope.bio/loading-data/data-formats" target="_blank">Documentation on Data Formats</a>
+                                        <a
+                                            href="https://chromoscope.bio/loading-data/data-formats"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            Documentation on Data Formats
+                                        </a>
                                     </div>
                                     <div className="form-inputs-container">
-
                                         <div className="input-button-container">
                                             {/* Assembly */}
                                             <div className="input-container">
@@ -140,66 +149,53 @@ export const UploadModal = ({
                                             <button
                                                 className="example-dataset-button"
                                                 onClick={() => {
-                                                    if (sampleConfig?.id === exampleConfigFields.id 
-                                                        && sampleConfig?.cancer === exampleConfigFields.cancer
-                                                        && sampleConfig?.assembly === exampleConfigFields.assembly
-                                                        && sampleConfig?.sv === exampleConfigFields.sv
-                                                        && sampleConfig?.cnv === exampleConfigFields.cnv) 
-                                                    { 
-                                                        setSampleConfig({
-                                                            id: '',
-                                                            cancer: '',
-                                                            assembly: 'hg19',
-                                                            sv: '',
-                                                            cnv: '',
-                                                            drivers: '',
-                                                            vcf: '',
-                                                            vcfIndex: '',
-                                                            vcf2: '',
-                                                            vcf2Index: '',
-                                                            bam: '',
-                                                            bai: ''
-                                                        })
-                                                    }   else {
+                                                    if (
+                                                        sampleConfig?.id === exampleConfigFields.id &&
+                                                        sampleConfig?.cancer === exampleConfigFields.cancer &&
+                                                        sampleConfig?.assembly === exampleConfigFields.assembly &&
+                                                        sampleConfig?.sv === exampleConfigFields.sv &&
+                                                        sampleConfig?.cnv === exampleConfigFields.cnv
+                                                    ) {
+                                                        clearSampleConfig();
+                                                    } else {
                                                         setSampleConfig({
                                                             ...sampleConfig,
                                                             ...exampleConfigFields
-                                                        })
+                                                        });
                                                     }
                                                 }}
                                             >
-                                                { (sampleConfig?.id === exampleConfigFields.id 
-                                                    && sampleConfig?.cancer === exampleConfigFields.cancer
-                                                    && sampleConfig?.assembly === exampleConfigFields.assembly
-                                                    && sampleConfig?.sv === exampleConfigFields.sv
-                                                    && sampleConfig?.cnv === exampleConfigFields.cnv) ? 
-                                                    (
-                                                        <>
-                                                            <svg viewBox={ICONS.CLOSE.viewBox}>
-                                                                {ICONS.CLOSE.path.map(d => (
-                                                                    <path key={d} fill="currentColor" d={d} />
-                                                                ))}
-                                                            </svg>
-                                                            Clear Example Dataset
-                                                        </>
-                                                    )
-                                                    : (
-                                                        <>
-                                                            <svg viewBox={ICONS.PENCIL.viewBox}>
-                                                                {ICONS.PENCIL.path.map(d => (
-                                                                    <path key={d} fill="currentColor" d={d} />
-                                                                ))}
-                                                            </svg>
-                                                            Fill in Example Dataset
-                                                        </>
-                                                    )
-                                                }
+                                                {sampleConfig?.id === exampleConfigFields.id &&
+                                                sampleConfig?.cancer === exampleConfigFields.cancer &&
+                                                sampleConfig?.assembly === exampleConfigFields.assembly &&
+                                                sampleConfig?.sv === exampleConfigFields.sv &&
+                                                sampleConfig?.cnv === exampleConfigFields.cnv ? (
+                                                    <>
+                                                        <svg viewBox={ICONS.CLOSE.viewBox}>
+                                                            {ICONS.CLOSE.path.map(d => (
+                                                                <path key={d} fill="currentColor" d={d} />
+                                                            ))}
+                                                        </svg>
+                                                        Clear Example Dataset
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <svg viewBox={ICONS.PENCIL.viewBox}>
+                                                            {ICONS.PENCIL.path.map(d => (
+                                                                <path key={d} fill="currentColor" d={d} />
+                                                            ))}
+                                                        </svg>
+                                                        Fill in Example Dataset
+                                                    </>
+                                                )}
                                             </button>
                                         </div>
 
                                         {/* ID */}
-                                        <div 
-                                            className={`input-container ${testOkay.id(sampleConfig) ? 'input' : 'input-invalid'}`}
+                                        <div
+                                            className={`input-container ${
+                                                testOkay.id(sampleConfig) ? 'input' : 'input-invalid'
+                                            }`}
                                         >
                                             <span className="menu-subtitle">
                                                 ID<sup>*</sup>
@@ -211,14 +207,18 @@ export const UploadModal = ({
                                                 className="menu-text-input"
                                                 placeholder="My sample 1, etc"
                                                 required
-                                                onChange={e => setSampleConfig({ ...sampleConfig, id: e.currentTarget.value })}
+                                                onChange={e =>
+                                                    setSampleConfig({ ...sampleConfig, id: e.currentTarget.value })
+                                                }
                                                 value={sampleConfig.id}
                                             />
                                         </div>
 
                                         {/* Cancer  */}
-                                        <div 
-                                            className={`input-container ${testOkay.cancer(sampleConfig) ? 'input' : 'input-invalid'}`}
+                                        <div
+                                            className={`input-container ${
+                                                testOkay.cancer(sampleConfig) ? 'input' : 'input-invalid'
+                                            }`}
                                         >
                                             <div className="menu-subtitle">
                                                 Cancer<sup>*</sup>
@@ -238,8 +238,10 @@ export const UploadModal = ({
                                         </div>
 
                                         {/* SV */}
-                                        <div 
-                                            className={`input-container ${testOkay.sv(sampleConfig) ? 'input' : 'input-invalid'}`}
+                                        <div
+                                            className={`input-container ${
+                                                testOkay.sv(sampleConfig) ? 'input' : 'input-invalid'
+                                            }`}
                                         >
                                             <div className="menu-subtitle">
                                                 SV<sup>*</sup> <small>(.bedpe)</small>
@@ -251,14 +253,18 @@ export const UploadModal = ({
                                                 className="menu-text-input"
                                                 placeholder="https://..."
                                                 required
-                                                onChange={e => setSampleConfig({ ...sampleConfig, sv: e.currentTarget.value })}
+                                                onChange={e =>
+                                                    setSampleConfig({ ...sampleConfig, sv: e.currentTarget.value })
+                                                }
                                                 value={sampleConfig.sv}
                                             />
                                         </div>
 
                                         {/* CNV */}
-                                        <div 
-                                            className={`input-container ${testOkay.cnv(sampleConfig) ? 'input' : 'input-invalid'}`}
+                                        <div
+                                            className={`input-container ${
+                                                testOkay.cnv(sampleConfig) ? 'input' : 'input-invalid'
+                                            }`}
                                         >
                                             <div className="menu-subtitle">
                                                 CNV <small>(.txt)</small>
@@ -269,14 +275,18 @@ export const UploadModal = ({
                                                 type="text"
                                                 className="menu-text-input"
                                                 placeholder="https://..."
-                                                onChange={e => setSampleConfig({ ...sampleConfig, cnv: e.currentTarget.value })}
+                                                onChange={e =>
+                                                    setSampleConfig({ ...sampleConfig, cnv: e.currentTarget.value })
+                                                }
                                                 value={sampleConfig.cnv}
                                             />
                                         </div>
 
                                         {/* Drivers */}
-                                        <div 
-                                            className={`input-container ${testOkay.drivers(sampleConfig) ? 'input' : 'input-invalid'}`}
+                                        <div
+                                            className={`input-container ${
+                                                testOkay.drivers(sampleConfig) ? 'input' : 'input-invalid'
+                                            }`}
                                         >
                                             <div className="menu-subtitle">
                                                 Drivers <small>(.txt)</small>
@@ -294,8 +304,10 @@ export const UploadModal = ({
                                         </div>
 
                                         {/* Point Mutation */}
-                                        <div 
-                                            className={`input-container ${testOkay.vcf(sampleConfig) ? 'input' : 'input-invalid'}`}
+                                        <div
+                                            className={`input-container ${
+                                                testOkay.vcf(sampleConfig) ? 'input' : 'input-invalid'
+                                            }`}
                                         >
                                             <div className="menu-subtitle">
                                                 Point Mutation <small>(.vcf)</small>
@@ -303,17 +315,20 @@ export const UploadModal = ({
                                             <input
                                                 id="sample-vcf-input"
                                                 type="text"
-                                                className = "menu-text-input"
+                                                className="menu-text-input"
                                                 placeholder="https://..."
-                                                onChange={e => setSampleConfig({ ...sampleConfig, vcf: e.currentTarget.value })}
+                                                onChange={e =>
+                                                    setSampleConfig({ ...sampleConfig, vcf: e.currentTarget.value })
+                                                }
                                                 value={sampleConfig.vcf}
                                             />
                                         </div>
 
-
                                         {/* Point Mutation Index */}
-                                        <div 
-                                            className={`input-container ${testOkay.vcfIndex(sampleConfig) ? 'input' : 'input-invalid'}`}
+                                        <div
+                                            className={`input-container ${
+                                                testOkay.vcfIndex(sampleConfig) ? 'input' : 'input-invalid'
+                                            }`}
                                         >
                                             <div className="menu-subtitle">
                                                 Point Mutation Index <small>(.tbi)</small>
@@ -324,15 +339,20 @@ export const UploadModal = ({
                                                 className="menu-text-input"
                                                 placeholder="https://..."
                                                 onChange={e =>
-                                                    setSampleConfig({ ...sampleConfig, vcfIndex: e.currentTarget.value })
+                                                    setSampleConfig({
+                                                        ...sampleConfig,
+                                                        vcfIndex: e.currentTarget.value
+                                                    })
                                                 }
                                                 value={sampleConfig.vcfIndex}
                                             />
                                         </div>
 
                                         {/* Indel */}
-                                        <div 
-                                            className={`input-container ${testOkay.vcf2(sampleConfig) ? 'input' : 'input-invalid'}`}
+                                        <div
+                                            className={`input-container ${
+                                                testOkay.vcf2(sampleConfig) ? 'input' : 'input-invalid'
+                                            }`}
                                         >
                                             <div className="menu-subtitle">
                                                 Indel <small>(.vcf)</small>
@@ -350,7 +370,11 @@ export const UploadModal = ({
                                         </div>
 
                                         {/* Indel Index */}
-                                        <div className={`input-container ${testOkay.vcf2Index(sampleConfig) ? 'input' : 'input-invalid'}`}>
+                                        <div
+                                            className={`input-container ${
+                                                testOkay.vcf2Index(sampleConfig) ? 'input' : 'input-invalid'
+                                            }`}
+                                        >
                                             <div className="menu-subtitle">
                                                 Indel Index <small>(.tbi)</small>
                                             </div>
@@ -360,14 +384,21 @@ export const UploadModal = ({
                                                 className="menu-text-input"
                                                 placeholder="https://..."
                                                 onChange={e =>
-                                                    setSampleConfig({ ...sampleConfig, vcf2Index: e.currentTarget.value })
+                                                    setSampleConfig({
+                                                        ...sampleConfig,
+                                                        vcf2Index: e.currentTarget.value
+                                                    })
                                                 }
                                                 value={sampleConfig.vcf2Index}
                                             />
                                         </div>
 
                                         {/* Read Alignment */}
-                                        <div className={`input-container ${testOkay.bam(sampleConfig) ? 'input' : 'input-invalid'}`}>
+                                        <div
+                                            className={`input-container ${
+                                                testOkay.bam(sampleConfig) ? 'input' : 'input-invalid'
+                                            }`}
+                                        >
                                             <div className="menu-subtitle">
                                                 Read Alignment <small>(.bam)</small>
                                             </div>
@@ -376,13 +407,19 @@ export const UploadModal = ({
                                                 type="text"
                                                 className="menu-text-input"
                                                 placeholder="https://..."
-                                                onChange={e => setSampleConfig({ ...sampleConfig, bam: e.currentTarget.value })}
+                                                onChange={e =>
+                                                    setSampleConfig({ ...sampleConfig, bam: e.currentTarget.value })
+                                                }
                                                 value={sampleConfig.bam}
                                             />
                                         </div>
 
                                         {/* Read Alignment Index */}
-                                        <div className={`input-container ${testOkay.bai(sampleConfig) ? 'input' : 'input-invalid'}`}>
+                                        <div
+                                            className={`input-container ${
+                                                testOkay.bai(sampleConfig) ? 'input' : 'input-invalid'
+                                            }`}
+                                        >
                                             <div className="menu-subtitle">
                                                 Read Alignment Index <small>(.bai)</small>
                                             </div>
@@ -391,32 +428,35 @@ export const UploadModal = ({
                                                 type="text"
                                                 className="menu-text-input"
                                                 placeholder="https://..."
-                                                onChange={e => setSampleConfig({ ...sampleConfig, bai: e.currentTarget.value })}
+                                                onChange={e =>
+                                                    setSampleConfig({ ...sampleConfig, bai: e.currentTarget.value })
+                                                }
                                                 value={sampleConfig.bai}
                                             />
                                         </div>
-                                        
-                                        <div className="footnote">
-                                            * Required Fields
-                                        </div>
+
+                                        <div className="footnote">* Required Fields</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <button className="btn btn-outline-primary create-cohort">
+                        <button className="btn btn-outline-primary create-cohort" disabled>
                             <span>Create New Cohort</span>
                         </button>
-                        <button 
+                        <button
                             className="btn btn-primary add-to-cohort"
                             disabled={!sampleOkayToAdd}
-                            data-bs-dismiss="modal" 
+                            data-bs-dismiss="modal"
                             aria-label="Submit"
                         >
                             <span
                                 className={!sampleOkayToAdd ? 'disabled' : ''}
-                                onClick={() => onAdd(sampleConfig as ValidSampleConfig)}
+                                onClick={() => {
+                                    clearSampleConfig();
+                                    onAdd(sampleConfig as ValidSampleConfig);
+                                }}
                             >
                                 Add to Cohort
                             </span>

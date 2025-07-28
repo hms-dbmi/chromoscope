@@ -30,7 +30,7 @@ import { InstructionsModal } from './ui/InstructionsModal';
 import { ClinicalPanel } from './ui/ClinicalPanel';
 import { AboutModal } from './ui/AboutModal';
 import { VisOverviewPanel } from './ui/VisOverviewPanel';
-import  SampleConfigForm from './ui/SampleConfigForm';
+import SampleConfigForm from './ui/SampleConfigForm';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/App.css';
@@ -444,7 +444,7 @@ function App(props: RouteComponentProps) {
     const AvailabilityIcon = (isAvailable: boolean) => {
         return (
             <svg className="data-availability-checkbox" viewBox="0 0 16 16">
-                <title>Export Image</title>
+                <title>Checkbox</title>
                 {(isAvailable ? ICONS.CHECKSQUARE : ICONS.SQUARE).path.map(p => (
                     <path fill="currentColor" key={p} d={p} />
                 ))}
@@ -506,7 +506,7 @@ function App(props: RouteComponentProps) {
                         setDemo(d);
                     }, 300);
                 }}
-                className={demo === d ? 'selected-overview' : 'unselected-overview'}
+                className={'overview' + (demo === d ? ' selected-overview' : ' unselected-overview')}
             >
                 <div style={{ fontWeight: 500 }}>
                     {d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1).split(' ')[0]}
@@ -858,6 +858,7 @@ function App(props: RouteComponentProps) {
                         <>
                             <SampleConfigForm
                                 onAdd={config => {
+                                    console.log('Adding sample config:', config);
                                     setFilteredSamples([
                                         {
                                             ...config,
@@ -865,6 +866,11 @@ function App(props: RouteComponentProps) {
                                         },
                                         ...filteredSamples
                                     ]);
+                                    // demoIndex.current = i;
+                                    // setShowSamples(false);
+                                    // setTimeout(() => {
+                                    //     setDemo(d);
+                                    // }, 300);
                                 }}
                             />
                             <VisOverviewPanel
@@ -1016,7 +1022,7 @@ function App(props: RouteComponentProps) {
                                 pointerEvents: 'none',
                                 width: '100%',
                                 height: '100%',
-                                position: 'relative',
+                                position: 'relative'
                             }}
                         >
                             <img
@@ -1317,7 +1323,7 @@ function App(props: RouteComponentProps) {
                     }}
                 >
                     <svg className="button" viewBox={ICONS.ARROW_UP.viewBox}>
-                        <title>Scroll To Top</title>
+                        <title>Arrow Up</title>
                         <path fill="currentColor" d={ICONS.ARROW_UP.path[0]} />
                     </svg>
                 </button>
