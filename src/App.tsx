@@ -858,7 +858,6 @@ function App(props: RouteComponentProps) {
                         <>
                             <SampleConfigForm
                                 onAdd={config => {
-                                    console.log('Adding sample config:', config);
                                     setFilteredSamples([
                                         {
                                             ...config,
@@ -866,11 +865,6 @@ function App(props: RouteComponentProps) {
                                         },
                                         ...filteredSamples
                                     ]);
-                                    // demoIndex.current = i;
-                                    // setShowSamples(false);
-                                    // setTimeout(() => {
-                                    //     setDemo(d);
-                                    // }, 300);
                                 }}
                             />
                             <VisOverviewPanel
@@ -1335,9 +1329,7 @@ function App(props: RouteComponentProps) {
                             <VariantViewModal />
                         </>
                     ) : (
-                        <>
-                            <InstructionsModal />
-                        </>
+                        <InstructionsModal />
                     )}
                 </div>
                 {!isMinimalMode && !!clinicalInfoRef.current && (
