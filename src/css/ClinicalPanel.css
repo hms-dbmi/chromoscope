@@ -163,16 +163,16 @@
                         border-bottom: 1px solid #e0e6eb;
 
                         .data-label {
-                            flex: 3;
+                            flex: 2;
                             color: #565961;
                             font-weight: 600;
-                            word-break: break-all;
+                            word-break: break-word;
                         }
 
                         .data-value {
                             flex: 2;
                             color: #000000;
-                            word-break: break-all;
+                            word-break: break-word;
                         }
                     }
 
