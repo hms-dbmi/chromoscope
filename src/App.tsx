@@ -482,15 +482,15 @@ function App(props: RouteComponentProps) {
                 cnFields: noThumbnail.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
             });
             const hidden = document.getElementById('hidden-gosling');
-            embed(hidden, spec, { padding: 0, margin: 10 }).then(api => {
-                setTimeout(() => {
-                    const { canvas } = api.getCanvas();
-                    const dataUrl = canvas.toDataURL('image/png');
-                    GENERATED_THUMBNAILS[noThumbnail.id] = dataUrl;
-                    db.add(id, dataUrl);
-                    setThumbnailForceGenerate(!thumbnailForceGenerate);
-                }, 10000);
-            });
+            // embed(hidden, spec, { padding: 0, margin: 10 }).then(api => {
+            //   setTimeout(() => {
+            //     const { canvas } = api.getCanvas();
+            //    const dataUrl = canvas.toDataURL('image/png');
+            //   GENERATED_THUMBNAILS[noThumbnail.id] = dataUrl;
+            //  db.add(id, dataUrl);
+            // setThumbnailForceGenerate(!thumbnailForceGenerate);
+            //}, 10000);
+            // });
         }
         if (noThumbnail) {
             setDoneGeneratingThumbnails(false);
@@ -601,16 +601,7 @@ function App(props: RouteComponentProps) {
         });
         currentSpec.current = JSON.stringify(spec);
 
-        return (
-            <GoslingComponent
-                ref={gosRef}
-                spec={spec}
-                padding={GOSLING_VIS_COMPONENT_PADDING}
-                margin={0}
-                experimental={{ reactive: true }}
-                theme={THEME}
-            />
-        );
+        return <GoslingComponent ref={gosRef} spec={spec} padding={GOSLING_VIS_COMPONENT_PADDING} theme={THEME} />;
         // !! Removed `demo` not to update twice since `drivers` are updated right after a demo update.
     }, [
         ready,
