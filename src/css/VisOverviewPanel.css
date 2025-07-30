@@ -83,16 +83,11 @@
             padding: 20px;
             gap: 20px;
             overflow-y: auto;
-            max-height: calc(100vh - 200px);
+            max-height: calc(100vh - 250px);
 
             .overview {
                 background-color: transparent;
                 transition: background-color 0.5s ease;
-            }
-        }
-        .overview-container.new-sample-added {
-            .overview:first-of-type {
-                background-color: #ffffc5;
             }
         }
 
@@ -369,6 +364,25 @@
         display: block;
         text-align: center;
         flex: 1;
+    }
+
+    .selected-overview,
+    .unselected-overview {
+        display: block;
+        text-align: center;
+        flex: 1;
+    }
+
+    .selected-overview {
+        box-shadow: inset 0px 0px 0px 2px #2e94ff;
+    }
+
+    .unselected-overview {
+        cursor: pointer;
+    }
+
+    .unselected-overview:hover {
+        box-shadow: inset 0px 0px 0px 2px lightgray;
     }
 
     .unselected-overview {
