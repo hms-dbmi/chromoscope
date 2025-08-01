@@ -2,6 +2,8 @@
 @import url('./NavigationBar.css');
 @import url('./ClinicalPanel.css');
 @import url('./InstructionsModal.css');
+@import url('./VisOverviewPanel.css');
+@import url('./SampleConfigForm.css');
 
 /* Overwrite Bootstrap's default box-sizing */
 *,
@@ -47,54 +49,6 @@ a:hover {
 }
 
 .vis-panel {
-    .vis-overview-panel {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border-right: 1px solid lightgray;
-        background-color: white;
-        overflow-y: none;
-        z-index: 999;
-        left: 0px;
-        transition-property: left, display;
-        transition-duration: 0.2s;
-        transition-timing-function: ease;
-        transition-behavior: allow-discrete;
-
-        .navigation-container {
-            display: flex;
-            align-items: center;
-            padding: 0px 20px;
-            font-size: 18px;
-            border-bottom: 1px solid lightgray;
-            background: #f6f6f6;
-
-            .config-button {
-                svg {
-                    vertical-align: unset;
-                }
-            }
-            .config-button:hover {
-                background-color: #eaeaea;
-            }
-            .config-button:active {
-                background-color: #e3e3e3;
-            }
-
-            .title-github-link:hover,
-            .title-doc-link:hover,
-            .feedback a:hover {
-                background-color: #eaeaea;
-            }
-
-            .title-github-link:active,
-            .title-doc-link:active,
-            .feedback a:active {
-                background-color: #e3e3e3;
-            }
-        }
-    }
-
     .hide {
         left: -100%;
         display: none;
@@ -106,123 +60,7 @@ a:hover {
     }
 
     .gosling-component {
-        z-index: 1;
-    }
-
-    .vis-overview-panel .title {
-        padding: 10px;
-        font-size: 18px;
-        border-bottom: 1px solid lightgray;
-        background: #f6f6f6;
-    }
-
-    .vis-overview-panel .title small {
-        font-weight: normal;
-    }
-
-    .vis-overview-panel .button {
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
-        position: absolute;
-        right: 5px;
-        top: 12px;
-    }
-
-    .vis-overview-panel .overview-container {
-        display: flex;
-        flex-wrap: wrap;
-        height: calc(100% - 41px - 20px);
-        padding: 20px;
-        gap: 20px;
-        overflow-y: auto;
-    }
-
-    .overview-root {
-        margin-top: 50px;
-        gap: 0px;
-        height: calc(100% - 50px);
-    }
-
-    .overview-container {
-        width: calc(100% - 400px - 40px);
-        float: left;
-    }
-
-    .overview-status {
-        background: rgba(210, 210, 210, 0.1);
-        width: calc(100% - 400px);
-        height: 25px;
-        float: left;
-        border-bottom: 1px solid lightgrey;
-        padding: 0px;
-        margin: 0px;
-        color: grey;
-        align-content: middle;
-        display: flex;
-        justify-content: center;
-    }
-
-    .overview-left {
-        float: left;
-        height: 100%;
-        width: 398px;
-        border-right: 1px solid lightgrey;
-        overflow-y: auto;
-        overflow-x: hidden;
-        background: rgba(210, 210, 210, 0.1);
-    }
-
-    .vis-overview-panel table {
-        width: 100%;
-        border-spacing: 0px 0px;
-        border-collapse: collapse;
-    }
-
-    .vis-overview-panel tr /* :nth-child(even) */ {
-        border-top: 1px solid lightgray;
-    }
-
-    .vis-overview-panel td {
-        border-radius: 0px;
-        padding-left: 90px !important;
-    }
-
-    .vis-overview-panel .overview-title {
-        position: absolute;
-        left: -10px;
-        top: 120px;
-        transform: rotate(-90deg);
-        font-weight: bold;
-        font-size: 18px;
-        text-shadow: 0px 0px 12px #f6f6f6;
-    }
-
-    .overview-container > div {
-        padding: 4px;
-    }
-
-    .vis-overview-panel .selected-overview,
-    .vis-overview-panel .unselected-overview {
-        display: block;
-        text-align: center;
-        flex: 1;
-    }
-
-    .vis-overview-panel .selected-overview {
-        box-shadow: inset 0px 0px 0px 2px #2e94ff;
-    }
-
-    .vis-overview-panel .unselected-overview {
-        cursor: pointer;
-    }
-
-    .vis-overview-panel .unselected-overview:hover {
-        box-shadow: inset 0px 0px 0px 2px lightgray;
-    }
-
-    .vis-overview-panel td {
-        padding: 20px;
+        z-index: 0;
     }
 }
 
@@ -483,14 +321,19 @@ a:hover {
 }
 
 .gene-search-icon {
-    margin-top: 1px;
-    margin-left: 22px;
+    position: relative;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    top: auto;
+    left: auto;
+    right: auto;
+    margin: auto;
+    transform: none;
+    margin: auto 10px;
     width: 16px;
     height: 16px;
-    position: absolute;
-    left: 164px;
     cursor: pointer;
-    z-index: 999;
     fill: grey;
 }
 
@@ -644,7 +487,6 @@ a:hover {
     box-shadow: 0 0 10px 0px #00000032;
     bottom: 20px;
     cursor: pointer;
-    z-index: 998;
     opacity: 0.5;
     border: none;
     border-radius: 4px;
@@ -701,6 +543,7 @@ a:hover {
     /* http://iros.github.io/patternfills/sample_d3.html */
     background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1JyBoZWlnaHQ9JzUnPgo8cmVjdCB3aWR0aD0nNScgaGVpZ2h0PSc1JyBmaWxsPScjZmZmJy8+CjxyZWN0IHdpZHRoPScxJyBoZWlnaHQ9JzEnIGZpbGw9JyNjY2MnLz4KPC9zdmc+');
     background-repeat: repeat;
+    /* overflow-x: hidden; */
     overflow-y: auto;
     display: grid;
 }
@@ -792,7 +635,6 @@ a:hover {
             margin-left: 0;
             border: none;
             width: 180px;
-            padding-left: 35px;
         }
     }
     .directional-controls {
@@ -817,7 +659,6 @@ a:hover {
     width: 3%;
     height: min-content;
     position: relative;
-    z-index: 997;
 }
 
 .track-tooltip {
@@ -843,7 +684,6 @@ a:hover {
 
 .navigation-panel {
     position: fixed;
-    z-index: 998;
     display: flex;
     flex-direction: column;
     top: 60px;
@@ -991,7 +831,6 @@ a:hover {
 .navigation-buttons {
     box-sizing: border-box;
     position: fixed;
-    z-index: 998;
     display: flex;
     flex-direction: column;
     top: 63px;

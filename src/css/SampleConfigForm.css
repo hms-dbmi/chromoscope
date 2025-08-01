@@ -1,0 +1,154 @@
+#upload-modal {
+    .modal-dialog {
+        width: 90%;
+    }
+    .modal-header {
+        background-color: #f3f8fe;
+        border-bottom: 1px solid #bbc5e1;
+        padding: 20px 25px;
+
+        .modal-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.25rem;
+            font-weight: 600;
+
+            svg {
+                height: 25px;
+                width: 25px;
+                color: #abc3e0;
+                margin-right: 20px;
+            }
+        }
+    }
+
+    .sample-config-form {
+        border-radius: 10px;
+        padding: 0px 25px 25px;
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0px;
+            align-items: center;
+
+            h2 {
+                font-size: 1.25rem;
+                font-weight: 600;
+                margin-bottom: 0px;
+            }
+
+            a {
+                background-color: #f8f8f8;
+                border: 1px solid #dcdcdc;
+                padding: 10px 15px;
+                border-radius: 6px;
+                font-weight: 500;
+                color: #4e4e4e;
+            }
+
+            a:hover {
+                cursor: pointer;
+                text-decoration: none;
+            }
+        }
+
+        .form-inputs-container {
+            padding: 20px;
+            background-color: #fdfdfd;
+            border: 2px solid #a8a8a8;
+            border-radius: 8px;
+
+            .input-button-container {
+                display: flex;
+                align-items: flex-end;
+                gap: 20px;
+
+                .input-container {
+                    flex: 1;
+                }
+                .example-dataset-button {
+                    width: 200px;
+                    background-color: #f8f8f8;
+                    border: 1px solid #dcdcdc;
+                    padding: 5px 10px;
+                    border-radius: 6px;
+                    font-weight: 500;
+                    margin-bottom: 12px;
+                    color: #4e4e4e;
+
+                    svg {
+                        height: 15px;
+                        width: 15px;
+                        margin-right: 10px;
+                    }
+                }
+            }
+
+            .input-container {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 10px;
+
+                .menu-subtitle {
+                    margin-bottom: 0px;
+                    color: #5e5e5e;
+                    font-weight: 600;
+                    font-size: 0.875rem;
+                    margin-left: 4px;
+                }
+
+                .menu-dropdown {
+                    margin-bottom: 0px;
+                    border-radius: 4px;
+                    border: 1px solid #a8a8a8;
+                    padding: 5px 6px 5px 5px;
+                }
+                .menu-text-input {
+                    margin-bottom: 0px;
+                    border-radius: 4px;
+                    padding: 5px 10px;
+                    border: 1px solid #a8a8a8;
+                }
+                .menu-text-input-invalid {
+                    margin-bottom: 0px;
+                }
+            }
+
+            .input-invalid {
+                .menu-subtitle {
+                    color: #d61e4b;
+                }
+
+                .menu-text-input {
+                    border-color: #d61e4b;
+                }
+            }
+
+            .footnote {
+                text-align: right;
+            }
+        }
+    }
+
+    .modal-footer {
+        .create-cohort {
+            border: 1px solid #dcdcdc;
+            color: #1060c9;
+            font-weight: 500;
+            padding: 8px 15px;
+        }
+        .create-cohort:hover,
+        .create-cohort:focus-visible {
+            cursor: pointer;
+            text-decoration: none;
+            background-color: #f8f8f8;
+        }
+        .add-to-cohort {
+            background-color: #1060c9;
+            border: 1px solid #004093;
+            font-weight: 600;
+            padding: 8px 20px;
+        }
+    }
+}

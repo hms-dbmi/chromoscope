@@ -39,7 +39,7 @@ export type SampleType = {
 // const samples: SampleType[] = (pcawg as SampleType[]).map(d => { return { group: 'default', ...d }});
 // console.log(samples);
 
-const samples: SampleType[] = [
+export const samples: SampleType[] = [
     {
         group: 'default',
         id: 'SRR7890905',
