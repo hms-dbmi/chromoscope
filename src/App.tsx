@@ -254,7 +254,7 @@ function App(props: RouteComponentProps) {
                             externalDemo?.samples[demoIndex.current < externalDemo.length ? demoIndex.current : 0];
                     }
                     // External demo contains multiple samples
-                    if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
+                    else if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
                         setFilteredSamples(externalDemo);
                         externalDemo = externalDemo[demoIndex.current < externalDemo.length ? demoIndex.current : 0];
                     } else {
