@@ -111,6 +111,8 @@ function App(props: RouteComponentProps) {
 
     const currentSpec = useRef<string>();
 
+    const [selectedCohort, setSelectedCohort] = useState<string>(null);
+
     // Selected Mutation
     const [selectedMutationAbsPos, setSelectedMutationAbsPos] = useState<number>(null);
 
@@ -243,6 +245,14 @@ function App(props: RouteComponentProps) {
             fetch(externalUrl).then(response =>
                 response.text().then(d => {
                     let externalDemo = JSON.parse(d);
+
+                    // External demo is an object with samples array
+                    if (externalDemo?.samples?.length > 0) {
+                        setSelectedCohort(externalDemo?.name ?? 'Custom Cohort');
+                        setFilteredSamples(externalDemo.samples);
+                        externalDemo =
+                            externalDemo?.samples[demoIndex.current < externalDemo.length ? demoIndex.current : 0];
+                    }
                     // External demo contains multiple samples
                     if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
                         setFilteredSamples(externalDemo);
@@ -882,6 +892,8 @@ function App(props: RouteComponentProps) {
                                 setFilteredSamples={setFilteredSamples}
                                 setGenerateThumbnails={setGenerateThumbnails}
                                 setDemo={setDemo}
+                                selectedCohort={selectedCohort}
+                                setSelectedCohort={setSelectedCohort}
                             />
                         </>
                     )}

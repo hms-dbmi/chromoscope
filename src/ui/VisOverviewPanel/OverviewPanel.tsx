@@ -296,7 +296,7 @@ const SampleDropdown = ({ selectedCohort }: SampleDropdownProps) => {
                 className={`dropdown-button ${showDropdown ? 'toggle-open' : ''}`}
                 onClick={e => setShowDropdown(!showDropdown)}
             >
-                <span className="">{selectedCohort ?? 'PCAWG: Cancer Cohort'}</span>
+                <span className="">{selectedCohort === null ? 'PCAWG: Cancer Cohort' : selectedCohort}</span>
                 <svg className="icon" viewBox={ICONS.CHEVRON_UP.viewBox}>
                     <title>{showDropdown ? 'Chevron Up' : 'Chevron Down'}</title>
                     {ICONS.CHEVRON_UP.path.map(p => (
@@ -329,6 +329,8 @@ type OverviewPanelProps = {
     demoIndex: React.MutableRefObject<number>;
     externalDemoUrl: React.MutableRefObject<string>;
     filteredSamples: Array<any>;
+    selectedCohort: string;
+    setSelectedCohort: (cohort: string) => void;
     setFilteredSamples: (samples: Array<any>) => void;
     setDemo: (demo: any) => void;
 };
@@ -338,10 +340,11 @@ export const OverviewPanel = ({
     demoIndex,
     externalDemoUrl,
     filteredSamples,
+    selectedCohort,
+    setSelectedCohort,
     setFilteredSamples,
     setDemo
 }: OverviewPanelProps) => {
-    const [selectedCohort, setSelectedCohort] = useState<string | null>(null);
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
     // Scroll to top when new sample is selected
@@ -404,23 +407,25 @@ export const OverviewPanel = ({
                         <span>Upload New Data</span>
                     </button>
                 </div>
-                <div className="overview-controls">
-                    {Object.keys(defaultFilters).map((filter, index) => {
-                        return (
-                            <OverviewFilter
-                                key={index}
-                                identifier={filter}
-                                title={defaultFilters[filter].title}
-                                options={defaultFilters[filter].options}
-                                active={activeFilters.includes(filter)}
-                                onChange={onChange}
-                                activeFilters={activeFilters}
-                                nullValue={defaultFilters[filter].nullValue}
-                                setActiveFilters={setActiveFilters}
-                            />
-                        );
-                    })}
-                </div>
+                {!selectedCohort && (
+                    <div className="overview-controls">
+                        {Object.keys(defaultFilters).map((filter, index) => {
+                            return (
+                                <OverviewFilter
+                                    key={index}
+                                    identifier={filter}
+                                    title={defaultFilters[filter].title}
+                                    options={defaultFilters[filter].options}
+                                    active={activeFilters.includes(filter)}
+                                    onChange={onChange}
+                                    activeFilters={activeFilters}
+                                    nullValue={defaultFilters[filter].nullValue}
+                                    setActiveFilters={setActiveFilters}
+                                />
+                            );
+                        })}
+                    </div>
+                )}
                 <div className="overview-status">{`Total of ${filteredSamples.length} samples loaded`}</div>
                 <div className="overview-container">{smallOverviewWrapper}</div>
             </div>

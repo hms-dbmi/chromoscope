@@ -134,7 +134,7 @@ export const UploadModal = ({
                                                             assembly: e.currentTarget.value as 'hg19' | 'hg38'
                                                         })
                                                     }
-                                                    value={sampleConfig.assembly}
+                                                    value={sampleConfig.assembly ?? 'hg19'}
                                                 >
                                                     <option key={'hg19'} value={'hg19'}>
                                                         hg19
@@ -210,7 +210,7 @@ export const UploadModal = ({
                                                 onChange={e =>
                                                     setSampleConfig({ ...sampleConfig, id: e.currentTarget.value })
                                                 }
-                                                value={sampleConfig.id}
+                                                value={sampleConfig.id ?? ''}
                                             />
                                         </div>
 
@@ -233,7 +233,7 @@ export const UploadModal = ({
                                                 onChange={e =>
                                                     setSampleConfig({ ...sampleConfig, cancer: e.currentTarget.value })
                                                 }
-                                                value={sampleConfig.cancer}
+                                                value={sampleConfig.cancer ?? ''}
                                             />
                                         </div>
 
@@ -256,7 +256,7 @@ export const UploadModal = ({
                                                 onChange={e =>
                                                     setSampleConfig({ ...sampleConfig, sv: e.currentTarget.value })
                                                 }
-                                                value={sampleConfig.sv}
+                                                value={sampleConfig.sv ?? ''}
                                             />
                                         </div>
 
@@ -278,7 +278,7 @@ export const UploadModal = ({
                                                 onChange={e =>
                                                     setSampleConfig({ ...sampleConfig, cnv: e.currentTarget.value })
                                                 }
-                                                value={sampleConfig.cnv}
+                                                value={sampleConfig.cnv ?? ''}
                                             />
                                         </div>
 
@@ -299,7 +299,7 @@ export const UploadModal = ({
                                                 onChange={e =>
                                                     setSampleConfig({ ...sampleConfig, drivers: e.currentTarget.value })
                                                 }
-                                                value={sampleConfig.drivers}
+                                                value={sampleConfig.drivers ?? ''}
                                             />
                                         </div>
 
@@ -320,7 +320,7 @@ export const UploadModal = ({
                                                 onChange={e =>
                                                     setSampleConfig({ ...sampleConfig, vcf: e.currentTarget.value })
                                                 }
-                                                value={sampleConfig.vcf}
+                                                value={sampleConfig.vcf ?? ''}
                                             />
                                         </div>
 
@@ -344,7 +344,7 @@ export const UploadModal = ({
                                                         vcfIndex: e.currentTarget.value
                                                     })
                                                 }
-                                                value={sampleConfig.vcfIndex}
+                                                value={sampleConfig.vcfIndex ?? ''}
                                             />
                                         </div>
 
@@ -365,7 +365,7 @@ export const UploadModal = ({
                                                 onChange={e =>
                                                     setSampleConfig({ ...sampleConfig, vcf2: e.currentTarget.value })
                                                 }
-                                                value={sampleConfig.vcf2}
+                                                value={sampleConfig.vcf2 ?? ''}
                                             />
                                         </div>
 
@@ -389,7 +389,7 @@ export const UploadModal = ({
                                                         vcf2Index: e.currentTarget.value
                                                     })
                                                 }
-                                                value={sampleConfig.vcf2Index}
+                                                value={sampleConfig.vcf2Index ?? ''}
                                             />
                                         </div>
 
@@ -410,7 +410,7 @@ export const UploadModal = ({
                                                 onChange={e =>
                                                     setSampleConfig({ ...sampleConfig, bam: e.currentTarget.value })
                                                 }
-                                                value={sampleConfig.bam}
+                                                value={sampleConfig.bam ?? ''}
                                             />
                                         </div>
 
@@ -431,7 +431,7 @@ export const UploadModal = ({
                                                 onChange={e =>
                                                     setSampleConfig({ ...sampleConfig, bai: e.currentTarget.value })
                                                 }
-                                                value={sampleConfig.bai}
+                                                value={sampleConfig.bai ?? ''}
                                             />
                                         </div>
 

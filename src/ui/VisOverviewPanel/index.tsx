@@ -12,6 +12,8 @@ type VisOverviewPanelProps = {
     externalDemoUrl: React.MutableRefObject<string>;
     filteredSamples: Array<any>;
     doneGeneratingThumbnails: boolean;
+    selectedCohort: string;
+    setSelectedCohort: (cohort: string) => void;
     setShowSamples: (showSamples: boolean) => void;
     setShowAbout: (showAbout: boolean) => void;
     setFilterSampleBy: (filter: string) => void;
@@ -31,6 +33,8 @@ export const VisOverviewPanel = ({
     demoIndex,
     externalDemoUrl,
     filteredSamples,
+    selectedCohort,
+    setSelectedCohort,
     setFilteredSamples,
     setGenerateThumbnails,
     setDemo,
@@ -157,6 +161,8 @@ export const VisOverviewPanel = ({
                 filteredSamples={filteredSamples}
                 setFilteredSamples={setFilteredSamples}
                 setDemo={setDemo}
+                selectedCohort={selectedCohort}
+                setSelectedCohort={setSelectedCohort}
             />
         </div>
     );
