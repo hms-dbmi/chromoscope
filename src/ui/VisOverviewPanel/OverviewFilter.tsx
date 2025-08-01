@@ -73,6 +73,7 @@ export const OverviewFilter = ({
     const handleOptionSelection = (option: FilterOption | null) => {
         if (option === null) {
             setSelectedOption(null);
+            setActiveFilters([]); // Clear all active filters
         } else {
             setSelectedOption(option.name); // Set the selected option name
             setActiveFilters([identifier]); // Set active filter to only the current identifier
