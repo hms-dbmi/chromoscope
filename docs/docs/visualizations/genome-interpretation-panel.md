@@ -15,9 +15,15 @@ Chromoscope also facilitates the interpretation of **amplicons and their archite
 
 ---
 
-## Screenshot
+## Screenshots
 
 ![Genome Interpretation Panel Screenshot](https://github.com/user-attachments/assets/02d15e04-0986-4e8e-8da8-2a07eb1119a4)
+
+---
+
+## Examples of cohorts with Genome Interpretation Panel Populated
+
+- [MSK SPECTRUM (Link)](https://chromoscope.bio/app/?demoIndex=1&domain=1-249250621&external=https://somatic-browser-test.s3.us-east-1.amazonaws.com/SPECTRUM/SPECTRUM_config_with_clinicalInfo_sorted_aws.json)  
 
 ---
 

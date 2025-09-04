@@ -95,6 +95,8 @@ The `variants` field is a list of variants, each with the following fields:
 | `protein change` | `string` | Optional. protein consequence of the mutation, e.g., `"p.Arg175His"` |
 | `VAF` | `number` | Optional. Variant allele fraction of a mutation in the sample, e.g., `0.45` |
 | `mutation` | `string` | Optional. Reference and alternative allele in genomic DNA, e.g., `"G>T"` |
+| `sv_id` | `string` | Optional. If the variant is a structural variant, if the `sv_id` is provided, the variant will be highlighted, e.g., `"bnd_1012513"` |
+}
 
 Refer to an example configuration file that contains the clinical information necessary for displaying the genome interpretation panel:
 
@@ -159,7 +161,8 @@ Refer to an example configuration file that contains the clinical information ne
                 gene: "PTEN",
                 type: "deletion",
                 chr: "chr10",
-                position: "87917777"
+                position: "89637467",
+                sv_id: "bnd_1012513"
             },
             {
                 gene: "CDKN2A",
@@ -209,6 +212,24 @@ Refer to an example configuration file that contains the clinical information ne
     }
 }
 ```
+Another example of a configuration file that includes information for the Genome Interpretation Panel is available here:  
 
+[MSK SPECTRUM Configuration](https://somatic-browser-test.s3.us-east-1.amazonaws.com/SPECTRUM/SPECTRUM_config_with_clinicalInfo_sorted_aws.json)
+
+---
+
+## Notes
+
+- **HRDetect status encoding**  
+  The HRDetect status is determined by checking if any of the `"signature"` items have `hrDetect = true`. Otherwise, it is `false`.  
+  - If the `hrDetect` field is not provided, the status defaults to **"Negative"**.
+
+- **Variant highlighting mode**  
+  Variants are highlighted in the visualization if they are selected from the panel on the right.  
+  - Implemented for **point mutations** and **structural variants**.  
+  - Not currently implemented for **indels**.  
+  - Matching rules:  
+    - For point mutations → matched by chromosome name and chromosome coordinates.  
+    - For structural variants → matched by the `sv_id` field, if present.
 
 
