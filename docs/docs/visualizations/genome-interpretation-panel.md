@@ -18,6 +18,8 @@ Chromoscope also facilitates the interpretation of **amplicons and their archite
 ## Screenshots
 
 ![Genome Interpretation Panel Screenshot](https://github.com/user-attachments/assets/02d15e04-0986-4e8e-8da8-2a07eb1119a4)
+![When clicking on a point mutation in the panel, the varian is highlighted within the visualization](/img/mutation_highlight.png)
+![Interactive highlighting is also available for structural variants](/img/BRCA1.inversion.highlight.png)
 
 ---
 
