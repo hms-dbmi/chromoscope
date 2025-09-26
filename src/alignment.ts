@@ -1,7 +1,7 @@
 import { GoslingSpec } from 'gosling.js';
 import { SpecOption } from './main-spec';
 import defaultEncodings from './default-encoding';
-import { SingleTrack } from 'gosling.js/dist/src/core/gosling.schema';
+import { SingleTrack } from 'gosling.js/dist/src/gosling-schema';
 
 function drawSvReads(option: SpecOption, sv: string): Partial<SingleTrack>[] {
     const { svReads } = option;
@@ -101,9 +101,7 @@ export function alignment(option: SpecOption, isLeft: boolean): GoslingSpec {
         title: isLeft ? '  Alignment' : ' Alignment',
         data: { type: 'bam', url: bam, indexUrl: bai, loadMates: false },
         mark: 'rect',
-        experimental: {
-            mouseEvents: { mouseOver: true, groupMarksByField: 'id' }
-        },
+        mouseEvents: { mouseOver: true, groupMarksByField: 'id' },
         tracks: [
             /**
              * Regular Reads

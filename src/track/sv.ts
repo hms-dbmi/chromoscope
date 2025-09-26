@@ -91,12 +91,12 @@ export default function sv(
         id: `${sampleId}-${mode}-sv`,
         title: mode === 'mid' ? '  Structural Variants' : '',
         alignment: 'overlay',
+        mouseEvents: {
+            click: true,
+            mouseOver: true,
+            groupMarksByField: 'sv_id'
+        },
         experimental: {
-            mouseEvents: {
-                click: true,
-                mouseOver: true,
-                groupMarksByField: 'sv_id'
-            },
             performanceMode: true
         },
         data: {

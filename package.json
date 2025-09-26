@@ -24,7 +24,7 @@
         "@types/react-router-dom": "^5.2.0",
         "bootstrap": "^5.3.3",
         "buffer": "^6.0.3",
-        "gosling.js": "^0.17.0",
+        "gosling.js": "^1.0.5",
         "idb": "^7.0.2",
         "lodash": "^4.17.21",
         "path": "^0.12.7",
