@@ -866,6 +866,7 @@ function App(props: RouteComponentProps) {
                 <div id="vis-panel" className="vis-panel">
                     {!isMinimalMode && (
                         <>
+                            {/* Make SampleConfigForm available to trigger from VisOverviewPanel */}
                             <SampleConfigForm
                                 onAdd={config => {
                                     setFilteredSamples([

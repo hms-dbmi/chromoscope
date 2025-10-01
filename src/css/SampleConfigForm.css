@@ -22,6 +22,180 @@
         }
     }
 
+    .modal-body {
+        .upload-type-selector {
+            display: flex;
+            color: #000000;
+            border-bottom: 1px solid #BBC5E1;
+            background-color: transparent;
+            margin: 0px 25px;
+
+            .upload-type-button {
+                flex: 1;
+                text-align: center;
+                margin: auto;
+                padding: 15px 0px;
+                font-weight: 600;
+                cursor: pointer;
+                border: none;
+                background-color: transparent;
+
+                svg {
+                    height: 15px;
+                    width: 15px;
+                    margin-right: 10px;
+                    vertical-align: baseline;
+                }
+            }
+            .upload-type-button.active {
+                color: #3459BF;
+                border-bottom: 2px solid #3459BF;
+
+                svg {
+                    color: #1060C9;
+                }
+            }
+        }
+
+        .upload-feedback {
+            display: flex;
+            flex-direction: column;
+            width: 85%;
+            margin: auto;
+            
+            .success-banner {
+                display: flex;
+                flex-direction: column;
+                background-color: #f8fff8;
+                border: 1px solid darkgreen;
+                border-radius: 8px;
+                align-items: start;
+
+                .header {
+                    color: darkgreen;
+                    padding: 10px;
+                    font-size: 1rem;
+                    font-weight: 600;
+                }
+                .body {
+                    padding: 10px;
+                    font-size: 0.875rem;
+                }
+            }
+        }
+        
+    }
+
+    
+    .file-drag-upload-container {
+        display: flex;
+        justify-content: center;
+        margin: 30px auto;
+        border: 1px solid #A8A8A8;
+        border-radius: 10px;
+        padding: 25px;
+        width: 80%;
+        height: 400px;
+
+        .file-upload-dropzone {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 20px;
+            background-color: #F7F8F9;
+            border: 1px dashed #A8A8A8;
+            border-spacing: 5px;
+            border-radius: 10px;
+
+            .file-upload-prompt {
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 100%;
+
+                .spinner-border {
+                    color: #DCDCDC;
+                    margin: auto;
+                }
+                
+                .upload-prompt {
+                    display: flex;
+                    flex: 1;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    color: #617C9D;
+                    text-align: center;
+                    gap: 15px;
+
+                    svg {
+                        color: #DCDCDC;
+                        height: 80px;
+                    }
+                }
+
+                .divider {
+                    display: flex;
+                    width: 100%;
+                    position: relative;
+                    color: #617C9D;
+                    border-bottom: 1px solid #617C9D;
+                    height: 20px;
+                    margin: 20px 0px;
+
+                    span {
+                        position: absolute;
+                        bottom: -13px;
+                        background-color: #F7F8F9;
+                        transform: translateX(-50%);
+                        left: 50%;
+                        padding: 0px 10px;
+                    }
+                }
+
+                .url-upload {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    .input-group {
+                        display: flex;
+                        /* flex: 1; */
+                        gap: 15px;
+                        height: 40px;
+    
+                        input {
+                            flex: 1;
+                            border-radius: 5px;
+                            border: 1px solid #DCDCDC;
+                            padding: 0px 20px;
+                            color: #617C9D;
+                        }
+                        button {
+                            width: 200px;
+                            border-radius: 5px;
+                            border: 1px solid #DCDCDC;
+                            background-color: #FFFFFF;
+                            color: #1060C9;
+                        }
+                    }
+                }
+            }
+        }
+        .file-upload-dropzone:hover {
+            cursor: pointer;
+            background-color: #F0F1F3;
+
+            .divider {
+                span {
+                    background-color: #F0F1F3;
+                }
+            }
+        }
+    }
+
     .sample-config-form {
         border-radius: 10px;
         padding: 0px 25px 25px;

@@ -397,6 +397,7 @@ export const OverviewPanel = ({
             <div className="overview-root">
                 <div className="overview-header">
                     <SampleDropdown selectedCohort={selectedCohort} />
+                    {/* Button below triggers UploadModal */}
                     <button className="upload-file-button" data-bs-toggle="modal" data-bs-target="#upload-modal">
                         <svg className="button" viewBox={ICONS.UPLOAD_FILE.viewBox}>
                             <title>Upload File</title>
