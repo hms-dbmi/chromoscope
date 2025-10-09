@@ -1,5 +1,5 @@
 import { GoslingSpec } from 'gosling.js';
-import { Assembly, MultipleViews, SingleTrack, SingleView, View } from 'gosling.js/dist/src/core/gosling.schema';
+import { MultipleViews, SingleView, View } from 'gosling.js/dist/src/gosling-schema';
 import getMidView from './mid-spec';
 import { alignment } from './alignment';
 import { verticalGuide } from './vertical-guide';
@@ -282,7 +282,7 @@ function getOverviewSpec(option: SpecOption): View[] {
             },
             tracks: [
                 {
-                    name: 'Ideogram',
+                    title: 'Ideogram',
                     id: `${id}-top-ideogram`,
                     alignment: 'overlay',
                     data: {

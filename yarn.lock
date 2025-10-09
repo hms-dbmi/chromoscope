@@ -2193,10 +2193,10 @@ gopd@^1.0.1:
   dependencies:
     get-intrinsic "^1.1.3"
 
-gosling.js@^0.17.0:
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/gosling.js/-/gosling.js-0.17.0.tgz#68d9520b78c7a9a97a3db512ad836b9a3abf6cb1"
-  integrity sha512-AM63ZID/B/A5UUPqj72QBQRGYiuvEt8apOEvv0NPjCT5n8yxy2urNjvLqfGUOiwCMmQNfHuUDTtj0B1bNRPL1A==
+gosling.js@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/gosling.js/-/gosling.js-1.0.5.tgz#8dd8a6c8a6a3aa3e2c3505d76d5c3427b352e6c2"
+  integrity sha512-Q8NGIaAqaOoC/XxcJOqPnAq52bMpNGQ2zcqdNrdIuN8vwF6QsgbCTm2EJdtEpZDHHbdcF8poZF3WzYTHdPuRXg==
   dependencies:
     "@gmod/bam" "^1.1.18"
     "@gmod/bbi" "^3.0.1"
@@ -2220,7 +2220,7 @@ gosling.js@^0.17.0:
     generic-filehandle "^3.0.1"
     higlass "^1.13.4"
     higlass-register "^0.3.0"
-    higlass-text "^0.1.1"
+    higlass-text "^0.1.7"
     json-stringify-pretty-compact "^2.0.0"
     jspdf "^2.3.1"
     lodash-es "^4.17.21"
@@ -2293,10 +2293,10 @@ higlass-register@^0.3.0:
   resolved "https://registry.yarnpkg.com/higlass-register/-/higlass-register-0.3.0.tgz#6c728ad911359bd7e88749aceaffd8812415c52a"
   integrity sha512-D4I+ATxFuTn+Q6p8Y9rUa+X3b3cqMqhu9Tya6uHtvgV5cs39Mk7i6Z+7PMA8YuwQd5gLMSxCm2lCyWmxRVBQsQ==
 
-higlass-text@^0.1.1:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/higlass-text/-/higlass-text-0.1.6.tgz#662352a7981ee9c0671a2b31eef5415e7ceee78b"
-  integrity sha512-sjAROJfE38bSP72XncPTBV4AeYRs50N85OqRXooEwXF5zKVssBv1EKrvls0ralnSQ1aZX74cB/hTskbI91iRng==
+higlass-text@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/higlass-text/-/higlass-text-0.1.7.tgz#792acbc42f7d0067448f3013e705364d15d4c191"
+  integrity sha512-TpmbvklUWBEApL1QDyu29+kI/Wo1rxG8QdDPM+uAuSKVRArSDa1FbO22SoTAxRmY/ynGLZXcK9Uidreeb0YUwg==
   dependencies:
     d3-color "^3.1.0"
     d3-scale "^4.0.2"
@@ -3332,15 +3332,13 @@ react-color@^2.13.8:
     reactcss "^1.2.0"
     tinycolor2 "^1.4.1"
 
-react-dom@16.13.1:
-  version "16.13.1"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.13.1.tgz#c1bd37331a0486c078ee54c4740720993b2e0e7f"
-  integrity sha512-81PIMmVLnCNLO/fFOQxdQkvEq/+Hfpv24XNJfpyZhTRfO0QcmQIF/PgCa1zCOj2w1hrn12MFLyaJ/G0+Mxtfag==
+react-dom@18.3.1:
+  version "18.3.1"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.3.1.tgz#c2265d79511b57d479b3dd3fdfa51536494c5cb4"
+  integrity sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==
   dependencies:
     loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.2"
-    scheduler "^0.19.1"
+    scheduler "^0.23.2"
 
 react-draggable@3.x:
   version "3.3.2"
@@ -3430,14 +3428,12 @@ react-sortable-hoc@^1.10.1:
     invariant "^2.2.4"
     prop-types "^15.5.7"
 
-react@16.13.1:
-  version "16.13.1"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
-  integrity sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w==
+react@18.3.1:
+  version "18.3.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-18.3.1.tgz#49ab892009c53933625bd16b2533fc754cab2891"
+  integrity sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==
   dependencies:
     loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.2"
 
 reactcss@^1.2.0, reactcss@^1.2.3:
   version "1.2.3"
@@ -3621,13 +3617,12 @@ safe-regex-test@^1.0.0:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-scheduler@^0.19.1:
-  version "0.19.1"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.19.1.tgz#4f3e2ed2c1a7d65681f4c854fa8c5a1ccb40f196"
-  integrity sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==
+scheduler@^0.23.2:
+  version "0.23.2"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.23.2.tgz#414ba64a3b282892e944cf2108ecc078d115cdc3"
+  integrity sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==
   dependencies:
     loose-envify "^1.1.0"
-    object-assign "^4.1.1"
 
 semver-compare@^1.0.0:
   version "1.0.0"
