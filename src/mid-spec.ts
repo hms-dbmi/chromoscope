@@ -1,5 +1,5 @@
 import { SpecOption } from './main-spec';
-import { SingleTrack, View } from 'gosling.js/dist/src/core/gosling.schema';
+import { View } from 'gosling.js/dist/src/gosling-schema';
 import tracks from './track';
 import { driversToTsvUrl } from './utils';
 

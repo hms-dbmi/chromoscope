@@ -1,4 +1,4 @@
-import { GoslingSpec } from 'gosling.js/dist/src/core/gosling.schema';
+import { GoslingSpec } from 'gosling.js/dist/src/gosling-schema';
 import tracks from './track';
 
 type SpecOption = {

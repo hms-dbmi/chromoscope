@@ -616,7 +616,7 @@ function App(props: RouteComponentProps) {
                 spec={spec}
                 padding={GOSLING_VIS_COMPONENT_PADDING}
                 margin={0}
-                experimental={{ reactive: true }}
+                reactive={true}
                 theme={THEME}
             />
         );
