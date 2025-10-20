@@ -1,11 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { Track, getTrackDocData } from '../ui/getTrackDocData';
 import { ICONS } from '../icon';
+import { SampleType } from '../data/samples';
 
 type TrackTooltipsProps = {
     visPanelWidth: number;
     isMinimalMode: boolean;
-    demo: any;
+    demo: SampleType;
     selectedSvId: string;
     showSamples: boolean;
 };

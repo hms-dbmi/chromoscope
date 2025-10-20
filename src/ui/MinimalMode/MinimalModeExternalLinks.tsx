@@ -2,10 +2,11 @@ import React from 'react';
 import { ExportDropdown } from '../ExportDropdown';
 import { ICONS } from '../../icon';
 import { FEEDBACK_EMAIL_ADDRESS } from '../../constants';
+import { SampleType } from '../../data/samples';
 
 type MinimalModeExternalLinksProps = {
     gosRef: React.MutableRefObject<any>;
-    demo: any;
+    demo: SampleType;
     demoIndex: React.MutableRefObject<number>;
     externalDemoUrl: React.MutableRefObject<string>;
     externalUrl?: string;

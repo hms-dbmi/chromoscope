@@ -4,11 +4,12 @@ import { ICONS } from '../../icon';
 import { OverviewPanel } from './OverviewPanel';
 import { FEEDBACK_EMAIL_ADDRESS } from '../../constants';
 import { Cohorts } from '../../App';
+import { SampleType } from '../../data/samples';
 
 type VisOverviewPanelProps = {
     showSamples: boolean;
     generateThumbnails: boolean;
-    demo: any;
+    demo: SampleType;
     demoIndex: React.MutableRefObject<number>;
     externalDemoUrl: React.MutableRefObject<string>;
     filteredSamples: Array<any>;
@@ -22,7 +23,7 @@ type VisOverviewPanelProps = {
     setFilterSampleBy: (filter: string) => void;
     setFilteredSamples: (samples: Array<any>) => void;
     setGenerateThumbnails: (generate: boolean) => void;
-    setDemo: (demo: any) => void;
+    setDemo: (demo: SampleType) => void;
 };
 
 export const VisOverviewPanel = ({

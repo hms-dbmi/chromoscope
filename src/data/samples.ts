@@ -1,5 +1,5 @@
 import { Assembly } from 'gosling.js/dist/src/gosling-schema';
-import { ClinicalInfo } from '../ui/ClinicalPanel';
+import { ClinicalInfoType } from '../ui/ClinicalPanel';
 
 import _7a921087 from '../script/img/7a921087-8e62-4a93-a757-fd8cdbe1eb8f.jpeg';
 import _84ca6ab0 from '../script/img/84ca6ab0-9edc-4636-9d27-55cdba334d7d.jpeg';
@@ -33,7 +33,7 @@ export type SampleType = {
     cnFields?: [string, string, string];
     thumbnail?: string;
     note?: string;
-    clinicalInfo?: ClinicalInfo;
+    clinicalInfo?: ClinicalInfoType;
 };
 
 // const samples: SampleType[] = (pcawg as SampleType[]).map(d => { return { group: 'default', ...d }});

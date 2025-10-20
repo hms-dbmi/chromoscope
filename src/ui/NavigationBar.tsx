@@ -2,12 +2,13 @@ import React, { MutableRefObject } from 'react';
 
 import { ICONS } from '../icon';
 import { ExportButton } from './ExportDropdown';
+import { SampleType } from '../data/samples';
 
 type NavigationBarProps = {
-    demo: any;
+    demo: SampleType;
     demoIndex: MutableRefObject<number>;
     showSmallMultiples: boolean;
-    gosRef: any;
+    gosRef: React.RefObject<any>;
     currentSpec: MutableRefObject<string>;
     externalUrl: string;
     externalDemoUrl: MutableRefObject<string>;

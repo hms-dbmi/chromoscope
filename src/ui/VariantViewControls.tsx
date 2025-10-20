@@ -1,11 +1,12 @@
 import React from 'react';
 import { CHROMOSOMES, ZOOM_DURATION } from '../constants';
+import { SampleType } from '../data/samples';
 
 type VariantViewControlsProps = {
     visPanelWidth: number;
     isMinimalMode: boolean;
     gosRef: React.MutableRefObject<any>;
-    demo: any;
+    demo: SampleType;
     genomeViewChr: string;
     showOverview: boolean;
     showSamples: boolean;

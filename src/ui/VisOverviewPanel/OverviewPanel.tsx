@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import { ICONS } from '../../icon';
 import { OverviewFilter } from './OverviewFilter';
-
 import { samples, SampleType } from '../../data/samples';
 import { SmallOverviewWrapper } from '../SmallOverviewWrapper';
 import { CohortSelector } from './CohortSelector';
@@ -273,7 +272,7 @@ const defaultFilters: FilterGroup = {
 };
 
 type OverviewPanelProps = {
-    demo: any;
+    demo: SampleType;
     demoIndex: React.MutableRefObject<number>;
     externalDemoUrl: React.MutableRefObject<string>;
     filteredSamples: Array<any>;
@@ -283,7 +282,7 @@ type OverviewPanelProps = {
     setShowSamples: (showSamples: boolean) => void;
     setSelectedCohort: (cohort: string) => void;
     setFilteredSamples: (samples: Array<any>) => void;
-    setDemo: (demo: any) => void;
+    setDemo: (demo: SampleType) => void;
 };
 
 export const OverviewPanel = ({
