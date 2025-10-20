@@ -8,45 +8,40 @@ import generateSpec from './main-spec';
 import ErrorBoundary from './error';
 import _allDrivers from './data/driver.json';
 import _customDrivers from './data/driver.custom.json';
-import samples, { SampleType } from './data/samples';
-import getOneOfSmallMultiplesSpec from './small-multiples-spec';
-import { CHROMOSOMES, THEME, WHOLE_CHROMOSOME_STR } from './constants';
+import samples from './data/samples';
 import { ICONS } from './icon';
-import { INTERNAL_SAVED_THUMBNAILS } from './data/external-thumbnails';
 import { isChrome } from './utils';
-import THUMBNAIL_PLACEHOLDER from './script/img/placeholder.png';
-import { Database } from './database';
 import { getHtmlTemplate } from './html-template';
-import { EXTERNAL_THUMBNAILS } from './data/stevens-mpnst';
-import { BrowserDatabase } from './browser-log';
 import legend from './legend.png';
-import { ExportDropdown } from './ui/ExportDropdown';
 import { GenomeViewModal } from './ui/GenomeViewModal';
 import { VariantViewModal } from './ui/VariantViewModal';
 import { NavigationButtons } from './ui/NavigationButtons';
-import { Track, getTrackDocData } from './ui/getTrackDocData.js';
 import { NavigationBar } from './ui/NavigationBar';
 import { InstructionsModal } from './ui/InstructionsModal';
 import { ClinicalPanel } from './ui/ClinicalPanel';
 import { AboutModal } from './ui/AboutModal';
 import { VisOverviewPanel } from './ui/VisOverviewPanel';
 import SampleConfigForm from './ui/SampleConfigForm';
+import { VariantViewControls } from './ui/VariantViewControls';
+import { TrackTooltips } from './ui/TrackTooltips';
+import { MinimalModeExternalLinks } from './ui/MinimalMode/MinimalModeExternalLinks';
+
+// Import constants
+import {
+    ZOOM_PADDING,
+    ZOOM_DURATION,
+    SCROLL_BAR_WIDTH,
+    GOSLING_VIS_COMPONENT_PADDING,
+    CLINICAL_PANEL_OPEN_WIDTH,
+    CLINICAL_PANEL_CLOSED_WIDTH,
+    FEEDBACK_EMAIL_ADDRESS,
+    THEME
+} from './constants';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/App.css';
 
-const db = new Database();
-const log = new BrowserDatabase();
-
-const DB_DO_NOT_SHOW_ABOUT_BY_DEFAULT = (await log.get())?.doNotShowAboutByDefault ?? false;
-const DATABSE_THUMBNAILS = await db.get();
-const GENERATED_THUMBNAILS = {};
-
 const INIT_VIS_PANEL_WIDTH = window.innerWidth;
-const ZOOM_PADDING = 200;
-const ZOOM_DURATION = 500;
-
-const FEEDBACK_EMAIL_ADDRESS = 'dominik_glodzik@hms.harvard.edu';
 
 const allDrivers = [
     ...(_allDrivers as any),
@@ -58,11 +53,22 @@ const allDrivers = [
     })
 ];
 
-// Spacing variables
-const SCROLL_BAR_WIDTH = 12;
-const GOSLING_VIS_COMPONENT_PADDING = 3;
-const CLINICAL_PANEL_OPEN_WIDTH = 250;
-const CLINICAL_PANEL_CLOSED_WIDTH = 45;
+export type Cohorts = {
+    [key: string]: Cohort;
+};
+
+export type Cohort = {
+    name: string;
+    samples: any;
+};
+
+// Initialize with preloaded PCAWG cohort data
+export const COHORTS: Cohorts = {
+    pcawg: {
+        name: 'PCAWG: Cancer Cohort',
+        samples: samples // All PCAWG samples
+    }
+};
 
 function App(props: RouteComponentProps) {
     // URL parameters
@@ -111,7 +117,9 @@ function App(props: RouteComponentProps) {
 
     const currentSpec = useRef<string>();
 
-    const [selectedCohort, setSelectedCohort] = useState<string>(null);
+    // Set default cohort state
+    const [cohorts, setCohorts] = useState<Cohorts>(COHORTS);
+    const [selectedCohort, setSelectedCohort] = useState<string>('pcawg');
 
     // Selected Mutation
     const [selectedMutationAbsPos, setSelectedMutationAbsPos] = useState<number>(null);
@@ -122,7 +130,7 @@ function App(props: RouteComponentProps) {
     // Create a ref to store clinical info across renders
     const clinicalInfoRef = useRef(null);
 
-    // interactions
+    // Interactions
     const [showSamples, setShowSamples] = useState(urlParams.get('showSamples') !== 'false' && !xDomain);
     const [showAbout, setShowAbout] = useState(false);
     const [thumbnailForceGenerate, setThumbnailForceGenerate] = useState(false);
@@ -435,156 +443,11 @@ function App(props: RouteComponentProps) {
         };
     }, [isClinicalPanelOpen]);
 
-    // Enable Bootstrap popovers for track tooltips, update for selected SV tracks
+    // Enable Bootstrap popovers for track tooltips, re-run for selected SV tracks
     useEffect(() => {
         const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+        [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
     }, [selectedSvId]);
-
-    const getThumbnail = (d: SampleType) => {
-        return (
-            d.thumbnail ||
-            INTERNAL_SAVED_THUMBNAILS[d.id] ||
-            EXTERNAL_THUMBNAILS[d.id] ||
-            DATABSE_THUMBNAILS.find(db => db.id === d.id)?.dataUrl ||
-            GENERATED_THUMBNAILS[d.id]
-        );
-    };
-
-    const AvailabilityIcon = (isAvailable: boolean) => {
-        return (
-            <svg className="data-availability-checkbox" viewBox="0 0 16 16">
-                <title>Checkbox</title>
-                {(isAvailable ? ICONS.CHECKSQUARE : ICONS.SQUARE).path.map(p => (
-                    <path fill="currentColor" key={p} d={p} />
-                ))}
-            </svg>
-        );
-    };
-    const smallOverviewWrapper = useMemo(() => {
-        // !! Uncomment the following lines to generated specs for making thumbnails.
-        // console.log(
-        //     'overviewSpec',
-        //     filteredSamples.map(d =>
-        //         getOneOfSmallMultiplesSpec({
-        //             cnvUrl: d.cnv,
-        //             svUrl: d.sv,
-        //             width: 1200,
-        //             title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
-        //             subtitle: d.id, // '' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : ''),
-        //             cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
-        //         })
-        //     ),
-        //     filteredSamples.map(d => `node gosling-screenshot.js output/${d.id}.json img/${d.id}.jpeg`).join('\n')
-        // );
-        // return [];
-        /* Load image if necessary */
-        const noThumbnail = filteredSamples.filter(d => !getThumbnail(d))[0];
-        if (noThumbnail && generateThumbnails) {
-            const { id } = noThumbnail;
-            const spec = getOneOfSmallMultiplesSpec({
-                cnvUrl: noThumbnail.cnv,
-                svUrl: noThumbnail.sv,
-                width: 600,
-                title: noThumbnail.cancer.charAt(0).toUpperCase() + noThumbnail.cancer.slice(1),
-                subtitle: id,
-                cnFields: noThumbnail.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
-            });
-            const hidden = document.getElementById('hidden-gosling');
-            embed(hidden, spec, { padding: 0, margin: 10 }).then(api => {
-                setTimeout(() => {
-                    const { canvas } = api.getCanvas();
-                    const dataUrl = canvas.toDataURL('image/png');
-                    GENERATED_THUMBNAILS[noThumbnail.id] = dataUrl;
-                    db.add(id, dataUrl);
-                    setThumbnailForceGenerate(!thumbnailForceGenerate);
-                }, 10000);
-            });
-        }
-        if (noThumbnail) {
-            setDoneGeneratingThumbnails(false);
-        } else {
-            setDoneGeneratingThumbnails(true);
-        }
-        return filteredSamples.map((d, i) => (
-            <div
-                key={JSON.stringify(d.id)}
-                onClick={() => {
-                    demoIndex.current = i;
-                    setShowSamples(false);
-                    setTimeout(() => {
-                        setDemo(d);
-                    }, 300);
-                }}
-                className={'overview' + (demo === d ? ' selected-overview' : ' unselected-overview')}
-            >
-                <div style={{ fontWeight: 500 }}>
-                    {d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1).split(' ')[0]}
-                </div>
-                <div style={{ color: 'grey', fontSize: '14px' }}>
-                    {'' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : '')}
-                </div>
-                <div style={{ position: 'relative' }}>
-                    {getThumbnail(d) ? (
-                        <img src={getThumbnail(d)} style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }} />
-                    ) : (
-                        // <div style={{ marginLeft: 'calc(50% - 105px - 10px)' }}>
-                        //     <GoslingComponent
-                        //         padding={0}
-                        //         margin={10}
-                        //         spec={getOneOfSmallMultiplesSpec({
-                        //             cnvUrl: d.cnv,
-                        //             svUrl: d.sv,
-                        //             width: 210,
-                        //             title: d.cancer.charAt(0).toUpperCase() + d.cancer.slice(1),
-                        //             subtitle: d.id, // '' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : ''),
-                        //             cnFields: d.cnFields ?? ['total_cn', 'major_cn', 'minor_cn']
-                        //         })}
-                        //     />
-                        // </div>
-                        <>
-                            <img
-                                src={THUMBNAIL_PLACEHOLDER}
-                                style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }}
-                            />
-                            <span className="thumbnail-loading-message">
-                                {generateThumbnails ? 'Loading...' : 'Thumbnail Missing'}
-                            </span>
-                        </>
-                    )}
-                    <span className="tag-assembly">{d.assembly ?? 'hg38'}</span>
-                </div>
-                <div className="tag-parent">
-                    <div className={'tag-sv'}>{AvailabilityIcon(true)}SV</div>
-                    <div className={d.vcf && d.vcfIndex ? 'tag-pm' : 'tag-disabled'}>
-                        {AvailabilityIcon(!!d.vcf && !!d.vcfIndex)}Point Mutation
-                    </div>
-                    <div className={d.vcf2 && d.vcf2Index ? 'tag-id' : 'tag-disabled'}>
-                        {AvailabilityIcon(!!d.vcf2 && !!d.vcf2Index)}Indel
-                    </div>
-                    <div className={d.bam && d.bai ? 'tag-ra' : 'tag-disabled'}>
-                        {AvailabilityIcon(!!d.bam && !!d.bai)}Read Alignment
-                    </div>
-                    {d.note ? <div className="tag-note">{d.note}</div> : null}
-                </div>
-            </div>
-        ));
-        // smallOverviewGoslingComponents.map(([component, spec], i) => (
-        //     <div
-        //         key={JSON.stringify(spec)}
-        //         onClick={() => {
-        //             setShowSamples(false);
-        //             setTimeout(() => {
-        //                 setDemoIdx(i);
-        //                 setSelectedSvId('');
-        //             }, 300);
-        //         }}
-        //         className={demoIdx === i ? 'selected-overview' : 'unselected-overview'}
-        //     >
-        //         {component}
-        //     </div>
-        // ));
-    }, [demo, filteredSamples, thumbnailForceGenerate, generateThumbnails]);
 
     const goslingComponent = useMemo(() => {
         const loadingCustomJSONDrivers = typeof demo.drivers === 'string' && demo.drivers.split('.').pop() === 'json';
@@ -634,81 +497,6 @@ function App(props: RouteComponentProps) {
         isClinicalPanelOpen,
         selectedMutationAbsPos
     ]);
-
-    const trackTooltips = useMemo(() => {
-        // calculate the offset by the Genome View
-        const genomeViewHeight = Math.min(600, visPanelWidth);
-        const TRACK_DATA = getTrackDocData(isMinimalMode);
-        const offset = genomeViewHeight + (isMinimalMode ? 100 : 40) - 2;
-
-        // Infer the tracks shown
-        const tracksShown: Track[] = ['ideogram', 'driver', 'gene'];
-        if (demo.vcf && demo.vcfIndex) tracksShown.push('mutation');
-        if (demo.vcf2 && demo.vcf2Index) tracksShown.push('indel');
-        if (demo.cnv) tracksShown.push('cnv', 'gain', 'loh');
-        // Pushing this after the others to match order of tracks in UI
-        tracksShown.push('sv');
-        if (selectedSvId !== '') tracksShown.push('sequence');
-        if (demo.bam && demo.bai && selectedSvId !== '') tracksShown.push('coverage', 'alignment');
-        const HEIGHTS_OF_TRACKS_SHOWN = TRACK_DATA.filter(d => tracksShown.includes(d.type));
-
-        // Calculate the positions of the tracks
-        const trackPositions = tracksShown.map((t, i) => {
-            const indexOfTrack = HEIGHTS_OF_TRACKS_SHOWN.findIndex(d => d.type === t);
-            const cumHeight = HEIGHTS_OF_TRACKS_SHOWN.slice(0, indexOfTrack).reduce((acc, d) => acc + d.height, 0);
-            const position = {
-                y: offset + cumHeight - 100,
-                type: t,
-                title: HEIGHTS_OF_TRACKS_SHOWN[indexOfTrack].title,
-                popover_content: HEIGHTS_OF_TRACKS_SHOWN[indexOfTrack].popover_content
-            };
-            return position;
-        });
-
-        return (
-            <div className="track-tooltips-container">
-                {trackPositions?.map((d, i) => {
-                    return (
-                        <a
-                            key={i}
-                            id={`track-tooltip-${d.type}`}
-                            tabIndex={showSamples ? -1 : 0}
-                            role="button"
-                            className="track-tooltip"
-                            data-bs-trigger="focus"
-                            data-bs-toggle="popover"
-                            data-bs-template={`
-                                <div class="popover" role="tooltip">
-                                <div class="popover-arrow">
-                                </div>
-                                <h2 class="popover-header">
-                                </h2>
-                                <div class="popover-body">
-                                </div>
-                                </div>
-                            `}
-                            data-bs-title={d.title}
-                            data-bs-custom-class={'track-tooltip-popover popover-for-' + d.type}
-                            data-bs-html="true"
-                            data-bs-content={d.popover_content}
-                            style={{
-                                position: 'absolute',
-                                top: d.y + (d.type === 'ideogram' ? 32 : 0) + 5,
-                                left: 10
-                            }}
-                        >
-                            <svg className="button question-mark" viewBox={ICONS.QUESTION_CIRCLE_FILL.viewBox}>
-                                <title>Question Mark</title>
-                                {ICONS.QUESTION_CIRCLE_FILL.path.map(p => (
-                                    <path fill="black" key={p} d={p} />
-                                ))}
-                            </svg>
-                        </a>
-                    );
-                })}
-            </div>
-        );
-    }, [demo, visPanelWidth, selectedSvId, showSamples]);
 
     useLayoutEffect(() => {
         if (!gosRef.current) return;
@@ -868,21 +656,34 @@ function App(props: RouteComponentProps) {
                         <>
                             {/* Make SampleConfigForm available to trigger from VisOverviewPanel */}
                             <SampleConfigForm
-                                onAdd={config => {
-                                    setFilteredSamples([
-                                        {
-                                            ...config,
-                                            group: 'default'
-                                        },
-                                        ...filteredSamples
-                                    ]);
+                                cohorts={cohorts}
+                                setCohorts={setCohorts}
+                                onAdd={newSample => {
+                                    // Check whether it is a new Cohort or a new sample
+                                    // setFilteredSamples([
+                                    //     {
+                                    //         ...newSample,
+                                    //         group: 'default'
+                                    //     },
+                                    //     ...filteredSamples
+                                    // ]);
+
+                                    // Update cohort state with new data
+                                    setCohorts({
+                                        ...cohorts,
+                                        [selectedCohort]: {
+                                            ...cohorts[selectedCohort],
+                                            samples: [newSample, ...cohorts[selectedCohort]?.samples]
+                                        }
+                                    });
                                 }}
                             />
                             <VisOverviewPanel
-                                FEEDBACK_EMAIL_ADDRESS={FEEDBACK_EMAIL_ADDRESS}
+                                cohorts={cohorts}
+                                setCohorts={setCohorts}
                                 showSamples={showSamples}
                                 generateThumbnails={generateThumbnails}
-                                smallOverviewWrapper={smallOverviewWrapper}
+                                demo={demo}
                                 demoIndex={demoIndex}
                                 externalDemoUrl={externalDemoUrl}
                                 filteredSamples={filteredSamples}
@@ -959,69 +760,14 @@ function App(props: RouteComponentProps) {
                         {
                             // External links and export buttons
                             isMinimalMode ? (
-                                <div className="external-links">
-                                    <nav className="external-links-nav">
-                                        <button
-                                            className="open-in-chromoscope-link link-button"
-                                            // tabIndex={2}
-                                            onClick={e => {
-                                                e.preventDefault();
-                                                const { xDomain } = gosRef.current.hgApi.api.getLocation(
-                                                    `${demo.id}-mid-ideogram`
-                                                );
-                                                if (xDomain) {
-                                                    // urlParams.set('demoIndex', demoIndex.current + '');
-                                                    // urlParams.set('domain', xDomain.join('-'));
-                                                    let newUrl =
-                                                        window.location.origin + window.location.pathname + '?';
-                                                    newUrl += `demoIndex=${demoIndex.current}`;
-                                                    newUrl += `&domain=${xDomain.join('-')}`;
-                                                    if (externalDemoUrl.current) {
-                                                        newUrl += `&external=${externalDemoUrl.current}`;
-                                                    } else if (externalUrl) {
-                                                        newUrl += `&external=${externalUrl}`;
-                                                    }
-                                                    window.open(newUrl, '_blank');
-                                                }
-                                            }}
-                                        >
-                                            <div className="link-group">
-                                                <span>Open in Chromoscope</span>
-                                                <svg
-                                                    className="external-link-icon"
-                                                    width="12"
-                                                    height="11"
-                                                    viewBox="0 0 12 11"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                        d="M9.8212 1.73104L10.6894 0.875H9.47015H7.66727C7.55064 0.875 7.46966 0.784774 7.46966 0.6875C7.46966 0.590226 7.55064 0.5 7.66727 0.5H11.1553C11.2719 0.5 11.3529 0.590226 11.3529 0.6875V4.125C11.3529 4.22227 11.2719 4.3125 11.1553 4.3125C11.0387 4.3125 10.9577 4.22228 10.9577 4.125V2.34824V1.15307L10.1067 1.9922L5.71834 6.31907C5.71831 6.3191 5.71828 6.31913 5.71825 6.31916C5.64039 6.39579 5.51053 6.39576 5.43271 6.31907C5.35892 6.24635 5.35892 6.1308 5.43271 6.05808L5.4328 6.05799L9.8212 1.73104ZM1.19116 2.40625C1.19116 1.73964 1.74085 1.1875 2.43519 1.1875H4.87682C4.99345 1.1875 5.07443 1.27773 5.07443 1.375C5.07443 1.47227 4.99345 1.5625 4.87682 1.5625H2.43519C1.97411 1.5625 1.58638 1.93419 1.58638 2.40625V9.28125C1.58638 9.75331 1.97411 10.125 2.43519 10.125H9.41129C9.87237 10.125 10.2601 9.75331 10.2601 9.28125V6.875C10.2601 6.77773 10.3411 6.6875 10.4577 6.6875C10.5743 6.6875 10.6553 6.77773 10.6553 6.875V9.28125C10.6553 9.94786 10.1056 10.5 9.41129 10.5H2.43519C1.74085 10.5 1.19116 9.94786 1.19116 9.28125V2.40625Z"
-                                                        fill="black"
-                                                        stroke="black"
-                                                    />
-                                                </svg>
-                                            </div>
-                                        </button>
-                                        <div className="button-group">
-                                            <div className="export-links">
-                                                <ExportDropdown gosRef={gosRef} currentSpec={currentSpec} />
-                                            </div>
-                                            <div className="feedback">
-                                                <a
-                                                    href={`mailto:${FEEDBACK_EMAIL_ADDRESS}?subject=Chromoscope%20Feedback&body=Feedback%20Type%3A%20General%20Feedback%0D%0A%0D%0AComments%3A%0D%0A%0D%0A%0D%0A`}
-                                                    className="link-button"
-                                                >
-                                                    <svg className="button" viewBox={ICONS.MAIL.viewBox}>
-                                                        <title>Mail</title>
-                                                        <path fill="currentColor" d={ICONS.MAIL.path[0]} />
-                                                    </svg>
-                                                    <span>Feedback</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </nav>
-                                </div>
+                                <MinimalModeExternalLinks
+                                    gosRef={gosRef}
+                                    demo={demo}
+                                    demoIndex={demoIndex}
+                                    externalDemoUrl={externalDemoUrl}
+                                    externalUrl={externalUrl}
+                                    currentSpec={currentSpec}
+                                />
                             ) : null
                         }
                         <div
@@ -1043,206 +789,25 @@ function App(props: RouteComponentProps) {
                                     width: '120px'
                                 }}
                             />
-                            <div
-                                id="variant-view-controls"
-                                className="variant-view-controls"
-                                style={{ top: `${Math.min(visPanelWidth, isMinimalMode ? 650 : 600)}px` }}
-                            >
-                                <select
-                                    id="variant-view"
-                                    tabIndex={showSamples ? -1 : 0}
-                                    style={{
-                                        pointerEvents: 'auto'
-                                        // !! This should be identical to how the height of circos determined.
-                                        // top: `${Math.min(visPanelWidth, 600)}px`
-                                    }}
-                                    className="nav-dropdown chromosome-select"
-                                    onChange={e => {
-                                        setShowSamples(false);
-                                        const chr = e.currentTarget.value;
-                                        setTimeout(() => setGenomeViewChr(chr), 300);
-                                    }}
-                                    value={genomeViewChr}
-                                    disabled={!showOverview}
-                                >
-                                    {CHROMOSOMES.map(chr => {
-                                        return (
-                                            <option key={chr} value={chr}>
-                                                {chr}
-                                            </option>
-                                        );
-                                    })}
-                                </select>
-                                <div className="gene-search">
-                                    <svg
-                                        className="gene-search-icon"
-                                        viewBox="0 0 16 16"
-                                        style={
-                                            {
-                                                // top: `${Math.min(visPanelWidth, 600) + 6}px`
-                                                // visibility: demo.assembly === 'hg38' ? 'visible' : 'hidden'
-                                            }
-                                        }
-                                    >
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-                                        />
-                                    </svg>
-                                    <input
-                                        type="text"
-                                        tabIndex={showSamples ? -1 : 0}
-                                        className="gene-search"
-                                        placeholder="Search Gene (e.g., MYC)"
-                                        // alt={demo.assembly === 'hg38' ? 'Search Gene' : 'Not currently available for this assembly.'}
-                                        style={{
-                                            pointerEvents: 'auto'
-                                            // top: `${Math.min(visPanelWidth, 600)}px`
-                                            // cursor: demo.assembly === 'hg38' ? 'auto' : 'not-allowed',
-                                            // visibility: demo.assembly === 'hg38' ? 'visible' : 'hidden'
-                                        }}
-                                        // disabled={demo.assembly === 'hg38' ? false : true}
-                                        // onChange={(e) => {
-                                        //     const keyword = e.target.value;
-                                        //     if(keyword !== "" && !keyword.startsWith("c")) {
-                                        //         gosRef.current.api.suggestGene(keyword, (suggestions) => {
-                                        //             setGeneSuggestions(suggestions);
-                                        //         });
-                                        //         setSuggestionPosition({
-                                        //             left: searchBoxRef.current.getBoundingClientRect().left,
-                                        //             top: searchBoxRef.current.getBoundingClientRect().top + searchBoxRef.current.getBoundingClientRect().height,
-                                        //         });
-                                        //     } else {
-                                        //         setGeneSuggestions([]);
-                                        //     }
-                                        //     setSearchKeyword(keyword);
-                                        // }}
-                                        onKeyDown={e => {
-                                            const keyword = (e.target as HTMLTextAreaElement).value;
-                                            switch (e.key) {
-                                                case 'ArrowUp':
-                                                    break;
-                                                case 'ArrowDown':
-                                                    break;
-                                                case 'Enter':
-                                                    // https://github.com/gosling-lang/gosling.js/blob/7555ab711023a0c3e2076a448756a9ba3eeb04f7/src/core/api.ts#L156
-                                                    gosRef.current.hgApi.api.zoomToGene(
-                                                        `${demo.id}-mid-ideogram`,
-                                                        keyword,
-                                                        10000,
-                                                        1000
-                                                    );
-                                                    break;
-                                                case 'Esc':
-                                                case 'Escape':
-                                                    break;
-                                            }
-                                        }}
-                                    />
-                                </div>
-                                <div className="directional-controls">
-                                    <div className="control-group zoom">
-                                        <button
-                                            style={{
-                                                pointerEvents: 'auto'
-                                                // !! This should be identical to how the height of circos determined.
-                                                // top: `${Math.min(visPanelWidth, 600)}px`
-                                            }}
-                                            tabIndex={showSamples ? -1 : 0}
-                                            className="zoom-in-button control"
-                                            onClick={e => {
-                                                const trackId = `${demo.id}-mid-ideogram`;
-                                                const [start, end] =
-                                                    gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
-                                                if (end - start < 100) return;
-                                                const delta = (end - start) / 3.0;
-                                                gosRef.current.api.zoomTo(
-                                                    trackId,
-                                                    `chr1:${start + delta}-${end - delta}`,
-                                                    0,
-                                                    ZOOM_DURATION
-                                                );
-                                            }}
-                                        >
-                                            +
-                                        </button>
-                                        <button
-                                            style={{
-                                                pointerEvents: 'auto'
-                                                // !! This should be identical to how the height of circos determined.
-                                                // top: `${Math.min(visPanelWidth, 600)}px`
-                                            }}
-                                            tabIndex={showSamples ? -1 : 0}
-                                            className="zoom-out-button control"
-                                            onClick={e => {
-                                                const trackId = `${demo.id}-mid-ideogram`;
-                                                const [start, end] =
-                                                    gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
-                                                const delta = (end - start) / 2.0;
-                                                gosRef.current.api.zoomTo(
-                                                    trackId,
-                                                    `chr1:${start}-${end}`,
-                                                    delta,
-                                                    ZOOM_DURATION
-                                                );
-                                            }}
-                                        >
-                                            -
-                                        </button>
-                                    </div>
-                                    <div className="control-group pan">
-                                        <button
-                                            style={{
-                                                pointerEvents: 'auto'
-                                                // !! This should be identical to how the height of circos determined.
-                                                // top: `${Math.min(visPanelWidth, 600)}px`
-                                            }}
-                                            tabIndex={showSamples ? -1 : 0}
-                                            className="zoom-left-button control"
-                                            onClick={e => {
-                                                const trackId = `${demo.id}-mid-ideogram`;
-                                                const [start, end] =
-                                                    gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
-                                                if (end - start < 100) return;
-                                                const delta = (end - start) / 4.0;
-                                                gosRef.current.api.zoomTo(
-                                                    trackId,
-                                                    `chr1:${start - delta}-${end - delta}`,
-                                                    0,
-                                                    ZOOM_DURATION
-                                                );
-                                            }}
-                                        >
-                                            ←
-                                        </button>
-                                        <button
-                                            style={{
-                                                pointerEvents: 'auto'
-                                                // !! This should be identical to how the height of circos determined.
-                                                // top: `${Math.min(visPanelWidth, 600)}px`
-                                            }}
-                                            tabIndex={showSamples ? -1 : 0}
-                                            className="zoom-right-button control"
-                                            onClick={e => {
-                                                const trackId = `${demo.id}-mid-ideogram`;
-                                                const [start, end] =
-                                                    gosRef.current?.hgApi.api.getLocation(trackId).xDomain;
-                                                const delta = (end - start) / 4.0;
-                                                gosRef.current.api.zoomTo(
-                                                    trackId,
-                                                    `chr1:${start + delta}-${end + delta}`,
-                                                    0,
-                                                    ZOOM_DURATION
-                                                );
-                                            }}
-                                        >
-                                            →
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                            <VariantViewControls
+                                visPanelWidth={visPanelWidth}
+                                isMinimalMode={isMinimalMode}
+                                gosRef={gosRef}
+                                demo={demo}
+                                genomeViewChr={genomeViewChr}
+                                setGenomeViewChr={setGenomeViewChr}
+                                showOverview={showOverview}
+                                showSamples={showSamples}
+                                setShowSamples={setShowSamples}
+                            />
                         </div>
-                        {trackTooltips}
+                        <TrackTooltips
+                            visPanelWidth={visPanelWidth}
+                            isMinimalMode={isMinimalMode}
+                            demo={demo}
+                            selectedSvId={selectedSvId}
+                            showSamples={showSamples}
+                        />
                     </div>
                 </div>
                 {!isMinimalMode && (

@@ -2,17 +2,20 @@ import React from 'react';
 
 import { ICONS } from '../../icon';
 import { OverviewPanel } from './OverviewPanel';
+import { FEEDBACK_EMAIL_ADDRESS } from '../../constants';
+import { Cohorts } from '../../App';
 
 type VisOverviewPanelProps = {
-    FEEDBACK_EMAIL_ADDRESS: string;
     showSamples: boolean;
     generateThumbnails: boolean;
-    smallOverviewWrapper: React.ReactNode;
+    demo: any;
     demoIndex: React.MutableRefObject<number>;
     externalDemoUrl: React.MutableRefObject<string>;
     filteredSamples: Array<any>;
     doneGeneratingThumbnails: boolean;
     selectedCohort: string;
+    cohorts: Cohorts;
+    setCohorts: (cohorts: Cohorts) => void;
     setSelectedCohort: (cohort: string) => void;
     setShowSamples: (showSamples: boolean) => void;
     setShowAbout: (showAbout: boolean) => void;
@@ -23,17 +26,18 @@ type VisOverviewPanelProps = {
 };
 
 export const VisOverviewPanel = ({
-    FEEDBACK_EMAIL_ADDRESS,
     showSamples,
     setShowSamples,
     setShowAbout,
     setFilterSampleBy,
     generateThumbnails,
-    smallOverviewWrapper,
+    demo,
     demoIndex,
     externalDemoUrl,
     filteredSamples,
     selectedCohort,
+    cohorts,
+    setCohorts,
     setSelectedCohort,
     setFilteredSamples,
     setGenerateThumbnails,
@@ -155,10 +159,13 @@ export const VisOverviewPanel = ({
                 </div>
             </div>
             <OverviewPanel
-                smallOverviewWrapper={smallOverviewWrapper}
+                cohorts={cohorts}
+                setCohorts={setCohorts}
+                demo={demo}
                 demoIndex={demoIndex}
                 externalDemoUrl={externalDemoUrl}
                 filteredSamples={filteredSamples}
+                setShowSamples={setShowSamples}
                 setFilteredSamples={setFilteredSamples}
                 setDemo={setDemo}
                 selectedCohort={selectedCohort}
