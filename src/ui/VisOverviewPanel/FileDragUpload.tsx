@@ -1,7 +1,7 @@
 // FileDragUpload.tsx
 import React, { useCallback, useState } from 'react';
 import { ICONS } from '../../icon';
-import { SampleConfig } from '../SampleConfigForm';
+import { SampleConfig, ValidCohort } from '../SampleConfigForm';
 
 type FileDragUploadProps = {
     onJsonParsed: (data: any | any[]) => void;
@@ -9,16 +9,19 @@ type FileDragUploadProps = {
     setUploadedFile?: (file: File | null) => void;
     setSampleConfig: React.Dispatch<React.SetStateAction<SampleConfig>>;
     multiple?: boolean;
+    error: string | null;
+    setError: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 export const FileDragUpload = ({
     onJsonParsed,
     uploadedFile = null,
     setUploadedFile = null,
-    multiple = false
+    multiple = false,
+    error,
+    setError
 }: FileDragUploadProps) => {
     const [dragging, setDragging] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
     const handleFiles = useCallback(
@@ -37,6 +40,8 @@ export const FileDragUpload = ({
                             setUploadedFile(file);
                             setTimeout(() => setIsLoading(false), 250); // Simulate loading for UX
                         } catch (err) {
+                            console.log('MESSAGE TO SET', `Failed to parse ${file.name}: ${err}`);
+                            setError(`Failed to parse ${file.name}: ${err}`);
                             reject(new Error(`Failed to parse ${file.name}`));
                         }
                     };
@@ -52,7 +57,6 @@ export const FileDragUpload = ({
                 })
                 .catch(err => {
                     console.error(err);
-                    setError(err.message || 'Failed to read file(s)');
                 });
         },
         [multiple, onJsonParsed]
@@ -111,7 +115,7 @@ export const FileDragUpload = ({
 
     return (
         <div className="file-drag-upload-container">
-            {!uploadedFile ? (
+            {!error ? (
                 <div
                     className={`file-upload-dropzone ${dragging ? 'dragging' : ''}`}
                     onDrop={handleDrop}
@@ -162,9 +166,16 @@ export const FileDragUpload = ({
                 </div>
             ) : (
                 <div className="reupload-prompt">
-                    <span>Uploaded: {uploadedFile.name}</span>
-                    <button className="btn btn-link" onClick={() => setUploadedFile(null)}>
-                        Upload a different file
+                    <span>Upload Failed...</span>
+                    <button
+                        className="btn btn-link"
+                        onClick={() => {
+                            setUploadedFile(null);
+                            setError(null);
+                            setIsLoading(false);
+                        }}
+                    >
+                        Try a different file
                     </button>
                 </div>
             )}

@@ -137,7 +137,7 @@ function App(props: RouteComponentProps) {
     const [generateThumbnails, setGenerateThumbnails] = useState(false);
     const [doneGeneratingThumbnails, setDoneGeneratingThumbnails] = useState(false);
     const [filterSampleBy, setFilterSampleBy] = useState('');
-    const [filteredSamples, setFilteredSamples] = useState(selectedSamples);
+    const [filteredSamples, setFilteredSamples] = useState(cohorts[selectedCohort]?.samples || []);
     const [showOverview, setShowOverview] = useState(true);
     const [showPutativeDriver, setShowPutativeDriver] = useState(true);
     const [interactiveMode, setInteractiveMode] = useState(isMinimalMode ?? false);
@@ -658,25 +658,30 @@ function App(props: RouteComponentProps) {
                             <SampleConfigForm
                                 cohorts={cohorts}
                                 setCohorts={setCohorts}
-                                onAdd={newSample => {
-                                    // Check whether it is a new Cohort or a new sample
-                                    // setFilteredSamples([
-                                    //     {
-                                    //         ...newSample,
-                                    //         group: 'default'
-                                    //     },
-                                    //     ...filteredSamples
-                                    // ]);
+                                selectedCohort={selectedCohort}
+                                setSelectedCohort={setSelectedCohort}
+                                // onAdd={uploadContent => {
+                                //     console.log('Uploaded content:', uploadContent);
+                                //     // Object is expected to contain a name and a list of samples
+                                //     // const { name, samples: newSamples } = uploadContent;
 
-                                    // Update cohort state with new data
-                                    setCohorts({
-                                        ...cohorts,
-                                        [selectedCohort]: {
-                                            ...cohorts[selectedCohort],
-                                            samples: [newSample, ...cohorts[selectedCohort]?.samples]
-                                        }
-                                    });
-                                }}
+                                //     // setFilteredSamples([
+                                //     //     {
+                                //     //         ...newSample,
+                                //     //         group: 'default'
+                                //     //     },
+                                //     //     ...filteredSamples
+                                //     // ]);
+
+                                //     // Update cohort state with new data
+                                //     setCohorts({
+                                //         ...cohorts,
+                                //         [selectedCohort]: {
+                                //             ...cohorts[selectedCohort],
+                                //             samples: [uploadContent, ...cohorts[selectedCohort]?.samples]
+                                //         }
+                                //     });
+                                // }}
                             />
                             <VisOverviewPanel
                                 cohorts={cohorts}

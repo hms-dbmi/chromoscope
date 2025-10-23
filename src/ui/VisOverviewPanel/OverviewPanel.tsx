@@ -300,6 +300,11 @@ export const OverviewPanel = ({
 }: OverviewPanelProps) => {
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
+    // Update filtered samples when cohort changes
+    useEffect(() => {
+        setFilteredSamples(cohorts[selectedCohort]?.samples || []);
+    }, [cohorts, selectedCohort]);
+
     // Scroll to top when new sample is selected
     useEffect(() => {
         // Scroll to top when new cohort is selected

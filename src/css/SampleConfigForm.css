@@ -63,17 +63,14 @@
             width: 85%;
             margin: auto;
 
-            .success-banner {
+            .feedback-banner {
                 display: flex;
                 flex-direction: column;
-                background-color: #f9fff9;
-                border: 1px solid #2e9c2d;
                 border-radius: 8px;
                 align-items: start;
 
                 .header {
                     display: flex;
-                    color: darkgreen;
                     padding: 10px;
                     font-size: 1rem;
                     font-weight: 600;
@@ -81,12 +78,98 @@
 
                     svg {
                         height: 20px;
-                        color: #a3d6a3;
                     }
                 }
                 .body {
-                    padding: 10px 10px 10px 30px;
+                    display: flex;
+                    flex: 1;
+                    flex-direction: column;
+                    padding: 0px 10px 10px 40px;
                     font-size: 0.875rem;
+                    font-weight: 400;
+
+                    .summary {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+
+                        .name {
+                            display: flex;
+                            gap: 10px;
+
+                            .name-input {
+                                input {
+                                    min-width: 200px;
+                                    background-color: transparent;
+                                    border: none;
+                                    border-bottom: 1px solid #2e9c2d;
+                                    padding: 0px;
+                                }
+                                .cancel {
+                                    svg {
+                                        height: 20px;
+                                        margin-left: 5px;
+                                    }
+                                }
+                                .save {
+                                    margin-left: 10px;
+                                }
+                            }
+
+                            .name-display {
+                                span {
+                                    display: inline-flex;
+                                    min-width: 200px;
+                                    border-bottom: 1px solid #2e9c2d;
+                                }
+                                .edit {
+                                    margin-left: 5px;
+                                }
+                                svg {
+                                    height: 10px;
+                                    margin-left: 5px;
+                                }
+                            }
+                        }
+                        b {
+                            font-weight: 500;
+                        }
+                        button {
+                            color: #016500;
+                            background-color: transparent;
+                            border: none;
+                            padding: 0px;
+                        }
+                        button:hover {
+                            cursor: pointer;
+                            text-decoration: underline;
+                        }
+                    }
+                    .samples {
+                        padding-top: 10px;
+                    }
+                }
+            }
+            .feedback-banner.success {
+                background-color: #f9fff9;
+                border: 1px solid #2e9c2d;
+                color: #016500;
+
+                .header {
+                    svg {
+                        color: #a3d6a3;
+                    }
+                }
+            }
+            .feedback-banner.error {
+                background-color: #fff9f9;
+                border: 1px solid #ba3e3e;
+                color: #8e0b0b;
+
+                .header {
+                    svg {
+                        color: #8e0b0b;
+                    }
                 }
             }
         }
