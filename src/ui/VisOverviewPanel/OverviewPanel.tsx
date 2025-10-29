@@ -377,7 +377,7 @@ export const OverviewPanel = ({
                         <span>Upload New Data</span>
                     </button>
                 </div>
-                {selectedCohort === 'pcawg' && (
+                {selectedCohort === 'PCAWG: Cancer Cohort' && (
                     <div className="overview-controls">
                         {Object.keys(defaultFilters).map((filter, index) => {
                             return (

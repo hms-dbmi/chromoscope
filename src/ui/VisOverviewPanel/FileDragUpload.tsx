@@ -4,18 +4,16 @@ import { ICONS } from '../../icon';
 import { SampleConfig, ValidCohort } from '../SampleConfigForm';
 
 type FileDragUploadProps = {
-    onJsonParsed: (data: any | any[]) => void;
-    uploadedFile?: File | null;
-    setUploadedFile?: (file: File | null) => void;
-    setSampleConfig: React.Dispatch<React.SetStateAction<SampleConfig>>;
     multiple?: boolean;
     error: string | null;
+    onJsonParsed: (data: any | any[]) => void;
+    setUploadedFile?: (file: File | null) => void;
+    setSampleConfig: React.Dispatch<React.SetStateAction<SampleConfig>>;
     setError: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 export const FileDragUpload = ({
     onJsonParsed,
-    uploadedFile = null,
     setUploadedFile = null,
     multiple = false,
     error,

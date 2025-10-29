@@ -23,7 +23,7 @@ export const CohortSelector = ({
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!cohorts?.['msk']) {
+        if (!cohorts?.['MSK SPECTRUM']) {
             setIsLoading(true);
             fetch(
                 'https://genomebrowser-uploads.hms.harvard.edu/data/dg204/SPECTRUM/SPECTRUM_config_with_clinicalInfo_sorted_v4.json'
@@ -35,7 +35,7 @@ export const CohortSelector = ({
                     if (data?.name && data?.samples?.length > 0) {
                         setCohorts({
                             ...cohorts,
-                            msk: data
+                            'MSK SPECTRUM': data
                         });
                     }
                 })

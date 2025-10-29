@@ -31,7 +31,7 @@ const UploadModalFeedback = ({
     setError
 }: UploadModalFeedbackProps) => {
     const [showAllSamples, setShowAllSamples] = useState(false);
-    const [cohortName, setCohortName] = useState(uploadedCohort?.name || '');
+    const [cohortName, setCohortName] = useState(uploadedFile?.name ?? uploadedFileData?.name);
     const [changingCohortName, setChangingCohortName] = useState(false);
 
     // Handle cohort name change
@@ -87,7 +87,7 @@ const UploadModalFeedback = ({
                                         id="cohort-name-input"
                                         type="text"
                                         value={cohortName}
-                                        onChange={e => setCohortName(e.target.value)}
+                                        onChange={e => setCohortName(e.target.value || uploadedCohort?.name)}
                                         onKeyPress={e => {
                                             if (e.key === 'Enter') {
                                                 handleCohortNameChange(cohortName);
@@ -178,18 +178,18 @@ function isValidUrl(str: string) {
 
 // Tests for checking if sample configuration fields are valid
 export const testOkay = {
-    id: (_: SampleConfig) => _.id,
-    cancer: (_: SampleConfig) => _.cancer,
-    sv: (_: SampleConfig) => isValidUrl(_.sv),
+    id: (_: SampleConfig) => _?.id,
+    cancer: (_: SampleConfig) => _?.cancer,
+    sv: (_: SampleConfig) => isValidUrl(_?.sv),
     // optional
-    cnv: (_: SampleConfig) => !_.cnv || isValidUrl(_.cnv),
-    drivers: (_: SampleConfig) => !_.drivers || isValidUrl(_.drivers),
-    vcf: (_: SampleConfig) => !_.vcf || isValidUrl(_.vcf),
-    vcfIndex: (_: SampleConfig) => !_.vcfIndex || isValidUrl(_.vcfIndex),
-    vcf2: (_: SampleConfig) => !_.vcf2 || isValidUrl(_.vcf2),
-    vcf2Index: (_: SampleConfig) => !_.vcf2Index || isValidUrl(_.vcf2Index),
-    bam: (_: SampleConfig) => !_.bam || isValidUrl(_.bam),
-    bai: (_: SampleConfig) => !_.bai || isValidUrl(_.bai)
+    cnv: (_: SampleConfig) => !_?.cnv || isValidUrl(_?.cnv),
+    drivers: (_: SampleConfig) => !_?.drivers || isValidUrl(_?.drivers),
+    vcf: (_: SampleConfig) => !_?.vcf || isValidUrl(_?.vcf),
+    vcfIndex: (_: SampleConfig) => !_?.vcfIndex || isValidUrl(_?.vcfIndex),
+    vcf2: (_: SampleConfig) => !_?.vcf2 || isValidUrl(_?.vcf2),
+    vcf2Index: (_: SampleConfig) => !_?.vcf2Index || isValidUrl(_?.vcf2Index),
+    bam: (_: SampleConfig) => !_?.bam || isValidUrl(_?.bam),
+    bai: (_: SampleConfig) => !_?.bai || isValidUrl(_?.bai)
 };
 
 type UploadModalProps = {
@@ -227,8 +227,6 @@ export const UploadModal = ({
     const [uploadedFileData, setUploadedFileData] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
 
-    console.log('ERROR', error);
-
     // Clear sample configuration
     const clearSampleConfig = () => {
         setSampleConfig({
@@ -244,6 +242,29 @@ export const UploadModal = ({
             vcf2Index: '',
             bam: '',
             bai: ''
+        });
+    };
+
+    // Clear uploaded cohort
+    // Note: assumes the uploaded cohort has one sample
+    const clearUploadedCohort = () => {
+        setUploadedCohort({
+            samples: [
+                {
+                    id: '',
+                    cancer: '',
+                    assembly: 'hg19',
+                    sv: '',
+                    cnv: '',
+                    drivers: '',
+                    vcf: '',
+                    vcfIndex: '',
+                    vcf2: '',
+                    vcf2Index: '',
+                    bam: '',
+                    bai: ''
+                }
+            ]
         });
     };
 
@@ -283,6 +304,7 @@ export const UploadModal = ({
                     samples: [...samples, ...cohorts[cohortId].samples]
                 }
             });
+            setUploadedCohort(null);
         }
     };
 
@@ -314,25 +336,34 @@ export const UploadModal = ({
             });
             setSelectedCohort(newCohortId);
         }
+        setUploadedCohort(null);
+    };
+
+    // Check if a list of samples are valid
+    const samplesOkayToAdd = (samples: SampleConfig[] = []) => {
+        // console.log("samplesOkayToAdd", samples);
+        return (
+            samples?.length > 0 &&
+            samples.every(sample => {
+                let okay = true;
+                Object.keys(testOkay).map(k => {
+                    // console.log("testing", k, testOkay[k](sample));
+                    okay = okay && testOkay[k](sample);
+                });
+                // console.log("sample", sample, "okay?", okay);
+                return okay;
+            })
+        );
     };
 
     // Check if a cohort is okay to add i.e. has valid `samples` property
-    const cohortOkayToAdd = useMemo(() => {
+    const cohortOkayToAdd = (cohort: Cohort) => {
         // Check for a non-empty list of valid samples in the `samples` field
         return {
-            samplesOkay:
-                uploadedCohort?.samples &&
-                uploadedCohort?.samples.length > 0 &&
-                uploadedCohort.samples.every(sample => {
-                    let okay = true;
-                    Object.keys(testOkay).map(k => {
-                        okay = okay && testOkay[k](sample);
-                    });
-                    return okay;
-                }),
-            cohortOkay: uploadedCohort?.name && uploadedCohort?.name.length > 0
+            samplesOkay: samplesOkayToAdd(cohort?.samples),
+            cohortOkay: cohort?.name && cohort.name.length > 0
         };
-    }, [uploadedCohort]);
+    };
 
     return (
         <div
@@ -387,7 +418,6 @@ export const UploadModal = ({
                                         <FileDragUpload
                                             onJsonParsed={handleJsonParsed}
                                             multiple={false}
-                                            uploadedFile={uploadedFile}
                                             setUploadedFile={setUploadedFile}
                                             setSampleConfig={setSampleConfig}
                                             error={error}
@@ -430,17 +460,23 @@ export const UploadModal = ({
                                                         id="sample-assembly-select"
                                                         className="menu-dropdown"
                                                         onChange={e => {
-                                                            console.log('Assembly changed');
-                                                            // const newSampleConfig = {
+                                                            // const newSampleConfig : ValidSampleConfig = {
                                                             //     ...sampleConfig,
                                                             //     assembly: e.currentTarget.value as 'hg19' | 'hg38'
                                                             // };
-                                                            // setUploadedCohort({
-                                                            //     name: "",
-                                                            //     samples: [newSampleConfig]
-                                                            // });
+                                                            setUploadedCohort({
+                                                                name: '',
+                                                                samples: [
+                                                                    {
+                                                                        ...uploadedCohort?.samples?.[0],
+                                                                        assembly: e.currentTarget.value as
+                                                                            | 'hg19'
+                                                                            | 'hg38'
+                                                                    }
+                                                                ]
+                                                            });
                                                         }}
-                                                        value={sampleConfig.assembly ?? 'hg19'}
+                                                        value={uploadedCohort?.samples?.[0]?.assembly ?? 'hg19'}
                                                     >
                                                         <option key={'hg19'} value={'hg19'}>
                                                             hg19
@@ -456,26 +492,34 @@ export const UploadModal = ({
                                                     className="example-dataset-button"
                                                     onClick={() => {
                                                         if (
-                                                            sampleConfig?.id === exampleConfigFields.id &&
-                                                            sampleConfig?.cancer === exampleConfigFields.cancer &&
-                                                            sampleConfig?.assembly === exampleConfigFields.assembly &&
-                                                            sampleConfig?.sv === exampleConfigFields.sv &&
-                                                            sampleConfig?.cnv === exampleConfigFields.cnv
+                                                            uploadedCohort?.samples[0]?.id === exampleConfigFields.id &&
+                                                            uploadedCohort?.samples[0]?.cancer ===
+                                                                exampleConfigFields.cancer &&
+                                                            uploadedCohort?.samples[0]?.assembly ===
+                                                                exampleConfigFields.assembly &&
+                                                            uploadedCohort?.samples[0]?.sv === exampleConfigFields.sv &&
+                                                            uploadedCohort?.samples[0]?.cnv === exampleConfigFields.cnv
                                                         ) {
-                                                            clearSampleConfig();
+                                                            clearUploadedCohort();
                                                         } else {
-                                                            setSampleConfig({
-                                                                ...sampleConfig,
-                                                                ...exampleConfigFields
+                                                            setUploadedCohort({
+                                                                name: '',
+                                                                samples: [
+                                                                    {
+                                                                        ...uploadedCohort?.samples?.[0],
+                                                                        ...exampleConfigFields
+                                                                    }
+                                                                ]
                                                             });
                                                         }
                                                     }}
                                                 >
-                                                    {sampleConfig?.id === exampleConfigFields.id &&
-                                                    sampleConfig?.cancer === exampleConfigFields.cancer &&
-                                                    sampleConfig?.assembly === exampleConfigFields.assembly &&
-                                                    sampleConfig?.sv === exampleConfigFields.sv &&
-                                                    sampleConfig?.cnv === exampleConfigFields.cnv ? (
+                                                    {uploadedCohort?.samples[0]?.id === exampleConfigFields.id &&
+                                                    uploadedCohort?.samples[0]?.cancer === exampleConfigFields.cancer &&
+                                                    uploadedCohort?.samples[0]?.assembly ===
+                                                        exampleConfigFields.assembly &&
+                                                    uploadedCohort?.samples[0]?.sv === exampleConfigFields.sv &&
+                                                    uploadedCohort?.samples[0]?.cnv === exampleConfigFields.cnv ? (
                                                         <>
                                                             <svg viewBox={ICONS.CLOSE.viewBox}>
                                                                 {ICONS.CLOSE.path.map(d => (
@@ -500,7 +544,9 @@ export const UploadModal = ({
                                             {/* ID */}
                                             <div
                                                 className={`input-container ${
-                                                    testOkay.id(sampleConfig) ? 'input' : 'input-invalid'
+                                                    testOkay.id(uploadedCohort?.samples?.[0])
+                                                        ? 'input'
+                                                        : 'input-invalid'
                                                 }`}
                                             >
                                                 <span className="menu-subtitle">
@@ -514,16 +560,26 @@ export const UploadModal = ({
                                                     placeholder="My sample 1, etc"
                                                     required
                                                     onChange={e =>
-                                                        setSampleConfig({ ...sampleConfig, id: e.currentTarget.value })
+                                                        setUploadedCohort({
+                                                            ...uploadedCohort,
+                                                            samples: [
+                                                                {
+                                                                    ...uploadedCohort?.samples?.[0],
+                                                                    id: e.currentTarget.value
+                                                                }
+                                                            ]
+                                                        })
                                                     }
-                                                    value={sampleConfig.id ?? ''}
+                                                    value={uploadedCohort?.samples?.[0]?.id ?? ''}
                                                 />
                                             </div>
 
                                             {/* Cancer  */}
                                             <div
                                                 className={`input-container ${
-                                                    testOkay.cancer(sampleConfig) ? 'input' : 'input-invalid'
+                                                    testOkay.cancer(uploadedCohort?.samples?.[0])
+                                                        ? 'input'
+                                                        : 'input-invalid'
                                                 }`}
                                             >
                                                 <div className="menu-subtitle">
@@ -537,19 +593,26 @@ export const UploadModal = ({
                                                     placeholder="Gastric, Ovary, Prostate, etc"
                                                     required
                                                     onChange={e =>
-                                                        setSampleConfig({
-                                                            ...sampleConfig,
-                                                            cancer: e.currentTarget.value
+                                                        setUploadedCohort({
+                                                            name: '',
+                                                            samples: [
+                                                                {
+                                                                    ...uploadedCohort?.samples?.[0],
+                                                                    cancer: e.currentTarget.value
+                                                                }
+                                                            ]
                                                         })
                                                     }
-                                                    value={sampleConfig.cancer ?? ''}
+                                                    value={uploadedCohort?.samples?.[0]?.cancer ?? ''}
                                                 />
                                             </div>
 
                                             {/* SV */}
                                             <div
                                                 className={`input-container ${
-                                                    testOkay.sv(sampleConfig) ? 'input' : 'input-invalid'
+                                                    testOkay.sv(uploadedCohort?.samples?.[0])
+                                                        ? 'input'
+                                                        : 'input-invalid'
                                                 }`}
                                             >
                                                 <div className="menu-subtitle">
@@ -563,16 +626,26 @@ export const UploadModal = ({
                                                     placeholder="https://..."
                                                     required
                                                     onChange={e =>
-                                                        setSampleConfig({ ...sampleConfig, sv: e.currentTarget.value })
+                                                        setUploadedCohort({
+                                                            ...uploadedCohort,
+                                                            samples: [
+                                                                {
+                                                                    ...uploadedCohort?.samples?.[0],
+                                                                    sv: e.currentTarget.value
+                                                                }
+                                                            ]
+                                                        })
                                                     }
-                                                    value={sampleConfig.sv ?? ''}
+                                                    value={uploadedCohort?.samples?.[0]?.sv ?? ''}
                                                 />
                                             </div>
 
                                             {/* CNV */}
                                             <div
                                                 className={`input-container ${
-                                                    testOkay.cnv(sampleConfig) ? 'input' : 'input-invalid'
+                                                    testOkay.cnv(uploadedCohort?.samples?.[0])
+                                                        ? 'input'
+                                                        : 'input-invalid'
                                                 }`}
                                             >
                                                 <div className="menu-subtitle">
@@ -585,16 +658,26 @@ export const UploadModal = ({
                                                     className="menu-text-input"
                                                     placeholder="https://..."
                                                     onChange={e =>
-                                                        setSampleConfig({ ...sampleConfig, cnv: e.currentTarget.value })
+                                                        setUploadedCohort({
+                                                            name: '',
+                                                            samples: [
+                                                                {
+                                                                    ...uploadedCohort?.samples?.[0],
+                                                                    cnv: e.currentTarget.value
+                                                                }
+                                                            ]
+                                                        })
                                                     }
-                                                    value={sampleConfig.cnv ?? ''}
+                                                    value={uploadedCohort?.samples?.[0]?.cnv ?? ''}
                                                 />
                                             </div>
 
                                             {/* Drivers */}
                                             <div
                                                 className={`input-container ${
-                                                    testOkay.drivers(sampleConfig) ? 'input' : 'input-invalid'
+                                                    testOkay.drivers(uploadedCohort?.samples?.[0])
+                                                        ? 'input'
+                                                        : 'input-invalid'
                                                 }`}
                                             >
                                                 <div className="menu-subtitle">
@@ -606,19 +689,26 @@ export const UploadModal = ({
                                                     className="menu-text-input"
                                                     placeholder="https://..."
                                                     onChange={e =>
-                                                        setSampleConfig({
-                                                            ...sampleConfig,
-                                                            drivers: e.currentTarget.value
+                                                        setUploadedCohort({
+                                                            name: '',
+                                                            samples: [
+                                                                {
+                                                                    ...uploadedCohort?.samples?.[0],
+                                                                    drivers: e.currentTarget.value
+                                                                }
+                                                            ]
                                                         })
                                                     }
-                                                    value={sampleConfig.drivers ?? ''}
+                                                    value={uploadedCohort?.samples?.[0]?.drivers ?? ''}
                                                 />
                                             </div>
 
                                             {/* Point Mutation */}
                                             <div
                                                 className={`input-container ${
-                                                    testOkay.vcf(sampleConfig) ? 'input' : 'input-invalid'
+                                                    testOkay.vcf(uploadedCohort?.samples?.[0])
+                                                        ? 'input'
+                                                        : 'input-invalid'
                                                 }`}
                                             >
                                                 <div className="menu-subtitle">
@@ -630,16 +720,26 @@ export const UploadModal = ({
                                                     className="menu-text-input"
                                                     placeholder="https://..."
                                                     onChange={e =>
-                                                        setSampleConfig({ ...sampleConfig, vcf: e.currentTarget.value })
+                                                        setUploadedCohort({
+                                                            name: '',
+                                                            samples: [
+                                                                {
+                                                                    ...uploadedCohort?.samples?.[0],
+                                                                    vcf: e.currentTarget.value
+                                                                }
+                                                            ]
+                                                        })
                                                     }
-                                                    value={sampleConfig.vcf ?? ''}
+                                                    value={uploadedCohort?.samples?.[0]?.vcf ?? ''}
                                                 />
                                             </div>
 
                                             {/* Point Mutation Index */}
                                             <div
                                                 className={`input-container ${
-                                                    testOkay.vcfIndex(sampleConfig) ? 'input' : 'input-invalid'
+                                                    testOkay.vcfIndex(uploadedCohort?.samples?.[0])
+                                                        ? 'input'
+                                                        : 'input-invalid'
                                                 }`}
                                             >
                                                 <div className="menu-subtitle">
@@ -651,19 +751,26 @@ export const UploadModal = ({
                                                     className="menu-text-input"
                                                     placeholder="https://..."
                                                     onChange={e =>
-                                                        setSampleConfig({
-                                                            ...sampleConfig,
-                                                            vcfIndex: e.currentTarget.value
+                                                        setUploadedCohort({
+                                                            name: '',
+                                                            samples: [
+                                                                {
+                                                                    ...uploadedCohort?.samples?.[0],
+                                                                    vcfIndex: e.currentTarget.value
+                                                                }
+                                                            ]
                                                         })
                                                     }
-                                                    value={sampleConfig.vcfIndex ?? ''}
+                                                    value={uploadedCohort?.samples?.[0]?.vcfIndex ?? ''}
                                                 />
                                             </div>
 
                                             {/* Indel */}
                                             <div
                                                 className={`input-container ${
-                                                    testOkay.vcf2(sampleConfig) ? 'input' : 'input-invalid'
+                                                    testOkay.vcf2(uploadedCohort?.samples?.[0])
+                                                        ? 'input'
+                                                        : 'input-invalid'
                                                 }`}
                                             >
                                                 <div className="menu-subtitle">
@@ -675,19 +782,26 @@ export const UploadModal = ({
                                                     className="menu-text-input"
                                                     placeholder="https://..."
                                                     onChange={e =>
-                                                        setSampleConfig({
-                                                            ...sampleConfig,
-                                                            vcf2: e.currentTarget.value
+                                                        setUploadedCohort({
+                                                            name: '',
+                                                            samples: [
+                                                                {
+                                                                    ...uploadedCohort?.samples?.[0],
+                                                                    vcf2: e.currentTarget.value
+                                                                }
+                                                            ]
                                                         })
                                                     }
-                                                    value={sampleConfig.vcf2 ?? ''}
+                                                    value={uploadedCohort?.samples?.[0]?.vcf2 ?? ''}
                                                 />
                                             </div>
 
                                             {/* Indel Index */}
                                             <div
                                                 className={`input-container ${
-                                                    testOkay.vcf2Index(sampleConfig) ? 'input' : 'input-invalid'
+                                                    testOkay.vcf2Index(uploadedCohort?.samples?.[0])
+                                                        ? 'input'
+                                                        : 'input-invalid'
                                                 }`}
                                             >
                                                 <div className="menu-subtitle">
@@ -699,19 +813,26 @@ export const UploadModal = ({
                                                     className="menu-text-input"
                                                     placeholder="https://..."
                                                     onChange={e =>
-                                                        setSampleConfig({
-                                                            ...sampleConfig,
-                                                            vcf2Index: e.currentTarget.value
+                                                        setUploadedCohort({
+                                                            name: '',
+                                                            samples: [
+                                                                {
+                                                                    ...uploadedCohort?.samples?.[0],
+                                                                    vcf2Index: e.currentTarget.value
+                                                                }
+                                                            ]
                                                         })
                                                     }
-                                                    value={sampleConfig.vcf2Index ?? ''}
+                                                    value={uploadedCohort?.samples?.[0]?.vcf2Index ?? ''}
                                                 />
                                             </div>
 
                                             {/* Read Alignment */}
                                             <div
                                                 className={`input-container ${
-                                                    testOkay.bam(sampleConfig) ? 'input' : 'input-invalid'
+                                                    testOkay.bam(uploadedCohort?.samples?.[0])
+                                                        ? 'input'
+                                                        : 'input-invalid'
                                                 }`}
                                             >
                                                 <div className="menu-subtitle">
@@ -723,16 +844,26 @@ export const UploadModal = ({
                                                     className="menu-text-input"
                                                     placeholder="https://..."
                                                     onChange={e =>
-                                                        setSampleConfig({ ...sampleConfig, bam: e.currentTarget.value })
+                                                        setUploadedCohort({
+                                                            name: '',
+                                                            samples: [
+                                                                {
+                                                                    ...uploadedCohort?.samples?.[0],
+                                                                    bam: e.currentTarget.value
+                                                                }
+                                                            ]
+                                                        })
                                                     }
-                                                    value={sampleConfig.bam ?? ''}
+                                                    value={uploadedCohort?.samples?.[0]?.bam ?? ''}
                                                 />
                                             </div>
 
                                             {/* Read Alignment Index */}
                                             <div
                                                 className={`input-container ${
-                                                    testOkay.bai(sampleConfig) ? 'input' : 'input-invalid'
+                                                    testOkay.bai(uploadedCohort?.samples?.[0])
+                                                        ? 'input'
+                                                        : 'input-invalid'
                                                 }`}
                                             >
                                                 <div className="menu-subtitle">
@@ -744,9 +875,18 @@ export const UploadModal = ({
                                                     className="menu-text-input"
                                                     placeholder="https://..."
                                                     onChange={e =>
-                                                        setSampleConfig({ ...sampleConfig, bai: e.currentTarget.value })
+                                                        // setSampleConfig({ ...sampleConfig, bai: e.currentTarget.value })
+                                                        setUploadedCohort({
+                                                            name: '',
+                                                            samples: [
+                                                                {
+                                                                    ...uploadedCohort?.samples?.[0],
+                                                                    bai: e.currentTarget.value
+                                                                }
+                                                            ]
+                                                        })
                                                     }
-                                                    value={sampleConfig.bai ?? ''}
+                                                    value={uploadedCohort?.samples?.[0]?.bai ?? ''}
                                                 />
                                             </div>
 
@@ -765,7 +905,7 @@ export const UploadModal = ({
                         {uploadType === 'file' && (
                             <button
                                 className="btn btn-outline-primary create-cohort"
-                                disabled={!cohortOkayToAdd.cohortOkay}
+                                disabled={!cohortOkayToAdd(uploadedCohort).cohortOkay}
                                 data-bs-dismiss="modal"
                                 aria-label="Submit"
                                 onClick={() => {
@@ -779,7 +919,7 @@ export const UploadModal = ({
                         )}
                         <button
                             className="btn btn-primary add-to-cohort"
-                            disabled={!cohortOkayToAdd.samplesOkay}
+                            disabled={!samplesOkayToAdd(uploadedCohort?.samples)}
                             data-bs-dismiss="modal"
                             aria-label="Submit"
                             onClick={() => {
@@ -788,7 +928,7 @@ export const UploadModal = ({
                                 setUploadedFile(null);
                             }}
                         >
-                            <span className={!cohortOkayToAdd && uploadedFileData === null ? 'disabled' : ''}>
+                            <span className={!cohortOkayToAdd(uploadedCohort).samplesOkay ? 'disabled' : ''}>
                                 Add Samples to {cohorts[selectedCohort]?.name ?? 'Current Cohort'}
                             </span>
                         </button>

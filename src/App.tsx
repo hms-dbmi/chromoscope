@@ -58,13 +58,13 @@ export type Cohorts = {
 };
 
 export type Cohort = {
-    name: string;
+    name?: string;
     samples: any;
 };
 
 // Initialize with preloaded PCAWG cohort data
 export const COHORTS: Cohorts = {
-    pcawg: {
+    'PCAWG: Cancer Cohort': {
         name: 'PCAWG: Cancer Cohort',
         samples: samples // All PCAWG samples
     }
@@ -119,7 +119,7 @@ function App(props: RouteComponentProps) {
 
     // Set default cohort state
     const [cohorts, setCohorts] = useState<Cohorts>(COHORTS);
-    const [selectedCohort, setSelectedCohort] = useState<string>('pcawg');
+    const [selectedCohort, setSelectedCohort] = useState<string>('PCAWG: Cancer Cohort');
 
     // Selected Mutation
     const [selectedMutationAbsPos, setSelectedMutationAbsPos] = useState<number>(null);
