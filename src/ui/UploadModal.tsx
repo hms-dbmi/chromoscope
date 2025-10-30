@@ -166,7 +166,7 @@ const UploadModalFeedback = ({
  * @param str String to test as URL
  * @returns `true` if the string is a valid URL, `false` otherwise.
  */
-function isValidUrl(str: string) {
+export function isValidUrl(str: string) {
     let url;
     try {
         url = new URL(str);

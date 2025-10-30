@@ -2,6 +2,7 @@
 import React, { useCallback, useState } from 'react';
 import { ICONS } from '../../icon';
 import { SampleConfig, ValidCohort } from '../SampleConfigForm';
+import { isValidUrl } from '../UploadModal';
 
 type FileDragUploadProps = {
     multiple?: boolean;
@@ -21,6 +22,7 @@ export const FileDragUpload = ({
 }: FileDragUploadProps) => {
     const [dragging, setDragging] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [inputUrl, setInputUrl] = useState<string>('');
 
     const handleFiles = useCallback(
         (files: File[]) => {
@@ -94,20 +96,9 @@ export const FileDragUpload = ({
         handleFiles(jsonFiles);
     };
 
-    const handleUrlInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
-        e.stopPropagation();
-        const url = (e.target as HTMLInputElement).value;
-        console.log('URL input clicked', url);
-    };
-
     const handleUrlInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const url = e.target.value;
-        console.log('URL input changed', url);
-    };
-
-    const handleUploadClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        console.log('Upload button clicked', e);
+        setInputUrl(url);
     };
 
     return (
@@ -118,7 +109,9 @@ export const FileDragUpload = ({
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
-                    onClick={() => document.getElementById('hidden-file-input')?.click()}
+                    onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                        document.getElementById('hidden-file-input')?.click();
+                    }}
                 >
                     <input
                         id="hidden-file-input"
@@ -140,7 +133,6 @@ export const FileDragUpload = ({
                                 </svg>
                                 <span>
                                     Drag a configuration file here <br /> or upload a file
-                                    {/* {dragging ? `Drag a configuration file here ${<br/>} or upload` : 'Drag & drop JSON file(s) here, or click to select'} */}
                                 </span>
                             </div>
                         )}
@@ -150,13 +142,19 @@ export const FileDragUpload = ({
                             </div>
                             <div className="input-group">
                                 <input
-                                    onClick={handleUrlInputClick}
+                                    onClick={e => e.stopPropagation()}
                                     onChange={handleUrlInputChange}
                                     id="url-input"
                                     type="text"
                                     placeholder="Paste URL to the configuration file"
                                 ></input>
-                                <button onClick={handleUploadClick}>Upload</button>
+                                <a
+                                    href={isValidUrl(inputUrl) ? `/?external=${inputUrl}` : ''}
+                                    className={`btn ${isValidUrl(inputUrl) ? '' : ' disabled'}`}
+                                    onClick={e => e.stopPropagation()}
+                                >
+                                    Upload
+                                </a>
                             </div>
                         </div>
                     </div>
