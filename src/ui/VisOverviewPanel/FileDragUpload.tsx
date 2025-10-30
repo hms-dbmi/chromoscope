@@ -38,7 +38,6 @@ export const FileDragUpload = ({
                             setUploadedFile(file);
                             setTimeout(() => setIsLoading(false), 250); // Simulate loading for UX
                         } catch (err) {
-                            console.log('MESSAGE TO SET', `Failed to parse ${file.name}: ${err}`);
                             setError(`Failed to parse ${file.name}: ${err}`);
                             reject(new Error(`Failed to parse ${file.name}`));
                         }

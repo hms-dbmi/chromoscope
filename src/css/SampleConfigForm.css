@@ -406,23 +406,24 @@
     }
 
     .modal-footer {
-        .create-cohort {
-            border: 1px solid #dcdcdc;
+        .add-to-cohort {
             color: #1060c9;
+            border: 1px solid #dcdcdc;
+            font-weight: 600;
+            padding: 8px 20px;
+        }
+        .create-cohort {
+            background-color: #1060c9;
+            border: 1px solid #004093;
+            color: white;
             font-weight: 500;
             padding: 8px 15px;
         }
-        .create-cohort:hover,
-        .create-cohort:focus-visible {
+        .add-to-cohort:hover,
+        .add-to-cohort:focus-visible {
             cursor: pointer;
             text-decoration: none;
             background-color: #f8f8f8;
-        }
-        .add-to-cohort {
-            background-color: #1060c9;
-            border: 1px solid #004093;
-            font-weight: 600;
-            padding: 8px 20px;
         }
     }
 }

@@ -275,9 +275,17 @@ export const UploadModal = ({
      *   - Set the uploaded cohort state
      * @param data Parsed JSON data from uploaded file
      */
-    const handleJsonParsed = (data: Cohort) => {
-        setUploadedFileData(data);
-        setUploadedCohort(data);
+    const handleJsonParsed = (data: Cohort | SampleConfig[]) => {
+        let formattedData = data;
+        if (Array.isArray(data)) {
+            // Data is an array of samples
+            formattedData = {
+                name: '',
+                samples: data
+            };
+        }
+        setUploadedFileData(formattedData);
+        setUploadedCohort(formattedData as ValidCohort);
     };
 
     /**
@@ -902,23 +910,8 @@ export const UploadModal = ({
                      * is active, assumes valid input.
                      */}
                     <div className="modal-footer">
-                        {uploadType === 'file' && (
-                            <button
-                                className="btn btn-outline-primary create-cohort"
-                                disabled={!cohortOkayToAdd(uploadedCohort).cohortOkay}
-                                data-bs-dismiss="modal"
-                                aria-label="Submit"
-                                onClick={() => {
-                                    createNewCohortWithSamples(uploadedCohort.name, uploadedCohort.samples);
-                                    clearSampleConfig();
-                                    setUploadedFile(null);
-                                }}
-                            >
-                                <span>Create New Cohort</span>
-                            </button>
-                        )}
                         <button
-                            className="btn btn-primary add-to-cohort"
+                            className="btn btn-outline-primary add-to-cohort"
                             disabled={!samplesOkayToAdd(uploadedCohort?.samples)}
                             data-bs-dismiss="modal"
                             aria-label="Submit"
@@ -932,6 +925,21 @@ export const UploadModal = ({
                                 Add Samples to {cohorts[selectedCohort]?.name ?? 'Current Cohort'}
                             </span>
                         </button>
+                        {uploadType === 'file' && (
+                            <button
+                                className="btn btn-primary create-cohort"
+                                disabled={!cohortOkayToAdd(uploadedCohort).cohortOkay}
+                                data-bs-dismiss="modal"
+                                aria-label="Submit"
+                                onClick={() => {
+                                    createNewCohortWithSamples(uploadedCohort.name, uploadedCohort.samples);
+                                    clearSampleConfig();
+                                    setUploadedFile(null);
+                                }}
+                            >
+                                <span>Create New Cohort</span>
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
