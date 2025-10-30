@@ -14,6 +14,7 @@ type NavigationBarProps = {
     externalDemoUrl: MutableRefObject<string>;
     FEEDBACK_EMAIL_ADDRESS: string;
     showSamples: boolean;
+    selectedCohort: string;
     isChrome: () => boolean;
     setShowAbout: (show: boolean) => void;
     setShowSamples: (show: boolean) => void;
@@ -30,6 +31,7 @@ export const NavigationBar = ({
     externalDemoUrl,
     FEEDBACK_EMAIL_ADDRESS,
     showSamples,
+    selectedCohort,
     isChrome,
     setShowAbout,
     setShowSamples,
@@ -74,7 +76,7 @@ export const NavigationBar = ({
                     </a>
                     <span className="dimed">{' | '}</span>
                     {/* {demo.cancer.charAt(0).toUpperCase() + demo.cancer.slice(1) + ' • ' + demo.id} */}
-                    <span>{demo.cancer.charAt(0).toUpperCase() + demo.cancer.slice(1)}</span>
+                    {demo?.cancer && <span>{demo?.cancer?.charAt(0)?.toUpperCase() + demo?.cancer?.slice(1)}</span>}
                     <small>{demo.id}</small>
 
                     <ul className="nav-list">
@@ -130,6 +132,10 @@ export const NavigationBar = ({
                                         // urlParams.set('domain', xDomain.join('-'));
                                         let newUrl = window.location.origin + window.location.pathname + '?';
                                         newUrl += `demoIndex=${demoIndex.current}`;
+                                        // Add cohort param if it is not the default
+                                        if (selectedCohort !== 'PCAWG: Cancer Cohort') {
+                                            newUrl += `&cohortId=${selectedCohort}`;
+                                        }
                                         newUrl += `&domain=${xDomain.join('-')}`;
                                         if (externalDemoUrl.current) {
                                             newUrl += `&external=${externalDemoUrl.current}`;

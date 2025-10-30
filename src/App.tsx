@@ -102,17 +102,8 @@ function App(props: RouteComponentProps) {
     const [showSmallMultiples, setShowSmallMultiples] = useState(externalUrl === null);
     const [ready, setReady] = useState(externalUrl === null);
 
-    const selectedSamples = useMemo(
-        () => (!exampleId ? samples.filter(d => d.group === 'default') : samples.filter(d => d.group === exampleId)),
-        [exampleId]
-    );
-
     const gosRef = useRef<GoslingRef>();
 
-    // demo
-    const [demo, setDemo] = useState(
-        selectedSamples[demoIndex.current < selectedSamples.length ? demoIndex.current : 0]
-    );
     const externalDemoUrl = useRef<string>();
 
     const currentSpec = useRef<string>();
@@ -120,6 +111,23 @@ function App(props: RouteComponentProps) {
     // Set default cohort state
     const [cohorts, setCohorts] = useState<Cohorts>(COHORTS);
     const [selectedCohort, setSelectedCohort] = useState<string>('PCAWG: Cancer Cohort');
+
+    // Selected Samples
+    // Use `exampleId` for default samples
+    const selectedSamples = useMemo(
+        () =>
+            exampleId
+                ? cohorts[selectedCohort]?.samples.filter(d => d?.group === exampleId)
+                : samples.filter(d => d.group === 'default'),
+        [exampleId]
+    );
+
+    // demo
+    const [demo, setDemo] = useState(
+        cohorts[selectedCohort].samples[
+            demoIndex.current < cohorts[selectedCohort].samples.length ? demoIndex.current : 0
+        ]
+    );
 
     // Selected Mutation
     const [selectedMutationAbsPos, setSelectedMutationAbsPos] = useState<number>(null);
@@ -248,38 +256,65 @@ function App(props: RouteComponentProps) {
         setIsClinicalPanelOpen(!!demo?.clinicalInfo && isClinicalPanelOpen);
     }, [demo]);
 
+    // Add external demo cohort once MSK SPECTRUM cohort is available
     useEffect(() => {
-        if (externalUrl) {
+        const cohortIdFromUrl = urlParams.get('cohortId');
+
+        // If a newly added cohort is the one specified in the URL param
+        // `cohortId`, use it for the proper demo
+        if (selectedCohort !== cohortIdFromUrl && cohortIdFromUrl && cohorts[cohortIdFromUrl]) {
+            const indexToSet = demoIndex.current < cohorts[cohortIdFromUrl].samples.length ? demoIndex.current : 0;
+            setSelectedCohort(cohortIdFromUrl);
+            setDemo(cohorts[cohortIdFromUrl].samples[indexToSet]);
+        }
+
+        // Check that the first two default samples were added
+        if (cohorts['MSK SPECTRUM'] && Object.keys(cohorts).length < 3 && externalUrl) {
             fetch(externalUrl).then(response =>
                 response.text().then(d => {
-                    let externalDemo = JSON.parse(d);
+                    const externalDemo = JSON.parse(d);
 
-                    // External demo is an object with samples array
-                    if (externalDemo?.samples?.length > 0) {
-                        setSelectedCohort(externalDemo?.name ?? 'Custom Cohort');
-                        setFilteredSamples(externalDemo.samples);
-                        externalDemo =
-                            externalDemo?.samples[demoIndex.current < externalDemo.length ? demoIndex.current : 0];
-                    }
-                    // External demo contains multiple samples
-                    else if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
-                        setFilteredSamples(externalDemo);
-                        externalDemo = externalDemo[demoIndex.current < externalDemo.length ? demoIndex.current : 0];
-                    } else {
-                        setFilteredSamples([externalDemo]);
-                    }
-                    if (externalDemo) {
-                        if (externalDemo?.clinicalInfo) {
-                            clinicalInfoRef.current = externalDemo.clinicalInfo;
+                    // externalDemo is an object with samples array or an array
+                    if (
+                        externalDemo?.samples?.length > 0 ||
+                        (Array.isArray(externalDemo) && externalDemo.length >= 0)
+                    ) {
+                        // Create new cohort for available samples
+                        let cohortId = externalDemo?.name ?? 'External Cohort';
+                        const samples = externalDemo?.samples || externalDemo;
+                        const indexFromUrl = demoIndex.current < samples.length ? demoIndex.current : 0;
+
+                        // If cohort already exists, update name
+                        if (cohorts?.[cohortId]) {
+                            cohortId = cohortId + '_1';
                         }
-                        setDemo(externalDemo);
+
+                        // Create new cohort
+                        setCohorts({
+                            ...cohorts,
+                            [cohortId]: {
+                                name: cohortId,
+                                samples: samples
+                            }
+                        });
+
+                        // use demoIndex form URL or first otherwise
+                        if (cohortIdFromUrl === cohortId && samples[indexFromUrl]) {
+                            if (samples[indexFromUrl]?.clinicalInfo) {
+                                clinicalInfoRef.current = externalDemo.clinicalInfo;
+                            }
+                            setDemo(samples[samples[indexFromUrl] ? indexFromUrl : 0]);
+                        }
+                        // Select the cohort from URL if provided
+                        setSelectedCohort(cohortIdFromUrl ?? cohortId);
                     }
+
                     setShowSmallMultiples(true);
                     setReady(true);
                 })
             );
         }
-    }, []);
+    }, [cohorts]);
 
     useEffect(() => {
         prevJumpId.current = jumpButtonInfo?.id;
@@ -287,7 +322,10 @@ function App(props: RouteComponentProps) {
 
     useEffect(() => {
         setFilteredSamples(
-            filterSampleBy === '' ? selectedSamples : selectedSamples.filter(d => d.id.includes(filterSampleBy))
+            filterSampleBy === ''
+                ? cohorts[selectedCohort].samples
+                : cohorts[selectedCohort].samples.filter(d => d.id.includes(filterSampleBy))
+            // filterSampleBy === '' ? selectedSamples : selectedSamples.filter(d => d.id.includes(filterSampleBy))
         );
     }, [filterSampleBy]);
 
@@ -300,10 +338,6 @@ function App(props: RouteComponentProps) {
                 if (isThisPotentiallyJsonRuleData) {
                     return;
                 }
-
-                /// DEBUG
-                // console.log(e.id, e.data);
-                ///
 
                 // This means we just received a BAM data that is just rendered
                 if (e.id.includes('left') && leftReads.current.length === 0) {
@@ -336,7 +370,6 @@ function App(props: RouteComponentProps) {
                             return { name, type: 'unknown' };
                         }
 
-                        // console.log(matesOnLeft[0], matesOnRight[0]);
                         const ld = matesOnLeft[0].strand;
                         const rd = matesOnRight[0].strand;
 
@@ -642,6 +675,7 @@ function App(props: RouteComponentProps) {
                         showSamples={showSamples}
                         setShowSamples={setShowSamples}
                         gosRef={gosRef}
+                        selectedCohort={selectedCohort}
                         currentSpec={currentSpec}
                         getHtmlTemplate={getHtmlTemplate}
                         demoIndex={demoIndex}
@@ -660,28 +694,6 @@ function App(props: RouteComponentProps) {
                                 setCohorts={setCohorts}
                                 selectedCohort={selectedCohort}
                                 setSelectedCohort={setSelectedCohort}
-                                // onAdd={uploadContent => {
-                                //     console.log('Uploaded content:', uploadContent);
-                                //     // Object is expected to contain a name and a list of samples
-                                //     // const { name, samples: newSamples } = uploadContent;
-
-                                //     // setFilteredSamples([
-                                //     //     {
-                                //     //         ...newSample,
-                                //     //         group: 'default'
-                                //     //     },
-                                //     //     ...filteredSamples
-                                //     // ]);
-
-                                //     // Update cohort state with new data
-                                //     setCohorts({
-                                //         ...cohorts,
-                                //         [selectedCohort]: {
-                                //             ...cohorts[selectedCohort],
-                                //             samples: [uploadContent, ...cohorts[selectedCohort]?.samples]
-                                //         }
-                                //     });
-                                // }}
                             />
                             <VisOverviewPanel
                                 cohorts={cohorts}

@@ -304,7 +304,6 @@ export const UploadModal = ({
     const addSamplesToCohort = (cohortId: string, samples: ValidSampleConfig[]) => {
         if (cohorts?.[cohortId]) {
             // Cohort exists, append samples
-            console.log('Adding samples to existing cohort', cohortId);
             setCohorts({
                 ...cohorts,
                 [cohortId]: {
@@ -349,16 +348,13 @@ export const UploadModal = ({
 
     // Check if a list of samples are valid
     const samplesOkayToAdd = (samples: SampleConfig[] = []) => {
-        // console.log("samplesOkayToAdd", samples);
         return (
             samples?.length > 0 &&
             samples.every(sample => {
                 let okay = true;
                 Object.keys(testOkay).map(k => {
-                    // console.log("testing", k, testOkay[k](sample));
                     okay = okay && testOkay[k](sample);
                 });
-                // console.log("sample", sample, "okay?", okay);
                 return okay;
             })
         );

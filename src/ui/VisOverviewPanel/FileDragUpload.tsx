@@ -109,9 +109,7 @@ export const FileDragUpload = ({
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
-                    onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-                        document.getElementById('hidden-file-input')?.click();
-                    }}
+                    onClick={() => document.getElementById('hidden-file-input')?.click()}
                 >
                     <input
                         id="hidden-file-input"
