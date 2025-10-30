@@ -88,7 +88,6 @@ export const SmallOverviewWrapper = ({ demo, setDemo, demoIndex, filteredSamples
         } else {
             setDoneGeneratingThumbnails(true);
         }
-        console.log('Filtered samples changed', filteredSamples);
     }, [demo, filteredSamples, thumbnailForceGenerate, generateThumbnails]);
 
     return filteredSamples.map((d, i) => (

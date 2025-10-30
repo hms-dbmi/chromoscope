@@ -31,12 +31,12 @@ const UploadModalFeedback = ({
     setError
 }: UploadModalFeedbackProps) => {
     const [showAllSamples, setShowAllSamples] = useState(false);
-    const [cohortName, setCohortName] = useState(uploadedFile?.name ?? uploadedFileData?.name);
+    const [cohortName, setCohortName] = useState(uploadedCohort?.name);
     const [changingCohortName, setChangingCohortName] = useState(false);
 
     // Handle cohort name change
     const handleCohortNameChange = (newName: string) => {
-        if (newName.length > 0) {
+        if (newName && newName.length > 0) {
             setUploadedCohort &&
                 setUploadedCohort({
                     ...uploadedCohort,
@@ -86,7 +86,8 @@ const UploadModalFeedback = ({
                                     <input
                                         id="cohort-name-input"
                                         type="text"
-                                        value={cohortName}
+                                        // placeholder={uploadedCohort?.name || uploadedFile?.name}
+                                        value={cohortName || uploadedCohort?.name}
                                         onChange={e => setCohortName(e.target.value || uploadedCohort?.name)}
                                         onKeyPress={e => {
                                             if (e.key === 'Enter') {
@@ -102,6 +103,7 @@ const UploadModalFeedback = ({
                                     <button
                                         className="cancel"
                                         onClick={() => {
+                                            console.log('setting cohortName', cohortName, uploadedCohort?.name);
                                             setCohortName(uploadedCohort?.name);
                                             setChangingCohortName(false);
                                         }}
@@ -124,8 +126,14 @@ const UploadModalFeedback = ({
                                 </div>
                             ) : (
                                 <div className="name-display">
-                                    <span>{uploadedCohort?.name}</span>
-                                    <button className="edit" onClick={() => setChangingCohortName(true)}>
+                                    <span>{uploadedCohort?.name || uploadedFile?.name}</span>
+                                    <button
+                                        className="edit"
+                                        onClick={() => {
+                                            setCohortName(cohortName);
+                                            setChangingCohortName(true);
+                                        }}
+                                    >
                                         Edit
                                         {/* <svg viewBox={ICONS.PENCIL.viewBox}>
                                             {ICONS.PENCIL.path.map(p => (
@@ -287,18 +295,6 @@ export const UploadModal = ({
         setUploadedFileData(formattedData);
         setUploadedCohort(formattedData as ValidCohort);
     };
-
-    /**
-     * Function for processing a manual sample addition.
-     *
-     * Assumes:
-     *   - Validation is done prior to calling this function.
-     *   - Sample should be added to currect cohort.
-     * @param config ValidSampleConfig
-     */
-    // const handleManualConfigAdd = (config: ValidSampleConfig) => {
-
-    // };
 
     // Function for adding samples to existing cohort
     const addSamplesToCohort = (cohortId: string, samples: ValidSampleConfig[]) => {
