@@ -109,7 +109,12 @@ export const FileDragUpload = ({
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
-                    onClick={() => document.getElementById('hidden-file-input')?.click()}
+                    onClick={e => {
+                        const target = e.target as HTMLElement;
+                        if (target.className !== 'input-group') {
+                            document.getElementById('hidden-file-input')?.click();
+                        }
+                    }}
                 >
                     <input
                         id="hidden-file-input"

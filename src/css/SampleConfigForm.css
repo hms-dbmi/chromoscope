@@ -261,12 +261,24 @@
                             padding: 0px 20px;
                             color: #617c9d;
                         }
-                        button {
+                        a {
                             width: 200px;
                             border-radius: 5px;
                             border: 1px solid #dcdcdc;
                             background-color: #ffffff;
                             color: #1060c9;
+                        }
+                        a:hover {
+                            cursor: pointer;
+                            background-color: #f0f1f3;
+                            text-decoration: none;
+                        }
+                        a:active {
+                            background-color: #e6f1ff;
+                        }
+                        a.disabled {
+                            pointer-events: none;
+                            opacity: 0.5;
                         }
                     }
                 }
