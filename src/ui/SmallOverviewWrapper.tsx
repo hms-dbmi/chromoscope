@@ -40,7 +40,7 @@ const AvailabilityIcon = (isAvailable: boolean) => {
 
 export const SmallOverviewWrapper = ({ demo, setDemo, demoIndex, filteredSamples, setShowSamples }) => {
     const [thumbnailForceGenerate, setThumbnailForceGenerate] = useState(false);
-    const [generateThumbnails, setGenerateThumbnails] = useState(false);
+    const [generateThumbnails, setGenerateThumbnails] = useState(true);
     const [doneGeneratingThumbnails, setDoneGeneratingThumbnails] = useState(false);
 
     useEffect(() => {
@@ -62,7 +62,7 @@ export const SmallOverviewWrapper = ({ demo, setDemo, demoIndex, filteredSamples
         // return [];
         /* Load image if necessary */
         const noThumbnail = filteredSamples.filter(d => !getThumbnail(d))[0];
-        if (noThumbnail && generateThumbnails) {
+        if (noThumbnail && generateThumbnails && !doneGeneratingThumbnails) {
             const { id } = noThumbnail;
             const spec = getOneOfSmallMultiplesSpec({
                 cnvUrl: noThumbnail.cnv,

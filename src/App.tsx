@@ -145,7 +145,6 @@ function App(props: RouteComponentProps) {
     // Interactions
     const [showSamples, setShowSamples] = useState(urlParams.get('showSamples') !== 'false' && !xDomain);
     const [showAbout, setShowAbout] = useState(false);
-    const [thumbnailForceGenerate, setThumbnailForceGenerate] = useState(false);
     const [generateThumbnails, setGenerateThumbnails] = useState(false);
     const [doneGeneratingThumbnails, setDoneGeneratingThumbnails] = useState(false);
     const [filterSampleBy, setFilterSampleBy] = useState('');

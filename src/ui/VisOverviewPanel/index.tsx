@@ -152,13 +152,13 @@ export const VisOverviewPanel = ({
                             <span>Feedback</span>
                         </a>
                     </div>
-                    <button
+                    {/* <button
                         className="thumbnail-generate-button"
                         onClick={() => setGenerateThumbnails(!generateThumbnails)}
                         style={{ display: doneGeneratingThumbnails ? 'none' : 'flex' }}
                     >
                         {generateThumbnails ? 'Stop Generating Thumbnails' : 'Generate Missing Thumbnails'}
-                    </button>
+                    </button> */}
                 </div>
             </div>
             <OverviewPanel
