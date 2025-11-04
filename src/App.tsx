@@ -66,7 +66,10 @@ export type Cohort = {
 export const COHORTS: Cohorts = {
     'PCAWG: Cancer Cohort': {
         name: 'PCAWG: Cancer Cohort',
-        samples: samples // All PCAWG samples
+        samples: samples.map((d, i) => ({
+            ...d,
+            originalIndex: i // Store original index for reference
+        })) // All PCAWG samples
     }
 };
 
@@ -98,7 +101,7 @@ function App(props: RouteComponentProps) {
               .split('-')
               .map(d => +d)
         : null;
-    const demoIndex = useRef(+urlParams.get('demoIndex') ?? 0);
+    const demoIndex = useRef(+urlParams.get('demoIndex') || 0);
     const [showSmallMultiples, setShowSmallMultiples] = useState(externalUrl === null);
     const [ready, setReady] = useState(externalUrl === null);
 
@@ -128,6 +131,7 @@ function App(props: RouteComponentProps) {
             demoIndex.current < cohorts[selectedCohort].samples.length ? demoIndex.current : 0
         ]
     );
+    const [externalError, setExternalError] = useState<string>('');
 
     // Selected Mutation
     const [selectedMutationAbsPos, setSelectedMutationAbsPos] = useState<number>(null);
@@ -270,49 +274,57 @@ function App(props: RouteComponentProps) {
 
         // Check that the first two default samples were added
         if (cohorts['MSK SPECTRUM'] && Object.keys(cohorts).length < 3 && externalUrl) {
-            fetch(externalUrl).then(response =>
-                response.text().then(d => {
-                    const externalDemo = JSON.parse(d);
+            fetch(externalUrl)
+                .then(response =>
+                    response.text().then(d => {
+                        const externalDemo = JSON.parse(d);
 
-                    // externalDemo is an object with samples array or an array
-                    if (
-                        externalDemo?.samples?.length > 0 ||
-                        (Array.isArray(externalDemo) && externalDemo.length >= 0)
-                    ) {
-                        // Create new cohort for available samples
-                        let cohortId = externalDemo?.name ?? 'External Cohort';
-                        const samples = externalDemo?.samples || externalDemo;
-                        const indexFromUrl = demoIndex.current < samples.length ? demoIndex.current : 0;
+                        // externalDemo is an object with samples array or an array
+                        if (
+                            externalDemo?.samples?.length > 0 ||
+                            (Array.isArray(externalDemo) && externalDemo.length >= 0)
+                        ) {
+                            // Create new cohort for available samples
+                            let cohortId = externalDemo?.name ?? 'External Cohort';
+                            const samples = externalDemo?.samples || externalDemo;
+                            const indexFromUrl = demoIndex.current < samples.length ? demoIndex.current : 0;
 
-                        // If cohort already exists, update name
-                        if (cohorts?.[cohortId]) {
-                            cohortId = cohortId + '_1';
+                            // If cohort already exists, update name
+                            if (cohorts?.[cohortId]) {
+                                cohortId = cohortId + '_1';
+                            }
+
+                            // Create new cohort
+                            setCohorts({
+                                ...cohorts,
+                                [cohortId]: {
+                                    name: cohortId,
+                                    samples: samples?.map((sample: any, index: number) => ({
+                                        ...sample,
+                                        originalIndex: index
+                                    }))
+                                }
+                            });
+
+                            // use demoIndex form URL or first otherwise
+                            if (cohortIdFromUrl === cohortId && samples[indexFromUrl]) {
+                                if (samples[indexFromUrl]?.clinicalInfo) {
+                                    clinicalInfoRef.current = externalDemo.clinicalInfo;
+                                }
+                                setDemo(samples[samples[indexFromUrl] ? indexFromUrl : 0]);
+                            }
+                            // Select the cohort from URL if provided
+                            setSelectedCohort(cohortIdFromUrl ?? cohortId);
                         }
 
-                        // Create new cohort
-                        setCohorts({
-                            ...cohorts,
-                            [cohortId]: {
-                                name: cohortId,
-                                samples: samples
-                            }
-                        });
-
-                        // use demoIndex form URL or first otherwise
-                        if (cohortIdFromUrl === cohortId && samples[indexFromUrl]) {
-                            if (samples[indexFromUrl]?.clinicalInfo) {
-                                clinicalInfoRef.current = externalDemo.clinicalInfo;
-                            }
-                            setDemo(samples[samples[indexFromUrl] ? indexFromUrl : 0]);
-                        }
-                        // Select the cohort from URL if provided
-                        setSelectedCohort(cohortIdFromUrl ?? cohortId);
-                    }
-
-                    setShowSmallMultiples(true);
-                    setReady(true);
-                })
-            );
+                        setShowSmallMultiples(true);
+                        setReady(true);
+                    })
+                )
+                .catch(error => {
+                    console.error('Error fetching external demo:', error);
+                    setExternalError(error.message);
+                });
         }
     }, [cohorts]);
 
@@ -690,6 +702,8 @@ function App(props: RouteComponentProps) {
                         <>
                             {/* Make SampleConfigForm available to trigger from VisOverviewPanel */}
                             <SampleConfigForm
+                                demoIndex={demoIndex}
+                                setDemo={setDemo}
                                 cohorts={cohorts}
                                 setCohorts={setCohorts}
                                 selectedCohort={selectedCohort}
@@ -713,6 +727,7 @@ function App(props: RouteComponentProps) {
                                 setDemo={setDemo}
                                 selectedCohort={selectedCohort}
                                 setSelectedCohort={setSelectedCohort}
+                                externalError={externalError}
                             />
                         </>
                     )}

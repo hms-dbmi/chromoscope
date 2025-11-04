@@ -278,6 +278,7 @@ type OverviewPanelProps = {
     filteredSamples: Array<any>;
     selectedCohort: string;
     cohorts: Cohorts;
+    externalError: string;
     setCohorts: (cohorts: Cohorts) => void;
     setShowSamples: (showSamples: boolean) => void;
     setSelectedCohort: (cohort: string) => void;
@@ -292,6 +293,7 @@ export const OverviewPanel = ({
     filteredSamples,
     selectedCohort,
     cohorts,
+    externalError,
     setCohorts,
     setShowSamples,
     setSelectedCohort,
@@ -358,6 +360,11 @@ export const OverviewPanel = ({
     return (
         <div>
             <div className="overview-root">
+                {externalError && (
+                    <div className="alert alert-danger" role="alert" style={{ margin: '10px' }}>
+                        Error loading external demo: {externalError}
+                    </div>
+                )}
                 <div className="overview-header">
                     <CohortSelector
                         cohorts={cohorts}

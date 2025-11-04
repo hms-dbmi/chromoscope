@@ -35,7 +35,13 @@ export const CohortSelector = ({
                     if (data?.name && data?.samples?.length > 0) {
                         setCohorts({
                             ...cohorts,
-                            'MSK SPECTRUM': data
+                            'MSK SPECTRUM': {
+                                name: data.name,
+                                samples: data.samples?.map((sample: any, index: number) => ({
+                                    ...sample,
+                                    originalIndex: index
+                                }))
+                            }
                         });
                     }
                 })

@@ -20,16 +20,20 @@ export type ValidCohort = {
 
 type SampleConfigFormProps = {
     cohorts: Cohorts;
+    demoIndex: React.MutableRefObject<number>;
     setCohorts: (cohorts: Cohorts) => void;
     selectedCohort: string;
     setSelectedCohort: (cohortId: string) => void;
+    setDemo: (demo: SampleConfig) => void;
 };
 
 export default function SampleConfigForm({
     cohorts,
     selectedCohort,
+    demoIndex,
     setSelectedCohort,
-    setCohorts
+    setCohorts,
+    setDemo
 }: SampleConfigFormProps) {
     const [uploadedCohort, setUploadedCohort] = useState<ValidCohort>(null);
     const [sampleConfig, setSampleConfig] = useState<SampleConfig>({});
@@ -38,6 +42,8 @@ export default function SampleConfigForm({
     return (
         <div className="upload-button-container">
             <UploadModal
+                demoIndex={demoIndex}
+                setDemo={setDemo}
                 cohorts={cohorts}
                 setCohorts={setCohorts}
                 sampleConfig={sampleConfig}

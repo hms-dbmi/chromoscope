@@ -16,6 +16,7 @@ type VisOverviewPanelProps = {
     doneGeneratingThumbnails: boolean;
     selectedCohort: string;
     cohorts: Cohorts;
+    externalError: string;
     setCohorts: (cohorts: Cohorts) => void;
     setSelectedCohort: (cohort: string) => void;
     setShowSamples: (showSamples: boolean) => void;
@@ -38,6 +39,7 @@ export const VisOverviewPanel = ({
     filteredSamples,
     selectedCohort,
     cohorts,
+    externalError,
     setCohorts,
     setSelectedCohort,
     setFilteredSamples,
@@ -171,6 +173,7 @@ export const VisOverviewPanel = ({
                 setDemo={setDemo}
                 selectedCohort={selectedCohort}
                 setSelectedCohort={setSelectedCohort}
+                externalError={externalError}
             />
         </div>
     );

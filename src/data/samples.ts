@@ -34,6 +34,7 @@ export type SampleType = {
     thumbnail?: string;
     note?: string;
     clinicalInfo?: ClinicalInfoType;
+    originalIndex?: number; // to keep track of the original index in the samples array
 };
 
 // const samples: SampleType[] = (pcawg as SampleType[]).map(d => { return { group: 'default', ...d }});
