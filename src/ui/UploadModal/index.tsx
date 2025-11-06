@@ -293,6 +293,7 @@ export const UploadModal = ({
                                         />
                                         {error || (uploadedFile && uploadedFileData) ? (
                                             <UploadModalFeedback
+                                                cohorts={cohorts}
                                                 uploadedFile={uploadedFile}
                                                 uploadedFileData={uploadedFileData}
                                                 uploadedCohort={uploadedCohort}

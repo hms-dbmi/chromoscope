@@ -86,8 +86,18 @@ export const FileDragUpload = ({
                     const data = parsedData[0] as ValidCohort;
 
                     let formattedDataName = data?.name || uploadedFile?.name || 'Untitled Cohort';
-                    if (cohorts[formattedDataName]) {
-                        formattedDataName += `_1`;
+
+                    // If cohort name already exists, append _1
+                    let i = 1;
+                    while (cohorts[formattedDataName]) {
+                        // Prevent infinite loop
+                        if (i > 99) {
+                            return;
+                        }
+                        if (cohorts[formattedDataName]) {
+                            formattedDataName += `_${1}`;
+                            i++;
+                        }
                     }
                     const formattedDataSamples = Array.isArray(data) ? data : data.samples;
 

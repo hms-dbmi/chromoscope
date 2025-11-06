@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { ValidCohort } from '../SampleConfigForm';
 import { ICONS } from '../../icon';
+import { Cohorts } from '../../App';
 
 type UploadModalFeedbackProps = {
     uploadedFile: File | null;
     uploadedFileData: any;
     uploadedCohort: ValidCohort;
+    cohorts: Cohorts;
     setUploadedCohort: React.Dispatch<React.SetStateAction<ValidCohort>>;
     error: { type?: string; message: JSX.Element } | null;
     setError: React.Dispatch<React.SetStateAction<{ type?: string; message: JSX.Element } | null>>;
@@ -15,6 +17,7 @@ export const UploadModalFeedback = ({
     uploadedFile,
     uploadedFileData,
     uploadedCohort,
+    cohorts,
     setUploadedCohort,
     error,
     setError
@@ -106,7 +109,7 @@ export const UploadModalFeedback = ({
                                                 ))}
                                             </svg>
                                         </button>
-                                        {cohortName !== uploadedCohort?.name && (
+                                        {cohortName !== uploadedCohort?.name && !cohorts?.[cohortName] && (
                                             <button
                                                 className="save"
                                                 type="submit"
