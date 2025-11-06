@@ -249,9 +249,11 @@ export const FileDragUpload = ({
                                         placeholder="Paste URL to the configuration file"
                                     ></input>
                                     <a
+                                        target="_blank"
                                         href={isValidUrl(inputUrl) ? `/?external=${inputUrl}` : ''}
                                         className={`btn ${isValidUrl(inputUrl) ? '' : ' disabled'}`}
                                         onClick={e => e.stopPropagation()}
+                                        rel="noreferrer"
                                     >
                                         Upload
                                     </a>
