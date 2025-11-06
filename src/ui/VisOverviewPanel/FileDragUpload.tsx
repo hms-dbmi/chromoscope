@@ -2,6 +2,7 @@
 import React, { useCallback, useState } from 'react';
 import { ICONS } from '../../icon';
 import { SampleConfig, ValidCohort } from '../SampleConfigForm';
+import { Cohorts } from '../../App';
 import { isValidUrl } from '../UploadModal';
 import { cohortOkayToAdd } from '../UploadModal';
 
@@ -9,6 +10,7 @@ type FileDragUploadProps = {
     multiple?: boolean;
     error: { type?: string; message: JSX.Element } | null;
     uploadedFile: File | null;
+    cohorts: Cohorts;
     setUploadedCohort?: React.Dispatch<React.SetStateAction<ValidCohort | null>>;
     onJsonParsed: (data: any | any[]) => void;
     setUploadedFile?: (file: File | null) => void;
@@ -23,6 +25,7 @@ export const FileDragUpload = ({
     setUploadedCohort = null,
     multiple = false, // In the future we may want to support multiple file uploads
     error,
+    cohorts,
     setError
 }: FileDragUploadProps) => {
     const [dragging, setDragging] = useState(false);
@@ -82,7 +85,10 @@ export const FileDragUpload = ({
                 .then(parsedData => {
                     const data = parsedData[0] as ValidCohort;
 
-                    const formattedDataName = data?.name || uploadedFile?.name || 'Untitled Cohort';
+                    let formattedDataName = data?.name || uploadedFile?.name || 'Untitled Cohort';
+                    if (cohorts[formattedDataName]) {
+                        formattedDataName += `_1`;
+                    }
                     const formattedDataSamples = Array.isArray(data) ? data : data.samples;
 
                     const formattedData: ValidCohort = {

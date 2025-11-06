@@ -284,6 +284,7 @@ export const UploadModal = ({
                                             uploadedFile={uploadedFile}
                                             onJsonParsed={handleValidJsonParsed}
                                             multiple={false}
+                                            cohorts={cohorts}
                                             setUploadedCohort={setUploadedCohort}
                                             setUploadedFile={setUploadedFile}
                                             setSampleConfig={setSampleConfig}
