@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ICONS } from '../../icon';
 import { FileDragUpload } from '../VisOverviewPanel/FileDragUpload';
 import { SampleConfig, ValidCohort } from '../SampleConfigForm';
@@ -45,6 +45,58 @@ export const testOkay = {
     bai: (_: SampleConfig) => !_?.bai || isValidUrl(_?.bai)
 };
 
+// Check if a list of samples are valid
+export const samplesOkayToAdd = (
+    samples: SampleConfig[] = []
+): { samplesOkay: boolean; allSampleErrors: Map<number, string[]> } => {
+    // Create an array to hold errors for each sample
+    const allSampleErrors = new Map<number, string[]>();
+
+    samples.forEach((sample, index) => {
+        // Create object of sample errors associated with this sample
+        const sampleErrors = [];
+
+        let okay = true;
+
+        // Test each field
+        Object.keys(testOkay).map(field => {
+            const isFieldOkay = testOkay[field](sample);
+
+            // Add errors to sampleErrors object
+            if (!isFieldOkay) {
+                sampleErrors.push(field);
+            }
+
+            okay = okay && isFieldOkay;
+        });
+
+        // Add errors for this sample to allSampleErrors map
+        if (sampleErrors.length > 0) {
+            allSampleErrors.set(index, sampleErrors);
+        }
+
+        return okay;
+    });
+
+    const isOkay = samples?.length > 0 && allSampleErrors.size === 0;
+
+    return {
+        samplesOkay: isOkay,
+        allSampleErrors
+    };
+};
+
+// Check if a cohort is okay to add i.e. has valid `samples` property
+export const cohortOkayToAdd = (cohort: Cohort) => {
+    const { samplesOkay, allSampleErrors } = samplesOkayToAdd(cohort?.samples);
+
+    // Check for a non-empty list of valid samples in the `samples` field
+    return {
+        errors: allSampleErrors,
+        samplesOkay
+    };
+};
+
 type UploadModalProps = {
     sampleConfig: SampleConfig;
     showNewSampleConfig: boolean;
@@ -82,7 +134,7 @@ export const UploadModal = ({
     const [uploadType, setUploadType] = useState<'file' | 'form'>('file');
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const [uploadedFileData, setUploadedFileData] = useState<any>(null);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<{ type: string; message: JSX.Element } | null>(null);
 
     // Clear sample configuration
     const clearSampleConfig = () => {
@@ -125,24 +177,16 @@ export const UploadModal = ({
         });
     };
 
-    // Process uploaded JSON file
     /**
      * Handle the parsed JSON data from the uploaded file.
      *   - Check the data structure with `ValidCohort`
      *   - Set the uploaded cohort state
      * @param data Parsed JSON data from uploaded file
      */
-    const handleJsonParsed = (data: Cohort | SampleConfig[]) => {
-        let formattedData = data;
-        if (Array.isArray(data)) {
-            // Data is an array of samples
-            formattedData = {
-                name: '',
-                samples: data
-            };
-        }
-        setUploadedFileData(formattedData);
-        setUploadedCohort(formattedData as ValidCohort);
+    const handleValidJsonParsed = (data: ValidCohort | SampleConfig[]) => {
+        setError(null);
+        setUploadedFileData(data);
+        setUploadedCohort(data as Cohort);
     };
 
     // Function for adding samples to existing cohort
@@ -179,31 +223,11 @@ export const UploadModal = ({
         });
         setSelectedCohort(newCohortId);
         setUploadedCohort(null);
+        setUploadedFile(null);
+        setUploadedFileData(null);
+        clearSampleConfig();
         setDemo(samples[0]); // Set first sample as demo
         demoIndex.current = 0;
-    };
-
-    // Check if a list of samples are valid
-    const samplesOkayToAdd = (samples: SampleConfig[] = []) => {
-        return (
-            samples?.length > 0 &&
-            samples.every(sample => {
-                let okay = true;
-                Object.keys(testOkay).map(k => {
-                    okay = okay && testOkay[k](sample);
-                });
-                return okay;
-            })
-        );
-    };
-
-    // Check if a cohort is okay to add i.e. has valid `samples` property
-    const cohortOkayToAdd = (cohort: Cohort) => {
-        // Check for a non-empty list of valid samples in the `samples` field
-        return {
-            samplesOkay: samplesOkayToAdd(cohort?.samples),
-            cohortOkay: cohort?.name && cohort.name.length > 0
-        };
     };
 
     return (
@@ -257,8 +281,10 @@ export const UploadModal = ({
                                 {uploadType === 'file' ? (
                                     <>
                                         <FileDragUpload
-                                            onJsonParsed={handleJsonParsed}
+                                            uploadedFile={uploadedFile}
+                                            onJsonParsed={handleValidJsonParsed}
                                             multiple={false}
+                                            setUploadedCohort={setUploadedCohort}
                                             setUploadedFile={setUploadedFile}
                                             setSampleConfig={setSampleConfig}
                                             error={error}
@@ -745,7 +771,7 @@ export const UploadModal = ({
                     <div className="modal-footer">
                         <button
                             className="btn btn-outline-primary add-to-cohort"
-                            disabled={!samplesOkayToAdd(uploadedCohort?.samples)}
+                            disabled={!cohortOkayToAdd(uploadedCohort).samplesOkay}
                             data-bs-dismiss="modal"
                             aria-label="Submit"
                             onClick={() => {
@@ -761,7 +787,7 @@ export const UploadModal = ({
                         {uploadType === 'file' && (
                             <button
                                 className="btn btn-primary create-cohort"
-                                disabled={!cohortOkayToAdd(uploadedCohort).cohortOkay}
+                                disabled={!cohortOkayToAdd(uploadedCohort).samplesOkay}
                                 data-bs-dismiss="modal"
                                 aria-label="Submit"
                                 onClick={() => {

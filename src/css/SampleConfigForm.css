@@ -171,6 +171,16 @@
                         color: #8e0b0b;
                     }
                 }
+
+                code {
+                    padding: 10px 0px;
+                }
+
+                .error-list {
+                    list-style-type: disc;
+                    margin-left: 0px;
+                    padding-left: 0px;
+                }
             }
         }
     }
