@@ -124,15 +124,22 @@ export const UploadModalFeedback = ({
                                 ) : (
                                     <div className="name-display">
                                         <span>{uploadedCohort?.name}</span>
-                                        <button
-                                            className="edit"
-                                            onClick={() => {
-                                                setCohortName(cohortName);
-                                                setChangingCohortName(true);
-                                            }}
-                                        >
-                                            Edit
-                                        </button>
+                                        <div>
+                                            <svg className="" viewBox={ICONS.PENCIL.viewBox}>
+                                                {ICONS.PENCIL.path.map(p => (
+                                                    <path fill="currentColor" key={p} d={p} />
+                                                ))}
+                                            </svg>
+                                            <button
+                                                className="edit"
+                                                onClick={() => {
+                                                    setCohortName(cohortName);
+                                                    setChangingCohortName(true);
+                                                }}
+                                            >
+                                                Edit
+                                            </button>
+                                        </div>
                                     </div>
                                 )}
                             </div>

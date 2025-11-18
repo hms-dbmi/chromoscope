@@ -1,451 +1,403 @@
-#upload-modal {
-    .modal-dialog {
-        width: 90%;
-    }
-    .modal-header {
-        background-color: #f3f8fe;
-        border-bottom: 1px solid #bbc5e1;
-        padding: 20px 25px;
+#upload-modal .modal-dialog {
+    width: 90%;
+}
+#upload-modal .modal-header {
+    background-color: #f3f8fe;
+    border-bottom: 1px solid #bbc5e1;
+    padding: 20px 25px;
+}
+#upload-modal .modal-header .modal-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+#upload-modal .modal-header .modal-title svg {
+    height: 25px;
+    width: 25px;
+    color: #abc3e0;
+    margin-right: 20px;
+}
 
-        .modal-title {
-            display: flex;
-            align-items: center;
-            font-size: 1.25rem;
-            font-weight: 600;
+#upload-modal .modal-body .upload-type-selector {
+    display: flex;
+    color: #000000;
+    border-bottom: 1px solid #bbc5e1;
+    background-color: transparent;
+    margin: 0px 25px;
+}
+#upload-modal .modal-body .upload-type-selector .upload-type-button {
+    flex: 1;
+    text-align: center;
+    margin: auto;
+    padding: 15px 0px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+}
+#upload-modal .modal-body .upload-type-selector .upload-type-button svg {
+    height: 15px;
+    width: 15px;
+    margin-right: 10px;
+    vertical-align: baseline;
+}
+#upload-modal .modal-body .upload-type-selector .upload-type-button.active {
+    color: #3459bf;
+    border-bottom: 2px solid #3459bf;
+}
+#upload-modal .modal-body .upload-type-selector .upload-type-button.active svg {
+    color: #1060c9;
+}
 
-            svg {
-                height: 25px;
-                width: 25px;
-                color: #abc3e0;
-                margin-right: 20px;
-            }
-        }
-    }
+#upload-modal .modal-body .upload-feedback {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+    margin: auto;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner {
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    align-items: start;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .header {
+    display: flex;
+    padding: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    gap: 8px;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .header svg {
+    height: 20px;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 0px 10px 10px 40px;
+    font-size: 0.875rem;
+    font-weight: 400;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name {
+    display: flex;
+    gap: 10px;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-input input {
+    min-width: 200px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #2e9c2d;
+    padding: 0px;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-input .cancel svg {
+    height: 20px;
+    margin-left: 5px;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-input .save {
+    margin-left: 10px;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-display span {
+    display: inline-flex;
+    min-width: 200px;
+    border-bottom: 1px solid #2e9c2d;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-display .edit {
+    margin-left: 5px;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-display svg {
+    height: 10px;
+    margin-left: 5px;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary b {
+    font-weight: 500;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary button {
+    color: #016500;
+    background-color: transparent;
+    border: none;
+    padding: 0px;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary button:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .samples {
+    padding-top: 10px;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner.success {
+    background-color: #f9fff9;
+    border: 1px solid #2e9c2d;
+    color: #016500;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner.success .header svg {
+    color: #a3d6a3;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner.error {
+    background-color: #fff9f9;
+    border: 1px solid #ba3e3e;
+    color: #8e0b0b;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner.error .header svg {
+    color: #8e0b0b;
+}
 
-    .modal-body {
-        .upload-type-selector {
-            display: flex;
-            color: #000000;
-            border-bottom: 1px solid #bbc5e1;
-            background-color: transparent;
-            margin: 0px 25px;
+#upload-modal .modal-body .upload-feedback .feedback-banner.error code {
+    padding: 10px 0px;
+}
 
-            .upload-type-button {
-                flex: 1;
-                text-align: center;
-                margin: auto;
-                padding: 15px 0px;
-                font-weight: 600;
-                cursor: pointer;
-                border: none;
-                background-color: transparent;
+#upload-modal .modal-body .upload-feedback .feedback-banner.error .error-list {
+    list-style-type: disc;
+    margin-left: 0px;
+    padding-left: 0px;
+}
 
-                svg {
-                    height: 15px;
-                    width: 15px;
-                    margin-right: 10px;
-                    vertical-align: baseline;
-                }
-            }
-            .upload-type-button.active {
-                color: #3459bf;
-                border-bottom: 2px solid #3459bf;
+#upload-modal .file-drag-upload-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px auto;
+    border: 1px solid #a8a8a8;
+    border-radius: 10px;
+    padding: 25px;
+    width: 80%;
+    height: 400px;
+}
+#upload-modal .file-drag-upload-container .file-upload-dropzone {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 20px;
+    background-color: #f7f8f9;
+    border: 1px dashed #a8a8a8;
+    border-spacing: 5px;
+    border-radius: 10px;
+}
+#upload-modal .file-drag-upload-container .file-upload-dropzone .file-upload-prompt {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+#upload-modal .file-drag-upload-container .file-upload-dropzone .file-upload-prompt .spinner-border {
+    color: #dcdcdc;
+    margin: auto;
+}
 
-                svg {
-                    color: #1060c9;
-                }
-            }
-        }
+#upload-modal .file-drag-upload-container .file-upload-dropzone .file-upload-prompt .upload-prompt {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #617c9d;
+    text-align: center;
+    gap: 15px;
+}
+#upload-modal .file-drag-upload-container .file-upload-dropzone .file-upload-prompt .upload-prompt svg {
+    color: #dcdcdc;
+    height: 80px;
+}
 
-        .upload-feedback {
-            display: flex;
-            flex-direction: column;
-            width: 85%;
-            margin: auto;
+#upload-modal .file-drag-upload-container .file-upload-dropzone .file-upload-prompt .divider {
+    display: flex;
+    width: 100%;
+    position: relative;
+    color: #617c9d;
+    border-bottom: 1px solid #617c9d;
+    height: 20px;
+    margin: 20px 0px;
+}
+#upload-modal .file-drag-upload-container .file-upload-dropzone .file-upload-prompt .divider span {
+    position: absolute;
+    bottom: -13px;
+    background-color: #f7f8f9;
+    transform: translateX(-50%);
+    left: 50%;
+    padding: 0px 10px;
+}
 
-            .feedback-banner {
-                display: flex;
-                flex-direction: column;
-                border-radius: 8px;
-                align-items: start;
+#upload-modal .file-drag-upload-container .file-upload-dropzone .file-upload-prompt .url-upload {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#upload-modal .file-drag-upload-container .file-upload-dropzone .file-upload-prompt .url-upload .input-group {
+    display: flex;
+    gap: 15px;
+    height: 40px;
+}
+#upload-modal .file-drag-upload-container .file-upload-dropzone .file-upload-prompt .url-upload .input-group input {
+    flex: 1;
+    border-radius: 5px;
+    border: 1px solid #dcdcdc;
+    padding: 0px 20px;
+    color: #617c9d;
+}
+#upload-modal .file-drag-upload-container .file-upload-dropzone .file-upload-prompt .url-upload .input-group a {
+    width: 200px;
+    border-radius: 5px;
+    border: 1px solid #dcdcdc;
+    background-color: #ffffff;
+    color: #1060c9;
+}
+#upload-modal .file-drag-upload-container .file-upload-dropzone .file-upload-prompt .url-upload .input-group a:hover {
+    cursor: pointer;
+    background-color: #f0f1f3;
+    text-decoration: none;
+}
+#upload-modal .file-drag-upload-container .file-upload-dropzone .file-upload-prompt .url-upload .input-group a:active {
+    background-color: #e6f1ff;
+}
+#upload-modal
+    .file-drag-upload-container
+    .file-upload-dropzone
+    .file-upload-prompt
+    .url-upload
+    .input-group
+    a.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+#upload-modal .file-drag-upload-container .file-upload-dropzone:hover {
+    cursor: pointer;
+    background-color: #f0f1f3;
+}
+#upload-modal .file-drag-upload-container .file-upload-dropzone:hover .divider span {
+    background-color: #f0f1f3;
+}
+#upload-modal .file-drag-upload-container .file-upload-dropzone.dragging {
+    background-color: #e6f1ff;
+    border: 2px solid #1060c9;
+}
+#upload-modal .file-drag-upload-container .file-upload-dropzone.dragging .file-upload-prompt .upload-prompt svg {
+    color: #4d9aff;
+}
 
-                .header {
-                    display: flex;
-                    padding: 10px;
-                    font-size: 1rem;
-                    font-weight: 600;
-                    gap: 8px;
+#upload-modal .sample-config-form {
+    border-radius: 10px;
+    padding: 0px 25px 25px;
+}
+#upload-modal .sample-config-form .form-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0px;
+    align-items: center;
+}
+#upload-modal .sample-config-form .form-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0px;
+}
 
-                    svg {
-                        height: 20px;
-                    }
-                }
-                .body {
-                    display: flex;
-                    flex: 1;
-                    flex-direction: column;
-                    padding: 0px 10px 10px 40px;
-                    font-size: 0.875rem;
-                    font-weight: 400;
+#upload-modal .sample-config-form .form-header a {
+    background-color: #f8f8f8;
+    border: 1px solid #dcdcdc;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: 500;
+    color: #4e4e4e;
+}
 
-                    .summary {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 10px;
+#upload-modal .sample-config-form .form-header a:hover {
+    cursor: pointer;
+    text-decoration: none;
+}
 
-                        .name {
-                            display: flex;
-                            gap: 10px;
+#upload-modal .sample-config-form .form-inputs-container {
+    padding: 20px;
+    background-color: #fdfdfd;
+    border: 2px solid #a8a8a8;
+    border-radius: 8px;
+}
+#upload-modal .sample-config-form .form-inputs-container .input-button-container {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+}
+#upload-modal .sample-config-form .form-inputs-container .input-button-container .input-container {
+    flex: 1;
+}
+#upload-modal .sample-config-form .form-inputs-container .input-button-container .example-dataset-button {
+    width: 200px;
+    background-color: #f8f8f8;
+    border: 1px solid #dcdcdc;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: #4e4e4e;
+}
+#upload-modal .sample-config-form .form-inputs-container .input-button-container .example-dataset-button svg {
+    height: 15px;
+    width: 15px;
+    margin-right: 10px;
+}
 
-                            .name-input {
-                                input {
-                                    min-width: 200px;
-                                    background-color: transparent;
-                                    border: none;
-                                    border-bottom: 1px solid #2e9c2d;
-                                    padding: 0px;
-                                }
-                                .cancel {
-                                    svg {
-                                        height: 20px;
-                                        margin-left: 5px;
-                                    }
-                                }
-                                .save {
-                                    margin-left: 10px;
-                                }
-                            }
+#upload-modal .sample-config-form .form-inputs-container .input-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+#upload-modal .sample-config-form .form-inputs-container .input-container .menu-subtitle {
+    margin-bottom: 0px;
+    color: #5e5e5e;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-left: 4px;
+}
+#upload-modal .sample-config-form .form-inputs-container .input-container .menu-dropdown {
+    margin-bottom: 0px;
+    border-radius: 4px;
+    border: 1px solid #a8a8a8;
+    padding: 5px 6px 5px 5px;
+}
+#upload-modal .sample-config-form .form-inputs-container .input-container .menu-text-input {
+    margin-bottom: 0px;
+    border-radius: 4px;
+    padding: 5px 10px;
+    border: 1px solid #a8a8a8;
+}
+#upload-modal .sample-config-form .form-inputs-container .input-container .menu-text-input-invalid {
+    margin-bottom: 0px;
+}
 
-                            .name-display {
-                                span {
-                                    display: inline-flex;
-                                    min-width: 200px;
-                                    border-bottom: 1px solid #2e9c2d;
-                                }
-                                .edit {
-                                    margin-left: 5px;
-                                }
-                                svg {
-                                    height: 10px;
-                                    margin-left: 5px;
-                                }
-                            }
-                        }
-                        b {
-                            font-weight: 500;
-                        }
-                        button {
-                            color: #016500;
-                            background-color: transparent;
-                            border: none;
-                            padding: 0px;
-                        }
-                        button:hover {
-                            cursor: pointer;
-                            text-decoration: underline;
-                        }
-                    }
-                    .samples {
-                        padding-top: 10px;
-                    }
-                }
-            }
-            .feedback-banner.success {
-                background-color: #f9fff9;
-                border: 1px solid #2e9c2d;
-                color: #016500;
+#upload-modal .sample-config-form .form-inputs-container .input-invalid .menu-subtitle {
+    color: #d61e4b;
+}
 
-                .header {
-                    svg {
-                        color: #a3d6a3;
-                    }
-                }
-            }
-            .feedback-banner.error {
-                background-color: #fff9f9;
-                border: 1px solid #ba3e3e;
-                color: #8e0b0b;
+#upload-modal .sample-config-form .form-inputs-container .input-invalid .menu-text-input {
+    border-color: #d61e4b;
+}
 
-                .header {
-                    svg {
-                        color: #8e0b0b;
-                    }
-                }
+#upload-modal .sample-config-form .form-inputs-container .footnote {
+    text-align: right;
+}
 
-                code {
-                    padding: 10px 0px;
-                }
-
-                .error-list {
-                    list-style-type: disc;
-                    margin-left: 0px;
-                    padding-left: 0px;
-                }
-            }
-        }
-    }
-
-    .file-drag-upload-container {
-        display: flex;
-        justify-content: center;
-        margin: 30px auto;
-        border: 1px solid #a8a8a8;
-        border-radius: 10px;
-        padding: 25px;
-        width: 80%;
-        height: 400px;
-
-        .file-upload-dropzone {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            padding: 20px;
-            background-color: #f7f8f9;
-            border: 1px dashed #a8a8a8;
-            border-spacing: 5px;
-            border-radius: 10px;
-
-            .file-upload-prompt {
-                display: flex;
-                flex: 1;
-                flex-direction: column;
-                justify-content: space-between;
-                width: 100%;
-
-                .spinner-border {
-                    color: #dcdcdc;
-                    margin: auto;
-                }
-
-                .upload-prompt {
-                    display: flex;
-                    flex: 1;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    color: #617c9d;
-                    text-align: center;
-                    gap: 15px;
-
-                    svg {
-                        color: #dcdcdc;
-                        height: 80px;
-                    }
-                }
-
-                .divider {
-                    display: flex;
-                    width: 100%;
-                    position: relative;
-                    color: #617c9d;
-                    border-bottom: 1px solid #617c9d;
-                    height: 20px;
-                    margin: 20px 0px;
-
-                    span {
-                        position: absolute;
-                        bottom: -13px;
-                        background-color: #f7f8f9;
-                        transform: translateX(-50%);
-                        left: 50%;
-                        padding: 0px 10px;
-                    }
-                }
-
-                .url-upload {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    .input-group {
-                        display: flex;
-                        /* flex: 1; */
-                        gap: 15px;
-                        height: 40px;
-
-                        input {
-                            flex: 1;
-                            border-radius: 5px;
-                            border: 1px solid #dcdcdc;
-                            padding: 0px 20px;
-                            color: #617c9d;
-                        }
-                        a {
-                            width: 200px;
-                            border-radius: 5px;
-                            border: 1px solid #dcdcdc;
-                            background-color: #ffffff;
-                            color: #1060c9;
-                        }
-                        a:hover {
-                            cursor: pointer;
-                            background-color: #f0f1f3;
-                            text-decoration: none;
-                        }
-                        a:active {
-                            background-color: #e6f1ff;
-                        }
-                        a.disabled {
-                            pointer-events: none;
-                            opacity: 0.5;
-                        }
-                    }
-                }
-            }
-        }
-        .file-upload-dropzone:hover {
-            cursor: pointer;
-            background-color: #f0f1f3;
-
-            .divider {
-                span {
-                    background-color: #f0f1f3;
-                }
-            }
-        }
-        .file-upload-dropzone.dragging {
-            background-color: #e6f1ff;
-            border: 2px solid #1060c9;
-
-            .file-upload-prompt {
-                .upload-prompt {
-                    svg {
-                        color: #4d9aff;
-                    }
-                }
-            }
-        }
-    }
-
-    .sample-config-form {
-        border-radius: 10px;
-        padding: 0px 25px 25px;
-
-        .form-header {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px 0px;
-            align-items: center;
-
-            h2 {
-                font-size: 1.25rem;
-                font-weight: 600;
-                margin-bottom: 0px;
-            }
-
-            a {
-                background-color: #f8f8f8;
-                border: 1px solid #dcdcdc;
-                padding: 10px 15px;
-                border-radius: 6px;
-                font-weight: 500;
-                color: #4e4e4e;
-            }
-
-            a:hover {
-                cursor: pointer;
-                text-decoration: none;
-            }
-        }
-
-        .form-inputs-container {
-            padding: 20px;
-            background-color: #fdfdfd;
-            border: 2px solid #a8a8a8;
-            border-radius: 8px;
-
-            .input-button-container {
-                display: flex;
-                align-items: flex-end;
-                gap: 20px;
-
-                .input-container {
-                    flex: 1;
-                }
-                .example-dataset-button {
-                    width: 200px;
-                    background-color: #f8f8f8;
-                    border: 1px solid #dcdcdc;
-                    padding: 5px 10px;
-                    border-radius: 6px;
-                    font-weight: 500;
-                    margin-bottom: 12px;
-                    color: #4e4e4e;
-
-                    svg {
-                        height: 15px;
-                        width: 15px;
-                        margin-right: 10px;
-                    }
-                }
-            }
-
-            .input-container {
-                display: flex;
-                flex-direction: column;
-                margin-bottom: 10px;
-
-                .menu-subtitle {
-                    margin-bottom: 0px;
-                    color: #5e5e5e;
-                    font-weight: 600;
-                    font-size: 0.875rem;
-                    margin-left: 4px;
-                }
-
-                .menu-dropdown {
-                    margin-bottom: 0px;
-                    border-radius: 4px;
-                    border: 1px solid #a8a8a8;
-                    padding: 5px 6px 5px 5px;
-                }
-                .menu-text-input {
-                    margin-bottom: 0px;
-                    border-radius: 4px;
-                    padding: 5px 10px;
-                    border: 1px solid #a8a8a8;
-                }
-                .menu-text-input-invalid {
-                    margin-bottom: 0px;
-                }
-            }
-
-            .input-invalid {
-                .menu-subtitle {
-                    color: #d61e4b;
-                }
-
-                .menu-text-input {
-                    border-color: #d61e4b;
-                }
-            }
-
-            .footnote {
-                text-align: right;
-            }
-        }
-    }
-
-    .modal-footer {
-        .add-to-cohort {
-            color: #1060c9;
-            border: 1px solid #dcdcdc;
-            font-weight: 600;
-            padding: 8px 20px;
-        }
-        .create-cohort {
-            background-color: #1060c9;
-            border: 1px solid #004093;
-            color: white;
-            font-weight: 500;
-            padding: 8px 15px;
-        }
-        .add-to-cohort:hover,
-        .add-to-cohort:focus-visible {
-            cursor: pointer;
-            text-decoration: none;
-            background-color: #f8f8f8;
-        }
-    }
+#upload-modal .modal-footer .add-to-cohort {
+    color: #1060c9;
+    border: 1px solid #dcdcdc;
+    font-weight: 600;
+    padding: 8px 20px;
+}
+#upload-modal .modal-footer .create-cohort {
+    background-color: #1060c9;
+    border: 1px solid #004093;
+    color: white;
+    font-weight: 500;
+    padding: 8px 15px;
+}
+#upload-modal .modal-footer .add-to-cohort:hover,
+#upload-modal .modal-footer .add-to-cohort:focus-visible {
+    cursor: pointer;
+    text-decoration: none;
+    background-color: #f8f8f8;
 }

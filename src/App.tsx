@@ -314,15 +314,16 @@ function App(props: RouteComponentProps) {
                             }
                             // Select the cohort from URL if provided
                             setSelectedCohort(cohortIdFromUrl ?? cohortId);
+                            setShowSmallMultiples(true);
+                            setReady(true);
                         }
-
-                        setShowSmallMultiples(true);
-                        setReady(true);
                     })
                 )
                 .catch(error => {
                     console.error('Error fetching external demo:', error);
                     setExternalError(error.message);
+                    setShowSmallMultiples(true);
+                    setReady(true);
                 });
         }
     }, [cohorts]);

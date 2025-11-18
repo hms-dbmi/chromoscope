@@ -301,6 +301,7 @@ export const OverviewPanel = ({
     setDemo
 }: OverviewPanelProps) => {
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
+    const [showExternalDemoAlert, setShowExternalDemoAlert] = useState<boolean>(true);
 
     // Update filtered samples when cohort changes
     useEffect(() => {
@@ -360,9 +361,18 @@ export const OverviewPanel = ({
     return (
         <div>
             <div className="overview-root">
-                {externalError && (
-                    <div className="alert alert-danger" role="alert" style={{ margin: '10px' }}>
-                        Error loading external demo: {externalError}
+                {showExternalDemoAlert && externalError && (
+                    <div className="alert alert-warning external-demo" role="alert">
+                        <strong>Error loading external URL:</strong> The provided link could not be loaded. Please check
+                        the URL and try again.
+                        <button
+                            type="button"
+                            className="close"
+                            aria-label="Close"
+                            onClick={() => setShowExternalDemoAlert(false)}
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                 )}
                 <div className="overview-header">
@@ -404,7 +414,9 @@ export const OverviewPanel = ({
                     </div>
                 )}
                 <div className="overview-status">{`Total of ${filteredSamples.length} samples loaded`}</div>
-                <div className="overview-container">
+                <div
+                    className={`overview-container ${selectedCohort === 'PCAWG: Cancer Cohort' ? 'with-filters' : ''}`}
+                >
                     <SmallOverviewWrapper
                         demo={demo}
                         setDemo={setDemo}

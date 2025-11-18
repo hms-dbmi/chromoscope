@@ -9,210 +9,208 @@
     z-index: 1;
     background-color: white;
     padding: 0px 20px;
+}
+.navigation-container .navigation-links-container {
+    display: flex;
+    gap: 4px;
+}
+.navigation-container .navigation-links-container .title-github-link,
+.navigation-container .navigation-links-container .title-doc-link,
+.navigation-container .navigation-links-container .feedback {
+    display: flex;
+    justify-content: center;
+    background-color: transparent;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+.navigation-container .navigation-links-container .title-github-link svg,
+.navigation-container .navigation-links-container .title-doc-link svg,
+.navigation-container .navigation-links-container .feedback svg {
+    vertical-align: middle;
+    margin: auto 5px auto auto;
+    color: black;
+    width: 15px;
+}
+.navigation-container .navigation-links-container .title-github-link span,
+.navigation-container .navigation-links-container .title-doc-link span,
+.navigation-container .navigation-links-container .feedback span {
+    font-size: 1rem;
+}
 
-    .navigation-links-container {
-        display: flex;
-        gap: 4px;
+.navigation-container .navigation-links-container .title-github-link:hover,
+.navigation-container .navigation-links-container .title-doc-link:hover,
+.navigation-container .navigation-links-container .feedback a:hover {
+    background-color: #f6f6f6;
+}
 
-        .title-github-link,
-        .title-doc-link,
-        .feedback {
-            display: flex;
-            justify-content: center;
-            background-color: transparent;
-            padding: 4px 10px;
-            border-radius: 4px;
+.navigation-container .navigation-links-container .title-github-link:active,
+.navigation-container .navigation-links-container .title-doc-link:active,
+.navigation-container .navigation-links-container .feedback a:active {
+    background-color: #e6e4e4;
+}
 
-            svg {
-                vertical-align: middle;
-                margin: auto 5px auto auto;
-                color: black;
-                width: min-content;
-            }
-            span {
-                font-size: 1rem;
-            }
-        }
+.navigation-container .navigation-links-container .title-github-link {
+    position: relative;
+    text-decoration: none;
+}
+.navigation-container .navigation-links-container .title-github-link svg {
+    height: 16px;
+}
 
-        .title-github-link:hover,
-        .title-doc-link:hover,
-        .feedback a:hover {
-            background-color: #f6f6f6;
-        }
+.navigation-container .navigation-links-container .title-doc-link {
+    color: black;
+    position: relative;
+    text-decoration: none;
+}
+.navigation-container .navigation-links-container .title-doc-link svg {
+    height: 15px;
+    margin-right: 4px;
+}
 
-        .title-github-link:active,
-        .title-doc-link:active,
-        .feedback a:active {
-            background-color: #e6e4e4;
-        }
+.navigation-container .navigation-links-container .feedback {
+    display: flex;
+    justify-content: center;
+    padding: 0px;
+    border-radius: 0px;
+}
+.navigation-container .navigation-links-container .feedback a {
+    box-sizing: border-box !important;
+    display: flex;
+    font-size: 0.9rem;
+    font-family: Inter;
+    font-weight: 400;
+    text-decoration: none;
+    color: #000000;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+.navigation-container .navigation-links-container .feedback a svg.button {
+    position: relative;
+    height: 12px;
+    margin: auto;
+    margin-right: 6px;
+    top: auto;
+    right: auto;
+}
+.navigation-container .navigation-links-container .feedback a span {
+    margin: auto;
+    margin-left: 0px;
+}
 
-        .title-github-link {
-            position: relative;
-            text-decoration: none;
+.navigation-container .links-left {
+    display: flex;
+}
+.navigation-container .links-left .config-button {
+    position: relative;
+    margin: auto;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    color: black;
+    stroke: black;
+    stroke-width: 0.5px;
+    border: none;
+    padding: 6px;
+    border-radius: 4px;
+    background-color: transparent;
+}
+.navigation-container .links-left .config-button svg {
+    height: 100%;
+    width: auto;
+}
 
-            svg {
-                height: 16px;
-            }
-        }
+.navigation-container .links-left .config-button:hover {
+    background-color: #f6f6f6;
+}
+.navigation-container .links-left .config-button:active {
+    background-color: #e6e4e4;
+}
 
-        .title-doc-link {
-            color: black;
-            position: relative;
-            text-decoration: none;
+.navigation-container .links-left .config-button:focus-visible,
+.navigation-container .links-left .config-button:focus {
+    outline-offset: 0px;
+}
 
-            svg {
-                height: 15px;
-                margin-right: 4px;
-            }
-        }
+.navigation-container .links-left .sample-information {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 18px;
+    text-shadow: 0px 0px 6px white;
+    font-size: 18px;
+}
+.navigation-container .links-left .sample-information .dimed {
+    margin-right: 12px;
+}
 
-        .feedback {
-            display: flex;
-            justify-content: center;
-            padding: 0px;
-            border-radius: 0px;
+.navigation-container .links-left .sample-information small {
+    margin-left: 12px;
+    font-size: 12px;
+    color: gray;
+    margin-right: 10px;
+}
 
-            a {
-                box-sizing: border-box !important;
-                display: flex;
-                font-size: 0.9rem;
-                font-family: Inter;
-                font-weight: 400;
-                text-decoration: none;
-                color: #000000;
-                padding: 4px 10px;
-                border-radius: 4px;
+.navigation-container .links-left .sample-information .title-btn {
+    position: relative;
+    height: 25px;
+    width: 25px;
+    font-size: 14px;
+    margin-left: 10px;
+    cursor: pointer;
+    color: #333333;
+}
+.navigation-container .links-left .sample-information .title-btn svg {
+    vertical-align: inherit;
+    width: 25px;
+}
 
-                svg.button {
-                    position: relative;
-                    height: 12px;
-                    margin: auto;
-                    margin-right: 6px;
-                    top: auto;
-                    right: auto;
-                }
-                span {
-                    margin: auto;
-                    margin-left: 0px;
-                }
-            }
-        }
-    }
+.navigation-container .links-left .sample-information .nav-list {
+    list-style-type: none;
+    padding: 0px;
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    background-color: transparent;
+    margin: auto;
+}
+.navigation-container .links-left .sample-information .nav-list .nav-list-item {
+    display: flex;
+    margin: auto;
+}
 
-    .links-left {
-        display: flex;
+.navigation-container .links-left .sample-information .nav-list .nav-list-item:hover {
+    cursor: pointer;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+}
 
-        .config-button {
-            position: relative;
-            margin: auto;
-            width: 25px;
-            height: 25px;
-            cursor: pointer;
-            color: black;
-            stroke: black;
-            stroke-width: 0.5px;
-            border: none;
-            padding: 6px;
-            border-radius: 4px;
-            background-color: transparent;
-        }
+.navigation-container .links-left .sample-information .nav-list .title-btn {
+    display: flex;
+    position: relative;
+    padding: 6px;
+    width: 25px;
+    height: 25px;
+    margin-left: 0px;
+    color: black;
+}
 
-        .config-button:hover {
-            background-color: #f6f6f6;
-        }
-        .config-button:active {
-            background-color: #e6e4e4;
-        }
+.navigation-container .links-left .sample-information .nav-list .title-btn.png {
+    border: none;
+    background-color: transparent;
+}
 
-        .config-button:focus-visible,
-        .config-button:focus {
-            outline-offset: 0px;
-        }
+.navigation-container .links-left .sample-information .title-btn.clipboard {
+    border: none;
+    background-color: transparent;
+}
 
-        .sample-information {
-            position: relative;
-            display: flex;
-            align-items: center;
-            margin-left: 18px;
-            text-shadow: 0px 0px 6px white;
-            font-size: 18px;
+.navigation-container .links-left .sample-information .nav-list svg.button:focus,
+.navigation-container .links-left .sample-information .nav-list svg.button:focus-visible {
+    outline-offset: 6px;
+}
 
-            .dimed {
-                margin-right: 12px;
-            }
-
-            small {
-                margin-left: 12px;
-                font-size: 12px;
-                color: gray;
-                margin-right: 10px;
-            }
-
-            .title-btn {
-                position: relative;
-                height: 25px;
-                width: 25px;
-                font-size: 14px;
-                margin-left: 10px;
-                cursor: pointer;
-                color: #333333;
-
-                svg {
-                    vertical-align: inherit;
-                }
-            }
-
-            .nav-list {
-                list-style-type: none;
-                padding: 0px;
-                display: flex;
-                flex-direction: row;
-                height: 50px;
-                background-color: transparent;
-                margin: auto;
-
-                .nav-list-item {
-                    display: flex;
-                    margin: auto;
-                }
-
-                .nav-list-item:hover {
-                    cursor: pointer;
-                    background-color: #f4f4f4;
-                    border-radius: 5px;
-                }
-
-                .title-btn {
-                    display: flex;
-                    position: relative;
-                    padding: 6px;
-                    width: 25px;
-                    height: 25px;
-                    margin-left: 0px;
-                    color: black;
-                }
-
-                .title-btn.png {
-                    border: none;
-                    background-color: transparent;
-                }
-
-                .title-btn.clipboard {
-                    border: none;
-                    background-color: transparent;
-                }
-
-                svg.button:focus,
-                svg.button:focus-visible {
-                    outline-offset: 6px;
-                }
-            }
-        }
-    }
-
-    .links-right {
-        display: flex;
-        justify-content: end;
-        align-items: center;
-    }
+.navigation-container .links-right {
+    display: flex;
+    justify-content: end;
+    align-items: center;
 }
