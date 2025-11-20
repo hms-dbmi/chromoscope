@@ -160,6 +160,8 @@ a:hover {
 }
 
 .title-about-link {
+    display: flex;
+    align-items: center;
     margin: auto 12px;
     font-size: 12px;
     cursor: pointer;

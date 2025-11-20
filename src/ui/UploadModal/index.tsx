@@ -425,7 +425,6 @@ export const UploadModal = ({
                                                 <span className="menu-subtitle">
                                                     ID<sup>*</sup>
                                                 </span>
-                                                {/* <span className="menu-subtitle-right">Required</span> */}
                                                 <input
                                                     id="sample-id-input"
                                                     type="text"
@@ -458,7 +457,6 @@ export const UploadModal = ({
                                                 <div className="menu-subtitle">
                                                     Cancer<sup>*</sup>
                                                 </div>
-                                                {/* <span className="menu-subtitle-right">Required</span> */}
                                                 <input
                                                     id="sample-cancer-input"
                                                     type="text"
@@ -491,7 +489,6 @@ export const UploadModal = ({
                                                 <div className="menu-subtitle">
                                                     SV<sup>*</sup> <small>(.bedpe)</small>
                                                 </div>
-                                                {/* <span className="menu-subtitle-right">Required</span> */}
                                                 <input
                                                     id="sample-sv-input"
                                                     type="text"
@@ -524,7 +521,6 @@ export const UploadModal = ({
                                                 <div className="menu-subtitle">
                                                     CNV <small>(.txt)</small>
                                                 </div>
-                                                {/* <span className="menu-subtitle-right">Required</span> */}
                                                 <input
                                                     id="sample-cnv-input"
                                                     type="text"

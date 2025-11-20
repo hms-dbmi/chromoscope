@@ -256,7 +256,7 @@ export const FileDragUpload = ({
                                 onClick={e => e.stopPropagation()}
                                 rel="noreferrer"
                             >
-                                Open in new tab
+                                Upload
                             </a>
                         </div>
                     </div>
