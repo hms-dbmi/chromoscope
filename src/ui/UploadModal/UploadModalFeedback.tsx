@@ -10,7 +10,6 @@ type UploadModalFeedbackProps = {
     cohorts: Cohorts;
     setUploadedCohort: React.Dispatch<React.SetStateAction<ValidCohort>>;
     error: { type?: string; message: JSX.Element } | null;
-    setError: React.Dispatch<React.SetStateAction<{ type?: string; message: JSX.Element } | null>>;
 };
 
 export const UploadModalFeedback = ({
@@ -19,8 +18,7 @@ export const UploadModalFeedback = ({
     uploadedCohort,
     cohorts,
     setUploadedCohort,
-    error,
-    setError
+    error
 }: UploadModalFeedbackProps) => {
     const [showAllSamples, setShowAllSamples] = useState(false);
     const [cohortName, setCohortName] = useState(uploadedCohort?.name || uploadedFile?.name);
@@ -43,11 +41,11 @@ export const UploadModalFeedback = ({
             <div className="upload-feedback">
                 <div className="feedback-banner error">
                     <div className="header">
-                        {/* <svg className="" viewBox={ICONS.ERROR.viewBox}>
-                            {ICONS.ERROR.path.map(p => (
+                        <svg className="" viewBox={ICONS.WARNING_TRIANGLE.viewBox}>
+                            {ICONS.WARNING_TRIANGLE.path.map(p => (
                                 <path fill="currentColor" key={p} d={p} />
                             ))}
-                        </svg> */}
+                        </svg>
                         <span>Upload Failed</span>
                     </div>
                     <div className="body">
@@ -87,8 +85,10 @@ export const UploadModalFeedback = ({
                                             onChange={e => setCohortName(e.target.value)}
                                             onKeyPress={e => {
                                                 if (e.key === 'Enter') {
-                                                    handleCohortNameChange(cohortName);
-                                                    setCohortName(cohortName);
+                                                    if (cohortName !== uploadedCohort?.name && !cohorts?.[cohortName]) {
+                                                        handleCohortNameChange(cohortName);
+                                                        setCohortName(cohortName);
+                                                    }
                                                 } else if (e.key === 'Esc') {
                                                     e.preventDefault();
                                                     setCohortName(uploadedCohort?.name);
@@ -96,40 +96,42 @@ export const UploadModalFeedback = ({
                                                 }
                                             }}
                                         />
-                                        <button
-                                            className="cancel"
-                                            onClick={() => {
-                                                // setCohortName(uploadedCohort?.name);
-                                                setChangingCohortName(false);
-                                            }}
-                                        >
-                                            <svg viewBox={ICONS.CLOSE.viewBox}>
-                                                {ICONS.CLOSE.path.map(p => (
-                                                    <path fill="currentColor" key={p} d={p} />
-                                                ))}
-                                            </svg>
-                                        </button>
-                                        {cohortName !== uploadedCohort?.name && !cohorts?.[cohortName] && (
+                                        <div className="controls">
                                             <button
-                                                className="save"
+                                                className="cancel"
+                                                onClick={() => {
+                                                    setChangingCohortName(false);
+                                                }}
+                                            >
+                                                <svg viewBox={ICONS.CLOSE.viewBox}>
+                                                    {ICONS.CLOSE.path.map(p => (
+                                                        <path fill="currentColor" key={p} d={p} />
+                                                    ))}
+                                                </svg>
+                                            </button>
+                                            <button
+                                                className={`save ${
+                                                    cohortName &&
+                                                    cohortName !== uploadedCohort?.name &&
+                                                    !cohorts?.[cohortName]
+                                                        ? ''
+                                                        : 'disabled'
+                                                }`}
                                                 type="submit"
                                                 onClick={() => {
-                                                    handleCohortNameChange(cohortName);
+                                                    if (cohortName !== uploadedCohort?.name && !cohorts?.[cohortName]) {
+                                                        handleCohortNameChange(cohortName);
+                                                    }
                                                 }}
                                             >
                                                 Save
                                             </button>
-                                        )}
+                                        </div>
                                     </div>
                                 ) : (
                                     <div className="name-display">
                                         <span>{uploadedCohort?.name}</span>
-                                        <div>
-                                            <svg className="" viewBox={ICONS.PENCIL.viewBox}>
-                                                {ICONS.PENCIL.path.map(p => (
-                                                    <path fill="currentColor" key={p} d={p} />
-                                                ))}
-                                            </svg>
+                                        <div className="controls">
                                             <button
                                                 className="edit"
                                                 onClick={() => {
@@ -137,7 +139,11 @@ export const UploadModalFeedback = ({
                                                     setChangingCohortName(true);
                                                 }}
                                             >
-                                                Edit
+                                                <svg className="" viewBox={ICONS.PENCIL.viewBox}>
+                                                    {ICONS.PENCIL.path.map(p => (
+                                                        <path fill="currentColor" key={p} d={p} />
+                                                    ))}
+                                                </svg>
                                             </button>
                                         </div>
                                     </div>

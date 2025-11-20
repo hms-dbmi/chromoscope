@@ -408,6 +408,9 @@
 }
 
 .alert-warning.external-demo {
+    background-color: #fff9f9;
+    border: 1px solid #ba3e3e;
+    color: #ba3e3e;
     margin-bottom: 0px;
     border-radius: 0px;
     padding: 20px;
@@ -422,10 +425,10 @@
     border-radius: 3px;
     font-size: 1.5rem;
     line-height: 1rem;
-    color: #664d03;
     cursor: pointer;
     padding: 4px;
+    color: #842a2a;
 }
 .alert-warning.external-demo .close:hover {
-    background-color: rgba(211, 211, 211, 0.25);
+    background-color: #e7cccc8d;
 }

@@ -19,6 +19,10 @@
     margin-right: 20px;
 }
 
+#upload-modal .modal-body .upload-divider {
+    width: 85%;
+    margin: 20px auto;
+}
 #upload-modal .modal-body .upload-type-selector {
     display: flex;
     color: #000000;
@@ -54,7 +58,7 @@
     display: flex;
     flex-direction: column;
     width: 85%;
-    margin: auto;
+    margin: 20px auto;
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner {
     display: flex;
@@ -64,10 +68,11 @@
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner .header {
     display: flex;
-    padding: 10px;
+    padding: 10px 20px;
     font-size: 1rem;
     font-weight: 600;
     gap: 8px;
+    align-items: center;
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner .header svg {
     height: 20px;
@@ -89,31 +94,71 @@
     display: flex;
     gap: 10px;
 }
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-input {
+    display: flex;
+    align-items: center;
+}
 #upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-input input {
     min-width: 200px;
+    display: inline-flex;
+    min-width: 200px;
+    border: 1px solid #bbddbb;
+    border-radius: 4px 0px 0px 4px;
+    padding: 2px 6px;
     background-color: transparent;
-    border: none;
-    border-bottom: 1px solid #2e9c2d;
-    padding: 0px;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-input .controls {
+    display: flex;
+    height: 100%;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-input .cancel {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    padding: 2px 5px;
+    background-color: #008001;
+    border-radius: 0px 4px 4px 0px;
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-input .cancel svg {
-    height: 20px;
-    margin-left: 5px;
+    height: 16px;
+    color: white;
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-input .save {
     margin-left: 10px;
 }
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-input .save.disabled {
+    color: gray;
+    pointer-events: none;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-input .save.disabled:hover {
+    text-decoration: none;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-display {
+    display: flex;
+    align-items: center;
+}
 #upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-display span {
     display: inline-flex;
     min-width: 200px;
-    border-bottom: 1px solid #2e9c2d;
+    border: 1px solid #bbddbb;
+    border-radius: 4px 0px 0px 4px;
+    padding: 2px 6px;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-display .controls {
+    display: flex;
+    height: 100%;
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-display .edit {
-    margin-left: 5px;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    padding: 2px 8px;
+    background-color: #008001;
+    border-radius: 0px 4px 4px 0px;
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-display svg {
     height: 10px;
-    margin-left: 5px;
+    color: white;
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner .body .summary b {
     font-weight: 500;
@@ -145,11 +190,20 @@
     color: #8e0b0b;
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner.error .header svg {
-    color: #8e0b0b;
+    color: #e9baba;
+    height: 16px;
 }
 
+#upload-modal .modal-body .upload-feedback .feedback-banner.error .body {
+    padding-left: 60px;
+}
 #upload-modal .modal-body .upload-feedback .feedback-banner.error code {
-    padding: 10px 0px;
+    padding: 10px 15px;
+    background-color: white;
+    border: 1px solid #ffcaca;
+    border-radius: 4px;
+    color: #ff57b6;
+    margin-top: 10px;
 }
 
 #upload-modal .modal-body .upload-feedback .feedback-banner.error .error-list {
@@ -166,9 +220,23 @@
     border-radius: 10px;
     padding: 25px;
     width: 80%;
-    height: 400px;
+    height: auto;
 }
-#upload-modal .file-drag-upload-container .file-upload-dropzone {
+
+#upload-modal .reupload-prompt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px auto;
+    border: none;
+    width: 80%;
+    height: auto;
+    color: #617c9d;
+}
+#upload-modal .reupload-prompt .btn {
+    padding: 0px;
+}
+#upload-modal .file-upload-dropzone {
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -179,6 +247,7 @@
     border: 1px dashed #a8a8a8;
     border-spacing: 5px;
     border-radius: 10px;
+    height: 350px;
 }
 #upload-modal .file-drag-upload-container .file-upload-dropzone .file-upload-prompt {
     display: flex;
@@ -267,6 +336,7 @@
     pointer-events: none;
     opacity: 0.5;
 }
+
 #upload-modal .file-drag-upload-container .file-upload-dropzone:hover {
     cursor: pointer;
     background-color: #f0f1f3;

@@ -278,8 +278,23 @@ export const UploadModal = ({
                                         Manual Entry
                                     </button>
                                 </div>
+                            </div>
+                            <div className="upload-modal-body">
                                 {uploadType === 'file' ? (
                                     <>
+                                        {error || (uploadedFile && uploadedFileData) ? (
+                                            <>
+                                                <UploadModalFeedback
+                                                    cohorts={cohorts}
+                                                    uploadedFile={uploadedFile}
+                                                    uploadedFileData={uploadedFileData}
+                                                    uploadedCohort={uploadedCohort}
+                                                    setUploadedCohort={setUploadedCohort}
+                                                    error={error}
+                                                />
+                                                <hr className="upload-divider" />
+                                            </>
+                                        ) : null}
                                         <FileDragUpload
                                             uploadedFile={uploadedFile}
                                             onJsonParsed={handleValidJsonParsed}
@@ -291,17 +306,6 @@ export const UploadModal = ({
                                             error={error}
                                             setError={setError}
                                         />
-                                        {error || (uploadedFile && uploadedFileData) ? (
-                                            <UploadModalFeedback
-                                                cohorts={cohorts}
-                                                uploadedFile={uploadedFile}
-                                                uploadedFileData={uploadedFileData}
-                                                uploadedCohort={uploadedCohort}
-                                                setUploadedCohort={setUploadedCohort}
-                                                error={error}
-                                                setError={setError}
-                                            />
-                                        ) : null}
                                     </>
                                 ) : (
                                     <div
@@ -372,7 +376,7 @@ export const UploadModal = ({
                                                             clearUploadedCohort();
                                                         } else {
                                                             setUploadedCohort({
-                                                                name: '',
+                                                                name: 'Example Dataset',
                                                                 samples: [
                                                                     {
                                                                         ...uploadedCohort?.samples?.[0],

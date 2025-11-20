@@ -188,93 +188,88 @@ export const FileDragUpload = ({
         setInputUrl(url);
     };
 
-    return (
+    if (!error && uploadedFile) {
+        return (
+            <div className="reupload-prompt">
+                Click
+                <button className="btn btn-link px-1" onClick={clearUpload}>
+                    <span>here</span>
+                </button>
+                to upload another file.
+            </div>
+        );
+    }
+
+    return !error ? (
         <div className="file-drag-upload-container">
-            {!error ? (
-                uploadedFile ? (
-                    <button
-                        className="btn btn-link"
-                        onClick={() => {
-                            clearUpload();
-                        }}
-                    >
-                        Try a different file
-                    </button>
-                ) : (
-                    <div
-                        className={`file-upload-dropzone ${dragging ? 'dragging' : ''}`}
-                        onDrop={handleDrop}
-                        onDragOver={handleDragOver}
-                        onDragLeave={handleDragLeave}
-                        onClick={e => {
-                            const target = e.target as HTMLElement;
-                            if (target.className !== 'input-group') {
-                                document.getElementById('hidden-file-input')?.click();
-                            }
-                        }}
-                    >
-                        <input
-                            id="hidden-file-input"
-                            type="file"
-                            style={{ display: 'none' }}
-                            onChange={handleFileInputChange}
-                            accept=".json"
-                            multiple={multiple}
-                        />
-                        <div className="file-upload-prompt">
-                            {isLoading ? (
-                                <div className="spinner-border" role="status"></div>
-                            ) : (
-                                <div className="upload-prompt">
-                                    <svg className="" viewBox={ICONS.UPLOAD_FILE.viewBox}>
-                                        {ICONS.UPLOAD_FILE.path.map(p => (
-                                            <path fill="currentColor" key={p} d={p} />
-                                        ))}
-                                    </svg>
-                                    <span>
-                                        Drag a configuration file here <br /> or upload a file
-                                    </span>
-                                </div>
-                            )}
-                            <div className="url-upload">
-                                <div className="divider">
-                                    <span>OR</span>
-                                </div>
-                                <div className="input-group">
-                                    <input
-                                        onClick={e => e.stopPropagation()}
-                                        onChange={handleUrlInputChange}
-                                        id="url-input"
-                                        type="text"
-                                        placeholder="Paste URL to the configuration file"
-                                    ></input>
-                                    <a
-                                        target="_blank"
-                                        href={isValidUrl(inputUrl) ? `/?external=${inputUrl}` : ''}
-                                        className={`btn ${isValidUrl(inputUrl) ? '' : ' disabled'}`}
-                                        onClick={e => e.stopPropagation()}
-                                        rel="noreferrer"
-                                    >
-                                        Upload
-                                    </a>
-                                </div>
-                            </div>
+            <div
+                className={`file-upload-dropzone ${dragging ? 'dragging' : ''}`}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onClick={e => {
+                    const target = e.target as HTMLElement;
+                    if (target.className !== 'input-group') {
+                        document.getElementById('hidden-file-input')?.click();
+                    }
+                }}
+            >
+                <input
+                    id="hidden-file-input"
+                    type="file"
+                    style={{ display: 'none' }}
+                    onChange={handleFileInputChange}
+                    accept=".json"
+                    multiple={multiple}
+                />
+                <div className="file-upload-prompt">
+                    {isLoading ? (
+                        <div className="spinner-border" role="status"></div>
+                    ) : (
+                        <div className="upload-prompt">
+                            <svg className="" viewBox={ICONS.UPLOAD_FILE.viewBox}>
+                                {ICONS.UPLOAD_FILE.path.map(p => (
+                                    <path fill="currentColor" key={p} d={p} />
+                                ))}
+                            </svg>
+                            <span>
+                                Drag a configuration file here <br /> or upload a file
+                            </span>
+                        </div>
+                    )}
+                    <div className="url-upload">
+                        <div className="divider">
+                            <span>OR</span>
+                        </div>
+                        <div className="input-group">
+                            <input
+                                onClick={e => e.stopPropagation()}
+                                onChange={handleUrlInputChange}
+                                id="url-input"
+                                type="text"
+                                placeholder="Paste URL to the configuration file"
+                            ></input>
+                            <a
+                                target="_blank"
+                                href={isValidUrl(inputUrl) ? `/?external=${inputUrl}` : ''}
+                                className={`btn ${isValidUrl(inputUrl) ? '' : ' disabled'}`}
+                                onClick={e => e.stopPropagation()}
+                                rel="noreferrer"
+                            >
+                                Open in new tab
+                            </a>
                         </div>
                     </div>
-                )
-            ) : (
-                <div className="reupload-prompt">
-                    <span>Upload Failed...</span>
-                    <button
-                        className="btn btn-link"
-                        onClick={() => {
-                            clearUpload();
-                        }}
-                    >
-                        Try a different file
-                    </button>
                 </div>
-            )}
+            </div>
+        </div>
+    ) : (
+        <div className="reupload-prompt">
+            Upload Failed - Click
+            <button className="btn btn-link px-1" onClick={clearUpload}>
+                <span>here</span>
+            </button>
+            to upload another file.
         </div>
     );
 };
