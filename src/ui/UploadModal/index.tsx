@@ -157,6 +157,8 @@ export const UploadModal = ({
     // Clear uploaded cohort
     // Note: assumes the uploaded cohort has one sample
     const clearUploadedCohort = () => {
+        setUploadedFile(null);
+        setUploadedFileData(null);
         setUploadedCohort({
             samples: [
                 {

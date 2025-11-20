@@ -149,16 +149,21 @@ export const UploadModalFeedback = ({
                                     </div>
                                 )}
                             </div>
-                            <span className="">
-                                <b>
-                                    {uploadedFileData?.samples ? uploadedFileData.samples.length : 0} Samples Uploaded
-                                </b>{' '}
-                                -{' '}
-                                <button onClick={() => setShowAllSamples(!showAllSamples)}>
-                                    <i>{showAllSamples ? 'Hide' : 'View All'}</i>
-                                </button>
-                                <br />
-                            </span>
+                            <ul>
+                                <li>
+                                    <span className="">
+                                        <b>
+                                            {uploadedFileData?.samples ? uploadedFileData.samples.length : 0} Samples
+                                            Uploaded
+                                        </b>{' '}
+                                        -{' '}
+                                        <button onClick={() => setShowAllSamples(!showAllSamples)}>
+                                            <i>{showAllSamples ? 'Hide' : 'View All'}</i>
+                                        </button>
+                                        <br />
+                                    </span>
+                                </li>
+                            </ul>
                         </div>
                         <div className="samples">
                             {showAllSamples && (

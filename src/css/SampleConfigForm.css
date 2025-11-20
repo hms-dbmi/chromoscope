@@ -65,6 +65,7 @@
     flex-direction: column;
     border-radius: 8px;
     align-items: start;
+    padding: 15px 20px 15px 0px;
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner .header {
     display: flex;
@@ -81,7 +82,7 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    padding: 0px 10px 10px 40px;
+    padding: 0px 10px 0px 60px;
     font-size: 0.875rem;
     font-weight: 400;
 }
@@ -99,10 +100,9 @@
     align-items: center;
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-input input {
-    min-width: 200px;
     display: inline-flex;
-    min-width: 200px;
-    border: 1px solid #bbddbb;
+    min-width: 225px;
+    border: 2px solid #bbddbb;
     border-radius: 4px 0px 0px 4px;
     padding: 2px 6px;
     background-color: transparent;
@@ -116,7 +116,7 @@
     flex: 1;
     align-items: center;
     padding: 2px 5px;
-    background-color: #008001;
+    background-color: #62b561;
     border-radius: 0px 4px 4px 0px;
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-input .cancel svg {
@@ -153,7 +153,7 @@
     flex: 1;
     align-items: center;
     padding: 2px 8px;
-    background-color: #008001;
+    background-color: #62b561;
     border-radius: 0px 4px 4px 0px;
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .name .name-display svg {
@@ -169,12 +169,20 @@
     border: none;
     padding: 0px;
 }
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary > ul {
+    padding-left: 15px;
+    margin-bottom: 0px;
+}
 #upload-modal .modal-body .upload-feedback .feedback-banner .body .summary button:hover {
     cursor: pointer;
     text-decoration: underline;
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner .body .samples {
-    padding-top: 10px;
+    padding-top: 8px;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .samples > ul {
+    list-style-type: circle;
+    margin: 0px;
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner.success {
     background-color: #f9fff9;
@@ -192,10 +200,6 @@
 #upload-modal .modal-body .upload-feedback .feedback-banner.error .header svg {
     color: #e9baba;
     height: 16px;
-}
-
-#upload-modal .modal-body .upload-feedback .feedback-banner.error .body {
-    padding-left: 60px;
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner.error code {
     padding: 10px 15px;
