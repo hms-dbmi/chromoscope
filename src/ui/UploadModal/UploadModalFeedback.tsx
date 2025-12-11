@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ValidCohort } from '../SampleConfigForm';
 import { ICONS } from '../../icon';
 import { Cohorts } from '../../App';
@@ -21,8 +21,13 @@ export const UploadModalFeedback = ({
     error
 }: UploadModalFeedbackProps) => {
     const [showAllSamples, setShowAllSamples] = useState(false);
-    const [cohortName, setCohortName] = useState(uploadedCohort?.name || uploadedFile?.name);
+    const [cohortName, setCohortName] = useState(uploadedCohort?.name || '');
     const [changingCohortName, setChangingCohortName] = useState(false);
+
+    // Sync cohort name state with uploaded cohort
+    useEffect(() => {
+        setCohortName(uploadedCohort?.name);
+    }, [uploadedCohort]);
 
     // Handle cohort name change
     const handleCohortNameChange = (newName: string) => {

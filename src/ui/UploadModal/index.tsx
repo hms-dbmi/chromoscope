@@ -800,7 +800,7 @@ export const UploadModal = ({
                                     setUploadedFile(null);
                                 }}
                             >
-                                <span>Create New Cohort {uploadedCohort?.name ? ': ' + uploadedCohort.name : ''}</span>
+                                <span>Create New Cohort{uploadedCohort?.name ? ': ' + uploadedCohort.name : ''}</span>
                             </button>
                         )}
                     </div>

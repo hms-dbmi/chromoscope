@@ -52,7 +52,7 @@ export const FileDragUpload = ({
                     reader.onload = () => {
                         try {
                             const parsed = JSON.parse(reader.result as string);
-                            resolve(parsed);
+                            resolve({ fileData: file, parsedData: parsed });
                             setUploadedFile(file);
                             setTimeout(() => setIsLoading(false), 250); // Simulate loading for UX
                         } catch (err) {
@@ -83,9 +83,9 @@ export const FileDragUpload = ({
 
             Promise.all(readers)
                 .then(parsedData => {
-                    const data = parsedData[0] as ValidCohort;
+                    const { fileData, parsedData: data } = parsedData[0] as { fileData: File; parsedData: ValidCohort };
 
-                    let formattedDataName = data?.name || uploadedFile?.name || 'Untitled Cohort';
+                    let formattedDataName = data?.name || fileData?.name;
 
                     // If cohort name already exists, append _1
                     let i = 1;
@@ -195,7 +195,7 @@ export const FileDragUpload = ({
                 <button className="btn btn-link px-1" onClick={clearUpload}>
                     <span>here</span>
                 </button>
-                to upload another file.
+                to replace with another file.
             </div>
         );
     }
@@ -269,7 +269,7 @@ export const FileDragUpload = ({
             <button className="btn btn-link px-1" onClick={clearUpload}>
                 <span>here</span>
             </button>
-            to upload another file.
+            to replace with another file.
         </div>
     );
 };
