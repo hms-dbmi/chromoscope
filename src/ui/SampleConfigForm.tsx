@@ -16,6 +16,7 @@ export type ValidSampleConfig = Required<Pick<SampleConfig, 'id' | 'cancer' | 's
 export type ValidCohort = {
     name?: string;
     samples: ValidSampleConfig[];
+    filters?: Array<{ field: string; title: string; type: string }>;
 };
 
 type SampleConfigFormProps = {
