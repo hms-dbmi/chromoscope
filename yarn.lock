@@ -2193,10 +2193,10 @@ gopd@^1.0.1:
   dependencies:
     get-intrinsic "^1.1.3"
 
-gosling.js@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/gosling.js/-/gosling.js-1.0.5.tgz#8dd8a6c8a6a3aa3e2c3505d76d5c3427b352e6c2"
-  integrity sha512-Q8NGIaAqaOoC/XxcJOqPnAq52bMpNGQ2zcqdNrdIuN8vwF6QsgbCTm2EJdtEpZDHHbdcF8poZF3WzYTHdPuRXg==
+gosling.js@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/gosling.js/-/gosling.js-1.0.7.tgz#1d8de74105271827cbda56beb1db7f117069b398"
+  integrity sha512-OI3Uka5o31AtKHTOiWJHy0+UjO7ioMARVSef270IKllUFghP9utc/Xh3E/FeFSXodl4Dw+McaXZ1FCoFeEcWlQ==
   dependencies:
     "@gmod/bam" "^1.1.18"
     "@gmod/bbi" "^3.0.1"
