@@ -233,7 +233,9 @@ export const FileDragUpload = ({
                                 ))}
                             </svg>
                             <span>
-                                Drag a configuration file here <br /> or upload a file
+                                Click here or drag a configuration file
+                                <br />
+                                from your local device.
                             </span>
                         </div>
                     )}
@@ -256,7 +258,7 @@ export const FileDragUpload = ({
                                 onClick={e => e.stopPropagation()}
                                 rel="noreferrer"
                             >
-                                Upload
+                                Open Cohort
                             </a>
                         </div>
                     </div>

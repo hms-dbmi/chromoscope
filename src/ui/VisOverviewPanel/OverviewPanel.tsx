@@ -391,7 +391,7 @@ export const OverviewPanel = ({
                                 <path fill="currentColor" key={p} d={p} />
                             ))}
                         </svg>
-                        <span>Upload New Data</span>
+                        <span>Visualize Your Data</span>
                     </button>
                 </div>
                 {selectedCohort === 'PCAWG: Cancer Cohort' && (
