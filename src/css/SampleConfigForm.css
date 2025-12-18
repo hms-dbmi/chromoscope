@@ -169,9 +169,14 @@
     border: none;
     padding: 0px;
 }
-#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary > ul {
-    padding-left: 15px;
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .toggle {
+    padding-left: 0px;
     margin-bottom: 0px;
+}
+#upload-modal .modal-body .upload-feedback .feedback-banner .body .summary .toggle svg {
+    height: 16px;
+    width: 16px;
+    margin-right: 4px;
 }
 #upload-modal .modal-body .upload-feedback .feedback-banner .body .summary button:hover {
     cursor: pointer;
@@ -316,11 +321,19 @@
     color: #617c9d;
 }
 #upload-modal .file-drag-upload-container .file-upload-dropzone .file-upload-prompt .url-upload .input-group a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 200px;
     border-radius: 5px;
     border: 1px solid #dcdcdc;
     background-color: #ffffff;
     color: #1060c9;
+}
+#upload-modal .file-drag-upload-container .file-upload-dropzone .file-upload-prompt .url-upload .input-group a svg {
+    height: 18px;
+    width: 18px;
+    margin-right: 8px;
 }
 #upload-modal .file-drag-upload-container .file-upload-dropzone .file-upload-prompt .url-upload .input-group a:hover {
     cursor: pointer;
@@ -375,7 +388,7 @@
 #upload-modal .sample-config-form .form-header a {
     background-color: #f8f8f8;
     border: 1px solid #dcdcdc;
-    padding: 10px 15px;
+    padding: 5px 15px;
     border-radius: 6px;
     font-weight: 500;
     color: #4e4e4e;
@@ -454,6 +467,11 @@
 
 #upload-modal .sample-config-form .form-inputs-container .footnote {
     text-align: right;
+}
+
+#upload-modal .sample-config-form.file .form-header {
+    margin: 0px 8%;
+    padding-bottom: 0px;
 }
 
 #upload-modal .modal-footer .add-to-cohort {

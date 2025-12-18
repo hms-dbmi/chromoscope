@@ -283,19 +283,27 @@ export const UploadModal = ({
                             </div>
                             <div className="upload-modal-body">
                                 <div
-                                    className="sample-config-form"
+                                    className={`sample-config-form ${uploadType}`}
                                     onClick={() => {
                                         showNewSampleConfig ? null : setShowNewSampleConfig(true);
                                     }}
                                 >
                                     <div className="form-header">
-                                        <h2>Add a New Sample</h2>
+                                        <h2>
+                                            {uploadType === 'file' ? 'Add a Configuration File' : 'Add a New Sample'}
+                                        </h2>
                                         <a
-                                            href="https://chromoscope.bio/loading-data/data-formats"
+                                            href={
+                                                uploadType === 'file'
+                                                    ? 'https://chromoscope.bio/loading-data/through-data-config'
+                                                    : 'https://chromoscope.bio/loading-data/data-formats'
+                                            }
                                             target="_blank"
                                             rel="noreferrer"
                                         >
-                                            Documentation on Data Formats
+                                            {uploadType === 'file'
+                                                ? 'Documentation on Configuration Files'
+                                                : 'Documentation on Data Formats'}
                                         </a>
                                     </div>
                                     {uploadType === 'file' ? (
