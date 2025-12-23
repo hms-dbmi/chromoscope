@@ -253,7 +253,7 @@ export const FileDragUpload = ({
                             ></input>
                             <a
                                 target="_blank"
-                                href={isValidUrl(inputUrl) ? `/?external=${inputUrl}` : ''}
+                                href={isValidUrl(inputUrl) ? `/app/?external=${inputUrl}` : ''}
                                 className={`btn ${isValidUrl(inputUrl) ? '' : ' disabled'}`}
                                 onClick={e => e.stopPropagation()}
                                 rel="noreferrer"
