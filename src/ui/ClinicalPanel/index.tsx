@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-
+import { Assembly } from 'gosling.js/dist/src/gosling-schema';
 import { ICONS } from '../../icon';
 import { getAbsoluteMutationPosition } from '../../utils';
+import { SampleType } from '../../data/samples';
 
 export type SummaryItem = {
     label?: string;
@@ -257,8 +258,8 @@ export type ClinicalInfoType = {
 };
 
 type ClinicalPanelProps = {
-    demo: any;
-    gosRef: any;
+    demo: SampleType;
+    gosRef: React.RefObject<any>;
     filteredSamples: any;
     isClinicalPanelOpen: boolean;
     clinicalInfoRef: React.RefObject<ClinicalInfoType>;
@@ -299,7 +300,8 @@ export const ClinicalPanel = ({
 
             // Select assocaited mutation if available
             if (row.mutation) {
-                const position = getAbsoluteMutationPosition(demo?.assembly, row.chr, +row.position + 1);
+                const assembly: Assembly = demo?.assembly;
+                const position = getAbsoluteMutationPosition(assembly, row.chr, +row.position + 1);
                 setSelectedMutationAbsPos(position);
             }
             if (row.sv_id) {

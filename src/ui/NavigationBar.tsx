@@ -2,17 +2,19 @@ import React, { MutableRefObject } from 'react';
 
 import { ICONS } from '../icon';
 import { ExportButton } from './ExportDropdown';
+import { SampleType } from '../data/samples';
 
 type NavigationBarProps = {
-    demo: any;
+    demo: SampleType;
     demoIndex: MutableRefObject<number>;
     showSmallMultiples: boolean;
-    gosRef: any;
+    gosRef: React.RefObject<any>;
     currentSpec: MutableRefObject<string>;
     externalUrl: string;
     externalDemoUrl: MutableRefObject<string>;
     FEEDBACK_EMAIL_ADDRESS: string;
     showSamples: boolean;
+    selectedCohort: string;
     isChrome: () => boolean;
     setShowAbout: (show: boolean) => void;
     setShowSamples: (show: boolean) => void;
@@ -29,6 +31,7 @@ export const NavigationBar = ({
     externalDemoUrl,
     FEEDBACK_EMAIL_ADDRESS,
     showSamples,
+    selectedCohort,
     isChrome,
     setShowAbout,
     setShowSamples,
@@ -44,7 +47,7 @@ export const NavigationBar = ({
                         setShowSamples(true);
                     }}
                 >
-                    <svg viewBox={ICONS.MENU.viewBox} visibility={showSmallMultiples ? 'visible' : 'collapse'}>
+                    <svg viewBox={ICONS.MENU.viewBox} visibility="visible">
                         <title>Menu</title>
                         <path fill="currentColor" d={ICONS.MENU.path[0]} />
                     </svg>
@@ -73,7 +76,7 @@ export const NavigationBar = ({
                     </a>
                     <span className="dimed">{' | '}</span>
                     {/* {demo.cancer.charAt(0).toUpperCase() + demo.cancer.slice(1) + ' • ' + demo.id} */}
-                    <span>{demo.cancer.charAt(0).toUpperCase() + demo.cancer.slice(1)}</span>
+                    {demo?.cancer && <span>{demo?.cancer?.charAt(0)?.toUpperCase() + demo?.cancer?.slice(1)}</span>}
                     <small>{demo.id}</small>
 
                     <ul className="nav-list">
@@ -118,40 +121,50 @@ export const NavigationBar = ({
                                 <ExportButton title="Export JSON" icon="JSON" />
                             </a>
                         </li>
-                        <li className="nav-list-item">
-                            <button
-                                className="title-btn clipboard"
-                                tabIndex={showSamples ? -1 : 0}
-                                onClick={() => {
-                                    const { xDomain } = gosRef.current.hgApi.api.getLocation(`${demo.id}-mid-ideogram`);
-                                    if (xDomain) {
-                                        // urlParams.set('demoIndex', demoIndex.current + '');
-                                        // urlParams.set('domain', xDomain.join('-'));
-                                        let newUrl = window.location.origin + window.location.pathname + '?';
-                                        newUrl += `demoIndex=${demoIndex.current}`;
-                                        newUrl += `&domain=${xDomain.join('-')}`;
-                                        if (externalDemoUrl.current) {
-                                            newUrl += `&external=${externalDemoUrl.current}`;
-                                        } else if (externalUrl) {
-                                            newUrl += `&external=${externalUrl}`;
+                        {demo?.originalIndex > -1 ? (
+                            <li className="nav-list-item">
+                                <button
+                                    className="title-btn clipboard"
+                                    tabIndex={showSamples ? -1 : 0}
+                                    onClick={() => {
+                                        const { xDomain } = gosRef.current.hgApi.api.getLocation(
+                                            `${demo.id}-mid-ideogram`
+                                        );
+                                        if (xDomain) {
+                                            // urlParams.set('demoIndex', demoIndex.current + '');
+                                            // urlParams.set('domain', xDomain.join('-'));
+                                            let newUrl = window.location.origin + window.location.pathname + '?';
+                                            // Use originalIndex to ensure consistency
+                                            newUrl += `demoIndex=${demo.originalIndex}`;
+
+                                            // Add cohort param if it is not the default
+                                            if (selectedCohort !== 'PCAWG: Cancer Cohort') {
+                                                newUrl += `&cohortId=${selectedCohort}`;
+                                            }
+                                            newUrl += `&domain=${xDomain.join('-')}`;
+                                            if (externalDemoUrl.current) {
+                                                newUrl += `&external=${externalDemoUrl.current}`;
+                                            } else if (externalUrl) {
+                                                newUrl += `&external=${externalUrl}`;
+                                            }
+                                            navigator.clipboard
+                                                .writeText(newUrl)
+                                                .then(() =>
+                                                    alert(
+                                                        'The URL of the current session has been copied to your clipboard.'
+                                                    )
+                                                );
                                         }
-                                        navigator.clipboard
-                                            .writeText(newUrl)
-                                            .then(() =>
-                                                alert(
-                                                    'The URL of the current session has been copied to your clipboard.'
-                                                )
-                                            );
-                                    }
-                                }}
-                            >
-                                <svg className="button" viewBox="0 0 16 16">
-                                    <title>Export Link</title>
-                                    <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
-                                    <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z" />
-                                </svg>
-                            </button>
-                        </li>
+                                    }}
+                                >
+                                    <svg className="button" viewBox="0 0 16 16">
+                                        <title>Export Link</title>
+                                        <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
+                                        <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z" />
+                                    </svg>
+                                </button>
+                            </li>
+                        ) : null}
                     </ul>
                 </div>
                 {!isChrome() ? (

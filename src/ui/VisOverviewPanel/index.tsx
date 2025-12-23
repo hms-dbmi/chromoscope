@@ -2,38 +2,45 @@ import React from 'react';
 
 import { ICONS } from '../../icon';
 import { OverviewPanel } from './OverviewPanel';
+import { FEEDBACK_EMAIL_ADDRESS } from '../../constants';
+import { Cohorts } from '../../App';
+import { SampleType } from '../../data/samples';
 
 type VisOverviewPanelProps = {
-    FEEDBACK_EMAIL_ADDRESS: string;
     showSamples: boolean;
     generateThumbnails: boolean;
-    smallOverviewWrapper: React.ReactNode;
+    demo: SampleType;
     demoIndex: React.MutableRefObject<number>;
     externalDemoUrl: React.MutableRefObject<string>;
     filteredSamples: Array<any>;
     doneGeneratingThumbnails: boolean;
     selectedCohort: string;
+    cohorts: Cohorts;
+    externalError: string;
+    setCohorts: (cohorts: Cohorts) => void;
     setSelectedCohort: (cohort: string) => void;
     setShowSamples: (showSamples: boolean) => void;
     setShowAbout: (showAbout: boolean) => void;
     setFilterSampleBy: (filter: string) => void;
     setFilteredSamples: (samples: Array<any>) => void;
     setGenerateThumbnails: (generate: boolean) => void;
-    setDemo: (demo: any) => void;
+    setDemo: (demo: SampleType) => void;
 };
 
 export const VisOverviewPanel = ({
-    FEEDBACK_EMAIL_ADDRESS,
     showSamples,
     setShowSamples,
     setShowAbout,
     setFilterSampleBy,
     generateThumbnails,
-    smallOverviewWrapper,
+    demo,
     demoIndex,
     externalDemoUrl,
     filteredSamples,
     selectedCohort,
+    cohorts,
+    externalError,
+    setCohorts,
     setSelectedCohort,
     setFilteredSamples,
     setGenerateThumbnails,
@@ -145,24 +152,28 @@ export const VisOverviewPanel = ({
                             <span>Feedback</span>
                         </a>
                     </div>
-                    <button
+                    {/* <button
                         className="thumbnail-generate-button"
                         onClick={() => setGenerateThumbnails(!generateThumbnails)}
                         style={{ display: doneGeneratingThumbnails ? 'none' : 'flex' }}
                     >
                         {generateThumbnails ? 'Stop Generating Thumbnails' : 'Generate Missing Thumbnails'}
-                    </button>
+                    </button> */}
                 </div>
             </div>
             <OverviewPanel
-                smallOverviewWrapper={smallOverviewWrapper}
+                cohorts={cohorts}
+                setCohorts={setCohorts}
+                demo={demo}
                 demoIndex={demoIndex}
                 externalDemoUrl={externalDemoUrl}
                 filteredSamples={filteredSamples}
+                setShowSamples={setShowSamples}
                 setFilteredSamples={setFilteredSamples}
                 setDemo={setDemo}
                 selectedCohort={selectedCohort}
                 setSelectedCohort={setSelectedCohort}
+                externalError={externalError}
             />
         </div>
     );

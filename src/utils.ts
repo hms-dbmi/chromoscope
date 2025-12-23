@@ -1,3 +1,5 @@
+import { Assembly } from 'gosling.js/dist/src/gosling-schema';
+
 export const CHROM_SIZE_HG38 = {
     chr1: 248956422,
     chr2: 242193529,
@@ -54,7 +56,7 @@ export const CHROM_SIZE_HG19 = {
 };
 
 export const getAbsoluteMutationPosition = (
-    assembly: string,
+    assembly: Assembly,
     chromosome: string,
     relativeMutationPosition: number
 ): number => {

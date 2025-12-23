@@ -1,5 +1,18 @@
 import { ThemeDeep } from 'gosling.js/dist/src/core/utils/theme';
 
+// Zooming variables
+export const ZOOM_PADDING = 200;
+export const ZOOM_DURATION = 500;
+
+// Spacing variables
+export const SCROLL_BAR_WIDTH = 12;
+export const GOSLING_VIS_COMPONENT_PADDING = 3;
+export const CLINICAL_PANEL_OPEN_WIDTH = 250;
+export const CLINICAL_PANEL_CLOSED_WIDTH = 45;
+
+// Copy variables
+export const FEEDBACK_EMAIL_ADDRESS = 'dominik_glodzik@hms.harvard.edu';
+
 export const consistentSv = {
     DUP: 'Duplication',
     TRA: 'Translocation',

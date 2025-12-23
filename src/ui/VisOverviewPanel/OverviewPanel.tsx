@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import { ICONS } from '../../icon';
 import { OverviewFilter } from './OverviewFilter';
-
 import { samples, SampleType } from '../../data/samples';
+import { SmallOverviewWrapper } from '../SmallOverviewWrapper';
+import { CohortSelector } from './CohortSelector';
+import { Cohorts } from '../../App';
 
 // Store example samples
 export const PCAWG_SAMPLES = [
@@ -269,83 +271,42 @@ const defaultFilters: FilterGroup = {
     }
 };
 
-type SampleDropdownProps = {
-    selectedCohort: string | null;
-};
-
-const SampleDropdown = ({ selectedCohort }: SampleDropdownProps) => {
-    const [showDropdown, setShowDropdown] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
-
-    // Close dropdown on outside click
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            const clickedOutside = !dropdownRef.current || !dropdownRef.current.contains(event.target as Node);
-            if (clickedOutside) {
-                setShowDropdown(false);
-            }
-        }
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
-
-    return (
-        <div className="dropdown-container" ref={dropdownRef}>
-            <button
-                className={`dropdown-button ${showDropdown ? 'toggle-open' : ''}`}
-                onClick={e => setShowDropdown(!showDropdown)}
-            >
-                <span className="">{selectedCohort === null ? 'PCAWG: Cancer Cohort' : selectedCohort}</span>
-                <svg className="icon" viewBox={ICONS.CHEVRON_UP.viewBox}>
-                    <title>{showDropdown ? 'Chevron Up' : 'Chevron Down'}</title>
-                    {ICONS.CHEVRON_UP.path.map(p => (
-                        <path fill="currentColor" key={p} d={p} />
-                    ))}
-                </svg>
-            </button>
-            <ul className={`dropdown-items ${showDropdown ? 'd-flex' : 'd-none'}`}>
-                <div className="sample-placeholder">
-                    <div className="icon-container">
-                        <svg className="icon" viewBox={ICONS.USERS.viewBox}>
-                            <title>Users</title>
-                            {ICONS.USERS.path.map(p => (
-                                <path fill="currentColor" key={p} d={p} />
-                            ))}
-                        </svg>
-                    </div>
-                    <div className="text">
-                        <h4>Cohorts Coming Soon</h4>
-                        <span>Create a New Cohort to browse cohorts on Chromoscope</span>
-                    </div>
-                </div>
-            </ul>
-        </div>
-    );
-};
-
 type OverviewPanelProps = {
-    smallOverviewWrapper: React.ReactNode;
+    demo: SampleType;
     demoIndex: React.MutableRefObject<number>;
     externalDemoUrl: React.MutableRefObject<string>;
     filteredSamples: Array<any>;
     selectedCohort: string;
+    cohorts: Cohorts;
+    externalError: string;
+    setCohorts: (cohorts: Cohorts) => void;
+    setShowSamples: (showSamples: boolean) => void;
     setSelectedCohort: (cohort: string) => void;
     setFilteredSamples: (samples: Array<any>) => void;
-    setDemo: (demo: any) => void;
+    setDemo: (demo: SampleType) => void;
 };
 
 export const OverviewPanel = ({
-    smallOverviewWrapper,
+    demo,
     demoIndex,
     externalDemoUrl,
     filteredSamples,
     selectedCohort,
+    cohorts,
+    externalError,
+    setCohorts,
+    setShowSamples,
     setSelectedCohort,
     setFilteredSamples,
     setDemo
 }: OverviewPanelProps) => {
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
+    const [showExternalDemoAlert, setShowExternalDemoAlert] = useState<boolean>(true);
+
+    // Update filtered samples when cohort changes
+    useEffect(() => {
+        setFilteredSamples(cohorts[selectedCohort]?.samples || []);
+    }, [cohorts, selectedCohort]);
 
     // Scroll to top when new sample is selected
     useEffect(() => {
@@ -358,7 +319,12 @@ export const OverviewPanel = ({
         }
     }, [selectedCohort]);
 
+    // Handle filter changes and update external demo URL
     const onChange = (url: string) => {
+        /**
+         * When a new filter is selected, the filter option's URL is passed to
+         * this function.
+         */
         fetch(url).then(response =>
             response.text().then(d => {
                 let externalDemo = JSON.parse(d);
@@ -395,8 +361,29 @@ export const OverviewPanel = ({
     return (
         <div>
             <div className="overview-root">
+                {showExternalDemoAlert && externalError && (
+                    <div className="alert alert-warning external-demo" role="alert">
+                        <strong>Error loading external URL:</strong> The provided link could not be loaded. Please check
+                        the URL and try again.
+                        <button
+                            type="button"
+                            className="close"
+                            aria-label="Close"
+                            onClick={() => setShowExternalDemoAlert(false)}
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                )}
                 <div className="overview-header">
-                    <SampleDropdown selectedCohort={selectedCohort} />
+                    <CohortSelector
+                        cohorts={cohorts}
+                        setCohorts={setCohorts}
+                        setFilteredSamples={setFilteredSamples}
+                        selectedCohort={selectedCohort}
+                        setSelectedCohort={setSelectedCohort}
+                    />
+                    {/* Button below triggers UploadModal */}
                     <button className="upload-file-button" data-bs-toggle="modal" data-bs-target="#upload-modal">
                         <svg className="button" viewBox={ICONS.UPLOAD_FILE.viewBox}>
                             <title>Upload File</title>
@@ -404,10 +391,10 @@ export const OverviewPanel = ({
                                 <path fill="currentColor" key={p} d={p} />
                             ))}
                         </svg>
-                        <span>Upload New Data</span>
+                        <span>Visualize Your Data</span>
                     </button>
                 </div>
-                {!selectedCohort && (
+                {selectedCohort === 'PCAWG: Cancer Cohort' && (
                     <div className="overview-controls">
                         {Object.keys(defaultFilters).map((filter, index) => {
                             return (
@@ -427,7 +414,17 @@ export const OverviewPanel = ({
                     </div>
                 )}
                 <div className="overview-status">{`Total of ${filteredSamples.length} samples loaded`}</div>
-                <div className="overview-container">{smallOverviewWrapper}</div>
+                <div
+                    className={`overview-container ${selectedCohort === 'PCAWG: Cancer Cohort' ? 'with-filters' : ''}`}
+                >
+                    <SmallOverviewWrapper
+                        demo={demo}
+                        setDemo={setDemo}
+                        demoIndex={demoIndex}
+                        filteredSamples={filteredSamples}
+                        setShowSamples={setShowSamples}
+                    />
+                </div>
             </div>
         </div>
     );
