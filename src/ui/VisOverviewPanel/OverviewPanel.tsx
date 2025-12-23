@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 
 import { ICONS } from '../../icon';
 import { OverviewFilter } from './OverviewFilter';
@@ -303,6 +303,61 @@ export const OverviewPanel = ({
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
     const [showExternalDemoAlert, setShowExternalDemoAlert] = useState<boolean>(true);
 
+    // Get filters for the selected cohort
+    const filters = cohorts[selectedCohort]?.filters || [];
+
+    // Compute filter options based on cohort filters
+    // Update when: cohorts or selectedCohort changes
+    const filterValuesMap = useMemo(() => {
+        if (filters.length === 0) {
+            return;
+        }
+
+        const optionsMap: { [key: string]: Set<string> } = {};
+
+        cohorts[selectedCohort]?.filters.map(({ field }) => {
+            const valuesSet = new Set<string>();
+            cohorts[selectedCohort]?.samples.forEach((sample: any) => {
+                if (sample[field]) {
+                    valuesSet.add(sample[field]);
+                }
+            });
+
+            optionsMap[field] = valuesSet;
+        });
+
+        return optionsMap;
+    }, [cohorts, selectedCohort]);
+
+    // // Update samples when filters applied
+    // useEffect(() => {
+    //     // When no filters active, show default sample set
+    //     if (activeFilters.length === 0) {
+    //         setFilteredSamples(cohorts[selectedCohort]?.samples || []);
+    //     } else {
+    //         // Apply filters sequentially
+    //         const filtered = activeFilters.reduce((accSamples, filterKey) => {
+    //             console.log('activeFilters:', activeFilters);
+    //             console.log('Applying filter:', accSamples, filterKey);
+
+    //             return accSamples.filter((sample: any) => sample?.[filterKey])
+
+    //             // return filteredSamples.filter((sample: any) => {
+
+    //             // })
+    //         }, cohorts[selectedCohort]?.samples || []);
+
+    //         console.log("Filtered samples after applying active filters:", filtered);
+
+    //         // setFilteredSamples(filtered);
+    //     }
+    // }, [activeFilters]);
+
+    const onFilterSelection = (filterKey: string, option: FilterOption) => {
+        console.log('Filter selected:', filterKey, option);
+        setFilteredSamples(filteredSamples.filter((sample: any) => sample?.[filterKey] === option.name));
+    };
+
     // Update filtered samples when cohort changes
     useEffect(() => {
         setFilteredSamples(cohorts[selectedCohort]?.samples || []);
@@ -411,6 +466,29 @@ export const OverviewPanel = ({
                                 />
                             );
                         })}
+                    </div>
+                )}
+                {filters.length > 0 && (
+                    <div className="overview-controls">
+                        {cohorts[selectedCohort]?.filters?.length > 0 &&
+                            cohorts[selectedCohort]?.filters.map((filter, i) => {
+                                const { field, title } = filter;
+                                console.log('Rendering filter:', title, filter);
+                                return (
+                                    <OverviewFilter
+                                        key={i}
+                                        identifier={filter?.field}
+                                        title={filter.title}
+                                        options={Array.from(filterValuesMap?.[field] || []).map(value => ({
+                                            name: value
+                                        }))}
+                                        onChange={onFilterSelection}
+                                        activeFilters={activeFilters}
+                                        nullValue={null}
+                                        setActiveFilters={setActiveFilters}
+                                    />
+                                );
+                            })}
                     </div>
                 )}
                 <div className="overview-status">{`Total of ${filteredSamples.length} samples loaded`}</div>

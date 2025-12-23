@@ -9,14 +9,14 @@ type OverviewFilterProps = {
     title: string;
     options?: Array<any>;
     activeFilters?: string[];
-    onChange?: (value: string) => void;
+    onChange?: (value: string, option?: FilterOption | null) => void;
     setActiveFilters?: (filters: string[]) => void;
 };
 
 export const OverviewFilter = ({
     identifier,
     nullValue = null,
-    active,
+    active = false,
     title,
     options = [],
     activeFilters,
@@ -118,8 +118,9 @@ export const OverviewFilter = ({
                     setSelectedOption(selected.name);
                     setShowDropdown(false);
                     setFocusedIndex(-1);
-                    if (onChange)
+                    if (onChange) {
                         onChange(selected.url.replace('https://chromoscope.bio/app/?showSamples=true&external=', ''));
+                    }
                 }
                 break;
             case 'Escape':

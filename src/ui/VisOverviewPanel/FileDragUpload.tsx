@@ -103,7 +103,8 @@ export const FileDragUpload = ({
 
                     const formattedData: ValidCohort = {
                         name: formattedDataName,
-                        samples: formattedDataSamples
+                        samples: formattedDataSamples,
+                        filters: data.filters ?? []
                     };
 
                     const { errors, samplesOkay } = cohortOkayToAdd(formattedData);
@@ -137,6 +138,7 @@ export const FileDragUpload = ({
                             message: errorMsg
                         });
                     } else {
+                        console.log('Formatted cohort data:', formattedData);
                         onJsonParsed(formattedData);
                         setError(null);
                     }
