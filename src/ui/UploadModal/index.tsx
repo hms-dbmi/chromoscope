@@ -262,7 +262,7 @@ export const UploadModal = ({
                                     <path fill="currentColor" key={p} d={p} />
                                 ))}
                             </svg>
-                            Upload New Data to Chromoscope
+                            Visualize Your Data with Chromoscope
                         </h1>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -279,7 +279,7 @@ export const UploadModal = ({
                                                 <path fill="currentColor" key={p} d={p} />
                                             ))}
                                         </svg>
-                                        File Upload
+                                        Configuration File
                                     </button>
                                     <button
                                         className={'upload-type-button ' + (uploadType === 'form' ? 'active' : '')}
@@ -295,50 +295,58 @@ export const UploadModal = ({
                                 </div>
                             </div>
                             <div className="upload-modal-body">
-                                {uploadType === 'file' ? (
-                                    <>
-                                        {error || (uploadedFile && uploadedFileData) ? (
-                                            <>
-                                                <UploadModalFeedback
-                                                    cohorts={cohorts}
-                                                    uploadedFile={uploadedFile}
-                                                    uploadedFileData={uploadedFileData}
-                                                    uploadedCohort={uploadedCohort}
-                                                    setUploadedCohort={setUploadedCohort}
-                                                    error={error}
-                                                />
-                                                <hr className="upload-divider" />
-                                            </>
-                                        ) : null}
-                                        <FileDragUpload
-                                            uploadedFile={uploadedFile}
-                                            onJsonParsed={handleValidJsonParsed}
-                                            multiple={false}
-                                            cohorts={cohorts}
-                                            setUploadedCohort={setUploadedCohort}
-                                            setUploadedFile={setUploadedFile}
-                                            setSampleConfig={setSampleConfig}
-                                            error={error}
-                                            setError={setError}
-                                        />
-                                    </>
-                                ) : (
-                                    <div
-                                        className="sample-config-form"
-                                        onClick={() => {
-                                            showNewSampleConfig ? null : setShowNewSampleConfig(true);
-                                        }}
-                                    >
-                                        <div className="form-header">
-                                            <h2>Add a New Sample</h2>
-                                            <a
-                                                href="https://chromoscope.bio/loading-data/data-formats"
-                                                target="_blank"
-                                                rel="noreferrer"
-                                            >
-                                                Documentation on Data Formats
-                                            </a>
-                                        </div>
+                                <div
+                                    className={`sample-config-form ${uploadType}`}
+                                    onClick={() => {
+                                        showNewSampleConfig ? null : setShowNewSampleConfig(true);
+                                    }}
+                                >
+                                    <div className="form-header">
+                                        <h2>
+                                            {uploadType === 'file' ? 'Add a Configuration File' : 'Add a New Sample'}
+                                        </h2>
+                                        <a
+                                            href={
+                                                uploadType === 'file'
+                                                    ? 'https://chromoscope.bio/loading-data/through-data-config'
+                                                    : 'https://chromoscope.bio/loading-data/data-formats'
+                                            }
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            {uploadType === 'file'
+                                                ? 'Documentation on Configuration Files'
+                                                : 'Documentation on Data Formats'}
+                                        </a>
+                                    </div>
+                                    {uploadType === 'file' ? (
+                                        <>
+                                            {error || (uploadedFile && uploadedFileData) ? (
+                                                <>
+                                                    <UploadModalFeedback
+                                                        cohorts={cohorts}
+                                                        uploadedFile={uploadedFile}
+                                                        uploadedFileData={uploadedFileData}
+                                                        uploadedCohort={uploadedCohort}
+                                                        setUploadedCohort={setUploadedCohort}
+                                                        error={error}
+                                                    />
+                                                    <hr className="upload-divider" />
+                                                </>
+                                            ) : null}
+                                            <FileDragUpload
+                                                uploadedFile={uploadedFile}
+                                                onJsonParsed={handleValidJsonParsed}
+                                                multiple={false}
+                                                cohorts={cohorts}
+                                                setUploadedCohort={setUploadedCohort}
+                                                setUploadedFile={setUploadedFile}
+                                                setSampleConfig={setSampleConfig}
+                                                error={error}
+                                                setError={setError}
+                                            />
+                                        </>
+                                    ) : (
                                         <div className="form-inputs-container">
                                             <div className="input-button-container">
                                                 {/* Assembly */}
@@ -776,8 +784,8 @@ export const UploadModal = ({
 
                                             <div className="footnote">* Required Fields</div>
                                         </div>
-                                    </div>
-                                )}
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>

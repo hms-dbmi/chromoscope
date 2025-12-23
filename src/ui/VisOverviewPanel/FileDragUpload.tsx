@@ -193,11 +193,11 @@ export const FileDragUpload = ({
     if (!error && uploadedFile) {
         return (
             <div className="reupload-prompt">
-                Click
+                Wrong file? Click
                 <button className="btn btn-link px-1" onClick={clearUpload}>
                     <span>here</span>
                 </button>
-                to replace with another file.
+                to start again with a new configuration file.
             </div>
         );
     }
@@ -235,7 +235,9 @@ export const FileDragUpload = ({
                                 ))}
                             </svg>
                             <span>
-                                Drag a configuration file here <br /> or upload a file
+                                Click here or drag a configuration file
+                                <br />
+                                from your local device.
                             </span>
                         </div>
                     )}
@@ -258,7 +260,12 @@ export const FileDragUpload = ({
                                 onClick={e => e.stopPropagation()}
                                 rel="noreferrer"
                             >
-                                Upload
+                                <svg className="" viewBox={ICONS.EXTERNAL.viewBox}>
+                                    {ICONS.EXTERNAL.path.map(p => (
+                                        <path fill="currentColor" key={p} d={p} />
+                                    ))}
+                                </svg>
+                                Open Cohort
                             </a>
                         </div>
                     </div>

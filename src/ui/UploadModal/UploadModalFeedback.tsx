@@ -154,21 +154,34 @@ export const UploadModalFeedback = ({
                                     </div>
                                 )}
                             </div>
-                            <ul>
-                                <li>
-                                    <span className="">
-                                        <b>
-                                            {uploadedFileData?.samples ? uploadedFileData.samples.length : 0} Samples
-                                            Uploaded
-                                        </b>{' '}
-                                        -{' '}
-                                        <button onClick={() => setShowAllSamples(!showAllSamples)}>
-                                            <i>{showAllSamples ? 'Hide' : 'View All'}</i>
-                                        </button>
-                                        <br />
-                                    </span>
-                                </li>
-                            </ul>
+                            <div className="toggle">
+                                <button onClick={() => setShowAllSamples(!showAllSamples)}>
+                                    {showAllSamples ? (
+                                        <svg className="" viewBox={ICONS.MINUS.viewBox}>
+                                            {ICONS.MINUS.path.map(p => (
+                                                <path fill="currentColor" key={p} d={p} />
+                                            ))}
+                                        </svg>
+                                    ) : (
+                                        <svg className="" viewBox={ICONS.PLUS.viewBox}>
+                                            {ICONS.PLUS.path.map(p => (
+                                                <path fill="currentColor" key={p} d={p} />
+                                            ))}
+                                        </svg>
+                                    )}
+                                </button>
+                                <span className="">
+                                    <b>
+                                        {uploadedFileData?.samples ? uploadedFileData.samples.length : 0} Samples
+                                        Uploaded
+                                    </b>{' '}
+                                    -{' '}
+                                    <button onClick={() => setShowAllSamples(!showAllSamples)}>
+                                        <i>{showAllSamples ? 'Hide' : 'View All'}</i>
+                                    </button>
+                                    <br />
+                                </span>
+                            </div>
                         </div>
                         <div className="samples">
                             {showAllSamples && (
