@@ -108,6 +108,7 @@ function App(props: RouteComponentProps) {
     const gosRef = useRef<GoslingRef>();
 
     const externalDemoUrl = useRef<string>();
+    const externalDemoCohortId = useRef<string>();
 
     const currentSpec = useRef<string>();
 
@@ -131,6 +132,7 @@ function App(props: RouteComponentProps) {
             demoIndex.current < cohorts[selectedCohort].samples.length ? demoIndex.current : 0
         ]
     );
+    
     const [externalError, setExternalError] = useState<string>('');
 
     // Selected Mutation
@@ -262,16 +264,33 @@ function App(props: RouteComponentProps) {
     // Add external demo cohort once MSK SPECTRUM cohort is available
     useEffect(() => {
         const cohortIdFromUrl = urlParams.get('cohortId');
+        const indexFromUrl = demoIndex.current < samples.length ? demoIndex.current : 0;
 
-        // If a newly added cohort is the one specified in the URL param
-        // `cohortId`, use it for the proper demo
-        if (selectedCohort !== cohortIdFromUrl && cohortIdFromUrl && cohorts[cohortIdFromUrl]) {
-            const indexToSet = demoIndex.current < cohorts[cohortIdFromUrl].samples.length ? demoIndex.current : 0;
+        // Update the selected cohort if cohortId is provided in the URL
+        if (cohortIdFromUrl && cohorts[cohortIdFromUrl]) {;
+            // cohort is not selected and exists in cohorts
             setSelectedCohort(cohortIdFromUrl);
-            setDemo(cohorts[cohortIdFromUrl].samples[indexToSet]);
+            setDemo(cohorts[cohortIdFromUrl].samples[indexFromUrl]);
+            setShowSmallMultiples(true);
+            setReady(true);
+        } else {
+            // CohortId not provided, use default cohort
+            if (externalDemoCohortId.current && cohorts[externalDemoCohortId.current]) {
+                setSelectedCohort(externalDemoCohortId.current);
+                setDemo(cohorts[externalDemoCohortId.current].samples[indexFromUrl]);
+                setShowSmallMultiples(true);
+                setReady(true);
+            }
+            if (selectedCohort !== 'PCAWG: Cancer Cohort' && cohorts['PCAWG: Cancer Cohort']) {
+                setSelectedCohort('PCAWG: Cancer Cohort');
+                setDemo(cohorts['PCAWG: Cancer Cohort'].samples[indexFromUrl]);
+                setShowSmallMultiples(true);
+                setReady(true);
+            }
         }
 
-        // Check that the first two default samples were added
+        // After the first two default samples were added, load the 
+        // external URL if it's provided
         if (cohorts['MSK SPECTRUM'] && Object.keys(cohorts).length < 3 && externalUrl) {
             fetch(externalUrl)
                 .then(response =>
@@ -293,7 +312,7 @@ function App(props: RouteComponentProps) {
                                 cohortId = cohortId + '_1';
                             }
 
-                            // Create new cohort
+                            // Create new cohort and add to state
                             setCohorts({
                                 ...cohorts,
                                 [cohortId]: {
@@ -304,18 +323,8 @@ function App(props: RouteComponentProps) {
                                     }))
                                 }
                             });
-
-                            // use demoIndex form URL or first otherwise
-                            if (cohortIdFromUrl === cohortId && samples[indexFromUrl]) {
-                                if (samples[indexFromUrl]?.clinicalInfo) {
-                                    clinicalInfoRef.current = externalDemo.clinicalInfo;
-                                }
-                                setDemo(samples[samples[indexFromUrl] ? indexFromUrl : 0]);
-                            }
-                            // Select the cohort from URL if provided
-                            setSelectedCohort(cohortIdFromUrl ?? cohortId);
-                            setShowSmallMultiples(true);
-                            setReady(true);
+                            // Save name of cohort in externalDemoCohortId
+                            externalDemoCohortId.current = cohortId;
                         }
                     })
                 )
