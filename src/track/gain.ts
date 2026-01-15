@@ -19,6 +19,7 @@ export default function gain(
             url: cnvUrl,
             type: 'csv',
             chromosomeField: 'chromosome',
+            sampleLength: 99999,
             genomicFields: ['start', 'end']
         },
         dataTransform: [
