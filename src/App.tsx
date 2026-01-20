@@ -267,7 +267,7 @@ function App(props: RouteComponentProps) {
         const indexFromUrl = demoIndex.current < samples.length ? demoIndex.current : 0;
 
         // Update the selected cohort if cohortId is provided in the URL
-        if (cohortIdFromUrl && cohorts[cohortIdFromUrl]) {;
+        if (cohortIdFromUrl && cohorts[cohortIdFromUrl]) {
             // cohort is not selected and exists in cohorts
             setSelectedCohort(cohortIdFromUrl);
             setDemo(cohorts[cohortIdFromUrl].samples[indexFromUrl]);
@@ -707,39 +707,37 @@ function App(props: RouteComponentProps) {
                     />
                 )}
                 <div id="vis-panel" className="vis-panel">
-                    {!isMinimalMode && (
-                        <>
-                            {/* Make SampleConfigForm available to trigger from VisOverviewPanel */}
-                            <SampleConfigForm
-                                demoIndex={demoIndex}
-                                setDemo={setDemo}
-                                cohorts={cohorts}
-                                setCohorts={setCohorts}
-                                selectedCohort={selectedCohort}
-                                setSelectedCohort={setSelectedCohort}
-                            />
-                            <VisOverviewPanel
-                                cohorts={cohorts}
-                                setCohorts={setCohorts}
-                                showSamples={showSamples}
-                                generateThumbnails={generateThumbnails}
-                                demo={demo}
-                                demoIndex={demoIndex}
-                                externalDemoUrl={externalDemoUrl}
-                                filteredSamples={filteredSamples}
-                                doneGeneratingThumbnails={doneGeneratingThumbnails}
-                                setShowSamples={setShowSamples}
-                                setShowAbout={setShowAbout}
-                                setFilterSampleBy={setFilterSampleBy}
-                                setFilteredSamples={setFilteredSamples}
-                                setGenerateThumbnails={setGenerateThumbnails}
-                                setDemo={setDemo}
-                                selectedCohort={selectedCohort}
-                                setSelectedCohort={setSelectedCohort}
-                                externalError={externalError}
-                            />
-                        </>
-                    )}
+                    {/* Make SampleConfigForm available to trigger from VisOverviewPanel */}
+                    {!isMinimalMode && 
+                        <SampleConfigForm
+                            demoIndex={demoIndex}
+                            setDemo={setDemo}
+                            cohorts={cohorts}
+                            setCohorts={setCohorts}
+                            selectedCohort={selectedCohort}
+                            setSelectedCohort={setSelectedCohort}
+                        />
+                    }
+                    <VisOverviewPanel
+                        cohorts={cohorts}
+                        setCohorts={setCohorts}
+                        showSamples={showSamples}
+                        generateThumbnails={generateThumbnails}
+                        demo={demo}
+                        demoIndex={demoIndex}
+                        externalDemoUrl={externalDemoUrl}
+                        filteredSamples={filteredSamples}
+                        doneGeneratingThumbnails={doneGeneratingThumbnails}
+                        setShowSamples={setShowSamples}
+                        setShowAbout={setShowAbout}
+                        setFilterSampleBy={setFilterSampleBy}
+                        setFilteredSamples={setFilteredSamples}
+                        setGenerateThumbnails={setGenerateThumbnails}
+                        setDemo={setDemo}
+                        selectedCohort={selectedCohort}
+                        setSelectedCohort={setSelectedCohort}
+                        externalError={externalError}
+                    />
                     <div
                         id="gosling-panel"
                         className="gosling-panel"
