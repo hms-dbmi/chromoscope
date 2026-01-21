@@ -264,26 +264,33 @@ function App(props: RouteComponentProps) {
     // Add external demo cohort once MSK SPECTRUM cohort is available
     useEffect(() => {
         const cohortIdFromUrl = urlParams.get('cohortId');
-        const indexFromUrl = demoIndex.current < samples.length ? demoIndex.current : 0;
+        const indexFromUrl = demoIndex.current;
 
         // Update the selected cohort if cohortId is provided in the URL
         if (cohortIdFromUrl && cohorts[cohortIdFromUrl]) {
+            const samples = cohorts[cohortIdFromUrl].samples;
+            const new_demo = indexFromUrl < samples.length ? samples[indexFromUrl] : samples[0];
             // cohort is not selected and exists in cohorts
             setSelectedCohort(cohortIdFromUrl);
-            setDemo(cohorts[cohortIdFromUrl].samples[indexFromUrl]);
+            setDemo(new_demo);
             setShowSmallMultiples(true);
             setReady(true);
         } else {
-            // CohortId not provided, use default cohort
+            // CohortId not provided, use external or first cohort as default cohort
             if (externalDemoCohortId.current && cohorts[externalDemoCohortId.current]) {
+                const samples = cohorts[externalDemoCohortId.current].samples;
+                const new_demo = indexFromUrl < samples.length ? samples[indexFromUrl] : samples[0];
                 setSelectedCohort(externalDemoCohortId.current);
-                setDemo(cohorts[externalDemoCohortId.current].samples[indexFromUrl]);
+                setDemo(new_demo);
                 setShowSmallMultiples(true);
                 setReady(true);
-            }
-            if (selectedCohort !== 'PCAWG: Cancer Cohort' && cohorts['PCAWG: Cancer Cohort']) {
-                setSelectedCohort('PCAWG: Cancer Cohort');
-                setDemo(cohorts['PCAWG: Cancer Cohort'].samples[indexFromUrl]);
+            } else {
+                // Use first cohort as default cohort
+                const firstCohortName = Object.keys(cohorts)[0];
+                const samples = cohorts[firstCohortName].samples;
+                const new_demo = indexFromUrl < samples.length ? samples[indexFromUrl] : samples[0];
+                setSelectedCohort(firstCohortName);
+                setDemo(new_demo);
                 setShowSmallMultiples(true);
                 setReady(true);
             }
@@ -305,7 +312,6 @@ function App(props: RouteComponentProps) {
                             // Create new cohort for available samples
                             let cohortId = externalDemo?.name ?? 'External Cohort';
                             const samples = externalDemo?.samples || externalDemo;
-                            const indexFromUrl = demoIndex.current < samples.length ? demoIndex.current : 0;
 
                             // If cohort already exists, update name
                             if (cohorts?.[cohortId]) {
