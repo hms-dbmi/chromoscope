@@ -266,34 +266,29 @@ function App(props: RouteComponentProps) {
         const cohortIdFromUrl = urlParams.get('cohortId');
         const indexFromUrl = demoIndex.current;
 
-        // Update the selected cohort if cohortId is provided in the URL
+        // Update `selectedCohort` and `demo` if cohortId is provided in the URL
         if (cohortIdFromUrl && cohorts[cohortIdFromUrl]) {
             const samples = cohorts[cohortIdFromUrl].samples;
-            const new_demo = indexFromUrl < samples.length ? samples[indexFromUrl] : samples[0];
-            // cohort is not selected and exists in cohorts
+
+            // const new_demo = indexFromUrl < samples.length ? samples[indexFromUrl] : samples[0];
+            const new_demo = samples[indexFromUrl] ?? samples[0];
+
+            demoIndex.current = indexFromUrl;
             setSelectedCohort(cohortIdFromUrl);
             setDemo(new_demo);
             setShowSmallMultiples(true);
             setReady(true);
         } else {
             // CohortId not provided, use external or first cohort as default cohort
-            if (externalDemoCohortId.current && cohorts[externalDemoCohortId.current]) {
-                const samples = cohorts[externalDemoCohortId.current].samples;
-                const new_demo = indexFromUrl < samples.length ? samples[indexFromUrl] : samples[0];
-                setSelectedCohort(externalDemoCohortId.current);
-                setDemo(new_demo);
-                setShowSmallMultiples(true);
-                setReady(true);
-            } else {
-                // Use first cohort as default cohort
-                const firstCohortName = Object.keys(cohorts)[0];
-                const samples = cohorts[firstCohortName].samples;
-                const new_demo = indexFromUrl < samples.length ? samples[indexFromUrl] : samples[0];
-                setSelectedCohort(firstCohortName);
-                setDemo(new_demo);
-                setShowSmallMultiples(true);
-                setReady(true);
-            }
+            const cohortId = externalDemoCohortId.current ?? Object.keys(cohorts)[0];
+            const samples = cohorts[cohortId].samples;
+            const new_demo = samples[indexFromUrl] ?? samples[0];
+
+            demoIndex.current = indexFromUrl;
+            setSelectedCohort(cohortId);
+            setDemo(new_demo);
+            setShowSmallMultiples(true);
+            setReady(true);
         }
 
         // After the first two default samples were added, load the 
