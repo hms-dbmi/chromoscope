@@ -107,6 +107,7 @@ function App(props: RouteComponentProps) {
 
     const gosRef = useRef<GoslingRef>();
 
+    const [isLoadingExternalDemo, setIsLoadingExternalDemo] = useState(externalUrl !== null);
     const externalDemoUrl = useRef<string>();
     const externalDemoCohortId = useRef<string>();
 
@@ -132,7 +133,7 @@ function App(props: RouteComponentProps) {
             demoIndex.current < cohorts[selectedCohort].samples.length ? demoIndex.current : 0
         ]
     );
-    
+
     const [externalError, setExternalError] = useState<string>('');
 
     // Selected Mutation
@@ -168,9 +169,11 @@ function App(props: RouteComponentProps) {
     );
     const [overviewChr, setOverviewChr] = useState('');
     const [genomeViewChr, setGenomeViewChr] = useState('');
-    const [drivers, setDrivers] = useState(
-        typeof demo.drivers === 'string' && demo.drivers.split('.').pop() === 'json' ? [] : getFilteredDrivers(demo.id)
-    );
+
+    // Set drivers to empty array by default
+    const [drivers, setDrivers] = useState([]);
+    const [isLoadingDrivers, setIsLoadingDrivers] = useState(true);
+
     const [selectedSvId, setSelectedSvId] = useState<string>('');
     const [breakpoints, setBreakpoints] = useState<[number, number, number, number]>([1, 100, 1, 100]);
     const [bpIntervals, setBpIntervals] = useState<[number, number, number, number] | undefined>();
@@ -211,44 +214,62 @@ function App(props: RouteComponentProps) {
     }, [demo, isClinicalPanelOpen, selectedMutationAbsPos]);
 
     // update demo
-    useEffect(() => {
+    useLayoutEffect(() => {
+        // Clear drivers and set loading state
+        setDrivers([]);
+        setIsLoadingDrivers(true);
+
         if (typeof demo.drivers === 'string' && demo.drivers.split('.').pop() === 'json') {
+            // Start loading state and reset drivers
+            setIsLoadingDrivers(true);
+            setDrivers([]);
+
             // we want to change this json file to json value
             fetch(demo.drivers).then(response =>
-                response.text().then(d => {
-                    const customDrivers = JSON.parse(d);
-                    // TODO: these need to be supported in other types of data
-                    customDrivers.forEach(d => {
-                        const optionalFields = [
-                            'ref',
-                            'alt',
-                            'category',
-                            'top_category',
-                            'transcript_consequence',
-                            'protein-mutation',
-                            'allele_fraction',
-                            'mutation_type',
-                            'biallelic'
-                        ];
-                        optionalFields.forEach(f => {
-                            if (!d[f]) {
-                                d[f] = '';
+                response
+                    .text()
+                    .then(d => {
+                        const customDrivers = JSON.parse(d);
+                        // TODO: these need to be supported in other types of data
+                        customDrivers.forEach(d => {
+                            const optionalFields = [
+                                'ref',
+                                'alt',
+                                'category',
+                                'top_category',
+                                'transcript_consequence',
+                                'protein-mutation',
+                                'allele_fraction',
+                                'mutation_type',
+                                'biallelic'
+                            ];
+                            optionalFields.forEach(f => {
+                                if (!d[f]) {
+                                    d[f] = '';
+                                }
+                            });
+                            if (typeof d['biallelic'] === 'string' && d['biallelic'].toUpperCase() === 'YES') {
+                                d['biallelic'] = 'yes';
+                            }
+                            if (typeof d['biallelic'] === 'string' && d['biallelic'].toUpperCase() === 'NO') {
+                                d['biallelic'] = 'no';
                             }
                         });
-                        if (typeof d['biallelic'] === 'string' && d['biallelic'].toUpperCase() === 'YES') {
-                            d['biallelic'] = 'yes';
-                        }
-                        if (typeof d['biallelic'] === 'string' && d['biallelic'].toUpperCase() === 'NO') {
-                            d['biallelic'] = 'no';
-                        }
-                    });
-
-                    setDrivers(customDrivers);
-                })
+                        setDrivers(customDrivers);
+                        setIsLoadingDrivers(false);
+                    })
+                    .catch(e => {
+                        console.error('Error fetching drivers:', e);
+                        setDrivers([]); // Set drivers to empty array
+                        setIsLoadingDrivers(false);
+                    })
             );
         } else {
             const filteredDrivers = getFilteredDrivers(demo.id);
+
+            // Set both at the same time to ensure they update together
             setDrivers(filteredDrivers);
+            setIsLoadingDrivers(false);
         }
 
         setOverviewChr('');
@@ -266,32 +287,7 @@ function App(props: RouteComponentProps) {
         const cohortIdFromUrl = urlParams.get('cohortId');
         const indexFromUrl = demoIndex.current;
 
-        // Update `selectedCohort` and `demo` if cohortId is provided in the URL
-        if (cohortIdFromUrl && cohorts[cohortIdFromUrl]) {
-            const samples = cohorts[cohortIdFromUrl].samples;
-
-            // const new_demo = indexFromUrl < samples.length ? samples[indexFromUrl] : samples[0];
-            const new_demo = samples[indexFromUrl] ?? samples[0];
-
-            demoIndex.current = indexFromUrl;
-            setSelectedCohort(cohortIdFromUrl);
-            setDemo(new_demo);
-            setShowSmallMultiples(true);
-            setReady(true);
-        } else {
-            // CohortId not provided, use external or first cohort as default cohort
-            const cohortId = externalDemoCohortId.current ?? Object.keys(cohorts)[0];
-            const samples = cohorts[cohortId].samples;
-            const new_demo = samples[indexFromUrl] ?? samples[0];
-
-            demoIndex.current = indexFromUrl;
-            setSelectedCohort(cohortId);
-            setDemo(new_demo);
-            setShowSmallMultiples(true);
-            setReady(true);
-        }
-
-        // After the first two default samples were added, load the 
+        // After the first two default samples were added, load the
         // external URL if it's provided
         if (cohorts['MSK SPECTRUM'] && Object.keys(cohorts).length < 3 && externalUrl) {
             fetch(externalUrl)
@@ -313,6 +309,9 @@ function App(props: RouteComponentProps) {
                                 cohortId = cohortId + '_1';
                             }
 
+                            // Save name of cohort in externalDemoCohortId
+                            externalDemoCohortId.current = cohortId;
+
                             // Create new cohort and add to state
                             setCohorts({
                                 ...cohorts,
@@ -324,8 +323,7 @@ function App(props: RouteComponentProps) {
                                     }))
                                 }
                             });
-                            // Save name of cohort in externalDemoCohortId
-                            externalDemoCohortId.current = cohortId;
+                            setIsLoadingExternalDemo(false);
                         }
                     })
                 )
@@ -334,7 +332,43 @@ function App(props: RouteComponentProps) {
                     setExternalError(error.message);
                     setShowSmallMultiples(true);
                     setReady(true);
+                    setIsLoadingExternalDemo(false);
                 });
+        }
+
+        // Update `selectedCohort` and `demo` if cohortId is provided in the URL
+        if (cohortIdFromUrl && cohorts[cohortIdFromUrl]) {
+            const samples = cohorts[cohortIdFromUrl].samples;
+
+            // const new_demo = indexFromUrl < samples.length ? samples[indexFromUrl] : samples[0];
+            const new_demo = samples[indexFromUrl] ?? samples[0];
+
+            demoIndex.current = indexFromUrl;
+            setSelectedCohort(cohortIdFromUrl);
+
+            // Reset driver loading state
+            setIsLoadingDrivers(true);
+            setDrivers([]);
+            setDemo(new_demo);
+
+            setShowSmallMultiples(true);
+            setReady(true);
+        } else {
+            // CohortId not provided, use external or first cohort as default cohort
+            const cohortId = externalDemoCohortId.current ?? Object.keys(cohorts)[0];
+            const samples = cohorts[cohortId].samples;
+            const new_demo = samples[indexFromUrl] ?? samples[0];
+
+            demoIndex.current = indexFromUrl;
+            setSelectedCohort(cohortId);
+
+            // Reset driver loading state
+            setIsLoadingDrivers(true);
+            setDrivers([]);
+            setDemo(new_demo);
+
+            setShowSmallMultiples(true);
+            setReady(true);
         }
     }, [cohorts]);
 
@@ -473,6 +507,8 @@ function App(props: RouteComponentProps) {
         if (isMinimalMode) {
             legendElement = document.querySelector<HTMLElement>('.genome-view-legend');
 
+            if (!legendElement) return;
+
             const options: IntersectionObserverInit = {
                 root: document.querySelector('.minimal_mode'),
                 rootMargin: '-250px 0px 0px 0px',
@@ -504,12 +540,67 @@ function App(props: RouteComponentProps) {
         [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
     }, [selectedSvId]);
 
+    // Definer empty gosling component as loading state
+    const placeholderDemo = {
+        ...demo,
+        sv: '',
+        cancer: '',
+        cnv: '',
+        id: '',
+        drivers: 'empty.json',
+        vcf: '',
+        vcfIndex: '',
+        bam: '',
+        vcf2: '',
+        vcf2Index: '',
+        bai: '',
+        assembly: ''
+    };
+    const emptyGoslingComponent = useMemo(() => {
+        const spec = generateSpec({
+            ...placeholderDemo,
+            showOverview,
+            xDomain: xDomain as [number, number],
+            xOffset: 0,
+            showPutativeDriver,
+            width: visPanelWidth - (isMinimalMode ? SCROLL_BAR_WIDTH + GOSLING_VIS_COMPONENT_PADDING : 0),
+            drivers: [],
+            selectedSvId,
+            breakpoints: breakpoints,
+            crossChr: false,
+            bpIntervals,
+            svReads,
+            spacing: isMinimalMode ? 100 : 40,
+            selectedMutationAbsPos
+        });
+        currentSpec.current = JSON.stringify(spec);
+
+        return (
+            <GoslingComponent
+                ref={gosRef}
+                spec={spec}
+                padding={GOSLING_VIS_COMPONENT_PADDING}
+                margin={0}
+                reactive={true}
+                theme={THEME}
+            />
+        );
+    }, [xDomain, visPanelWidth, isClinicalPanelOpen]);
+
     const goslingComponent = useMemo(() => {
+        // Check drivers are still loading or are for the wrong sample
         const loadingCustomJSONDrivers = typeof demo.drivers === 'string' && demo.drivers.split('.').pop() === 'json';
         const isStillLoadingDrivers = loadingCustomJSONDrivers && drivers.length == 0;
-        if (!ready || isStillLoadingDrivers) return null;
+        const hasDriverMismatch = drivers.length > 0 && !drivers.every(d => d.sample_id === demo.id);
+
+        // If drivers are still loading, return emptyGoslingComponent
+        if (!ready || isStillLoadingDrivers || isLoadingDrivers || isLoadingExternalDemo || hasDriverMismatch) {
+            return emptyGoslingComponent;
+        }
 
         const useCustomDrivers = loadingCustomJSONDrivers || !demo.drivers;
+
+        const driversToUse = useCustomDrivers ? drivers : demo.drivers;
         const spec = generateSpec({
             ...demo,
             showOverview,
@@ -517,7 +608,7 @@ function App(props: RouteComponentProps) {
             xOffset: 0,
             showPutativeDriver,
             width: visPanelWidth - (isMinimalMode ? SCROLL_BAR_WIDTH + GOSLING_VIS_COMPONENT_PADDING : 0),
-            drivers: useCustomDrivers ? drivers : demo.drivers,
+            drivers: driversToUse,
             selectedSvId,
             breakpoints: breakpoints,
             crossChr: false,
@@ -550,7 +641,10 @@ function App(props: RouteComponentProps) {
         breakpoints,
         svReads,
         isClinicalPanelOpen,
-        selectedMutationAbsPos
+        selectedMutationAbsPos,
+        isLoadingExternalDemo,
+        isLoadingDrivers,
+        demo.id
     ]);
 
     useLayoutEffect(() => {
@@ -655,6 +749,8 @@ function App(props: RouteComponentProps) {
         };
     });
 
+    // NOTE: replace hamburger button with a back arrow
+
     return (
         <ErrorBoundary>
             <div
@@ -709,7 +805,7 @@ function App(props: RouteComponentProps) {
                 )}
                 <div id="vis-panel" className="vis-panel">
                     {/* Make SampleConfigForm available to trigger from VisOverviewPanel */}
-                    {!isMinimalMode && 
+                    {!isMinimalMode && (
                         <SampleConfigForm
                             demoIndex={demoIndex}
                             setDemo={setDemo}
@@ -718,7 +814,7 @@ function App(props: RouteComponentProps) {
                             selectedCohort={selectedCohort}
                             setSelectedCohort={setSelectedCohort}
                         />
-                    }
+                    )}
                     <VisOverviewPanel
                         cohorts={cohorts}
                         setCohorts={setCohorts}
