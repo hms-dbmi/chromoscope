@@ -24,7 +24,7 @@ type VisOverviewPanelProps = {
     setFilterSampleBy: (filter: string) => void;
     setFilteredSamples: (samples: Array<any>) => void;
     setGenerateThumbnails: (generate: boolean) => void;
-    setDemo: (demo: SampleType) => void;
+    handleDemoChange: (demo: SampleType) => void;
 };
 
 export const VisOverviewPanel = ({
@@ -44,7 +44,7 @@ export const VisOverviewPanel = ({
     setSelectedCohort,
     setFilteredSamples,
     setGenerateThumbnails,
-    setDemo,
+    handleDemoChange,
     doneGeneratingThumbnails
 }: VisOverviewPanelProps) => {
     return (
@@ -170,7 +170,7 @@ export const VisOverviewPanel = ({
                 filteredSamples={filteredSamples}
                 setShowSamples={setShowSamples}
                 setFilteredSamples={setFilteredSamples}
-                setDemo={setDemo}
+                handleDemoChange={handleDemoChange}
                 selectedCohort={selectedCohort}
                 setSelectedCohort={setSelectedCohort}
                 externalError={externalError}

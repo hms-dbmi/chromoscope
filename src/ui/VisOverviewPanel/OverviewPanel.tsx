@@ -283,7 +283,7 @@ type OverviewPanelProps = {
     setShowSamples: (showSamples: boolean) => void;
     setSelectedCohort: (cohort: string) => void;
     setFilteredSamples: (samples: Array<any>) => void;
-    setDemo: (demo: SampleType) => void;
+    handleDemoChange: (demo: SampleType) => void;
 };
 
 export const OverviewPanel = ({
@@ -298,7 +298,7 @@ export const OverviewPanel = ({
     setShowSamples,
     setSelectedCohort,
     setFilteredSamples,
-    setDemo
+    handleDemoChange
 }: OverviewPanelProps) => {
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
     const [showExternalDemoAlert, setShowExternalDemoAlert] = useState<boolean>(true);
@@ -334,7 +334,7 @@ export const OverviewPanel = ({
                 }
                 if (externalDemo) {
                     externalDemoUrl.current = url;
-                    setDemo(externalDemo);
+                    handleDemoChange(externalDemo);
                 }
             })
         );
@@ -419,7 +419,7 @@ export const OverviewPanel = ({
                 >
                     <SmallOverviewWrapper
                         demo={demo}
-                        setDemo={setDemo}
+                        handleDemoChange={handleDemoChange}
                         demoIndex={demoIndex}
                         filteredSamples={filteredSamples}
                         setShowSamples={setShowSamples}

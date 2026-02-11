@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { GoslingComponent, GoslingRef, embed } from 'gosling.js';
 import { debounce, sample } from 'lodash';
 import type { RouteComponentProps } from 'react-router-dom';
@@ -8,7 +8,7 @@ import generateSpec from './main-spec';
 import ErrorBoundary from './error';
 import _allDrivers from './data/driver.json';
 import _customDrivers from './data/driver.custom.json';
-import samples from './data/samples';
+import samples, { SampleType } from './data/samples';
 import { ICONS } from './icon';
 import { isChrome } from './utils';
 import { getHtmlTemplate } from './html-template';
@@ -127,12 +127,32 @@ function App(props: RouteComponentProps) {
         [exampleId]
     );
 
+    // Define a placeholder demo to pass to gosling as loading state
+    const placeholderDemo: SampleType = {
+        group: 'default',
+        assembly: 'hg19',
+        sv: '',
+        cancer: '',
+        cnv: '',
+        id: '',
+        vcf: '',
+        vcf2: '',
+        vcfIndex: '',
+        vcf2Index: '',
+        bam: '',
+        bai: ''
+    };
+
     // demo
-    const [demo, setDemo] = useState(
-        cohorts[selectedCohort].samples[
+    const [demo, setDemo] = useState(() => {
+        // Do not load demo when loading external
+        if (externalUrl !== null) {
+            return placeholderDemo;
+        }
+        return cohorts[selectedCohort].samples[
             demoIndex.current < cohorts[selectedCohort].samples.length ? demoIndex.current : 0
-        ]
-    );
+        ];
+    });
 
     const [externalError, setExternalError] = useState<string>('');
 
@@ -191,6 +211,14 @@ function App(props: RouteComponentProps) {
     function getFilteredDrivers(demoId: string) {
         return (allDrivers as any).filter((d: any) => d.sample_id === demoId && +d.pos);
     }
+
+    // Wrapper function for changing demos
+    const handleDemoChange = useCallback(newDemo => {
+        // Set loading states before changing demo
+        setIsLoadingDrivers(true);
+        setDrivers([]);
+        setDemo(newDemo);
+    }, []);
 
     useEffect(() => {
         // Initial padding for the visualization
@@ -334,43 +362,43 @@ function App(props: RouteComponentProps) {
                     setReady(true);
                     setIsLoadingExternalDemo(false);
                 });
+
+            return;
         }
 
         // Update `selectedCohort` and `demo` if cohortId is provided in the URL
-        if (cohortIdFromUrl && cohorts[cohortIdFromUrl]) {
-            const samples = cohorts[cohortIdFromUrl].samples;
+        if (!isLoadingExternalDemo) {
+            if (cohortIdFromUrl && cohorts[cohortIdFromUrl]) {
+                const samples = cohorts[cohortIdFromUrl].samples;
 
-            // const new_demo = indexFromUrl < samples.length ? samples[indexFromUrl] : samples[0];
-            const new_demo = samples[indexFromUrl] ?? samples[0];
+                // const new_demo = indexFromUrl < samples.length ? samples[indexFromUrl] : samples[0];
+                const new_demo = samples[indexFromUrl] ?? samples[0];
 
-            demoIndex.current = indexFromUrl;
-            setSelectedCohort(cohortIdFromUrl);
+                demoIndex.current = indexFromUrl;
+                setSelectedCohort(cohortIdFromUrl);
 
-            // Reset driver loading state
-            setIsLoadingDrivers(true);
-            setDrivers([]);
-            setDemo(new_demo);
+                // Reset driver loading state
+                handleDemoChange(new_demo);
 
-            setShowSmallMultiples(true);
-            setReady(true);
-        } else {
-            // CohortId not provided, use external or first cohort as default cohort
-            const cohortId = externalDemoCohortId.current ?? Object.keys(cohorts)[0];
-            const samples = cohorts[cohortId].samples;
-            const new_demo = samples[indexFromUrl] ?? samples[0];
+                setShowSmallMultiples(true);
+                setReady(true);
+            } else {
+                // CohortId not provided, use external or first cohort as default cohort
+                const cohortId = externalDemoCohortId.current ?? Object.keys(cohorts)[0];
+                const samples = cohorts[cohortId].samples;
+                const new_demo = samples[indexFromUrl] ?? samples[0];
 
-            demoIndex.current = indexFromUrl;
-            setSelectedCohort(cohortId);
+                demoIndex.current = indexFromUrl;
+                setSelectedCohort(cohortId);
 
-            // Reset driver loading state
-            setIsLoadingDrivers(true);
-            setDrivers([]);
-            setDemo(new_demo);
+                // Reset driver loading state
+                handleDemoChange(new_demo);
 
-            setShowSmallMultiples(true);
-            setReady(true);
+                setShowSmallMultiples(true);
+                setReady(true);
+            }
         }
-    }, [cohorts]);
+    }, [cohorts, isLoadingExternalDemo]);
 
     useEffect(() => {
         prevJumpId.current = jumpButtonInfo?.id;
@@ -386,7 +414,7 @@ function App(props: RouteComponentProps) {
     }, [filterSampleBy]);
 
     useEffect(() => {
-        if (!gosRef.current || !demo.bai || !demo.bam) return;
+        if (!gosRef.current || !demo?.bai || !demo?.bam) return;
 
         gosRef.current.api.subscribe('rawData', (type: string, e: any) => {
             if (e.id.includes('bam') && (leftReads.current.length === 0 || rightReads.current.length === 0)) {
@@ -540,31 +568,15 @@ function App(props: RouteComponentProps) {
         [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
     }, [selectedSvId]);
 
-    // Definer empty gosling component as loading state
-    const placeholderDemo = {
-        ...demo,
-        sv: '',
-        cancer: '',
-        cnv: '',
-        id: '',
-        drivers: 'empty.json',
-        vcf: '',
-        vcfIndex: '',
-        bam: '',
-        vcf2: '',
-        vcf2Index: '',
-        bai: '',
-        assembly: ''
-    };
     const emptyGoslingComponent = useMemo(() => {
         const spec = generateSpec({
             ...placeholderDemo,
             showOverview,
             xDomain: xDomain as [number, number],
+            drivers: '',
             xOffset: 0,
             showPutativeDriver,
             width: visPanelWidth - (isMinimalMode ? SCROLL_BAR_WIDTH + GOSLING_VIS_COMPONENT_PADDING : 0),
-            drivers: [],
             selectedSvId,
             breakpoints: breakpoints,
             crossChr: false,
@@ -588,19 +600,11 @@ function App(props: RouteComponentProps) {
     }, [xDomain, visPanelWidth, isClinicalPanelOpen]);
 
     const goslingComponent = useMemo(() => {
-        // Check drivers are still loading or are for the wrong sample
-        const loadingCustomJSONDrivers = typeof demo.drivers === 'string' && demo.drivers.split('.').pop() === 'json';
-        const isStillLoadingDrivers = loadingCustomJSONDrivers && drivers.length == 0;
-        const hasDriverMismatch = drivers.length > 0 && !drivers.every(d => d.sample_id === demo.id);
-
         // If drivers are still loading, return emptyGoslingComponent
-        if (!ready || isStillLoadingDrivers || isLoadingDrivers || isLoadingExternalDemo || hasDriverMismatch) {
+        if (!ready || isLoadingDrivers || isLoadingExternalDemo) {
             return emptyGoslingComponent;
         }
 
-        const useCustomDrivers = loadingCustomJSONDrivers || !demo.drivers;
-
-        const driversToUse = useCustomDrivers ? drivers : demo.drivers;
         const spec = generateSpec({
             ...demo,
             showOverview,
@@ -608,7 +612,7 @@ function App(props: RouteComponentProps) {
             xOffset: 0,
             showPutativeDriver,
             width: visPanelWidth - (isMinimalMode ? SCROLL_BAR_WIDTH + GOSLING_VIS_COMPONENT_PADDING : 0),
-            drivers: driversToUse,
+            drivers: drivers,
             selectedSvId,
             breakpoints: breakpoints,
             crossChr: false,
@@ -643,8 +647,7 @@ function App(props: RouteComponentProps) {
         isClinicalPanelOpen,
         selectedMutationAbsPos,
         isLoadingExternalDemo,
-        isLoadingDrivers,
-        demo.id
+        isLoadingDrivers
     ]);
 
     useLayoutEffect(() => {
@@ -749,8 +752,6 @@ function App(props: RouteComponentProps) {
         };
     });
 
-    // NOTE: replace hamburger button with a back arrow
-
     return (
         <ErrorBoundary>
             <div
@@ -788,6 +789,8 @@ function App(props: RouteComponentProps) {
                 {!isMinimalMode && (
                     <NavigationBar
                         demo={demo}
+                        isLoadingExternalDemo={isLoadingExternalDemo}
+                        isLoadingDrivers={isLoadingDrivers}
                         setShowAbout={setShowAbout}
                         showSmallMultiples={showSmallMultiples}
                         showSamples={showSamples}
@@ -808,7 +811,7 @@ function App(props: RouteComponentProps) {
                     {!isMinimalMode && (
                         <SampleConfigForm
                             demoIndex={demoIndex}
-                            setDemo={setDemo}
+                            handleDemoChange={handleDemoChange}
                             cohorts={cohorts}
                             setCohorts={setCohorts}
                             selectedCohort={selectedCohort}
@@ -830,7 +833,7 @@ function App(props: RouteComponentProps) {
                         setFilterSampleBy={setFilterSampleBy}
                         setFilteredSamples={setFilteredSamples}
                         setGenerateThumbnails={setGenerateThumbnails}
-                        setDemo={setDemo}
+                        handleDemoChange={handleDemoChange}
                         selectedCohort={selectedCohort}
                         setSelectedCohort={setSelectedCohort}
                         externalError={externalError}
@@ -997,7 +1000,7 @@ function App(props: RouteComponentProps) {
                         bottom: 20,
                         left: VIS_PADDING.left,
                         pointerEvents: 'none',
-                        visibility: demo.bam ? 'collapse' : 'visible'
+                        visibility: demo?.bam ? 'collapse' : 'visible'
                     }}
                 >
                     {'ⓘ No read alignment data available for this sample.'}
