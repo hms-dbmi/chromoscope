@@ -41,7 +41,6 @@ export const NavigationBar = ({
     setShowSamples,
     getHtmlTemplate
 }: NavigationBarProps) => {
-    console.log('isLoadingExternalDemo', isLoadingExternalDemo, isLoadingDrivers, demo);
     return (
         <div className="navigation-container">
             <div className="title links-left">
