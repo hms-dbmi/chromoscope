@@ -378,17 +378,6 @@ function App(props: RouteComponentProps) {
 
                 // Only update if the demo would actually change
                 if (new_demo.id !== currentDemoId) {
-                    console.log('Setting demo from URL params:', {
-                        cohortId,
-                        indexFromUrl,
-                        demoId: new_demo.id,
-                        reason: cohortIdFromUrl
-                            ? 'cohortId in URL'
-                            : externalUrl
-                            ? 'external URL'
-                            : 'default selected cohort'
-                    });
-
                     demoIndex.current = indexFromUrl;
                     setSelectedCohort(cohortId);
                     handleDemoChange(new_demo);
