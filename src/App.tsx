@@ -145,7 +145,7 @@ function App(props: RouteComponentProps) {
 
     // demo
     const [demo, setDemo] = useState(() => {
-        // Do not load demo when loading external
+        // Do not load demo when loading an external demo
         if (externalUrl !== null) {
             return placeholderDemo;
         }
@@ -190,7 +190,7 @@ function App(props: RouteComponentProps) {
     const [overviewChr, setOverviewChr] = useState('');
     const [genomeViewChr, setGenomeViewChr] = useState('');
 
-    // Set drivers to empty array by default
+    // Set drivers to empty array by default, always load
     const [drivers, setDrivers] = useState([]);
     const [isLoadingDrivers, setIsLoadingDrivers] = useState(true);
 
@@ -220,6 +220,7 @@ function App(props: RouteComponentProps) {
         setDemo(newDemo);
     }, []);
 
+    // Padding for the visualization
     useEffect(() => {
         // Initial padding for the visualization
         let totalPadding = 0;
@@ -241,12 +242,8 @@ function App(props: RouteComponentProps) {
         }
     }, [demo, isClinicalPanelOpen, selectedMutationAbsPos]);
 
-    // update demo
+    // Update Demo
     useLayoutEffect(() => {
-        // Clear drivers and set loading state
-        setDrivers([]);
-        setIsLoadingDrivers(true);
-
         if (typeof demo.drivers === 'string' && demo.drivers.split('.').pop() === 'json') {
             // Start loading state and reset drivers
             setIsLoadingDrivers(true);
@@ -310,7 +307,7 @@ function App(props: RouteComponentProps) {
         setIsClinicalPanelOpen(!!demo?.clinicalInfo && isClinicalPanelOpen);
     }, [demo]);
 
-    // Add external demo cohort once MSK SPECTRUM cohort is available
+    // Load external demo cohort once MSK SPECTRUM cohort is available
     useEffect(() => {
         const cohortIdFromUrl = urlParams.get('cohortId');
         const indexFromUrl = demoIndex.current;
@@ -366,36 +363,38 @@ function App(props: RouteComponentProps) {
             return;
         }
 
-        // Update `selectedCohort` and `demo` if cohortId is provided in the URL
+        // Only update demo from URL params if not loading external demo
         if (!isLoadingExternalDemo) {
-            if (cohortIdFromUrl && cohorts[cohortIdFromUrl]) {
-                const samples = cohorts[cohortIdFromUrl].samples;
+            // Determine which cohort to use:
+            // - If cohortId in URL, use that
+            // - If external URL was provided, use the external cohort
+            // - Otherwise, use the currently selected cohort
+            const cohortId = cohortIdFromUrl || (externalUrl ? externalDemoCohortId.current : null) || selectedCohort;
 
-                // const new_demo = indexFromUrl < samples.length ? samples[indexFromUrl] : samples[0];
-                const new_demo = samples[indexFromUrl] ?? samples[0];
-
-                demoIndex.current = indexFromUrl;
-                setSelectedCohort(cohortIdFromUrl);
-
-                // Reset driver loading state
-                handleDemoChange(new_demo);
-
-                setShowSmallMultiples(true);
-                setReady(true);
-            } else {
-                // CohortId not provided, use external or first cohort as default cohort
-                const cohortId = externalDemoCohortId.current ?? Object.keys(cohorts)[0];
+            if (cohorts[cohortId]) {
                 const samples = cohorts[cohortId].samples;
                 const new_demo = samples[indexFromUrl] ?? samples[0];
+                const currentDemoId = demo?.id;
 
-                demoIndex.current = indexFromUrl;
-                setSelectedCohort(cohortId);
+                // Only update if the demo would actually change
+                if (new_demo.id !== currentDemoId) {
+                    console.log('Setting demo from URL params:', {
+                        cohortId,
+                        indexFromUrl,
+                        demoId: new_demo.id,
+                        reason: cohortIdFromUrl
+                            ? 'cohortId in URL'
+                            : externalUrl
+                            ? 'external URL'
+                            : 'default selected cohort'
+                    });
 
-                // Reset driver loading state
-                handleDemoChange(new_demo);
-
-                setShowSmallMultiples(true);
-                setReady(true);
+                    demoIndex.current = indexFromUrl;
+                    setSelectedCohort(cohortId);
+                    handleDemoChange(new_demo);
+                    setShowSmallMultiples(true);
+                    setReady(true);
+                }
             }
         }
     }, [cohorts, isLoadingExternalDemo]);
