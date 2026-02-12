@@ -103,6 +103,7 @@
 .navigation-container .links-left .config-button {
     position: relative;
     display: flex;
+    justify-content: center;
     margin: auto;
     width: 20px;
     height: 20px;
