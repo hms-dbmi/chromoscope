@@ -17,3 +17,10 @@ __pycache__/
 .eggs/*
 .ipynb_checkpoints/
 .coverage
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

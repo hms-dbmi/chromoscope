@@ -38,7 +38,7 @@ export const NavigationBar = ({
     getHtmlTemplate
 }: NavigationBarProps) => {
     return (
-        <div className="navigation-container">
+        <div className="navigation-container viewer">
             <div className="title links-left">
                 <button
                     className="config-button"
@@ -76,8 +76,12 @@ export const NavigationBar = ({
                     </a>
                     <span className="dimed">{' | '}</span>
                     {/* {demo.cancer.charAt(0).toUpperCase() + demo.cancer.slice(1) + ' • ' + demo.id} */}
-                    {demo?.cancer && <span>{demo?.cancer?.charAt(0)?.toUpperCase() + demo?.cancer?.slice(1)}</span>}
-                    <small>{demo.id}</small>
+                    {demo?.cancer && (
+                        <span className="cancer-type">
+                            {demo?.cancer?.charAt(0)?.toUpperCase() + demo?.cancer?.slice(1)}
+                        </span>
+                    )}
+                    <small className="demo-id">{demo.id}</small>
 
                     <ul className="nav-list">
                         <li className="nav-list-item">
