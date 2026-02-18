@@ -97,7 +97,10 @@ export const SmallOverviewWrapper = ({ demo, handleDemoChange, demoIndex, filter
                 demoIndex.current = i;
                 setShowSamples(false);
                 setTimeout(() => {
-                    handleDemoChange(d);
+                    // Only update demo if it's not the same as the current demo
+                    if (demo.id !== d.id) {
+                        handleDemoChange(d);
+                    }
                 }, 300);
             }}
             className={'overview' + (demo === d ? ' selected-overview' : ' unselected-overview')}
