@@ -104,7 +104,7 @@ type UploadModalProps = {
     uploadedCohort: ValidCohort;
     selectedCohort: string;
     demoIndex: React.MutableRefObject<number>;
-    setDemo: (demo: SampleConfig) => void;
+    handleDemoChange: (demo: SampleConfig) => void;
     setSelectedCohort: (cohort: string) => void;
     setUploadedCohort: React.Dispatch<React.SetStateAction<ValidCohort>>;
     setCohorts: (cohorts: Cohorts) => void;
@@ -125,7 +125,7 @@ export const UploadModal = ({
     cohorts,
     selectedCohort,
     demoIndex,
-    setDemo,
+    handleDemoChange,
     setSelectedCohort,
     setCohorts,
     setSampleConfig,
@@ -228,7 +228,7 @@ export const UploadModal = ({
         setUploadedFile(null);
         setUploadedFileData(null);
         clearSampleConfig();
-        setDemo(samples[0]); // Set first sample as demo
+        handleDemoChange(samples[0]); // Set first sample as demo
         demoIndex.current = 0;
     };
 

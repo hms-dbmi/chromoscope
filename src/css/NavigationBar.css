@@ -102,13 +102,12 @@
 }
 .navigation-container .links-left .config-button {
     position: relative;
+    display: flex;
+    justify-content: center;
     margin: auto;
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     cursor: pointer;
-    color: black;
-    stroke: black;
-    stroke-width: 0.5px;
     border: none;
     padding: 6px;
     border-radius: 4px;
@@ -141,6 +140,10 @@
 }
 .navigation-container .links-left .sample-information .dimed {
     margin-right: 12px;
+}
+
+.navigation-container .links-left .sample-information .sample-name {
+    min-width: 150px;
 }
 
 .navigation-container .links-left .sample-information small {
