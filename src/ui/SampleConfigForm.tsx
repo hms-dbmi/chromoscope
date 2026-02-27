@@ -25,7 +25,7 @@ type SampleConfigFormProps = {
     setCohorts: (cohorts: Cohorts) => void;
     selectedCohort: string;
     setSelectedCohort: (cohortId: string) => void;
-    setDemo: (demo: SampleConfig) => void;
+    handleDemoChange: (demo: SampleConfig) => void;
 };
 
 export default function SampleConfigForm({
@@ -34,7 +34,7 @@ export default function SampleConfigForm({
     demoIndex,
     setSelectedCohort,
     setCohorts,
-    setDemo
+    handleDemoChange
 }: SampleConfigFormProps) {
     const [uploadedCohort, setUploadedCohort] = useState<ValidCohort>(null);
     const [sampleConfig, setSampleConfig] = useState<SampleConfig>({});
@@ -44,7 +44,7 @@ export default function SampleConfigForm({
         <div className="upload-button-container">
             <UploadModal
                 demoIndex={demoIndex}
-                setDemo={setDemo}
+                handleDemoChange={handleDemoChange}
                 cohorts={cohorts}
                 setCohorts={setCohorts}
                 sampleConfig={sampleConfig}

@@ -38,7 +38,7 @@ const AvailabilityIcon = (isAvailable: boolean) => {
     );
 };
 
-export const SmallOverviewWrapper = ({ demo, setDemo, demoIndex, filteredSamples, setShowSamples }) => {
+export const SmallOverviewWrapper = ({ demo, handleDemoChange, demoIndex, filteredSamples, setShowSamples }) => {
     const [thumbnailForceGenerate, setThumbnailForceGenerate] = useState(false);
     const [generateThumbnails, setGenerateThumbnails] = useState(true);
     const [doneGeneratingThumbnails, setDoneGeneratingThumbnails] = useState(false);
@@ -97,7 +97,10 @@ export const SmallOverviewWrapper = ({ demo, setDemo, demoIndex, filteredSamples
                 demoIndex.current = i;
                 setShowSamples(false);
                 setTimeout(() => {
-                    setDemo(d);
+                    // Only update demo if it's not the same as the current demo
+                    if (demo.id !== d.id) {
+                        handleDemoChange(d);
+                    }
                 }, 300);
             }}
             className={'overview' + (demo === d ? ' selected-overview' : ' unselected-overview')}
@@ -154,7 +157,7 @@ export const SmallOverviewWrapper = ({ demo, setDemo, demoIndex, filteredSamples
     //         onClick={() => {
     //             setShowSamples(false);
     //             setTimeout(() => {
-    //                 setDemoIdx(i);
+    //                 handleDemoChange(i);
     //                 setSelectedSvId('');
     //             }, 300);
     //         }}

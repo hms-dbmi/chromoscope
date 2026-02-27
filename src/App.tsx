@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { GoslingComponent, GoslingRef, embed } from 'gosling.js';
 import { debounce, sample } from 'lodash';
 import type { RouteComponentProps } from 'react-router-dom';
@@ -8,7 +8,7 @@ import generateSpec from './main-spec';
 import ErrorBoundary from './error';
 import _allDrivers from './data/driver.json';
 import _customDrivers from './data/driver.custom.json';
-import samples from './data/samples';
+import samples, { SampleType } from './data/samples';
 import { ICONS } from './icon';
 import { isChrome } from './utils';
 import { getHtmlTemplate } from './html-template';
@@ -108,7 +108,9 @@ function App(props: RouteComponentProps) {
 
     const gosRef = useRef<GoslingRef>();
 
+    const [isLoadingExternalDemo, setIsLoadingExternalDemo] = useState(externalUrl !== null);
     const externalDemoUrl = useRef<string>();
+    const externalDemoCohortId = useRef<string>();
 
     const currentSpec = useRef<string>();
 
@@ -126,12 +128,33 @@ function App(props: RouteComponentProps) {
         [exampleId]
     );
 
+    // Define a placeholder demo to pass to gosling as loading state
+    const placeholderDemo: SampleType = {
+        group: 'default',
+        assembly: 'hg19',
+        sv: '',
+        cancer: '',
+        cnv: '',
+        id: '',
+        vcf: '',
+        vcf2: '',
+        vcfIndex: '',
+        vcf2Index: '',
+        bam: '',
+        bai: ''
+    };
+
     // demo
-    const [demo, setDemo] = useState(
-        cohorts[selectedCohort].samples[
+    const [demo, setDemo] = useState(() => {
+        // Do not load demo when loading an external demo
+        if (externalUrl !== null) {
+            return placeholderDemo;
+        }
+        return cohorts[selectedCohort].samples[
             demoIndex.current < cohorts[selectedCohort].samples.length ? demoIndex.current : 0
-        ]
-    );
+        ];
+    });
+
     const [externalError, setExternalError] = useState<string>('');
 
     // Selected Mutation
@@ -167,9 +190,11 @@ function App(props: RouteComponentProps) {
     );
     const [overviewChr, setOverviewChr] = useState('');
     const [genomeViewChr, setGenomeViewChr] = useState('');
-    const [drivers, setDrivers] = useState(
-        typeof demo.drivers === 'string' && demo.drivers.split('.').pop() === 'json' ? [] : getFilteredDrivers(demo.id)
-    );
+
+    // Set drivers to empty array by default, always load
+    const [drivers, setDrivers] = useState([]);
+    const [isLoadingDrivers, setIsLoadingDrivers] = useState(true);
+
     const [selectedSvId, setSelectedSvId] = useState<string>('');
     const [breakpoints, setBreakpoints] = useState<[number, number, number, number]>([1, 100, 1, 100]);
     const [bpIntervals, setBpIntervals] = useState<[number, number, number, number] | undefined>();
@@ -188,6 +213,15 @@ function App(props: RouteComponentProps) {
         return (allDrivers as any).filter((d: any) => d.sample_id === demoId && +d.pos);
     }
 
+    // Wrapper function for changing demos
+    const handleDemoChange = useCallback(newDemo => {
+        // Set loading states before changing demo
+        setIsLoadingDrivers(true);
+        setDrivers([]);
+        setDemo(newDemo);
+    }, []);
+
+    // Padding for the visualization
     useEffect(() => {
         // Initial padding for the visualization
         let totalPadding = 0;
@@ -209,45 +243,59 @@ function App(props: RouteComponentProps) {
         }
     }, [demo, isClinicalPanelOpen, selectedMutationAbsPos]);
 
-    // update demo
-    useEffect(() => {
+    // Update Demo
+    useLayoutEffect(() => {
         if (typeof demo.drivers === 'string' && demo.drivers.split('.').pop() === 'json') {
+            // Start loading state and reset drivers
+            setIsLoadingDrivers(true);
+            setDrivers([]);
+
             // we want to change this json file to json value
             fetch(demo.drivers).then(response =>
-                response.text().then(d => {
-                    const customDrivers = JSON.parse(d);
-                    // TODO: these need to be supported in other types of data
-                    customDrivers.forEach(d => {
-                        const optionalFields = [
-                            'ref',
-                            'alt',
-                            'category',
-                            'top_category',
-                            'transcript_consequence',
-                            'protein-mutation',
-                            'allele_fraction',
-                            'mutation_type',
-                            'biallelic'
-                        ];
-                        optionalFields.forEach(f => {
-                            if (!d[f]) {
-                                d[f] = '';
+                response
+                    .text()
+                    .then(d => {
+                        const customDrivers = JSON.parse(d);
+                        // TODO: these need to be supported in other types of data
+                        customDrivers.forEach(d => {
+                            const optionalFields = [
+                                'ref',
+                                'alt',
+                                'category',
+                                'top_category',
+                                'transcript_consequence',
+                                'protein-mutation',
+                                'allele_fraction',
+                                'mutation_type',
+                                'biallelic'
+                            ];
+                            optionalFields.forEach(f => {
+                                if (!d[f]) {
+                                    d[f] = '';
+                                }
+                            });
+                            if (typeof d['biallelic'] === 'string' && d['biallelic'].toUpperCase() === 'YES') {
+                                d['biallelic'] = 'yes';
+                            }
+                            if (typeof d['biallelic'] === 'string' && d['biallelic'].toUpperCase() === 'NO') {
+                                d['biallelic'] = 'no';
                             }
                         });
-                        if (typeof d['biallelic'] === 'string' && d['biallelic'].toUpperCase() === 'YES') {
-                            d['biallelic'] = 'yes';
-                        }
-                        if (typeof d['biallelic'] === 'string' && d['biallelic'].toUpperCase() === 'NO') {
-                            d['biallelic'] = 'no';
-                        }
-                    });
-
-                    setDrivers(customDrivers);
-                })
+                        setDrivers(customDrivers);
+                        setIsLoadingDrivers(false);
+                    })
+                    .catch(e => {
+                        console.error('Error fetching drivers:', e);
+                        setDrivers([]); // Set drivers to empty array
+                        setIsLoadingDrivers(false);
+                    })
             );
         } else {
             const filteredDrivers = getFilteredDrivers(demo.id);
+
+            // Set both at the same time to ensure they update together
             setDrivers(filteredDrivers);
+            setIsLoadingDrivers(false);
         }
 
         setOverviewChr('');
@@ -260,19 +308,13 @@ function App(props: RouteComponentProps) {
         setIsClinicalPanelOpen(!!demo?.clinicalInfo && isClinicalPanelOpen);
     }, [demo]);
 
-    // Add external demo cohort once MSK SPECTRUM cohort is available
+    // Load external demo cohort once MSK SPECTRUM cohort is available
     useEffect(() => {
         const cohortIdFromUrl = urlParams.get('cohortId');
+        const indexFromUrl = demoIndex.current;
 
-        // If a newly added cohort is the one specified in the URL param
-        // `cohortId`, use it for the proper demo
-        if (selectedCohort !== cohortIdFromUrl && cohortIdFromUrl && cohorts[cohortIdFromUrl]) {
-            const indexToSet = demoIndex.current < cohorts[cohortIdFromUrl].samples.length ? demoIndex.current : 0;
-            setSelectedCohort(cohortIdFromUrl);
-            setDemo(cohorts[cohortIdFromUrl].samples[indexToSet]);
-        }
-
-        // Check that the first two default samples were added
+        // After the first two default samples were added, load the
+        // external URL if it's provided
         if (cohorts['MSK SPECTRUM'] && Object.keys(cohorts).length < 3 && externalUrl) {
             fetch(externalUrl)
                 .then(response =>
@@ -287,14 +329,16 @@ function App(props: RouteComponentProps) {
                             // Create new cohort for available samples
                             let cohortId = externalDemo?.name ?? 'External Cohort';
                             const samples = externalDemo?.samples || externalDemo;
-                            const indexFromUrl = demoIndex.current < samples.length ? demoIndex.current : 0;
 
                             // If cohort already exists, update name
                             if (cohorts?.[cohortId]) {
                                 cohortId = cohortId + '_1';
                             }
 
-                            // Create new cohort
+                            // Save name of cohort in externalDemoCohortId
+                            externalDemoCohortId.current = cohortId;
+
+                            // Create new cohort and add to state
                             setCohorts({
                                 ...cohorts,
                                 [cohortId]: {
@@ -305,18 +349,7 @@ function App(props: RouteComponentProps) {
                                     }))
                                 }
                             });
-
-                            // use demoIndex form URL or first otherwise
-                            if (cohortIdFromUrl === cohortId && samples[indexFromUrl]) {
-                                if (samples[indexFromUrl]?.clinicalInfo) {
-                                    clinicalInfoRef.current = externalDemo.clinicalInfo;
-                                }
-                                setDemo(samples[samples[indexFromUrl] ? indexFromUrl : 0]);
-                            }
-                            // Select the cohort from URL if provided
-                            setSelectedCohort(cohortIdFromUrl ?? cohortId);
-                            setShowSmallMultiples(true);
-                            setReady(true);
+                            setIsLoadingExternalDemo(false);
                         }
                     })
                 )
@@ -325,9 +358,36 @@ function App(props: RouteComponentProps) {
                     setExternalError(error.message);
                     setShowSmallMultiples(true);
                     setReady(true);
+                    setIsLoadingExternalDemo(false);
                 });
+
+            return;
         }
-    }, [cohorts]);
+
+        // Only update demo from URL params if not loading external demo
+        if (!isLoadingExternalDemo) {
+            // Determine which cohort to use:
+            // - If cohortId in URL, use that
+            // - If external URL was provided, use the external cohort
+            // - Otherwise, use the currently selected cohort
+            const cohortId = cohortIdFromUrl || (externalUrl ? externalDemoCohortId.current : null) || selectedCohort;
+
+            if (cohorts[cohortId]) {
+                const samples = cohorts[cohortId].samples;
+                const new_demo = samples[indexFromUrl] ?? samples[0];
+                const currentDemoId = demo?.id;
+
+                // Only update if the demo would actually change
+                if (new_demo.id !== currentDemoId) {
+                    demoIndex.current = indexFromUrl;
+                    setSelectedCohort(cohortId);
+                    handleDemoChange(new_demo);
+                    setShowSmallMultiples(true);
+                    setReady(true);
+                }
+            }
+        }
+    }, [cohorts, isLoadingExternalDemo]);
 
     useEffect(() => {
         prevJumpId.current = jumpButtonInfo?.id;
@@ -343,7 +403,7 @@ function App(props: RouteComponentProps) {
     }, [filterSampleBy]);
 
     useEffect(() => {
-        if (!gosRef.current || !demo.bai || !demo.bam) return;
+        if (!gosRef.current || !demo?.bai || !demo?.bam) return;
 
         gosRef.current.api.subscribe('rawData', (type: string, e: any) => {
             if (e.id.includes('bam') && (leftReads.current.length === 0 || rightReads.current.length === 0)) {
@@ -464,6 +524,8 @@ function App(props: RouteComponentProps) {
         if (isMinimalMode) {
             legendElement = document.querySelector<HTMLElement>('.genome-view-legend');
 
+            if (!legendElement) return;
+
             const options: IntersectionObserverInit = {
                 root: document.querySelector('.minimal_mode'),
                 rootMargin: '-250px 0px 0px 0px',
@@ -495,12 +557,43 @@ function App(props: RouteComponentProps) {
         [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
     }, [selectedSvId]);
 
-    const goslingComponent = useMemo(() => {
-        const loadingCustomJSONDrivers = typeof demo.drivers === 'string' && demo.drivers.split('.').pop() === 'json';
-        const isStillLoadingDrivers = loadingCustomJSONDrivers && drivers.length == 0;
-        if (!ready || isStillLoadingDrivers) return null;
+    const emptyGoslingComponent = useMemo(() => {
+        const spec = generateSpec({
+            ...placeholderDemo,
+            showOverview,
+            xDomain: xDomain as [number, number],
+            drivers: '',
+            xOffset: 0,
+            showPutativeDriver,
+            width: visPanelWidth - (isMinimalMode ? SCROLL_BAR_WIDTH + GOSLING_VIS_COMPONENT_PADDING : 0),
+            selectedSvId,
+            breakpoints: breakpoints,
+            crossChr: false,
+            bpIntervals,
+            svReads,
+            spacing: isMinimalMode ? 100 : 40,
+            selectedMutationAbsPos
+        });
+        currentSpec.current = JSON.stringify(spec);
 
-        const useCustomDrivers = loadingCustomJSONDrivers || !demo.drivers;
+        return (
+            <GoslingComponent
+                ref={gosRef}
+                spec={spec}
+                padding={GOSLING_VIS_COMPONENT_PADDING}
+                margin={0}
+                reactive={true}
+                theme={THEME}
+            />
+        );
+    }, [xDomain, visPanelWidth, isClinicalPanelOpen]);
+
+    const goslingComponent = useMemo(() => {
+        // If drivers are still loading, return emptyGoslingComponent
+        if (!ready || isLoadingDrivers || isLoadingExternalDemo) {
+            return emptyGoslingComponent;
+        }
+
         const spec = generateSpec({
             ...demo,
             showOverview,
@@ -508,7 +601,7 @@ function App(props: RouteComponentProps) {
             xOffset: 0,
             showPutativeDriver,
             width: visPanelWidth - (isMinimalMode ? SCROLL_BAR_WIDTH + GOSLING_VIS_COMPONENT_PADDING : 0),
-            drivers: useCustomDrivers ? drivers : demo.drivers,
+            drivers: drivers,
             selectedSvId,
             breakpoints: breakpoints,
             crossChr: false,
@@ -541,7 +634,9 @@ function App(props: RouteComponentProps) {
         breakpoints,
         svReads,
         isClinicalPanelOpen,
-        selectedMutationAbsPos
+        selectedMutationAbsPos,
+        isLoadingExternalDemo,
+        isLoadingDrivers
     ]);
 
     useLayoutEffect(() => {
@@ -683,6 +778,8 @@ function App(props: RouteComponentProps) {
                 {!isMinimalMode && (
                     <NavigationBar
                         demo={demo}
+                        isLoadingExternalDemo={isLoadingExternalDemo}
+                        isLoadingDrivers={isLoadingDrivers}
                         setShowAbout={setShowAbout}
                         showSmallMultiples={showSmallMultiples}
                         showSamples={showSamples}
@@ -699,39 +796,37 @@ function App(props: RouteComponentProps) {
                     />
                 )}
                 <div id="vis-panel" className="vis-panel">
+                    {/* Make SampleConfigForm available to trigger from VisOverviewPanel */}
                     {!isMinimalMode && (
-                        <>
-                            {/* Make SampleConfigForm available to trigger from VisOverviewPanel */}
-                            <SampleConfigForm
-                                demoIndex={demoIndex}
-                                setDemo={setDemo}
-                                cohorts={cohorts}
-                                setCohorts={setCohorts}
-                                selectedCohort={selectedCohort}
-                                setSelectedCohort={setSelectedCohort}
-                            />
-                            <VisOverviewPanel
-                                cohorts={cohorts}
-                                setCohorts={setCohorts}
-                                showSamples={showSamples}
-                                generateThumbnails={generateThumbnails}
-                                demo={demo}
-                                demoIndex={demoIndex}
-                                externalDemoUrl={externalDemoUrl}
-                                filteredSamples={filteredSamples}
-                                doneGeneratingThumbnails={doneGeneratingThumbnails}
-                                setShowSamples={setShowSamples}
-                                setShowAbout={setShowAbout}
-                                setFilterSampleBy={setFilterSampleBy}
-                                setFilteredSamples={setFilteredSamples}
-                                setGenerateThumbnails={setGenerateThumbnails}
-                                setDemo={setDemo}
-                                selectedCohort={selectedCohort}
-                                setSelectedCohort={setSelectedCohort}
-                                externalError={externalError}
-                            />
-                        </>
+                        <SampleConfigForm
+                            demoIndex={demoIndex}
+                            handleDemoChange={handleDemoChange}
+                            cohorts={cohorts}
+                            setCohorts={setCohorts}
+                            selectedCohort={selectedCohort}
+                            setSelectedCohort={setSelectedCohort}
+                        />
                     )}
+                    <VisOverviewPanel
+                        cohorts={cohorts}
+                        setCohorts={setCohorts}
+                        showSamples={showSamples}
+                        generateThumbnails={generateThumbnails}
+                        demo={demo}
+                        demoIndex={demoIndex}
+                        externalDemoUrl={externalDemoUrl}
+                        filteredSamples={filteredSamples}
+                        doneGeneratingThumbnails={doneGeneratingThumbnails}
+                        setShowSamples={setShowSamples}
+                        setShowAbout={setShowAbout}
+                        setFilterSampleBy={setFilterSampleBy}
+                        setFilteredSamples={setFilteredSamples}
+                        setGenerateThumbnails={setGenerateThumbnails}
+                        handleDemoChange={handleDemoChange}
+                        selectedCohort={selectedCohort}
+                        setSelectedCohort={setSelectedCohort}
+                        externalError={externalError}
+                    />
                     <div
                         id="gosling-panel"
                         className="gosling-panel"
@@ -894,7 +989,7 @@ function App(props: RouteComponentProps) {
                         bottom: 20,
                         left: VIS_PADDING.left,
                         pointerEvents: 'none',
-                        visibility: demo.bam ? 'collapse' : 'visible'
+                        visibility: demo?.bam ? 'collapse' : 'visible'
                     }}
                 >
                     {'ⓘ No read alignment data available for this sample.'}

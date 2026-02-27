@@ -13,6 +13,8 @@ type NavigationBarProps = {
     externalUrl: string;
     externalDemoUrl: MutableRefObject<string>;
     FEEDBACK_EMAIL_ADDRESS: string;
+    isLoadingExternalDemo: boolean;
+    isLoadingDrivers: boolean;
     showSamples: boolean;
     selectedCohort: string;
     isChrome: () => boolean;
@@ -25,6 +27,8 @@ export const NavigationBar = ({
     demo,
     demoIndex,
     showSmallMultiples,
+    isLoadingExternalDemo,
+    isLoadingDrivers,
     gosRef,
     currentSpec,
     externalUrl,
@@ -47,9 +51,8 @@ export const NavigationBar = ({
                         setShowSamples(true);
                     }}
                 >
-                    <svg viewBox={ICONS.MENU.viewBox} visibility="visible">
-                        <title>Menu</title>
-                        <path fill="currentColor" d={ICONS.MENU.path[0]} />
+                    <svg viewBox={ICONS.ARROW_LEFT.viewBox} visibility="visible">
+                        <path fill="currentColor" d={ICONS.ARROW_LEFT.path[0]} />
                     </svg>
                 </button>
                 <div className="sample-information">
@@ -76,8 +79,15 @@ export const NavigationBar = ({
                     </a>
                     <span className="dimed">{' | '}</span>
                     {/* {demo.cancer.charAt(0).toUpperCase() + demo.cancer.slice(1) + ' • ' + demo.id} */}
-                    {demo?.cancer && <span>{demo?.cancer?.charAt(0)?.toUpperCase() + demo?.cancer?.slice(1)}</span>}
-                    <small>{demo.id}</small>
+                    {/* <span className="loading text shimmer"></span> */}
+                    {isLoadingExternalDemo || isLoadingDrivers ? (
+                        <span className="loading text sample-name"></span>
+                    ) : (
+                        <span className="sample-name">
+                            <span>{demo?.cancer?.charAt(0)?.toUpperCase() + demo?.cancer?.slice(1)}</span>
+                            <small>{demo.id}</small>
+                        </span>
+                    )}
 
                     <ul className="nav-list">
                         <li className="nav-list-item">
