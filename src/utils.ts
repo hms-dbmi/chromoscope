@@ -108,3 +108,56 @@ export function driversToTsvUrl(drivers: string | { [k: string]: string | number
     const url = URL.createObjectURL(tsv);
     return url;
 }
+
+// Check if a value is a primitive type
+export const isJsonPrimitive = (value: unknown): value is string | number | boolean | null => {
+    return value === null || typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean';
+};
+
+// // Helper function to access nested fields in sample objects
+// export const accessNestedField = (sample: unknown = null, path: string = '') : string | number | boolean | null => {
+//     if (typeof(sample) !== 'object' || sample === null || path === '') {
+//         return null;
+//     }
+
+//     // Split the path into parts
+//     const parts = path.split('.');
+//     let current = sample;
+
+//     // Traverse the object using the path
+//     for (let i = 0; i < parts.length; i++) {
+//         if (typeof(current) !== 'object' || current === null) {
+//             return null;
+//         }
+//         current = current[parts[i]];
+//     }
+
+//     console.log('accessNestedField:', current);
+
+//     return isJsonPrimitive(current) ? current : null;
+// }
+
+// Helper function to access a nested field in a sample object
+export const accessNestedField = (sample: unknown = null, path = ''): string | number | boolean | null => {
+    if (path === '' || typeof sample !== 'object' || sample === null) {
+        return null;
+    }
+
+    // Split the path into parts
+    const parts = path.split('.');
+    let current = sample;
+
+    // Traverse the object using the path
+    for (let i = 0; i < parts.length; i++) {
+        if (typeof current !== 'object' || current === null) return null;
+
+        // If the current value is an array, find the object with the matching label
+        if (Array.isArray(current)) {
+            current = current.find(d => d.label.toLowerCase() === parts[i].toLowerCase())?.value;
+        } else {
+            current = current[parts[i]];
+        }
+    }
+
+    return isJsonPrimitive(current) ? current : null;
+};
