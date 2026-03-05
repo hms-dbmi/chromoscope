@@ -437,8 +437,8 @@ export const OverviewPanel = ({
 
         const allSamples = cohorts[selectedCohort]?.samples || [];
 
-        // If filter is already active remove it
-        if (activeFilters.includes(filterKey)) {
+        // Remove filter if option is null
+        if (option === null && activeFilters.includes(filterKey)) {
             setActiveFilters(activeFilters.filter(f => f !== filterKey));
             return;
         }
@@ -451,7 +451,10 @@ export const OverviewPanel = ({
                 allSamples.map((sample: any) => accessNestedField(sample, filterKey)),
                 option
             );
-            setFilteredSamples(allSamples.filter((sample: any) => accessNestedField(sample, filterKey) === option));
+            setActiveFilters([filterKey]);
+            setFilteredSamples(
+                allSamples.filter((sample: any) => accessNestedField(sample, filterKey) === option.value)
+            );
         }
     };
 

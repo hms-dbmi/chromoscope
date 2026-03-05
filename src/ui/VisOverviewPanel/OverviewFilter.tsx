@@ -111,7 +111,7 @@ export const OverviewFilter = ({
             } else {
                 console.log('selectedOption:', selectedOption ?? 'No option selected yet. Selecting option:', option);
                 setSelectedOption(option.value + ''); // Set the selected option value
-                setActiveFilters([identifier]); // Set active filter to only the current identifier
+                // setActiveFilters([identifier]); // Set active filter to only the current identifier
                 onChange(identifier, option);
             }
 

@@ -343,6 +343,7 @@ function App(props: RouteComponentProps) {
                                 ...cohorts,
                                 [cohortId]: {
                                     name: cohortId,
+                                    filters: externalDemo?.filters ?? [],
                                     samples: samples?.map((sample: any, index: number) => ({
                                         ...sample,
                                         originalIndex: index
