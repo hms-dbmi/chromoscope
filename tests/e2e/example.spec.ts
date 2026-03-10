@@ -28,3 +28,14 @@ test('clicking on the close button closes the overview panel', async ({ page }) 
   const demoId = sampleInformation.locator('.demo-id');
   await expect(demoId).toContainText('SRR7890905')
 });
+
+// Test for minmal mode integration with cBioPortal
+// test('cBioPortal Integration is working properly', async ({page}) => {
+//   await page.goto('https://www.cbioportal.org/patient/openResource_CHROMOSCOPE?studyId=pancan_pcawg_2020&caseId=DO2706');
+
+//   const sampleTitle = page.locator('.patientViewPage .patientSample a[href^="https://www.cbioportal.org/"]').innerText();
+  
+//   const chromoscopeIframe = page.frameLocator('.patientViewPage iframe[src^="https://chromoscope.bio/app/"]');
+
+
+// })
