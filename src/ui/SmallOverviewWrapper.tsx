@@ -109,9 +109,9 @@ export const SmallOverviewWrapper = ({ demo, handleDemoChange, demoIndex, filter
             <div style={{ color: 'grey', fontSize: '14px' }}>
                 {'' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : '')}
             </div>
-            <div style={{ position: 'relative' }}>
+            <div className="overview-thumbnail-container"style={{ position: 'relative' }}>
                 {getThumbnail(d) ? (
-                    <img src={getThumbnail(d)} style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }} />
+                    <img className="overview-thumbnail" src={getThumbnail(d)} style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }} />
                 ) : (
                     // <div style={{ marginLeft: 'calc(50% - 105px - 10px)' }}>
                     //     <GoslingComponent

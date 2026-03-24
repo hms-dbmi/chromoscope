@@ -5,9 +5,9 @@ import { OverviewFilter } from './OverviewFilter';
 import { samples, SampleType } from '../../data/samples';
 import { SmallOverviewWrapper } from '../SmallOverviewWrapper';
 import { CohortSelector } from './CohortSelector';
-import { Cohort, Cohorts } from '../../App';
+import { Cohort, Cohorts, CohortFilter } from '../../App';
 import { accessNestedField } from '../../utils';
-import { isFilterOption } from './OverviewFilter';
+import { FilterStatusPanel } from './FilterStatusPanel';
 
 // Store example samples
 export const PCAWG_SAMPLES = [
@@ -252,16 +252,23 @@ export type FilterOption = {
     samples?: SampleType[]; // Optionally pass samples directly
 };
 
-export type OptionValue = {
-    value: string | number | boolean;
-    count?: number;
-};
-
 export type Filter = {
     nullValue?: string;
     title: string;
     options: Array<FilterOption>;
     active: boolean;
+};
+
+/**
+ * `OptionValue` and `NewFilter` are used to define filters for the OverviewPanel.
+ * It contains the title, type, and values of the filter.
+ * Also used to define `activeFilters`
+ */
+export type Primitive = string | number | boolean;
+
+export type OptionValue = {
+    value: Primitive;
+    count?: number;
 };
 
 export type NewFilter = {
@@ -281,6 +288,10 @@ type FiltersMap = {
 type NewFilterGroup = {
     [key: string]: NewFilter;
 };
+
+export type ActiveFilters = {
+    [key: string]: Primitive[];
+}
 
 type FilterGroup = {
     [key: string]: Filter;
@@ -329,13 +340,16 @@ export const OverviewPanel = ({
     setFilteredSamples,
     handleDemoChange
 }: OverviewPanelProps) => {
-    const [activeFilters, setActiveFilters] = useState<string[]>([]);
-    console.log('activeFilters:', activeFilters);
+    const [activeFilters, setActiveFilters] = useState<ActiveFilters>({});
     const [showExternalDemoAlert, setShowExternalDemoAlert] = useState<boolean>(true);
+    const [showNonMatches, setShowNonMatches] = useState<boolean>(false);
 
     // Get filters for the selected cohort
     const filterIdentifiers = Object.keys(cohorts?.[selectedCohort]?.filters || {});
-    const cohortFilters = cohorts[selectedCohort]?.filters;
+    const cohortFilters : CohortFilter[] = cohorts[selectedCohort]?.filters;
+    
+    // Create variable to store inverted filters
+    const invertedSamples = cohorts[selectedCohort]?.samples?.filter( (sample : SampleType) => !filteredSamples.includes(sample));
 
     // Compute filter options based on cohort filters
     // Update when: cohorts or selectedCohort changes
@@ -349,36 +363,7 @@ export const OverviewPanel = ({
 
         // Extract the options from the filters property of the configuration
         filterIdentifiers.map((filterIdentifier: string, i: number) => {
-            // console.log('filterIdentifier', filterIdentifier);
             const { field, title, type } = cohortFilters?.[filterIdentifier];
-
-            /**
-             * Note: it is a bit inefficient to do this. In order to find the
-             * item in the clinicalInfo.summary array with the label "Response"
-             * it needs to:
-             * - For each sample (1..s):
-             *  - For each item in clinicalInfo (1..n)
-             *      - Check if there is a value with Response
-             *
-             * We can avoid this if we use objects to determine the clinicalInfo:
-             *
-             * "filter": {
-             *      "field": "clinicalInfo.summary.response"
-             * },
-             * "samples": [
-             *      {
-             *          "clinicalInfo": {
-             *              "summary": {
-             *                  "response": {
-             *                      "label": "Response",
-             *                      "value": "0"
-             *                  }
-             *              }
-             *          }
-             *      }
-             * ]
-             *
-             */
 
             const valuesMap = new Map<string | number | boolean, number>();
 
@@ -403,59 +388,62 @@ export const OverviewPanel = ({
             };
         });
 
-        // console.log("filtersMap", filtersMap)
-
         return filtersMap;
     }, [cohorts, selectedCohort]);
 
-    // // Update samples when filters applied
-    // useEffect(() => {
-    //     // When no filters active, show default sample set
-    //     if (activeFilters.length === 0) {
-    //         setFilteredSamples(cohorts[selectedCohort]?.samples || []);
-    //     } else {
-    //         // Apply filters sequentially
-    //         const filtered = activeFilters.reduce((accSamples, filterKey) => {
-    //             console.log('activeFilters:', activeFilters);
-    //             console.log('Applying filter:', accSamples, filterKey);
+    /**
+     * Adds an option to an existing filter or creates a new filter if it 
+     * doesn't exist
+     * @param filterKey - key of the filter
+     * @param value - value of the option
+     * @returns updated activeFilters object
+     */
+    const getUpdatedActiveFilters = (filterKey: string, value: Primitive) => {
+        const currentValues = activeFilters[filterKey] || [];
 
-    //             return accSamples.filter((sample: any) => sample?.[filterKey])
+        // Check if `value` already exist in the filter
+        const updatedValues = currentValues.includes(value) 
+            ? currentValues.filter(v => v !== value) 
+            : [...currentValues, value];
 
-    //             // return filteredSamples.filter((sample: any) => {
+        // Copy activeFilters
+        const updatedActiveFilters = { ...activeFilters };
 
-    //             // })
-    //         }, cohorts[selectedCohort]?.samples || []);
+        // Remove filter if all values are removed
+        if (updatedValues.length === 0) {
+            delete updatedActiveFilters[filterKey];
+        } else {
+            updatedActiveFilters[filterKey] = updatedValues;
+        }
 
-    //         console.log("Filtered samples after applying active filters:", filtered);
+        return updatedActiveFilters;
+    }
 
-    //         // setFilteredSamples(filtered);
-    //     }
-    // }, [activeFilters]);
-
-    const onFilterSelection = (filterKey: string, option: OptionValue) => {
-        console.log('Filters selected:', activeFilters, filterKey, option);
+    /**
+     * Handles the selection of a filter option. Updates the `filteredSamples`
+     * and `activeFilters` state accordingly.
+     * @param filterKey - key of the filter whose option was selected
+     * @param option - option selected by the user
+     */
+    const onFilterOptionSelection = (filterKey: string, option: OptionValue) => {
+        const { value } = option;
 
         const allSamples = cohorts[selectedCohort]?.samples || [];
+        const updatedActiveFilters = getUpdatedActiveFilters(filterKey, value);
 
-        // Remove filter if option is null
-        if (option === null && activeFilters.includes(filterKey)) {
-            setActiveFilters(activeFilters.filter(f => f !== filterKey));
-            return;
-        }
-        if (isFilterOption(option)) {
-            setFilteredSamples(allSamples.filter((sample: any) => sample?.[filterKey] === option.name));
-        } else {
-            console.log(
-                'Filtering samples with key/value:',
-                filterKey,
-                allSamples.map((sample: any) => accessNestedField(sample, filterKey)),
-                option
-            );
-            setActiveFilters([filterKey]);
-            setFilteredSamples(
-                allSamples.filter((sample: any) => accessNestedField(sample, filterKey) === option.value)
-            );
-        }
+        // Apply filters
+        const newFilteredSamples = allSamples.filter((sample: any) => {
+            return Object.entries(updatedActiveFilters).every(([key, acceptedValues]) => {
+                if (acceptedValues.length === 0) return true;
+                const sampleValue = accessNestedField(sample, key);
+                return acceptedValues.includes(sampleValue);
+            });
+        });
+        
+
+        // Update state variables
+        setFilteredSamples(newFilteredSamples);
+        setActiveFilters(updatedActiveFilters);
     };
 
     // Update filtered samples when cohort changes
@@ -473,13 +461,6 @@ export const OverviewPanel = ({
             }
         }
     }, [selectedCohort]);
-
-    // useEffect(() => {
-    //     // When no filters active, show default sample set
-    //     if (activeFilters.length === 0) {
-    //         setFilteredSamples(samples);
-    //     }
-    // }, [activeFilters]);
 
     // When a new sample is added, add a class to the overview container
     useEffect(() => {
@@ -512,11 +493,6 @@ export const OverviewPanel = ({
             })
         );
     };
-
-    // // Helper function for retrieving options from configuration
-    // const getOptionsFromConfig = () => {
-
-    // }
 
     return (
         <div>
@@ -556,6 +532,7 @@ export const OverviewPanel = ({
                 </div>
                 {selectedCohort === 'PCAWG: Cancer Cohort' && (
                     <div className="overview-controls">
+                        <div className="overview-controls-filters">
                         {Object.keys(defaultFilters).map((filter, index) => {
                             return (
                                 <OverviewFilter
@@ -563,7 +540,7 @@ export const OverviewPanel = ({
                                     identifier={filter}
                                     title={defaultFilters[filter].title}
                                     options={defaultFilters[filter].options}
-                                    active={activeFilters.includes(filter)}
+                                    active={Object.keys(activeFilters).includes(filter)}
                                     onChange={onChange}
                                     activeFilters={activeFilters}
                                     nullValue={defaultFilters[filter].nullValue}
@@ -571,41 +548,89 @@ export const OverviewPanel = ({
                                 />
                             );
                         })}
+                        </div>
                     </div>
                 )}
                 {filterIdentifiers.length > 0 && (
-                    <div className="overview-controls">
-                        {filterIdentifiers.map((filterIdentifier, i) => {
-                            const { field, title, type } = cohortFilters?.[filterIdentifier];
-
-                            return (
-                                <OverviewFilter
-                                    key={i}
-                                    type={type}
-                                    identifier={field || 'Filter 1'}
-                                    title={title}
-                                    options={filterValuesMap?.[filterIdentifier]?.values}
-                                    active={activeFilters.includes(field || '')}
-                                    onChange={onFilterSelection}
-                                    activeFilters={activeFilters}
-                                    nullValue={type === 'binary' ? undefined : null}
-                                    setActiveFilters={setActiveFilters}
-                                />
-                            );
-                        })}
-                    </div>
+                    <>
+                        <div className="overview-controls">
+                            <div className="overview-controls-filters">
+                                {filterIdentifiers.map((filterIdentifier, i) => {
+                                    const { field, title, type } = cohortFilters?.[filterIdentifier];
+                                    
+                                    return (
+                                        <OverviewFilter
+                                            key={i}
+                                            type={type}
+                                            identifier={field || 'Filter 1'}
+                                            title={title}
+                                            options={filterValuesMap?.[filterIdentifier]?.values}
+                                            active={Object.keys(activeFilters).includes(field || '')}
+                                            onChange={onFilterOptionSelection}
+                                            activeFilters={activeFilters}
+                                            nullValue={type === 'binary' ? undefined : null}
+                                            setActiveFilters={setActiveFilters}
+                                            cohortFilters={cohortFilters}
+                                        />
+                                    );
+                                })}
+                            </div>
+                            { Object.keys(activeFilters).length > 0 && 
+                                <div className="non-matches-checkbox">
+                                    <label htmlFor="non-matches">
+                                        <input type="checkbox" checked={showNonMatches} id="non-matches" onChange={() => setShowNonMatches(!showNonMatches)} />
+                                        {/* <span className="custom-checkbox"></span> */}
+                                        Show non-matches for comparison
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </>
                 )}
-                <div className="overview-status">{`Total of ${filteredSamples.length} samples loaded`}</div>
+                {Object.keys(activeFilters).length > 0 &&
+                    <FilterStatusPanel
+                        activeFilters={activeFilters}
+                        cohortFilters={cohortFilters}
+                        onFilterOptionSelection={onFilterOptionSelection}
+                    />
+                }
                 <div
                     className={`overview-container ${selectedCohort === 'PCAWG: Cancer Cohort' ? 'with-filters' : ''}`}
                 >
-                    <SmallOverviewWrapper
-                        demo={demo}
-                        handleDemoChange={handleDemoChange}
-                        demoIndex={demoIndex}
-                        filteredSamples={filteredSamples}
-                        setShowSamples={setShowSamples}
-                    />
+                    <div className="overview-container-group">
+                        { showNonMatches && Object.keys(activeFilters).length > 0 && 
+                            <div className="comparison-banner matches">
+                                <span>Matches</span>
+                            </div>
+                        }
+                        <div className="overview-status">{`Total of ${filteredSamples.length} samples loaded`}</div>
+                        <div className="samples-container">
+                            <SmallOverviewWrapper
+                                demo={demo}
+                                handleDemoChange={handleDemoChange}
+                                demoIndex={demoIndex}
+                                filteredSamples={filteredSamples}
+                                setShowSamples={setShowSamples}
+                            />
+                        </div>
+                    </div>
+                    {showNonMatches && Object.keys(activeFilters).length > 0 && (
+                        <div className="overview-container-group invert">
+                            <div className="comparison-banner non-matches">
+                                <span>Non - Matches</span>
+                            </div>
+                            <div className="overview-status">{`Total of ${invertedSamples.length} samples loaded`}</div>
+                            <div className="samples-container">
+                                <SmallOverviewWrapper
+                                    demo={demo}
+                                    handleDemoChange={handleDemoChange}
+                                    demoIndex={demoIndex}
+                                    filteredSamples={invertedSamples}
+                                    setShowSamples={setShowSamples}
+                                />
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

@@ -57,10 +57,16 @@ export type Cohorts = {
     [key: string]: Cohort;
 };
 
+export type CohortFilter = { 
+    field: string; 
+    title: string; 
+    type: string 
+}
+
 export type Cohort = {
     name?: string;
     samples: any;
-    filters?: Array<{ field: string; title: string; type: string }>;
+    filters?: CohortFilter[];
 };
 
 // Initialize with preloaded PCAWG cohort data
