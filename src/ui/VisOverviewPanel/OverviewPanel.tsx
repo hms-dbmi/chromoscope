@@ -440,10 +440,14 @@ export const OverviewPanel = ({
             });
         });
         
-
         // Update state variables
         setFilteredSamples(newFilteredSamples);
         setActiveFilters(updatedActiveFilters);
+
+        // If all filters are removed, hide non-matches
+        if (Object.keys(updatedActiveFilters).length === 0) {
+            setShowNonMatches(false);
+        }
     };
 
     // Update filtered samples when cohort changes
