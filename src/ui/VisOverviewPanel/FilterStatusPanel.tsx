@@ -34,16 +34,23 @@ export const FilterStatusPanel = ({ activeFilters, cohortFilters = [], onFilterO
                                             const formattedValue = filterType === 'binary' ? getBinaryOptionValue(value) : value;
 
                                             return (
-                                                <div className="selected-filter-option" key={i}>
-                                                    <span>{formattedValue}</span>
-                                                    <button className="remove-filter-option" onClick={() => onFilterOptionSelection(activeFilterIdentifier, { value })}>
-                                                        <svg className="icon" viewBox={ICONS.X_MARK.viewBox}>
-                                                            {ICONS.X_MARK.path.map(p => (
-                                                                <path fill="currentColor" key={p} d={p} />
-                                                            ))}
-                                                        </svg>
-                                                    </button>
-                                                </div>
+                                                <>
+                                                    {i > 0 && 
+                                                        <div className="divider vertical">
+                                                            <span>|</span>
+                                                        </div>
+                                                    }
+                                                    <div className="selected-filter-option" key={i}>
+                                                        <span>{formattedValue}</span>
+                                                        <button className="remove-filter-option" onClick={() => onFilterOptionSelection(activeFilterIdentifier, { value })}>
+                                                            <svg className="icon" viewBox={ICONS.X_MARK.viewBox}>
+                                                                {ICONS.X_MARK.path.map(p => (
+                                                                    <path fill="currentColor" key={p} d={p} />
+                                                                ))}
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </>
                                             );
                                         })
                                     }
