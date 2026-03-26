@@ -17,7 +17,7 @@ type OverviewFilterProps = {
     type?: string;
     options?: FilterOption[] | OptionValue[];
     activeFilters?: ActiveFilters;
-    cohortFilters?: CohortFilter[];
+    cohortFiltersObject?: {[key: string]: CohortFilter};
     onChange?: (value: string, option?: OptionValue| FilterOption | null) => void;
     setActiveFilters?: (filters: ActiveFilters) => void;
 };
@@ -32,6 +32,15 @@ export const getBinaryOptionValue = (option: Primitive): string => {
     return null;
 };
 
+export const transformOptionValue = (value: Primitive, filterType: string) => {
+    if (filterType === 'binary') {
+        return getBinaryOptionValue(value);
+    } else if (filterType === 'continuous') {
+        return value
+    }
+    return value;
+};
+
 export const OverviewFilter = ({
     identifier,
     nullValue,
@@ -42,7 +51,7 @@ export const OverviewFilter = ({
     activeFilters,
     onChange = null,
     setActiveFilters = null,
-    cohortFilters
+    cohortFiltersObject
 }: OverviewFilterProps) => {
     const overviewFilterRef = useRef<HTMLDivElement>(null);
     const toggleButtonRef = useRef<HTMLButtonElement>(null);
@@ -246,8 +255,8 @@ export const OverviewFilter = ({
                             const isSelected = activeOptions.includes(value);
 
                             // Format the value based on the filter type
-                            const filterType = Object.values(cohortFilters).find(f => f.field === identifier)?.type;
-                            const formattedValue = filterType === 'binary' ? getBinaryOptionValue(value) : value;
+                            const filterType = Object.values(cohortFiltersObject).find(f => f.field === identifier)?.type;
+                            const formattedValue = transformOptionValue(value, filterType);
 
                             return (
                                 <li

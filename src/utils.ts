@@ -1,4 +1,5 @@
 import { Assembly } from 'gosling.js/dist/src/gosling-schema';
+import { OptionValue, Primitive } from './ui/VisOverviewPanel/OverviewPanel';
 
 export const CHROM_SIZE_HG38 = {
     chr1: 248956422,
@@ -114,28 +115,77 @@ export const isJsonPrimitive = (value: unknown): value is string | number | bool
     return value === null || typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean';
 };
 
-// // Helper function to access nested fields in sample objects
-// export const accessNestedField = (sample: unknown = null, path: string = '') : string | number | boolean | null => {
-//     if (typeof(sample) !== 'object' || sample === null || path === '') {
-//         return null;
-//     }
+// Get the index of the bin that a value belongs to
+export const getBinIndex = (value: number, bins: OptionValue[]) => {
+    // Check if the value is within the bin range
+    for (let i = 0; i < bins.length; i++) {
+        const { start, end } = bins[i];
+        const isLastBin = i === bins.length - 1;
 
-//     // Split the path into parts
-//     const parts = path.split('.');
-//     let current = sample;
+        if (
+            (value >= start && value < end) ||
+            (isLastBin && value <= end)
+        ) {
+            return i;
+        }
+    }
 
-//     // Traverse the object using the path
-//     for (let i = 0; i < parts.length; i++) {
-//         if (typeof(current) !== 'object' || current === null) {
-//             return null;
-//         }
-//         current = current[parts[i]];
-//     }
+    return -1;
+};
 
-//     console.log('accessNestedField:', current);
+/**
+ * Transforms array of values into bins
+ * @param rawValues array of values to be binned
+ * @returns bins associated with the values
+ */
+export const getBinnedValues = (rawValues : OptionValue[], numBins : number = 5) : OptionValue[] => {
 
-//     return isJsonPrimitive(current) ? current : null;
-// }
+    // Typecast to Number
+    const numbers : number[] = rawValues
+        .map(v => typeof v.value === 'number' ? v.value : Number(v.value))
+        .filter(v => !Number.isNaN(v));
+
+
+    // If no values, don't add filter
+    if (numbers.length === 0) {
+        return [];
+    }
+
+    // Get the min and max values
+    const min = Math.min(...numbers);
+    const max = Math.max(...numbers);
+
+
+    // Calculate the bin size
+    const range = max - min || 1;
+    const binSize = range / numBins;
+
+    // Create bins
+    const bins = Array.from({ length: numBins }, (_, i) => {
+        const start = min + i * binSize;
+        const end = i === numBins - 1
+            ? max
+            : min + (i + 1) * binSize;
+
+        return {
+            start,
+            end,
+            // Only round for display
+            value: `${Math.floor(start)}-${Math.ceil(end)}`,
+            count: 0
+        };
+    });
+
+    // Update counts
+    rawValues.forEach(value => {
+        let n = typeof value.value === 'number' ? value.value : Number(value.value);
+        if (Number.isNaN(n)) return;
+        let index = getBinIndex(n, bins);
+        bins[index].count += value?.count || 1;
+    });
+
+    return bins;
+};
 
 // Helper function to access a nested field in a sample object
 export const accessNestedField = (sample: unknown = null, path = ''): string | number | boolean | null => {

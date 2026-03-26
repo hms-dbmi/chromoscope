@@ -6,7 +6,7 @@ import { samples, SampleType } from '../../data/samples';
 import { SmallOverviewWrapper } from '../SmallOverviewWrapper';
 import { CohortSelector } from './CohortSelector';
 import { Cohort, Cohorts, CohortFilter } from '../../App';
-import { accessNestedField } from '../../utils';
+import { accessNestedField, getBinnedValues, getBinIndex } from '../../utils';
 import { FilterStatusPanel } from './FilterStatusPanel';
 
 // Store example samples
@@ -267,6 +267,8 @@ export type Filter = {
 export type Primitive = string | number | boolean;
 
 export type OptionValue = {
+    start?: number;
+    end?: number;
     value: Primitive;
     count?: number;
 };
@@ -278,6 +280,7 @@ export type NewFilter = {
 
 export type Option = {
     type: string;
+    field: string;
     values: OptionValue[];
 };
 
@@ -345,8 +348,9 @@ export const OverviewPanel = ({
     const [showNonMatches, setShowNonMatches] = useState<boolean>(false);
 
     // Get filters for the selected cohort
-    const filterIdentifiers = Object.keys(cohorts?.[selectedCohort]?.filters || {});
-    const cohortFilters : CohortFilter[] = cohorts[selectedCohort]?.filters;
+    const cohortFiltersObject = cohorts?.[selectedCohort]?.filters || {};
+    const cohortFilters : CohortFilter[] = Object.values(cohortFiltersObject);
+    const filterIdentifiers : string[] = Object.keys(cohortFiltersObject);
     
     // Create variable to store inverted filters
     const invertedSamples = cohorts[selectedCohort]?.samples?.filter( (sample : SampleType) => !filteredSamples.includes(sample));
@@ -363,7 +367,7 @@ export const OverviewPanel = ({
 
         // Extract the options from the filters property of the configuration
         filterIdentifiers.map((filterIdentifier: string, i: number) => {
-            const { field, title, type } = cohortFilters?.[filterIdentifier];
+            const { field, title, type } = cohortFiltersObject?.[filterIdentifier];
 
             const valuesMap = new Map<string | number | boolean, number>();
 
@@ -382,9 +386,15 @@ export const OverviewPanel = ({
                 }
             });
 
+            let transformedValues : OptionValue[] = [...valuesMap].map(([value, count]) => ({ value, count }));
+            if (type === 'continuous') {
+                transformedValues = getBinnedValues(transformedValues);
+            }
+
             filtersMap[filterIdentifier] = {
                 type,
-                values: [...valuesMap].map(([value, count]) => ({ value, count }))
+                field,
+                values: transformedValues
             };
         });
 
@@ -394,12 +404,12 @@ export const OverviewPanel = ({
     /**
      * Adds an option to an existing filter or creates a new filter if it 
      * doesn't exist
-     * @param filterKey - key of the filter
+     * @param filterIdentifier - identifier of the filter
      * @param value - value of the option
      * @returns updated activeFilters object
      */
-    const getUpdatedActiveFilters = (filterKey: string, value: Primitive) => {
-        const currentValues = activeFilters[filterKey] || [];
+    const getUpdatedActiveFilters = (filterIdentifier: string, value: Primitive) => {
+        const currentValues = activeFilters[filterIdentifier] || [];
 
         // Check if `value` already exist in the filter
         const updatedValues = currentValues.includes(value) 
@@ -411,9 +421,9 @@ export const OverviewPanel = ({
 
         // Remove filter if all values are removed
         if (updatedValues.length === 0) {
-            delete updatedActiveFilters[filterKey];
+            delete updatedActiveFilters[filterIdentifier];
         } else {
-            updatedActiveFilters[filterKey] = updatedValues;
+            updatedActiveFilters[filterIdentifier] = updatedValues;
         }
 
         return updatedActiveFilters;
@@ -422,20 +432,32 @@ export const OverviewPanel = ({
     /**
      * Handles the selection of a filter option. Updates the `filteredSamples`
      * and `activeFilters` state accordingly.
-     * @param filterKey - key of the filter whose option was selected
+     * @param filterIdentifier - identifier of the filter whose option was selected
      * @param option - option selected by the user
      */
-    const onFilterOptionSelection = (filterKey: string, option: OptionValue) => {
-        const { value } = option;
+    const onFilterOptionSelection = (filterIdentifier: string, option: OptionValue) => {
+        const { start, end, value } = option;
 
         const allSamples = cohorts[selectedCohort]?.samples || [];
-        const updatedActiveFilters = getUpdatedActiveFilters(filterKey, value);
+        const updatedActiveFilters = getUpdatedActiveFilters(filterIdentifier, value);
 
         // Apply filters
         const newFilteredSamples = allSamples.filter((sample: any) => {
-            return Object.entries(updatedActiveFilters).every(([key, acceptedValues]) => {
+            return Object.entries(updatedActiveFilters).every(([identifier, acceptedValues]) => {
                 if (acceptedValues.length === 0) return true;
-                const sampleValue = accessNestedField(sample, key);
+
+                const filterField = cohorts[selectedCohort]?.filters?.[identifier]?.field;
+                let sampleValue = accessNestedField(sample, filterField);
+
+                // Continuous values have bins to compare against
+                if (filterValuesMap[identifier]?.type === 'continuous') {
+                    // Typecast to Number if necessary
+                    const number = typeof sampleValue === 'number' ? sampleValue : Number(sampleValue);
+                    // Check if `sampleValue` is between one of the bins
+                    const bins = filterValuesMap[filterIdentifier].values;
+                    const binIndex = getBinIndex(number, bins);
+                    sampleValue = bins[binIndex].value;
+                }
                 return acceptedValues.includes(sampleValue);
             });
         });
@@ -560,13 +582,13 @@ export const OverviewPanel = ({
                         <div className="overview-controls">
                             <div className="overview-controls-filters">
                                 {filterIdentifiers.map((filterIdentifier, i) => {
-                                    const { field, title, type } = cohortFilters?.[filterIdentifier];
+                                    const { field, title, type } = cohortFiltersObject?.[filterIdentifier];
                                     
                                     return (
                                         <OverviewFilter
                                             key={i}
                                             type={type}
-                                            identifier={field || 'Filter 1'}
+                                            identifier={filterIdentifier}
                                             title={title}
                                             options={filterValuesMap?.[filterIdentifier]?.values}
                                             active={Object.keys(activeFilters).includes(field || '')}
@@ -574,7 +596,7 @@ export const OverviewPanel = ({
                                             activeFilters={activeFilters}
                                             nullValue={type === 'binary' ? undefined : null}
                                             setActiveFilters={setActiveFilters}
-                                            cohortFilters={cohortFilters}
+                                            cohortFiltersObject={cohortFiltersObject}
                                         />
                                     );
                                 })}
@@ -594,7 +616,7 @@ export const OverviewPanel = ({
                 {Object.keys(activeFilters).length > 0 &&
                     <FilterStatusPanel
                         activeFilters={activeFilters}
-                        cohortFilters={cohortFilters}
+                        cohortFiltersObject={cohortFiltersObject}
                         onFilterOptionSelection={onFilterOptionSelection}
                     />
                 }

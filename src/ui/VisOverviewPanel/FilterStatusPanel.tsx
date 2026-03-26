@@ -7,42 +7,41 @@ import { getBinaryOptionValue } from './OverviewFilter';
 
 type FilterStatusPanelProps = {
     activeFilters: ActiveFilters;
-    cohortFilters: CohortFilter[];
+    cohortFiltersObject: {[key: string]: CohortFilter};
     onFilterOptionSelection: (filterKey: string, option: OptionValue) => void;
 }
 
-export const FilterStatusPanel = ({ activeFilters, cohortFilters = [], onFilterOptionSelection } : FilterStatusPanelProps ) => {
+export const FilterStatusPanel = ({ activeFilters, cohortFiltersObject = {}, onFilterOptionSelection } : FilterStatusPanelProps ) => {
   return (
     <div className="filter-status">
         <span>Filtered By:</span>
         {
-            Object.keys(activeFilters).map((filterKey, i) => {
-                const activeFilterIdentifier = filterKey;
-                const { title: filterTitle, field: filterIdentifier, type: filterType } = Object.values(cohortFilters).find(f => f.field === activeFilterIdentifier);
+            Object.keys(activeFilters).map((filterIdentifier, i) => {
+                const { title: filterTitle, type: filterType } = cohortFiltersObject?.[filterIdentifier];
 
                 return (
-                    <>
+                    <div className="filter-status-item-container" key={i}>
                         {i > 0 && 
                             <span className="ampersand">&amp;</span>
                         }
-                        <div className="filter-status-item" key={i}>
+                        <div className="filter-status-item">
                             <div className="selected-filter-options-container">
                                 <div className="selected-filter-options">
                                     {
-                                        activeFilters[activeFilterIdentifier].map((value, i) => {
+                                        activeFilters[filterIdentifier].map((value, i) => {
                                             // Format the value based on the filter type
                                             const formattedValue = filterType === 'binary' ? getBinaryOptionValue(value) : value;
 
                                             return (
-                                                <>
+                                                <div className="selected-filter-option-container" key={i}>
                                                     {i > 0 && 
                                                         <div className="divider vertical">
                                                             <span>|</span>
                                                         </div>
                                                     }
-                                                    <div className="selected-filter-option" key={i}>
+                                                    <div className="selected-filter-option">
                                                         <span>{formattedValue}</span>
-                                                        <button className="remove-filter-option" onClick={() => onFilterOptionSelection(activeFilterIdentifier, { value })}>
+                                                        <button className="remove-filter-option" onClick={() => onFilterOptionSelection(filterIdentifier, { value })}>
                                                             <svg className="icon" viewBox={ICONS.X_MARK.viewBox}>
                                                                 {ICONS.X_MARK.path.map(p => (
                                                                     <path fill="currentColor" key={p} d={p} />
@@ -50,7 +49,7 @@ export const FilterStatusPanel = ({ activeFilters, cohortFilters = [], onFilterO
                                                             </svg>
                                                         </button>
                                                     </div>
-                                                </>
+                                                </div>
                                             );
                                         })
                                     }
@@ -58,7 +57,7 @@ export const FilterStatusPanel = ({ activeFilters, cohortFilters = [], onFilterO
                                 <span className="selected-filter-title">{filterTitle}</span>
                             </div>
                         </div>
-                    </>
+                    </div>
                 );
             })
         }
