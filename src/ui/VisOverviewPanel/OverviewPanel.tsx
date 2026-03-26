@@ -603,9 +603,24 @@ export const OverviewPanel = ({
                             </div>
                             { Object.keys(activeFilters).length > 0 && 
                                 <div className="non-matches-checkbox">
-                                    <label htmlFor="non-matches">
-                                        <input type="checkbox" checked={showNonMatches} id="non-matches" onChange={() => setShowNonMatches(!showNonMatches)} />
-                                        {/* <span className="custom-checkbox"></span> */}
+                                    <label htmlFor="non-matches" className="checkbox-container">
+                                        <input 
+                                            id="non-matches" 
+                                            type="checkbox" 
+                                            className="checkbox"
+                                            checked={showNonMatches} 
+                                            onChange={() => setShowNonMatches(!showNonMatches)} 
+                                        />
+                                        <span className="checkbox-icon">
+                                            {showNonMatches && (
+                                                <svg className="icon" viewBox={ICONS.CHECKMARK.viewBox}>
+                                                    {ICONS.CHECKMARK.path.map(p => (
+                                                        <path fill="currentColor" key={p} d={p} />
+                                                    ))}
+                                                </svg>
+                                            )}
+                                        </span>
+                                        <span className="custom-checkbox"></span>
                                         Show non-matches for comparison
                                     </label>
                                 </div>

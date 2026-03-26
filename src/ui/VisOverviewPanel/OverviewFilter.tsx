@@ -273,8 +273,9 @@ export const OverviewFilter = ({
                                     }`}
                                 >
                                     <label className="dropdown-item-checkbox">
-                                        <div className="checkbox-container">
-                                            <input 
+                                        <label htmlFor={`${identifier}-${option.value}`} className="checkbox-container">
+                                            <input
+                                                id={`${identifier}-${option.value}`}
                                                 className="checkbox" 
                                                 type="checkbox" 
                                                 checked={isSelected} 
@@ -290,7 +291,7 @@ export const OverviewFilter = ({
                                                 )}
                                             </span>
                                             <span>{formattedValue}</span>
-                                        </div>
+                                        </label>
                                         <span className="count">{count ?? ''}</span>
                                     </label>
                                 </li>

@@ -236,42 +236,16 @@
     display: flex;
     align-items: center;
 }
-.non-matches-checkbox label {
-    display: flex;
-    align-items: center;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #617C9D;
+.non-matches-checkbox label.checkbox-container .checkbox-icon {
+    border-color: #212529;
+    margin-right: 8px;
 }
-.non-matches-checkbox label input {
-    margin-right: 5px;
-    height: 15px;
-    width: 15px;
-    accent-color: #617C9D;
-}
-.non-matches-checkbox label:hover {
+.non-matches-checkbox label.checkbox-container .checkbox-icon:hover {
     cursor: pointer;
 }
-.non-matches-checkbox label input:hover {
-    cursor: pointer;
+.non-matches-checkbox label.checkbox-container .checkbox-icon svg {
+    color: #212529;
 }
-/* .non-matches-checkbox label span.custom-checkbox {
-    display: flex;
-    border: 1.5px solid #617C9D;
-    border-radius: 3px;
-    width: 15px;
-    height: 15px;
-    cursor: pointer;
-    margin-right: 10px;
-}
-.non-matches-checkbox label span.custom-checkbox:checked {
-    background-color: #617C9D;
-}
-.non-matches-checkbox label span.custom-checkbox:focus-visible,
-.non-matches-checkbox label span.custom-checkbox:focus {
-    outline: 2px solid blue;
-    outline-offset: 2px;
-} */
 
 .vis-overview-panel .overview-root .overview-status {
     display: flex;
@@ -457,6 +431,8 @@
     justify-content: space-between;
     gap: 20px;
 }
+
+/* Checkbox */
 .vis-overview-panel .overview-root .dropdown-container .dropdown-items .dropdown-item-checkbox {
     display: flex;
     align-items: center;
@@ -465,28 +441,6 @@
     padding: 5px 10px;
     gap: 10px;
     flex: 1;
-}
-.vis-overview-panel .overview-root .dropdown-container .dropdown-items .dropdown-item-checkbox .checkbox-container {
-    display: flex;
-    align-items: center;
-}
-.vis-overview-panel .overview-root .dropdown-container .dropdown-items .dropdown-item-checkbox .checkbox {
-    display: none;
-}
-.vis-overview-panel .overview-root .dropdown-container .dropdown-items .dropdown-item-checkbox .checkbox-icon {
-    display: flex;
-    width: 15px;
-    height: 15px;
-    background-color: white;
-    border: 1.5px solid #3d5066;
-    border-radius: 1.5px;
-    margin: auto;
-    margin-right: 10px;
-}
-.vis-overview-panel .overview-root .dropdown-container .dropdown-items .dropdown-item-checkbox .checkbox-icon svg {
-    color: white;
-    width: 12px;
-    height: 12px;
 }
 .vis-overview-panel .overview-root .dropdown-container.filter .dropdown-items .dropdown-item.selected {
     font-weight: 600;
@@ -704,6 +658,33 @@
     width: 0px;
     height: 100%;
     color: #617C9D;
+}
+
+/* Checkbox styles */
+.vis-overview-panel .overview-root .checkbox-container {
+    display: flex;
+    align-items: center;
+}
+.vis-overview-panel .overview-root .checkbox-container:hover {
+    cursor: pointer;
+}
+.vis-overview-panel .overview-root .checkbox {
+    display: none;
+}
+.vis-overview-panel .overview-root .checkbox-icon {
+    display: flex;
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border: 1.5px solid #3d5066;
+    border-radius: 1.5px;
+    margin: auto;
+    margin-right: 10px;
+}
+.vis-overview-panel .overview-root .checkbox-icon svg {
+    color: white;
+    width: 12px;
+    height: 12px;
 }
 
 /* Animations */
