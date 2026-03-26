@@ -258,14 +258,32 @@ export const OverviewFilter = ({
                                         optionsRefs.current[i] = el;
                                     }}
                                     aria-selected={isSelected}
-                                    onClick={() => handleOptionSelection(option)}
                                     onMouseEnter={() => setFocusedIndex(i)}
                                     className={`dropdown-item ${isSelected ? 'selected' : ''} ${
                                         focusedIndex === i ? 'focused' : ''
                                     }`}
                                 >
-                                    <span>{formattedValue}</span>
-                                    <span>{count ?? ''}</span>
+                                    <label className="dropdown-item-checkbox">
+                                        <div className="checkbox-container">
+                                            <input 
+                                                className="checkbox" 
+                                                type="checkbox" 
+                                                checked={isSelected} 
+                                                onChange={() => handleOptionSelection(option)} 
+                                            />
+                                            <span className="checkbox-icon">
+                                                {isSelected && (
+                                                    <svg className="icon" viewBox={ICONS.CHECKMARK.viewBox}>
+                                                        {ICONS.CHECKMARK.path.map(p => (
+                                                            <path fill="currentColor" key={p} d={p} />
+                                                        ))}
+                                                    </svg>
+                                                )}
+                                            </span>
+                                            <span>{formattedValue}</span>
+                                        </div>
+                                        <span className="count">{count ?? ''}</span>
+                                    </label>
                                 </li>
                             );
                         }
