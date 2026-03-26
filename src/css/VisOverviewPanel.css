@@ -143,7 +143,17 @@
     overflow: clip;
 }
 .vis-overview-panel .overview-root .overview-container .overview .overview-thumbnail-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
+    padding: 5px 5px;
+}
+.vis-overview-panel .overview-root .overview-container .overview .overview-thumbnail-container .overview-thumbnail {
+    flex: 1;
+    min-width: 200px;
+    width: 95%;
+    height: auto;
 }
 .vis-overview-panel .overview-root .overview-container.with-filters {
     max-height: calc(100vh - 250px);

@@ -111,7 +111,7 @@ export const SmallOverviewWrapper = ({ demo, handleDemoChange, demoIndex, filter
             </div>
             <div className="overview-thumbnail-container"style={{ position: 'relative' }}>
                 {getThumbnail(d) ? (
-                    <img className="overview-thumbnail" src={getThumbnail(d)} style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }} />
+                    <img className="overview-thumbnail" src={getThumbnail(d)} />
                 ) : (
                     // <div style={{ marginLeft: 'calc(50% - 105px - 10px)' }}>
                     //     <GoslingComponent
