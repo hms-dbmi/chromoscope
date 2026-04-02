@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 import { ICONS } from '../../icon';
 import { OverviewFilter } from './OverviewFilter';
@@ -10,8 +10,8 @@ import { accessNestedField, getBinnedValues, getBinIndex } from '../../utils';
 import { FilterStatusPanel } from './FilterStatusPanel';
 
 /**
- * `OptionValue` and `NewFilter` are used to define filters for the OverviewPanel.
- * It contains the title, type, and values of the filter.
+ * `Option` is used to define a filter option for the OverviewPanel. It 
+ * contains the type, field, and values of the filter option.
  * Also used to define `activeFilters`
  */
 export type Primitive = string | number | boolean;
@@ -22,12 +22,6 @@ export type OptionValue = {
     value: Primitive;
     count?: number;
 };
-
-export type NewFilter = {
-    type: string;
-    values: OptionValue[];
-};
-
 export type Option = {
     type: string;
     field: string;
