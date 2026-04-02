@@ -10,24 +10,6 @@ import { accessNestedField, getBinnedValues, getBinIndex } from '../../utils';
 import { FilterStatusPanel } from './FilterStatusPanel';
 
 /**
- * OptionValue and FilterOption are used to define options for filter dropdowns,
- * OptionValue is the new configuration format
- */
-export type FilterOption = {
-    name: string;
-    url?: string;
-    count?: number;
-    samples?: SampleType[]; // Optionally pass samples directly
-};
-
-export type Filter = {
-    nullValue?: string;
-    title: string;
-    options: Array<FilterOption>;
-    active: boolean;
-};
-
-/**
  * `OptionValue` and `NewFilter` are used to define filters for the OverviewPanel.
  * It contains the title, type, and values of the filter.
  * Also used to define `activeFilters`
