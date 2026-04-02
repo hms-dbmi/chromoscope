@@ -18,6 +18,7 @@ type OverviewFilterProps = {
     options?: FilterOption[] | OptionValue[];
     activeFilters?: ActiveFilters;
     cohortFiltersObject?: {[key: string]: CohortFilter};
+    optionCounts?: Record<string, number>;
     onChange?: (value: string, option?: OptionValue| FilterOption | null) => void;
     setActiveFilters?: (filters: ActiveFilters) => void;
 };
@@ -49,6 +50,7 @@ export const OverviewFilter = ({
     title,
     options = [],
     activeFilters,
+    optionCounts,
     onChange = null,
     setActiveFilters = null,
     cohortFiltersObject
@@ -245,7 +247,7 @@ export const OverviewFilter = ({
                                     }`}
                                 >
                                     <span>{option.name}</span>
-                                    <span>{option?.count ?? ''}</span>
+                                    <span>{optionCounts?.[option.name] ?? option?.count ?? ''}</span>
                                 </li>
                             );
                         } else {
@@ -292,7 +294,7 @@ export const OverviewFilter = ({
                                             </span>
                                             <span>{formattedValue}</span>
                                         </label>
-                                        <span className="count">{count ?? ''}</span>
+                                        <span className="count">{optionCounts?.[""+value] ?? option?.count ?? ''}</span>
                                     </label>
                                 </li>
                             );

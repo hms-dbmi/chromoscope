@@ -347,9 +347,12 @@ export const OverviewPanel = ({
     const [showExternalDemoAlert, setShowExternalDemoAlert] = useState<boolean>(true);
     const [showNonMatches, setShowNonMatches] = useState<boolean>(false);
 
+
+    // Get all samples
+    const allSamples = cohorts[selectedCohort]?.samples || [];
+
     // Get filters for the selected cohort
     const cohortFiltersObject = cohorts?.[selectedCohort]?.filters || {};
-    const cohortFilters : CohortFilter[] = Object.values(cohortFiltersObject);
     const filterIdentifiers : string[] = Object.keys(cohortFiltersObject);
     
     // Create variable to store inverted filters
@@ -402,8 +405,103 @@ export const OverviewPanel = ({
     }, [cohorts, selectedCohort]);
 
     /**
-     * Adds an option to an existing filter or creates a new filter if it 
-     * doesn't exist
+     * Filters `prevSamples` based on `activeFilters`
+     * @param prevSamples - samples to filter
+     * @param activeFilters - active filters
+     * @returns filtered samples
+     */
+    const getFilteredSamples = (prevSamples: SampleType[], activeFilters: ActiveFilters) => {
+        return prevSamples.filter((sample: any) => {
+            return Object.entries(activeFilters).every(([identifier, acceptedValues]) => {
+                if (acceptedValues.length === 0) return true;
+
+                const filterField = cohorts[selectedCohort]?.filters?.[identifier]?.field;
+                let sampleValue = accessNestedField(sample, filterField);
+
+                // Continuous values have bins to compare against
+                if (filterValuesMap[identifier]?.type === 'continuous') {
+                    // Typecast to Number if necessary
+                    const number = Number(sampleValue);
+                    // Check if `sampleValue` is between one of the bins
+                    const bins = filterValuesMap[identifier].values;
+                    const binIndex = getBinIndex(number, bins);
+                    sampleValue = bins[binIndex].value;
+                }
+                return acceptedValues.includes(sampleValue);
+            });
+        });
+    }
+
+    /**
+     * Create a subset for each filter, giving the samples that are currently
+     * shown based on the active filters except for that filter. Used to count
+     * the number of samples that would be added/removed if a filter option is
+     * selected/deselected
+     */
+    const baseSubsets = useMemo(() => {
+        if (!filterValuesMap) return {};
+
+        const result: Record<string, SampleType[]> = {};
+
+        Object.keys(cohortFiltersObject).forEach(filterIdentifier => {
+            // Clone active filters
+            const activeFiltersWithoutSelf: ActiveFilters = { ...activeFilters };
+
+            // Remove current filter entirely
+            delete activeFiltersWithoutSelf[filterIdentifier];
+
+            // Apply remaining filters
+            result[filterIdentifier] = Object.keys(activeFilters).length > 0 ? getFilteredSamples(
+                allSamples,
+                activeFiltersWithoutSelf
+            ) : allSamples;
+        });
+
+        return result;
+    }, [allSamples, activeFilters, filterValuesMap, cohortFiltersObject]);
+
+
+    // Get counts for each option by filtering base subset on onlythat option
+    const optionCounts = useMemo(() => {
+        if (!filterValuesMap) return {};
+
+        const counts: Record<string, Record<string, number>> = {};
+
+        Object.keys(filterValuesMap).forEach(filterId => {
+            counts[filterId] = {};
+
+            const currentValues = activeFilters[filterId] || [];
+
+            filterValuesMap[filterId].values.forEach(option => {
+                const value = option.value;
+
+                const tempFilters: ActiveFilters = { ...activeFilters };
+
+                if (currentValues.includes(value)) {
+                    // simulate unchecking the option
+                    const newValues = currentValues.filter(v => v !== value);
+
+                    if (newValues.length === 0) {
+                        delete tempFilters[filterId];
+                    } else {
+                        tempFilters[filterId] = newValues;
+                    }
+                } else {
+                    // simulate checking the option
+                    tempFilters[filterId] = [...currentValues, value];
+                }
+
+                const result = getFilteredSamples(allSamples, tempFilters);
+
+                counts[filterId][value as string] = result.length;
+            });
+        });
+
+        return counts;
+    }, [allSamples, activeFilters, filterValuesMap, cohortFiltersObject]);
+
+    /**
+     * Adds an option to an existing active filter or removes it if it exists
      * @param filterIdentifier - identifier of the filter
      * @param value - value of the option
      * @returns updated activeFilters object
@@ -436,31 +534,13 @@ export const OverviewPanel = ({
      * @param option - option selected by the user
      */
     const onFilterOptionSelection = (filterIdentifier: string, option: OptionValue) => {
-        const { start, end, value } = option;
+        const { value } = option;
 
-        const allSamples = cohorts[selectedCohort]?.samples || [];
+        // Compute updated filters
         const updatedActiveFilters = getUpdatedActiveFilters(filterIdentifier, value);
 
         // Apply filters
-        const newFilteredSamples = allSamples.filter((sample: any) => {
-            return Object.entries(updatedActiveFilters).every(([identifier, acceptedValues]) => {
-                if (acceptedValues.length === 0) return true;
-
-                const filterField = cohorts[selectedCohort]?.filters?.[identifier]?.field;
-                let sampleValue = accessNestedField(sample, filterField);
-
-                // Continuous values have bins to compare against
-                if (filterValuesMap[identifier]?.type === 'continuous') {
-                    // Typecast to Number if necessary
-                    const number = typeof sampleValue === 'number' ? sampleValue : Number(sampleValue);
-                    // Check if `sampleValue` is between one of the bins
-                    const bins = filterValuesMap[filterIdentifier].values;
-                    const binIndex = getBinIndex(number, bins);
-                    sampleValue = bins[binIndex].value;
-                }
-                return acceptedValues.includes(sampleValue);
-            });
-        });
+        const newFilteredSamples = getFilteredSamples(allSamples, updatedActiveFilters);
         
         // Update state variables
         setFilteredSamples(newFilteredSamples);
@@ -571,6 +651,7 @@ export const OverviewPanel = ({
                                     activeFilters={activeFilters}
                                     nullValue={defaultFilters[filter].nullValue}
                                     setActiveFilters={setActiveFilters}
+                                    optionCounts={optionCounts[filter]}
                                 />
                             );
                         })}
@@ -597,6 +678,7 @@ export const OverviewPanel = ({
                                             nullValue={type === 'binary' ? undefined : null}
                                             setActiveFilters={setActiveFilters}
                                             cohortFiltersObject={cohortFiltersObject}
+                                            optionCounts={optionCounts[filterIdentifier]}
                                         />
                                     );
                                 })}
