@@ -294,7 +294,7 @@ export const OverviewFilter = ({
                                             </span>
                                             <span>{formattedValue}</span>
                                         </label>
-                                        <span className="count">{optionCounts?.[""+value] ?? option?.count ?? ''}</span>
+                                        <span className="count">{optionCounts?.[value as string] ?? option?.count ?? ''}</span>
                                     </label>
                                 </li>
                             );

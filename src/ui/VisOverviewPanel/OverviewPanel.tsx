@@ -288,10 +288,6 @@ type FiltersMap = {
     [key: string]: Option;
 };
 
-type NewFilterGroup = {
-    [key: string]: NewFilter;
-};
-
 export type ActiveFilters = {
     [key: string]: Primitive[];
 }
@@ -346,7 +342,6 @@ export const OverviewPanel = ({
     const [activeFilters, setActiveFilters] = useState<ActiveFilters>({});
     const [showExternalDemoAlert, setShowExternalDemoAlert] = useState<boolean>(true);
     const [showNonMatches, setShowNonMatches] = useState<boolean>(false);
-
 
     // Get all samples
     const allSamples = cohorts[selectedCohort]?.samples || [];
@@ -451,10 +446,10 @@ export const OverviewPanel = ({
             delete activeFiltersWithoutSelf[filterIdentifier];
 
             // Apply remaining filters
-            result[filterIdentifier] = Object.keys(activeFilters).length > 0 ? getFilteredSamples(
+            result[filterIdentifier] = getFilteredSamples(
                 allSamples,
                 activeFiltersWithoutSelf
-            ) : allSamples;
+            );
         });
 
         return result;
@@ -470,28 +465,32 @@ export const OverviewPanel = ({
         Object.keys(filterValuesMap).forEach(filterId => {
             counts[filterId] = {};
 
+            // Get base subset
+            const base = baseSubsets[filterId] || [];
             const currentValues = activeFilters[filterId] || [];
 
             filterValuesMap[filterId].values.forEach(option => {
                 const value = option.value;
+                let newValues: Primitive[];
 
-                const tempFilters: ActiveFilters = { ...activeFilters };
 
                 if (currentValues.includes(value)) {
                     // simulate unchecking the option
-                    const newValues = currentValues.filter(v => v !== value);
-
-                    if (newValues.length === 0) {
-                        delete tempFilters[filterId];
-                    } else {
-                        tempFilters[filterId] = newValues;
-                    }
+                    newValues = currentValues.filter(v => v !== value);
                 } else {
                     // simulate checking the option
-                    tempFilters[filterId] = [...currentValues, value];
+                    newValues = [...currentValues, value];
                 }
 
-                const result = getFilteredSamples(allSamples, tempFilters);
+                let result: SampleType[];
+
+                if (newValues.length === 0) {
+                    result = base;
+                } else {
+                    result = getFilteredSamples(base, {
+                        [filterId]: newValues
+                    })
+                }
 
                 counts[filterId][value as string] = result.length;
             });
