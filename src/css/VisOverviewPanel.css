@@ -207,12 +207,6 @@
     background-color: #4a6680;
 }
 
-.vis-overview-panel .overview-root .overview-header .cancer-selector {
-    display: flex;
-    flex-direction: column;
-    padding: 0px;
-}
-
 .vis-overview-panel .overview-root .overview-header .dropdown-container .dropdown-button {
     min-width: 350px;
     justify-content: space-between;

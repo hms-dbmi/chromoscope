@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect, useMemo } from 'react';
 
 import { ICONS } from '../../icon';
 import { OverviewFilter } from './OverviewFilter';
-import { samples, SampleType } from '../../data/samples';
+import { SampleType } from '../../data/samples';
 import { SmallOverviewWrapper } from '../SmallOverviewWrapper';
 import { CohortSelector } from './CohortSelector';
-import { Cohort, Cohorts, CohortFilter } from '../../App';
+import { Cohorts } from '../../App';
 import { accessNestedField, getBinnedValues, getBinIndex } from '../../utils';
 import { FilterStatusPanel } from './FilterStatusPanel';
 
@@ -291,24 +291,6 @@ type FiltersMap = {
 export type ActiveFilters = {
     [key: string]: Primitive[];
 }
-
-type FilterGroup = {
-    [key: string]: Filter;
-};
-
-const defaultFilters: FilterGroup = {
-    curatedSampleSets: {
-        title: 'Curated Sample Sets',
-        options: CURATED_SAMPLE_SETS,
-        active: true, // Show this filter selected by default
-        nullValue: 'Pan-cancer Examples'
-    },
-    cancerType: {
-        title: 'Cancer Type',
-        options: PCAWG_SAMPLES,
-        active: false
-    }
-};
 
 type OverviewPanelProps = {
     demo: SampleType;
@@ -635,28 +617,6 @@ export const OverviewPanel = ({
                         <span>Visualize Your Data</span>
                     </button>
                 </div>
-                {selectedCohort === 'PCAWG: Cancer Cohort' && (
-                    <div className="overview-controls">
-                        <div className="overview-controls-filters">
-                        {Object.keys(defaultFilters).map((filter, index) => {
-                            return (
-                                <OverviewFilter
-                                    key={index}
-                                    identifier={filter}
-                                    title={defaultFilters[filter].title}
-                                    options={defaultFilters[filter].options}
-                                    active={Object.keys(activeFilters).includes(filter)}
-                                    onChange={onChange}
-                                    activeFilters={activeFilters}
-                                    nullValue={defaultFilters[filter].nullValue}
-                                    setActiveFilters={setActiveFilters}
-                                    optionCounts={optionCounts[filter]}
-                                />
-                            );
-                        })}
-                        </div>
-                    </div>
-                )}
                 {filterIdentifiers.length > 0 && (
                     <>
                         <div className="overview-controls">
