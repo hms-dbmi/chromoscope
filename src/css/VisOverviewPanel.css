@@ -441,6 +441,7 @@
     padding: 5px 10px;
     gap: 10px;
     flex: 1;
+    min-width: 120px;
 }
 .vis-overview-panel .overview-root .dropdown-container.filter .dropdown-items .dropdown-item.selected {
     font-weight: 600;
