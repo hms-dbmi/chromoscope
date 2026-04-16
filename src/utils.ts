@@ -122,10 +122,7 @@ export const getBinIndex = (value: number, bins: OptionValue[]) => {
         const { start, end } = bins[i];
         const isLastBin = i === bins.length - 1;
 
-        if (
-            (value >= start && value < end) ||
-            (isLastBin && value <= end)
-        ) {
+        if ((value >= start && value < end) || (isLastBin && value <= end)) {
             return i;
         }
     }
@@ -138,13 +135,11 @@ export const getBinIndex = (value: number, bins: OptionValue[]) => {
  * @param rawValues array of values to be binned
  * @returns bins associated with the values
  */
-export const getBinnedValues = (rawValues : OptionValue[], numBins : number = 5) : OptionValue[] => {
-
+export const getBinnedValues = (rawValues: OptionValue[], numBins = 5): OptionValue[] => {
     // Typecast to Number
-    const numbers : number[] = rawValues
-        .map(v => typeof v.value === 'number' ? v.value : Number(v.value))
+    const numbers: number[] = rawValues
+        .map(v => (typeof v.value === 'number' ? v.value : Number(v.value)))
         .filter(v => !Number.isNaN(v));
-
 
     // If no values, don't add filter
     if (numbers.length === 0) {
@@ -155,7 +150,6 @@ export const getBinnedValues = (rawValues : OptionValue[], numBins : number = 5)
     const min = Math.min(...numbers);
     const max = Math.max(...numbers);
 
-
     // Calculate the bin size
     const range = max - min || 1;
     const binSize = range / numBins;
@@ -163,9 +157,7 @@ export const getBinnedValues = (rawValues : OptionValue[], numBins : number = 5)
     // Create bins
     const bins = Array.from({ length: numBins }, (_, i) => {
         const start = min + i * binSize;
-        const end = i === numBins - 1
-            ? max
-            : min + (i + 1) * binSize;
+        const end = i === numBins - 1 ? max : min + (i + 1) * binSize;
 
         return {
             start,
@@ -178,9 +170,9 @@ export const getBinnedValues = (rawValues : OptionValue[], numBins : number = 5)
 
     // Update counts
     rawValues.forEach(value => {
-        let n = typeof value.value === 'number' ? value.value : Number(value.value);
+        const n = typeof value.value === 'number' ? value.value : Number(value.value);
         if (Number.isNaN(n)) return;
-        let index = getBinIndex(n, bins);
+        const index = getBinIndex(n, bins);
         bins[index].count += value?.count || 1;
     });
 

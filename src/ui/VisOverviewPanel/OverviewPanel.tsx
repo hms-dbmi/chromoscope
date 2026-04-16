@@ -10,7 +10,7 @@ import { accessNestedField, getBinnedValues, getBinIndex } from '../../utils';
 import { FilterStatusPanel } from './FilterStatusPanel';
 
 /**
- * `Option` is used to define a filter option for the OverviewPanel. It 
+ * `Option` is used to define a filter option for the OverviewPanel. It
  * contains the type, field, and values of the filter option.
  * Also used to define `activeFilters`
  */
@@ -34,7 +34,7 @@ type FiltersMap = {
 
 export type ActiveFilters = {
     [key: string]: Primitive[];
-}
+};
 
 type OverviewPanelProps = {
     demo: SampleType;
@@ -74,10 +74,12 @@ export const OverviewPanel = ({
 
     // Get filters for the selected cohort
     const cohortFiltersObject = cohorts?.[selectedCohort]?.filters || {};
-    const filterIdentifiers : string[] = Object.keys(cohortFiltersObject);
-    
+    const filterIdentifiers: string[] = Object.keys(cohortFiltersObject);
+
     // Create variable to store inverted filters
-    const invertedSamples = cohorts[selectedCohort]?.samples?.filter( (sample : SampleType) => !filteredSamples.includes(sample));
+    const invertedSamples = cohorts[selectedCohort]?.samples?.filter(
+        (sample: SampleType) => !filteredSamples.includes(sample)
+    );
 
     // Compute filter options based on cohort filters
     // Update when: cohorts or selectedCohort changes
@@ -110,7 +112,7 @@ export const OverviewPanel = ({
                 }
             });
 
-            let transformedValues : OptionValue[] = [...valuesMap].map(([value, count]) => ({ value, count }));
+            let transformedValues: OptionValue[] = [...valuesMap].map(([value, count]) => ({ value, count }));
             if (type === 'continuous') {
                 transformedValues = getBinnedValues(transformedValues);
             }
@@ -151,7 +153,7 @@ export const OverviewPanel = ({
                 return acceptedValues.includes(sampleValue);
             });
         });
-    }
+    };
 
     /**
      * Create a subset for each filter, giving the samples that are currently
@@ -172,15 +174,11 @@ export const OverviewPanel = ({
             delete activeFiltersWithoutSelf[filterIdentifier];
 
             // Apply remaining filters
-            result[filterIdentifier] = getFilteredSamples(
-                allSamples,
-                activeFiltersWithoutSelf
-            );
+            result[filterIdentifier] = getFilteredSamples(allSamples, activeFiltersWithoutSelf);
         });
 
         return result;
     }, [allSamples, activeFilters, filterValuesMap, cohortFiltersObject]);
-
 
     // Get counts for each option by filtering base subset on onlythat option
     const optionCounts = useMemo(() => {
@@ -199,7 +197,6 @@ export const OverviewPanel = ({
                 const value = option.value;
                 let newValues: Primitive[];
 
-
                 if (currentValues.includes(value)) {
                     // simulate unchecking the option
                     newValues = currentValues.filter(v => v !== value);
@@ -215,7 +212,7 @@ export const OverviewPanel = ({
                 } else {
                     result = getFilteredSamples(base, {
                         [filterId]: newValues
-                    })
+                    });
                 }
 
                 counts[filterId][value as string] = result.length;
@@ -235,8 +232,8 @@ export const OverviewPanel = ({
         const currentValues = activeFilters[filterIdentifier] || [];
 
         // Check if `value` already exist in the filter
-        const updatedValues = currentValues.includes(value) 
-            ? currentValues.filter(v => v !== value) 
+        const updatedValues = currentValues.includes(value)
+            ? currentValues.filter(v => v !== value)
             : [...currentValues, value];
 
         // Copy activeFilters
@@ -250,7 +247,7 @@ export const OverviewPanel = ({
         }
 
         return updatedActiveFilters;
-    }
+    };
 
     /**
      * Handles the selection of a filter option. Updates the `filteredSamples`
@@ -266,7 +263,7 @@ export const OverviewPanel = ({
 
         // Apply filters
         const newFilteredSamples = getFilteredSamples(allSamples, updatedActiveFilters);
-        
+
         // Update state variables
         setFilteredSamples(newFilteredSamples);
         setActiveFilters(updatedActiveFilters);
@@ -367,7 +364,7 @@ export const OverviewPanel = ({
                             <div className="overview-controls-filters">
                                 {filterIdentifiers.map((filterIdentifier, i) => {
                                     const { field, title, type } = cohortFiltersObject?.[filterIdentifier];
-                                    
+
                                     return (
                                         <OverviewFilter
                                             key={i}
@@ -386,15 +383,15 @@ export const OverviewPanel = ({
                                     );
                                 })}
                             </div>
-                            { Object.keys(activeFilters).length > 0 && 
+                            {Object.keys(activeFilters).length > 0 && (
                                 <div className="non-matches-checkbox">
                                     <label htmlFor="non-matches" className="checkbox-container">
-                                        <input 
-                                            id="non-matches" 
-                                            type="checkbox" 
+                                        <input
+                                            id="non-matches"
+                                            type="checkbox"
                                             className="checkbox"
-                                            checked={showNonMatches} 
-                                            onChange={() => setShowNonMatches(!showNonMatches)} 
+                                            checked={showNonMatches}
+                                            onChange={() => setShowNonMatches(!showNonMatches)}
                                         />
                                         <span className="checkbox-icon">
                                             {showNonMatches && (
@@ -409,26 +406,26 @@ export const OverviewPanel = ({
                                         Show non-matches for comparison
                                     </label>
                                 </div>
-                            }
+                            )}
                         </div>
                     </>
                 )}
-                {Object.keys(activeFilters).length > 0 &&
+                {Object.keys(activeFilters).length > 0 && (
                     <FilterStatusPanel
                         activeFilters={activeFilters}
                         cohortFiltersObject={cohortFiltersObject}
                         onFilterOptionSelection={onFilterOptionSelection}
                     />
-                }
+                )}
                 <div
                     className={`overview-container ${selectedCohort === 'PCAWG: Cancer Cohort' ? 'with-filters' : ''}`}
                 >
                     <div className="overview-container-group">
-                        { showNonMatches && Object.keys(activeFilters).length > 0 && 
+                        {showNonMatches && Object.keys(activeFilters).length > 0 && (
                             <div className="comparison-banner matches">
                                 <span>Matches</span>
                             </div>
-                        }
+                        )}
                         <div className="overview-status">{`Total of ${filteredSamples.length} samples loaded`}</div>
                         <div className="samples-container">
                             <SmallOverviewWrapper

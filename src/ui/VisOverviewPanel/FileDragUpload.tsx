@@ -138,7 +138,6 @@ export const FileDragUpload = ({
                             message: errorMsg
                         });
                     } else {
-                        console.log('Formatted cohort data:', formattedData);
                         onJsonParsed(formattedData);
                         setError(null);
                     }

@@ -109,7 +109,7 @@ export const SmallOverviewWrapper = ({ demo, handleDemoChange, demoIndex, filter
             <div style={{ color: 'grey', fontSize: '14px' }}>
                 {'' + d.id.slice(0, 20) + (d.id.length >= 20 ? '...' : '')}
             </div>
-            <div className="overview-thumbnail-container"style={{ position: 'relative' }}>
+            <div className="overview-thumbnail-container" style={{ position: 'relative' }}>
                 {getThumbnail(d) ? (
                     <img className="overview-thumbnail" src={getThumbnail(d)} />
                 ) : (

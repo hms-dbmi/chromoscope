@@ -12,7 +12,7 @@ type OverviewFilterProps = {
     type?: string;
     options?: OptionValue[];
     activeFilters?: ActiveFilters;
-    cohortFiltersObject?: {[key: string]: CohortFilter};
+    cohortFiltersObject?: { [key: string]: CohortFilter };
     optionCounts?: Record<string, number>;
     onChange?: (value: string, option?: OptionValue | null) => void;
     setActiveFilters?: (filters: ActiveFilters) => void;
@@ -32,7 +32,7 @@ export const transformOptionValue = (value: Primitive, filterType: string) => {
     if (filterType === 'binary') {
         return getBinaryOptionValue(value);
     } else if (filterType === 'continuous') {
-        return value
+        return value;
     }
     return value;
 };
@@ -173,13 +173,11 @@ export const OverviewFilter = ({
             >
                 <div className="select-label-wrapper">
                     <span id="select-label">{title}</span>
-                    { activeFilters?.[identifier]?.length > 0 &&
+                    {activeFilters?.[identifier]?.length > 0 && (
                         <div className="selected-option-count">
-                            <span>
-                                {activeFilters[identifier].length ?? ''}
-                            </span>
+                            <span>{activeFilters[identifier].length ?? ''}</span>
                         </div>
-                    }
+                    )}
                 </div>
                 <svg className="icon" viewBox={ICONS.CHEVRON_UP.viewBox}>
                     {ICONS.CHEVRON_UP.path.map(p => (
@@ -198,7 +196,7 @@ export const OverviewFilter = ({
                         }
 
                         // Cast to string to as fallback
-                        return ("" + valA).localeCompare("" + valB) ? 1 : -1
+                        return ('' + valA).localeCompare('' + valB) ? 1 : -1;
                     })
                     .map((option: OptionValue, i: number) => {
                         const { value } = option;
@@ -228,10 +226,10 @@ export const OverviewFilter = ({
                                     <label htmlFor={`${identifier}-${option.value}`} className="checkbox-container">
                                         <input
                                             id={`${identifier}-${option.value}`}
-                                            className="checkbox" 
-                                            type="checkbox" 
-                                            checked={isSelected} 
-                                            onChange={() => handleOptionSelection(option)} 
+                                            className="checkbox"
+                                            type="checkbox"
+                                            checked={isSelected}
+                                            onChange={() => handleOptionSelection(option)}
                                         />
                                         <span className="checkbox-icon">
                                             {isSelected && (
@@ -244,7 +242,9 @@ export const OverviewFilter = ({
                                         </span>
                                         <span>{formattedValue}</span>
                                     </label>
-                                    <span className="count">{optionCounts?.[value as string] ?? option?.count ?? ''}</span>
+                                    <span className="count">
+                                        {optionCounts?.[value as string] ?? option?.count ?? ''}
+                                    </span>
                                 </label>
                             </li>
                         );
