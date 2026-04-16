@@ -205,7 +205,7 @@ export const OverviewFilter = ({
                         const isSelected = activeOptions.includes(value);
 
                         // Format the value based on the filter type
-                        const filterType = Object.values(cohortFiltersObject).find(f => f.field === identifier)?.type;
+                        const filterType = cohortFiltersObject[identifier]?.type;
                         const formattedValue = transformOptionValue(value, filterType);
 
                         return (

@@ -385,24 +385,25 @@ export const OverviewPanel = ({
                             </div>
                             {Object.keys(activeFilters).length > 0 && (
                                 <div className="non-matches-checkbox">
-                                    <label htmlFor="non-matches" className="checkbox-container">
+                                    <label
+                                        htmlFor="non-matches"
+                                        className={`checkbox-container ${showNonMatches ? 'checked' : ''}`}
+                                    >
                                         <input
                                             id="non-matches"
                                             type="checkbox"
                                             className="checkbox"
                                             checked={showNonMatches}
-                                            onChange={() => setShowNonMatches(!showNonMatches)}
+                                            aria-checked={showNonMatches}
+                                            onChange={e => setShowNonMatches(e.target.checked)}
                                         />
                                         <span className="checkbox-icon">
-                                            {showNonMatches && (
-                                                <svg className="icon" viewBox={ICONS.CHECKMARK.viewBox}>
-                                                    {ICONS.CHECKMARK.path.map(p => (
-                                                        <path fill="currentColor" key={p} d={p} />
-                                                    ))}
-                                                </svg>
-                                            )}
+                                            <svg className="icon" viewBox={ICONS.CHECKMARK.viewBox}>
+                                                {ICONS.CHECKMARK.path.map(p => (
+                                                    <path fill="currentColor" key={p} d={p} />
+                                                ))}
+                                            </svg>
                                         </span>
-                                        <span className="custom-checkbox"></span>
                                         Show non-matches for comparison
                                     </label>
                                 </div>

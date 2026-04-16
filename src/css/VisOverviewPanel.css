@@ -225,19 +225,35 @@
 }
 
 /* Checkbox for showing non-matches */
+.checkbox-container {
+    font-weight: 500;
+}
+label.checkbox-container.checked .checkbox-icon {
+    border-width: 2px;
+}
 .non-matches-checkbox {
     display: flex;
     align-items: center;
+    color: #617c9d;
 }
 .non-matches-checkbox label.checkbox-container .checkbox-icon {
-    border-color: #212529;
+    border-color: #617c9d;
     margin-right: 8px;
 }
 .non-matches-checkbox label.checkbox-container .checkbox-icon:hover {
     cursor: pointer;
 }
 .non-matches-checkbox label.checkbox-container .checkbox-icon svg {
-    color: #212529;
+    display: none;
+    width: 100%;
+    height: auto;
+    color: #617c9d;
+}
+.non-matches-checkbox input#non-matches:checked {
+    font-weight: 600;
+}
+.non-matches-checkbox input#non-matches:checked + .checkbox-icon svg {
+    display: flex;
 }
 
 .vis-overview-panel .overview-root .overview-status {
