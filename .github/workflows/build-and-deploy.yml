@@ -2,7 +2,7 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [main]
+    branches: [main, staging]
   pull_request:
 
 jobs:
@@ -25,6 +25,39 @@ jobs:
           git config --global user.email "GitHub Action"
           git remote set-url origin https://${ACCESS_TOKEN}@github.com/${REPO}.git
           yarn deploy
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          REPO: ${{ github.repository }}
+
+  deploy-staging:
+    name: Deploy Staging
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/staging'
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 18
+      - run: yarn install
+      - name: Build with staging base path
+        run: npx vite build --base=/staging/
+      - name: Deploy staging subdirectory to gh-pages
+        run: |
+          git config --global user.name "action@github.com"
+          git config --global user.email "GitHub Action"
+          git remote set-url origin https://${ACCESS_TOKEN}@github.com/${REPO}.git
+          git fetch origin gh-pages
+          git worktree add --detach /tmp/gh-pages origin/gh-pages
+          rm -rf /tmp/gh-pages/staging
+          cp -R dist /tmp/gh-pages/staging
+          cd /tmp/gh-pages
+          git add staging
+          git diff --cached --quiet || git commit -m "chore: deploy staging build [skip ci]"
+          git push origin HEAD:gh-pages
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           REPO: ${{ github.repository }}
