@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from 'react';
-import { GoslingComponent, GoslingRef, embed } from 'gosling.js';
+import { GoslingComponent, GoslingRef } from 'gosling.js';
 import { debounce, sample } from 'lodash';
 import type { RouteComponentProps } from 'react-router-dom';
 import * as bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min';

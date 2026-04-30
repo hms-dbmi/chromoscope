@@ -68,12 +68,9 @@ export const OverviewFilter = ({
         const rect = dropdown.getBoundingClientRect();
 
         const isOverflowingRight = rect.right > window.innerWidth;
-        console.log(isOverflowingRight);
 
         if (isOverflowingRight) {
-            console.log('Dropdown is overflowing on the right side. Applying logic to shift it left.');
             dropdown.classList.add('reverse-dropdown');
-            // Apply logic to shift menu left (e.g., add a 'reverse' class)
         }
     }, [showDropdown]);
 
