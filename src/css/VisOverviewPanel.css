@@ -651,6 +651,11 @@ label.checkbox-container.checked .checkbox-icon {
 .selected-filter-option .remove-filter-option svg {
     height: 15px;
     width: 15px;
+    margin: auto;
+}
+.selected-filter-option .remove-filter-option svg .icon {
+    display: flex;
+    align-items: center;
 }
 
 .selected-filter-title {
