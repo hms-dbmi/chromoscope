@@ -10,6 +10,9 @@ export const GOSLING_VIS_COMPONENT_PADDING = 3;
 export const CLINICAL_PANEL_OPEN_WIDTH = 250;
 export const CLINICAL_PANEL_CLOSED_WIDTH = 45;
 
+// Timing variables
+export const SV_SELECTION_DELAY = 3000;
+
 // Copy variables
 export const FEEDBACK_EMAIL_ADDRESS = 'dominik_glodzik@hms.harvard.edu';
 

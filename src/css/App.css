@@ -1343,3 +1343,11 @@ a:hover {
         left: 100%;
     }
 }
+
+.loading-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    cursor: wait;
+    background: rgba(0, 0, 0, 0.1);
+}
