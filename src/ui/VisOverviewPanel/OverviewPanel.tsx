@@ -1,274 +1,39 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 import { ICONS } from '../../icon';
 import { OverviewFilter } from './OverviewFilter';
-import { samples, SampleType } from '../../data/samples';
+import { SampleType } from '../../data/samples';
 import { SmallOverviewWrapper } from '../SmallOverviewWrapper';
 import { CohortSelector } from './CohortSelector';
 import { Cohorts } from '../../App';
+import { accessNestedField, getBinnedValues, getBinIndex } from '../../utils';
+import { FilterStatusPanel } from './FilterStatusPanel';
 
-// Store example samples
-export const PCAWG_SAMPLES = [
-    {
-        name: '[Liver-HCC] Liver Hepatocellular Carcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Liver-HCC/configs/Liver-HCC.all.config.json',
-        count: 327
-    },
-    {
-        name: '[Prost-AdenoCA] Prostate Adenocarcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Prost-AdenoCA/configs/Prost-AdenoCA.all.config.json',
-        count: 286
-    },
-    {
-        name: '[Panc-AdenoCA] Pancreas Adenocarcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Panc-AdenoCA/configs/Panc-AdenoCA.all.config.json',
-        count: 241
-    },
-    {
-        name: '[Breast-AdenoCA] Breast Adenocarcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Breast-AdenoCA/configs/Breast-AdenoCA.all.config.json',
-        count: 198
-    },
-    {
-        name: '[CNS-Medullo] CNS Medulloblastoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/CNS-Medullo/configs/CNS-Medullo.all.config.json',
-        count: 146
-    },
-    {
-        name: '[Kidney-RCC] Kidney Renal Cell Carcinoma (Proximal Tubules)',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Kidney-RCC/configs/Kidney-RCC.all.config.json',
-        count: 144
-    },
-    {
-        name: '[Ovary-AdenoCA] Ovary Adenocarcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Ovary-AdenoCA/configs/Ovary-AdenoCA.all.config.json',
-        count: 113
-    },
-    {
-        name: '[Skin-Melanoma] Skin Melanoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Skin-Melanoma/configs/Skin-Melanoma.all.config.json',
-        count: 107
-    },
-    {
-        name: '[Lymph-BNHL] Lymphoid Mature B-Cell Lymphoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Lymph-BNHL/configs/Lymph-BNHL.all.config.json',
-        count: 105
-    },
-    {
-        name: '[Eso-AdenoCA] Esophagus Adenocarcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Eso-AdenoCA/configs/Eso-AdenoCA.all.config.json',
-        count: 98
-    },
-    {
-        name: '[Lymph-CLL] Lymphoid Chronic Lymphocytic Leukemia',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Lymph-CLL/configs/Lymph-CLL.all.config.json',
-        count: 95
-    },
-    {
-        name: '[CNS-PiloAstro] CNS Non-Diffuse Glioma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/CNS-PiloAstro/configs/CNS-PiloAstro.all.config.json',
-        count: 89
-    },
-    {
-        name: '[Panc-Endocrine] Pancreas Neuroendocrine Tumor',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Panc-Endocrine/configs/Panc-Endocrine.all.config.json',
-        count: 85
-    },
-    {
-        name: '[Stomach-AdenoCA] Stomach Adenocarcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Stomach-AdenoCA/configs/Stomach-AdenoCA.all.config.json',
-        count: 75
-    },
-    {
-        name: '[ColoRect-AdenoCA] Colon/Rectum Adenocarcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/ColoRect-AdenoCA/configs/ColoRect-AdenoCA.all.config.json',
-        count: 60
-    },
-    {
-        name: '[Head-SCC] Head/Neck Squamous Cell Carcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Head-SCC/configs/Head-SCC.all.config.json',
-        count: 57
-    },
-    {
-        name: '[Myeloid-MPN] Myeloid Myeloproliferative Neoplasm',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Myeloid-MPN/configs/Myeloid-MPN.all.config.json',
-        count: 51
-    },
-    {
-        name: '[Uterus-AdenoCA] Uterus Adenocarcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Uterus-AdenoCA/configs/Uterus-AdenoCA.all.config.json',
-        count: 51
-    },
-    {
-        name: '[Lung-SCC] Lung Squamous Cell Carcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Lung-SCC/configs/Lung-SCC.all.config.json',
-        count: 48
-    },
-    {
-        name: '[Thy-AdenoCA] Thyroid Adenocarcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Thy-AdenoCA/configs/Thy-AdenoCA.all.config.json',
-        count: 48
-    },
-    {
-        name: '[Kidney-ChRCC] Kidney Renal Cell Carcinoma (Distal Tubules)',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Kidney-ChRCC/configs/Kidney-ChRCC.all.config.json',
-        count: 45
-    },
-    {
-        name: '[CNS-GBM] CNS Glioblastoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/CNS-GBM/configs/CNS-GBM.all.config.json',
-        count: 41
-    },
-    {
-        name: '[Bone-Osteosarc] Bone/Softtissue Osteosarcoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Bone-Osteosarc/configs/Bone-Osteosarc.all.config.json',
-        count: 39
-    },
-    {
-        name: '[Lung-AdenoCA] Lung Adenocarcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Lung-AdenoCA/configs/Lung-AdenoCA.all.config.json',
-        count: 38
-    },
-    {
-        name: '[Biliary-AdenoCA] Biliary Adenocarcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Biliary-AdenoCA/configs/Biliary-AdenoCA.all.config.json',
-        count: 34
-    },
-    {
-        name: '[Bone-Leiomyo] Bone/Softtissue Leiomyosarcoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Bone-Leiomyo/configs/Bone-Leiomyo.all.config.json',
-        count: 34
-    },
-    {
-        name: '[Bladder-TCC] Bladder Transitional Cell Carcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Bladder-TCC/configs/Bladder-TCC.all.config.json',
-        count: 23
-    },
-    {
-        name: '[Cervix-SCC] Cervix Squamous Cell Carcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Cervix-SCC/configs/Cervix-SCC.all.config.json',
-        count: 18
-    },
-    {
-        name: '[CNS-Oligo] CNS Oligodendroglioma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/CNS-Oligo/configs/CNS-Oligo.all.config.json',
-        count: 18
-    },
-    {
-        name: '[Myeloid-AML] Myeloid Acute Myeloid Leukemia',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Myeloid-AML/configs/Myeloid-AML.all.config.json',
-        count: 16
-    },
-    {
-        name: '[Breast-LobularCA] Breast Lobular Carcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Breast-LobularCA/configs/Breast-LobularCA.all.config.json',
-        count: 13
-    },
-    {
-        name: '[Bone-Epith] Bone Neoplasm Epithelioid',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Bone-Epith/configs/Bone-Epith.all.config.json',
-        count: 10
-    },
-    {
-        name: '[Bone-Cart] Bone/Softtissue Chondroblastoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Bone-Cart/configs/Bone-Cart.all.config.json',
-        count: 9
-    },
-    {
-        name: '[Bone-Osteoblast] Bone/Softtissue Osteoblastoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Bone-Osteoblast/configs/Bone-Osteoblast.all.config.json',
-        count: 5
-    },
-    {
-        name: '[Breast-DCIS] Breast In Situ Adenocarcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Breast-DCIS/configs/Breast-DCIS.all.config.json',
-        count: 3
-    },
-    {
-        name: '[Myeloid-MDS] Myeloid Myelodysplastic Syndrome',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Myeloid-MDS/configs/Myeloid-MDS.all.config.json',
-        count: 3
-    },
-    {
-        name: '[Cervix-AdenoCA] Cervix Adenocarcinoma',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Cervix-AdenoCA/configs/Cervix-AdenoCA.all.config.json',
-        count: 2
-    },
-    {
-        name: '[Lymph-NOS] Lymphoid Lymphoma NOS',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Lymph-NOS/configs/Lymph-NOS.all.config.json',
-        count: 2
-    },
-    {
-        name: '[Bone-Benign] Bone/Softtissue Osteofibrous Dysplasia',
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/PCAWG/Bone-Benign/configs/Bone-Benign.all.config.json',
-        count: 1
-    }
-];
+/**
+ * `Option` is used to define a filter option for the OverviewPanel. It
+ * contains the type, field, and values of the filter option.
+ * Also used to define `activeFilters`
+ */
+export type Primitive = string | number | boolean;
 
-export const CURATED_SAMPLE_SETS = [
-    {
-        name: 'Pan-cancer Examples',
-        count: 13,
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.us-east-1.amazonaws.com/browserExamples/configs/default_config.json'
-    },
-    {
-        name: 'Pathogenic BRCA1/2 mutations',
-        count: 44,
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/pathogenicBrca/configs/pathogenicBrca.all.config.json'
-    },
-    {
-        name: 'Breast cancer co-amplifications',
-        count: 23,
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/coamps/configs/coamps.all.config.withnotes.json'
-    },
-    {
-        name: 'Bi-allelic loss of CDK12',
-        count: 12,
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/configs/allCDK12_fine.json'
-    },
-    {
-        name: 'CCNE1 amplifications',
-        count: 58,
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/ccne1_amp/configs/ccne1_amp.all.config.json'
-    },
-    {
-        name: 'Bi-allelic ATM mutations',
-        count: 21,
-        url: 'https://chromoscope.bio/app/?showSamples=true&external=https://somatic-browser-test.s3.amazonaws.com/atm_bi/configs/atm_bi.all.config.json'
-    }
-];
-
-export type FilterOption = {
-    name: string;
-    url?: string;
+export type OptionValue = {
+    start?: number;
+    end?: number;
+    value: Primitive;
     count?: number;
-    samples?: SampleType[]; // Optionally pass samples directly
+};
+export type Option = {
+    type: string;
+    field: string;
+    values: OptionValue[];
 };
 
-export type Filter = {
-    nullValue?: string;
-    title: string;
-    options: Array<FilterOption>;
-    active: boolean;
+type FiltersMap = {
+    [key: string]: Option;
 };
 
-type FilterGroup = {
-    [key: string]: Filter;
-};
-
-const defaultFilters: FilterGroup = {
-    curatedSampleSets: {
-        title: 'Curated Sample Sets',
-        options: CURATED_SAMPLE_SETS,
-        active: true, // Show this filter selected by default
-        nullValue: 'Pan-cancer Examples'
-    },
-    cancerType: {
-        title: 'Cancer Type',
-        options: PCAWG_SAMPLES,
-        active: false
-    }
+export type ActiveFilters = {
+    [key: string]: Primitive[];
 };
 
 type OverviewPanelProps = {
@@ -300,8 +65,214 @@ export const OverviewPanel = ({
     setFilteredSamples,
     handleDemoChange
 }: OverviewPanelProps) => {
-    const [activeFilters, setActiveFilters] = useState<string[]>([]);
+    const [activeFilters, setActiveFilters] = useState<ActiveFilters>({});
     const [showExternalDemoAlert, setShowExternalDemoAlert] = useState<boolean>(true);
+    const [showNonMatches, setShowNonMatches] = useState<boolean>(false);
+
+    // Get all samples
+    const allSamples = cohorts[selectedCohort]?.samples || [];
+
+    // Get filters for the selected cohort
+    const cohortFiltersObject = cohorts?.[selectedCohort]?.filters || {};
+    const filterIdentifiers: string[] = Object.keys(cohortFiltersObject);
+
+    // Create variable to store inverted filters
+    const invertedSamples = cohorts[selectedCohort]?.samples?.filter(
+        (sample: SampleType) => !filteredSamples.includes(sample)
+    );
+
+    // Compute filter options based on cohort filters
+    // Update when: cohorts or selectedCohort changes
+    const filterValuesMap = useMemo(() => {
+        // Return if no filters are defined
+        if (filterIdentifiers.length === 0) {
+            return;
+        }
+
+        const filtersMap: FiltersMap = {};
+
+        // Extract the options from the filters property of the configuration
+        filterIdentifiers.map((filterIdentifier: string, i: number) => {
+            const { field, title, type } = cohortFiltersObject?.[filterIdentifier];
+
+            const valuesMap = new Map<string | number | boolean, number>();
+
+            // Check each sample for all possible entries
+            cohorts[selectedCohort]?.samples.forEach((sample: any) => {
+                //  Get nested field value
+                const nestedFieldValue = accessNestedField(sample, field);
+
+                if (nestedFieldValue !== null && nestedFieldValue !== undefined) {
+                    // add value to the map with count
+                    if (valuesMap.has(nestedFieldValue)) {
+                        valuesMap.set(nestedFieldValue, valuesMap.get(nestedFieldValue) + 1);
+                    } else {
+                        valuesMap.set(nestedFieldValue, 1);
+                    }
+                }
+            });
+
+            let transformedValues: OptionValue[] = [...valuesMap].map(([value, count]) => ({ value, count }));
+            if (type === 'continuous') {
+                transformedValues = getBinnedValues(transformedValues);
+            }
+
+            filtersMap[filterIdentifier] = {
+                type,
+                field,
+                values: transformedValues
+            };
+        });
+
+        return filtersMap;
+    }, [cohorts, selectedCohort]);
+
+    /**
+     * Filters `prevSamples` based on `activeFilters`
+     * @param prevSamples - samples to filter
+     * @param activeFilters - active filters
+     * @returns filtered samples
+     */
+    const getFilteredSamples = (prevSamples: SampleType[], activeFilters: ActiveFilters) => {
+        return prevSamples.filter((sample: any) => {
+            return Object.entries(activeFilters).every(([identifier, acceptedValues]) => {
+                if (acceptedValues.length === 0) return true;
+
+                const filterField = cohorts[selectedCohort]?.filters?.[identifier]?.field;
+                let sampleValue = accessNestedField(sample, filterField);
+
+                // Continuous values have bins to compare against
+                if (filterValuesMap[identifier]?.type === 'continuous') {
+                    // Typecast to Number if necessary
+                    const number = Number(sampleValue);
+                    // Check if `sampleValue` is between one of the bins
+                    const bins = filterValuesMap[identifier].values;
+                    const binIndex = getBinIndex(number, bins);
+                    sampleValue = bins[binIndex].value;
+                }
+                return acceptedValues.includes(sampleValue);
+            });
+        });
+    };
+
+    /**
+     * Create a subset for each filter, giving the samples that are currently
+     * shown based on the active filters except for that filter. Used to count
+     * the number of samples that would be added/removed if a filter option is
+     * selected/deselected
+     */
+    const baseSubsets = useMemo(() => {
+        if (!filterValuesMap) return {};
+
+        const result: Record<string, SampleType[]> = {};
+
+        Object.keys(cohortFiltersObject).forEach(filterIdentifier => {
+            // Clone active filters
+            const activeFiltersWithoutSelf: ActiveFilters = { ...activeFilters };
+
+            // Remove current filter entirely
+            delete activeFiltersWithoutSelf[filterIdentifier];
+
+            // Apply remaining filters
+            result[filterIdentifier] = getFilteredSamples(allSamples, activeFiltersWithoutSelf);
+        });
+
+        return result;
+    }, [allSamples, activeFilters, filterValuesMap, cohortFiltersObject]);
+
+    // Get counts for each option by filtering base subset on onlythat option
+    const optionCounts = useMemo(() => {
+        if (!filterValuesMap) return {};
+
+        const counts: Record<string, Record<string, number>> = {};
+
+        Object.keys(filterValuesMap).forEach(filterId => {
+            counts[filterId] = {};
+
+            // Get base subset
+            const base = baseSubsets[filterId] || [];
+            const currentValues = activeFilters[filterId] || [];
+
+            filterValuesMap[filterId].values.forEach(option => {
+                const value = option.value;
+                let newValues: Primitive[];
+
+                if (currentValues.includes(value)) {
+                    // simulate unchecking the option
+                    newValues = currentValues.filter(v => v !== value);
+                } else {
+                    // simulate checking the option
+                    newValues = [...currentValues, value];
+                }
+
+                let result: SampleType[];
+
+                if (newValues.length === 0) {
+                    result = base;
+                } else {
+                    result = getFilteredSamples(base, {
+                        [filterId]: newValues
+                    });
+                }
+
+                counts[filterId][value as string] = result.length;
+            });
+        });
+
+        return counts;
+    }, [allSamples, activeFilters, filterValuesMap, cohortFiltersObject]);
+
+    /**
+     * Adds an option to an existing active filter or removes it if it exists
+     * @param filterIdentifier - identifier of the filter
+     * @param value - value of the option
+     * @returns updated activeFilters object
+     */
+    const getUpdatedActiveFilters = (filterIdentifier: string, value: Primitive) => {
+        const currentValues = activeFilters[filterIdentifier] || [];
+
+        // Check if `value` already exist in the filter
+        const updatedValues = currentValues.includes(value)
+            ? currentValues.filter(v => v !== value)
+            : [...currentValues, value];
+
+        // Copy activeFilters
+        const updatedActiveFilters = { ...activeFilters };
+
+        // Remove filter if all values are removed
+        if (updatedValues.length === 0) {
+            delete updatedActiveFilters[filterIdentifier];
+        } else {
+            updatedActiveFilters[filterIdentifier] = updatedValues;
+        }
+
+        return updatedActiveFilters;
+    };
+
+    /**
+     * Handles the selection of a filter option. Updates the `filteredSamples`
+     * and `activeFilters` state accordingly.
+     * @param filterIdentifier - identifier of the filter whose option was selected
+     * @param option - option selected by the user
+     */
+    const onFilterOptionSelection = (filterIdentifier: string, option: OptionValue) => {
+        const { value } = option;
+
+        // Compute updated filters
+        const updatedActiveFilters = getUpdatedActiveFilters(filterIdentifier, value);
+
+        // Apply filters
+        const newFilteredSamples = getFilteredSamples(allSamples, updatedActiveFilters);
+
+        // Update state variables
+        setFilteredSamples(newFilteredSamples);
+        setActiveFilters(updatedActiveFilters);
+
+        // If all filters are removed, hide non-matches
+        if (Object.keys(updatedActiveFilters).length === 0) {
+            setShowNonMatches(false);
+        }
+    };
 
     // Update filtered samples when cohort changes
     useEffect(() => {
@@ -318,34 +289,6 @@ export const OverviewPanel = ({
             }
         }
     }, [selectedCohort]);
-
-    // Handle filter changes and update external demo URL
-    const onChange = (url: string) => {
-        /**
-         * When a new filter is selected, the filter option's URL is passed to
-         * this function.
-         */
-        fetch(url).then(response =>
-            response.text().then(d => {
-                let externalDemo = JSON.parse(d);
-                if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
-                    setFilteredSamples(externalDemo);
-                    externalDemo = externalDemo[demoIndex.current < externalDemo.length ? demoIndex.current : 0];
-                }
-                if (externalDemo) {
-                    externalDemoUrl.current = url;
-                    handleDemoChange(externalDemo);
-                }
-            })
-        );
-    };
-
-    useEffect(() => {
-        // When no filters active, show default sample set
-        if (activeFilters.length === 0) {
-            setFilteredSamples(samples);
-        }
-    }, [activeFilters]);
 
     // When a new sample is added, add a class to the overview container
     useEffect(() => {
@@ -394,36 +337,103 @@ export const OverviewPanel = ({
                         <span>Visualize Your Data</span>
                     </button>
                 </div>
-                {selectedCohort === 'PCAWG: Cancer Cohort' && (
-                    <div className="overview-controls">
-                        {Object.keys(defaultFilters).map((filter, index) => {
-                            return (
-                                <OverviewFilter
-                                    key={index}
-                                    identifier={filter}
-                                    title={defaultFilters[filter].title}
-                                    options={defaultFilters[filter].options}
-                                    active={activeFilters.includes(filter)}
-                                    onChange={onChange}
-                                    activeFilters={activeFilters}
-                                    nullValue={defaultFilters[filter].nullValue}
-                                    setActiveFilters={setActiveFilters}
-                                />
-                            );
-                        })}
-                    </div>
+                {filterIdentifiers.length > 0 && (
+                    <>
+                        <div className="overview-controls">
+                            <div className="overview-controls-filters">
+                                {filterIdentifiers.map((filterIdentifier, i) => {
+                                    const { field, title, type } = cohortFiltersObject?.[filterIdentifier];
+
+                                    return (
+                                        <OverviewFilter
+                                            key={i}
+                                            type={type}
+                                            identifier={filterIdentifier}
+                                            title={title}
+                                            options={filterValuesMap?.[filterIdentifier]?.values}
+                                            active={Object.keys(activeFilters).includes(field || '')}
+                                            onChange={onFilterOptionSelection}
+                                            activeFilters={activeFilters}
+                                            nullValue={type === 'binary' ? undefined : null}
+                                            setActiveFilters={setActiveFilters}
+                                            cohortFiltersObject={cohortFiltersObject}
+                                            optionCounts={optionCounts[filterIdentifier]}
+                                        />
+                                    );
+                                })}
+                            </div>
+                            {Object.keys(activeFilters).length > 0 && (
+                                <div className="non-matches-checkbox">
+                                    <label
+                                        htmlFor="non-matches"
+                                        className={`checkbox-container ${showNonMatches ? 'checked' : ''}`}
+                                    >
+                                        <input
+                                            id="non-matches"
+                                            type="checkbox"
+                                            className="checkbox"
+                                            checked={showNonMatches}
+                                            aria-checked={showNonMatches}
+                                            onChange={e => setShowNonMatches(e.target.checked)}
+                                        />
+                                        <span className="checkbox-icon">
+                                            <svg className="icon" viewBox={ICONS.CHECKMARK.viewBox}>
+                                                {ICONS.CHECKMARK.path.map(p => (
+                                                    <path fill="currentColor" key={p} d={p} />
+                                                ))}
+                                            </svg>
+                                        </span>
+                                        Show non-matches for comparison
+                                    </label>
+                                </div>
+                            )}
+                        </div>
+                    </>
                 )}
-                <div className="overview-status">{`Total of ${filteredSamples.length} samples loaded`}</div>
+                {Object.keys(activeFilters).length > 0 && (
+                    <FilterStatusPanel
+                        activeFilters={activeFilters}
+                        cohortFiltersObject={cohortFiltersObject}
+                        onFilterOptionSelection={onFilterOptionSelection}
+                    />
+                )}
                 <div
                     className={`overview-container ${selectedCohort === 'PCAWG: Cancer Cohort' ? 'with-filters' : ''}`}
                 >
-                    <SmallOverviewWrapper
-                        demo={demo}
-                        handleDemoChange={handleDemoChange}
-                        demoIndex={demoIndex}
-                        filteredSamples={filteredSamples}
-                        setShowSamples={setShowSamples}
-                    />
+                    <div className="overview-container-group">
+                        {showNonMatches && Object.keys(activeFilters).length > 0 && (
+                            <div className="comparison-banner matches">
+                                <span>Matches</span>
+                            </div>
+                        )}
+                        <div className="overview-status">{`Total of ${filteredSamples.length} samples loaded`}</div>
+                        <div className="samples-container">
+                            <SmallOverviewWrapper
+                                demo={demo}
+                                handleDemoChange={handleDemoChange}
+                                demoIndex={demoIndex}
+                                filteredSamples={filteredSamples}
+                                setShowSamples={setShowSamples}
+                            />
+                        </div>
+                    </div>
+                    {showNonMatches && Object.keys(activeFilters).length > 0 && (
+                        <div className="overview-container-group invert">
+                            <div className="comparison-banner non-matches">
+                                <span>Non - Matches</span>
+                            </div>
+                            <div className="overview-status">{`Total of ${invertedSamples.length} samples loaded`}</div>
+                            <div className="samples-container">
+                                <SmallOverviewWrapper
+                                    demo={demo}
+                                    handleDemoChange={handleDemoChange}
+                                    demoIndex={demoIndex}
+                                    filteredSamples={invertedSamples}
+                                    setShowSamples={setShowSamples}
+                                />
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

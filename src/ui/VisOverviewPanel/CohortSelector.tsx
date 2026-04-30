@@ -36,6 +36,13 @@ export const CohortSelector = ({
                         setCohorts({
                             ...cohorts,
                             'MSK SPECTRUM': {
+                                filters: [
+                                    {
+                                        field: 'cancer',
+                                        title: 'Cancer Type',
+                                        type: 'string'
+                                    }
+                                ],
                                 name: data.name,
                                 samples: data.samples?.map((sample: any, index: number) => ({
                                     ...sample,

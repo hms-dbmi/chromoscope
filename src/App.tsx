@@ -57,9 +57,16 @@ export type Cohorts = {
     [key: string]: Cohort;
 };
 
+export type CohortFilter = {
+    field: string;
+    title: string;
+    type: string;
+};
+
 export type Cohort = {
     name?: string;
     samples: any;
+    filters?: CohortFilter[];
 };
 
 // Initialize with preloaded PCAWG cohort data
@@ -342,6 +349,7 @@ function App(props: RouteComponentProps) {
                                 ...cohorts,
                                 [cohortId]: {
                                     name: cohortId,
+                                    filters: externalDemo?.filters ?? [],
                                     samples: samples?.map((sample: any, index: number) => ({
                                         ...sample,
                                         originalIndex: index
