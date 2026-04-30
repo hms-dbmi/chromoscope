@@ -301,27 +301,6 @@ export const OverviewPanel = ({
         }
     }, [filteredSamples]);
 
-    // Handle filter changes and update external demo URL
-    const onChange = (url: string) => {
-        /**
-         * When a new filter is selected, the filter option's URL is passed to
-         * this function.
-         */
-        fetch(url).then(response =>
-            response.text().then(d => {
-                let externalDemo = JSON.parse(d);
-                if (Array.isArray(externalDemo) && externalDemo.length >= 0) {
-                    setFilteredSamples(externalDemo);
-                    externalDemo = externalDemo[demoIndex.current < externalDemo.length ? demoIndex.current : 0];
-                }
-                if (externalDemo) {
-                    externalDemoUrl.current = url;
-                    handleDemoChange(externalDemo);
-                }
-            })
-        );
-    };
-
     return (
         <div>
             <div className="overview-root">
