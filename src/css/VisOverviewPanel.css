@@ -701,6 +701,10 @@ label.checkbox-container.checked .checkbox-icon {
     width: 12px;
     height: 12px;
 }
+.reverse-dropdown {
+    transform: translateX(-100%);
+    margin-left: 100%;
+}
 
 /* Animations */
 @keyframes drop-open {

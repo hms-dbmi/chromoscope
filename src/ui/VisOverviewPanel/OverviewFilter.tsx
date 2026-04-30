@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { ICONS } from '../../icon';
 import { ActiveFilters, OptionValue } from './OverviewPanel';
 import { CohortFilter } from '../../App';
@@ -61,6 +61,21 @@ export const OverviewFilter = ({
     const [focusedIndex, setFocusedIndex] = useState<number>(-1);
 
     const isFilterActive = identifier in activeFilters;
+
+    useLayoutEffect(() => {
+        if (!showDropdown) return;
+        const dropdown = document.querySelector('#dropdown-list-for-' + identifier);
+        const rect = dropdown.getBoundingClientRect();
+
+        const isOverflowingRight = rect.right > window.innerWidth;
+        console.log(isOverflowingRight);
+
+        if (isOverflowingRight) {
+            console.log('Dropdown is overflowing on the right side. Applying logic to shift it left.');
+            dropdown.classList.add('reverse-dropdown');
+            // Apply logic to shift menu left (e.g., add a 'reverse' class)
+        }
+    }, [showDropdown]);
 
     // Manage the focused index for keyboard navigation
     useEffect(() => {
@@ -162,7 +177,7 @@ export const OverviewFilter = ({
             role="combobox"
             aria-expanded={showDropdown}
             aria-haspopup="listbox"
-            aria-owns="dropdown-list"
+            aria-owns={'dropdown-list-for-' + identifier}
             onKeyDown={handleDropdownKeydown}
         >
             <button
@@ -187,7 +202,11 @@ export const OverviewFilter = ({
                     ))}
                 </svg>
             </button>
-            <ul id="dropdown-list" role="listbox" className={`dropdown-items ${showDropdown ? 'd-flex' : 'd-none'}`}>
+            <ul
+                id={`dropdown-list-for-${identifier}`}
+                role="listbox"
+                className={`dropdown-items ${showDropdown ? 'd-flex' : 'd-none'}`}
+            >
                 {options
                     .sort((a: OptionValue, b: OptionValue) => {
                         const valA = (a as OptionValue).value;
