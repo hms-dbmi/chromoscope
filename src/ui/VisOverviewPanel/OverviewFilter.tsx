@@ -229,7 +229,8 @@ export const OverviewFilter = ({
                         const filterType = cohortFiltersObject[identifier]?.type;
                         const formattedValue = transformOptionValue(value, filterType);
 
-                        if (option?.count === 0) {
+                        // Hide if option (in isolation) has no results
+                        if (filterType === 'continuous' && option?.count === 0) {
                             return null;
                         }
 

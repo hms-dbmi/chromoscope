@@ -81,6 +81,8 @@ export const OverviewPanel = ({
         (sample: SampleType) => !filteredSamples.includes(sample)
     );
 
+    const sortedFilterIdentifiers = new Set([...Object.keys(activeFilters), ...filterIdentifiers]);
+
     // Compute filter options based on cohort filters
     // Update when: cohorts or selectedCohort changes
     const filterValuesMap = useMemo(() => {
@@ -341,7 +343,7 @@ export const OverviewPanel = ({
                     <>
                         <div className="overview-controls">
                             <div className="overview-controls-filters">
-                                {filterIdentifiers.map((filterIdentifier, i) => {
+                                {Array.from(sortedFilterIdentifiers).map((filterIdentifier, i) => {
                                     const { field, title, type } = cohortFiltersObject?.[filterIdentifier];
 
                                     return (
