@@ -54,7 +54,6 @@ type OverviewPanelProps = {
 export const OverviewPanel = ({
     demo,
     demoIndex,
-    externalDemoUrl,
     filteredSamples,
     selectedCohort,
     cohorts,
