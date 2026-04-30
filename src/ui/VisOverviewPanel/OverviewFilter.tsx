@@ -32,7 +32,9 @@ export const transformOptionValue = (value: Primitive, filterType: string) => {
     if (filterType === 'binary') {
         return getBinaryOptionValue(value);
     } else if (filterType === 'continuous') {
-        return value;
+        // Format the range as a string
+        const [start, end] = (value as string).split('-').map(n => Number(n).toLocaleString());
+        return start + ' - ' + end;
     }
     return value;
 };
@@ -207,6 +209,10 @@ export const OverviewFilter = ({
                         // Format the value based on the filter type
                         const filterType = cohortFiltersObject[identifier]?.type;
                         const formattedValue = transformOptionValue(value, filterType);
+
+                        if (option?.count === 0) {
+                            return null;
+                        }
 
                         return (
                             <li

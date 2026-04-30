@@ -130,6 +130,12 @@ export const getBinIndex = (value: number, bins: OptionValue[]) => {
     return -1;
 };
 
+// Format a number to a string with 2 decimal places
+const format = (n: number) => (Number.isInteger(n) ? n.toString() : n.toFixed(2));
+
+// Normalize a number to avoid floating point precision issues
+const normalize = (n: number) => Number(n.toFixed(10));
+
 /**
  * Transforms array of values into bins
  * @param rawValues array of values to be binned
@@ -156,14 +162,14 @@ export const getBinnedValues = (rawValues: OptionValue[], numBins = 5): OptionVa
 
     // Create bins
     const bins = Array.from({ length: numBins }, (_, i) => {
-        const start = min + i * binSize;
+        const start = normalize(min + i * binSize);
         const end = i === numBins - 1 ? max : min + (i + 1) * binSize;
 
         return {
             start,
             end,
             // Only round for display
-            value: `${Math.floor(start)}-${Math.ceil(end)}`,
+            value: `${format(start)}-${format(end)}`,
             count: 0
         };
     });
