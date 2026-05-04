@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { GoslingComponent, GoslingRef } from 'gosling.js';
-import { debounce, sample } from 'lodash';
+import { debounce } from 'lodash';
 import type { RouteComponentProps } from 'react-router-dom';
 import * as bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min';
 
@@ -35,7 +35,8 @@ import {
     CLINICAL_PANEL_OPEN_WIDTH,
     CLINICAL_PANEL_CLOSED_WIDTH,
     FEEDBACK_EMAIL_ADDRESS,
-    THEME
+    THEME,
+    SV_SELECTION_DELAY
 } from './constants';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -173,6 +174,8 @@ function App(props: RouteComponentProps) {
     const clinicalInfoRef = useRef(null);
 
     // Interactions
+    const isInteractable = useRef(true);
+    const [isTransitioning, setIsTransitioning] = useState(false);
     const [showSamples, setShowSamples] = useState(urlParams.get('showSamples') !== 'false' && !xDomain);
     const [showAbout, setShowAbout] = useState(false);
     const [generateThumbnails, setGenerateThumbnails] = useState(false);
@@ -226,6 +229,19 @@ function App(props: RouteComponentProps) {
         setDrivers([]);
         setDemo(newDemo);
     }, []);
+
+    // Clear it once the new spec has settled
+    useEffect(() => {
+        if (!selectedSvId) return;
+
+        // Delay the transition to prevent interactions
+        const timer = setTimeout(() => {
+            isInteractable.current = true;
+            setIsTransitioning(false);
+        }, SV_SELECTION_DELAY);
+
+        return () => clearTimeout(timer);
+    }, [selectedSvId]);
 
     // Padding for the visualization
     useEffect(() => {
@@ -650,6 +666,11 @@ function App(props: RouteComponentProps) {
         if (!gosRef.current) return;
 
         gosRef.current.api.subscribe('click', (_, e) => {
+            // Flag to prevent interactions while transitioning
+            if (!isInteractable.current) return;
+            isInteractable.current = false;
+            setIsTransitioning(true);
+
             let x = +e.data[0].start1;
             let xe = +e.data[0].end1;
             let x1 = +e.data[0].start2;
@@ -855,6 +876,14 @@ function App(props: RouteComponentProps) {
                         }}
                     >
                         {goslingComponent}
+                        {/* Overlay for loading state */}
+                        {(isTransitioning || isLoadingDrivers) && (
+                            <div
+                                className="loading-overlay"
+                                onClick={e => e.stopPropagation()}
+                                onMouseDown={e => e.stopPropagation()}
+                            />
+                        )}
                         {jumpButtonInfo ? (
                             <button
                                 className="jump-to-bp-btn"
