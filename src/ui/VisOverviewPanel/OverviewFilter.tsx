@@ -186,7 +186,9 @@ export const OverviewFilter = ({
                 aria-labelledby="select-label"
             >
                 <div className="select-label-wrapper">
-                    <span id="select-label">{title}</span>
+                    <span id={'select-label-for-' + identifier} className="select-label">
+                        {title}
+                    </span>
                     {activeFilters?.[identifier]?.length > 0 && (
                         <div className="selected-option-count">
                             <span>{activeFilters[identifier].length ?? ''}</span>
