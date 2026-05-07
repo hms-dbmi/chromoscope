@@ -382,7 +382,7 @@ export const OverviewPanel = ({
                                                 ))}
                                             </svg>
                                         </span>
-                                        Show non-matches for comparison
+                                        Non-matches
                                     </label>
                                 </div>
                             )}
