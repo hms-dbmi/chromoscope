@@ -424,6 +424,13 @@ label.checkbox-container.checked .checkbox-icon {
     color: #617c9d;
     border: 1.5px solid #617c9d;
     border-radius: 4px;
+    padding: 5px 10px;
+}
+.vis-overview-panel .overview-root .dropdown-container.filter .dropdown-button .select-label {
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .vis-overview-panel .overview-root .dropdown-container.filter .dropdown-button svg {
     width: 15px;
@@ -488,6 +495,9 @@ label.checkbox-container.checked .checkbox-icon {
     border: 1.5px solid #2f68aa;
     background-color: #f3f9ff;
     color: #2f68aa;
+}
+.vis-overview-panel .overview-root .dropdown-container.filter.has-selection .dropdown-button .select-label {
+    max-width: 90px;
 }
 .vis-overview-panel .overview-root .dropdown-container.filter.has-selection .dropdown-button span {
     font-weight: 600;
