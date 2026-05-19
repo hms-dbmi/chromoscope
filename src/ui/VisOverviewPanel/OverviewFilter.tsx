@@ -18,7 +18,7 @@ type OverviewFilterProps = {
     setActiveFilters?: (filters: ActiveFilters) => void;
 };
 
-export const getBinaryOptionValue = (option: Primitive): string => {
+export const getBinaryOptionValue = (option: Primitive): string | null => {
     const value = option;
     if (value === '1' || value === 1 || value === true) {
         return 'Yes';
