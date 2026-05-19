@@ -9,12 +9,14 @@ type FilterStatusPanelProps = {
     activeFilters: ActiveFilters;
     cohortFiltersObject: { [key: string]: CohortFilter };
     onFilterOptionSelection: (filterKey: string, option: OptionValue) => void;
+    clearFilters: () => void;
 };
 
 export const FilterStatusPanel = ({
     activeFilters,
     cohortFiltersObject = {},
-    onFilterOptionSelection
+    onFilterOptionSelection,
+    clearFilters
 }: FilterStatusPanelProps) => {
     return (
         <div className="filter-status">

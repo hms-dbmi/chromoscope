@@ -41,9 +41,6 @@ export const transformOptionValue = (value: Primitive, filterType: string) => {
 
 export const OverviewFilter = ({
     identifier,
-    nullValue,
-    active = false,
-    type,
     title,
     options = [],
     activeFilters,
@@ -216,7 +213,7 @@ export const OverviewFilter = ({
                         }
 
                         // Cast to string to as fallback
-                        return ('' + valA).localeCompare('' + valB) ? 1 : -1;
+                        return ('' + valA).localeCompare('' + valB);
                     })
                     .map((option: OptionValue, i: number) => {
                         const { value } = option;
