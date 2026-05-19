@@ -244,7 +244,7 @@ export const OverviewFilter = ({
                                     focusedIndex === i ? 'focused' : ''
                                 }`}
                             >
-                                <label className="dropdown-item-checkbox">
+                                <div className="dropdown-item-checkbox">
                                     <label htmlFor={`${identifier}-${option.value}`} className="checkbox-container">
                                         <input
                                             id={`${identifier}-${option.value}`}
@@ -267,7 +267,7 @@ export const OverviewFilter = ({
                                     <span className="count">
                                         {optionCounts?.[value as string] ?? option?.count ?? ''}
                                     </span>
-                                </label>
+                                </div>
                             </li>
                         );
                     })}
