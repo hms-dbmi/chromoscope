@@ -408,9 +408,7 @@ export const OverviewPanel = ({
                         clearFilters={clearFilters}
                     />
                 )}
-                <div
-                    className={`overview-container ${selectedCohort === 'PCAWG: Cancer Cohort' ? 'with-filters' : ''}`}
-                >
+                <div className={`overview-container ${filterIdentifiers.length > 0 ? 'with-filters' : ''}`}>
                     <div className="overview-container-group">
                         {showNonMatches && Object.keys(activeFilters).length > 0 && (
                             <div className="comparison-banner matches">
