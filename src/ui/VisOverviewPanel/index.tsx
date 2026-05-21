@@ -32,7 +32,6 @@ export const VisOverviewPanel = ({
     setShowSamples,
     setShowAbout,
     setFilterSampleBy,
-    generateThumbnails,
     demo,
     demoIndex,
     externalDemoUrl,
