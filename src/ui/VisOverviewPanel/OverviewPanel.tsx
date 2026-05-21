@@ -71,8 +71,7 @@ export const OverviewPanel = ({
     // Get all samples
     const allSamples = cohorts[selectedCohort]?.samples || [];
 
-    // Get filters for the selected cohort
-    const cohortFiltersObject = cohorts?.[selectedCohort]?.filters || {};
+    const cohortFiltersObject = useMemo(() => cohorts?.[selectedCohort]?.filters || {}, [cohorts, selectedCohort]);
     const filterIdentifiers: string[] = Object.keys(cohortFiltersObject);
 
     // Create variable to store inverted filters
@@ -134,8 +133,10 @@ export const OverviewPanel = ({
      */
     const getFilteredSamples = (prevSamples: SampleType[], activeFilters: ActiveFilters) => {
         return prevSamples.filter((sample: any) => {
-            return Object.entries(activeFilters).every(([identifier, acceptedValues]) => {
+            return (Object.entries(activeFilters) ?? []).every(([identifier, acceptedValues]) => {
                 if (acceptedValues.length === 0) return true;
+
+                // console.log(identifier, acceptedValues);
 
                 const filterField = cohorts[selectedCohort]?.filters?.[identifier]?.field;
                 let sampleValue = accessNestedField(sample, filterField);
@@ -147,7 +148,7 @@ export const OverviewPanel = ({
                     // Check if `sampleValue` is between one of the bins
                     const bins = filterValuesMap[identifier].values;
                     const binIndex = getBinIndex(number, bins);
-                    sampleValue = bins[binIndex].value;
+                    sampleValue = bins[binIndex]?.value || null;
                 }
                 return acceptedValues.includes(sampleValue);
             });
@@ -273,6 +274,15 @@ export const OverviewPanel = ({
         }
     };
 
+    /**
+     * Clears all filters and resets the filtered samples to all samples
+     */
+    const clearFilters = () => {
+        setActiveFilters({});
+        setFilteredSamples(allSamples);
+        setShowNonMatches(false);
+    };
+
     // Update filtered samples when cohort changes
     useEffect(() => {
         setFilteredSamples(cohorts[selectedCohort]?.samples || []);
@@ -394,11 +404,10 @@ export const OverviewPanel = ({
                         activeFilters={activeFilters}
                         cohortFiltersObject={cohortFiltersObject}
                         onFilterOptionSelection={onFilterOptionSelection}
+                        clearFilters={clearFilters}
                     />
                 )}
-                <div
-                    className={`overview-container ${selectedCohort === 'PCAWG: Cancer Cohort' ? 'with-filters' : ''}`}
-                >
+                <div className={`overview-container ${filterIdentifiers.length > 0 ? 'with-filters' : ''}`}>
                     <div className="overview-container-group">
                         {showNonMatches && Object.keys(activeFilters).length > 0 && (
                             <div className="comparison-banner matches">

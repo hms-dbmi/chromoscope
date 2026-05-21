@@ -18,7 +18,7 @@ type OverviewFilterProps = {
     setActiveFilters?: (filters: ActiveFilters) => void;
 };
 
-export const getBinaryOptionValue = (option: Primitive): string => {
+export const getBinaryOptionValue = (option: Primitive): string | null => {
     const value = option;
     if (value === '1' || value === 1 || value === true) {
         return 'Yes';
@@ -41,9 +41,6 @@ export const transformOptionValue = (value: Primitive, filterType: string) => {
 
 export const OverviewFilter = ({
     identifier,
-    nullValue,
-    active = false,
-    type,
     title,
     options = [],
     activeFilters,
@@ -189,17 +186,19 @@ export const OverviewFilter = ({
                     <span id={'select-label-for-' + identifier} className="select-label">
                         {title}
                     </span>
+                </div>
+                <div className="count-container">
                     {activeFilters?.[identifier]?.length > 0 && (
                         <div className="selected-option-count">
                             <span>{activeFilters[identifier].length ?? ''}</span>
                         </div>
                     )}
+                    <svg className="icon" viewBox={ICONS.CHEVRON_UP.viewBox}>
+                        {ICONS.CHEVRON_UP.path.map(p => (
+                            <path fill="currentColor" key={p} d={p} />
+                        ))}
+                    </svg>
                 </div>
-                <svg className="icon" viewBox={ICONS.CHEVRON_UP.viewBox}>
-                    {ICONS.CHEVRON_UP.path.map(p => (
-                        <path fill="currentColor" key={p} d={p} />
-                    ))}
-                </svg>
             </button>
             <ul
                 id={`dropdown-list-for-${identifier}`}
@@ -216,7 +215,7 @@ export const OverviewFilter = ({
                         }
 
                         // Cast to string to as fallback
-                        return ('' + valA).localeCompare('' + valB) ? 1 : -1;
+                        return ('' + valA).localeCompare('' + valB);
                     })
                     .map((option: OptionValue, i: number) => {
                         const { value } = option;
@@ -247,30 +246,31 @@ export const OverviewFilter = ({
                                     focusedIndex === i ? 'focused' : ''
                                 }`}
                             >
-                                <label className="dropdown-item-checkbox">
-                                    <label htmlFor={`${identifier}-${option.value}`} className="checkbox-container">
-                                        <input
-                                            id={`${identifier}-${option.value}`}
-                                            className="checkbox"
-                                            type="checkbox"
-                                            checked={isSelected}
-                                            onChange={() => handleOptionSelection(option)}
-                                        />
-                                        <span className="checkbox-icon">
-                                            {isSelected && (
-                                                <svg className="icon" viewBox={ICONS.CHECKMARK.viewBox}>
-                                                    {ICONS.CHECKMARK.path.map(p => (
-                                                        <path fill="currentColor" key={p} d={p} />
-                                                    ))}
-                                                </svg>
-                                            )}
+                                <div className="dropdown-item-checkbox">
+                                    <label className="checkbox-container">
+                                        <div className="input-label">
+                                            <input
+                                                className="checkbox"
+                                                type="checkbox"
+                                                checked={isSelected}
+                                                onChange={() => handleOptionSelection(option)}
+                                            />
+                                            <span className="checkbox-icon">
+                                                {isSelected && (
+                                                    <svg className="icon" viewBox={ICONS.CHECKMARK.viewBox}>
+                                                        {ICONS.CHECKMARK.path.map(p => (
+                                                            <path fill="currentColor" key={p} d={p} />
+                                                        ))}
+                                                    </svg>
+                                                )}
+                                            </span>
+                                            <span>{formattedValue}</span>
+                                        </div>
+                                        <span className="count">
+                                            {optionCounts?.[value as string] ?? option?.count ?? ''}
                                         </span>
-                                        <span>{formattedValue}</span>
                                     </label>
-                                    <span className="count">
-                                        {optionCounts?.[value as string] ?? option?.count ?? ''}
-                                    </span>
-                                </label>
+                                </div>
                             </li>
                         );
                     })}

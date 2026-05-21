@@ -304,8 +304,11 @@ label.checkbox-container.checked .checkbox-icon {
     display: flex;
     font-weight: 500;
 }
+.vis-overview-panel .overview-root .dropdown-container .count-container {
+    display: flex;
+}
 
-.vis-overview-panel .overview-root .dropdown-container .select-label-wrapper .selected-option-count {
+.vis-overview-panel .overview-root .dropdown-container .count-container .selected-option-count {
     display: flex;
     justify-content: center;
     background-color: #c6dbf1;
@@ -316,11 +319,15 @@ label.checkbox-container.checked .checkbox-icon {
     height: 20px;
     width: 20px;
 }
-.vis-overview-panel .overview-root .dropdown-container .select-label-wrapper .selected-option-count span {
+.vis-overview-panel .overview-root .dropdown-container .count-container .selected-option-count span {
     margin: auto;
     color: #2f68aa;
     font-size: 0.75rem;
+    line-height: 0.75rem;
     font-weight: 500;
+}
+.vis-overview-panel .overview-root .dropdown-container .count-container .icon {
+    margin-left: 10px;
 }
 
 .vis-overview-panel .overview-root .dropdown-container .dropdown-button.toggle-open {
@@ -497,7 +504,7 @@ label.checkbox-container.checked .checkbox-icon {
     color: #2f68aa;
 }
 .vis-overview-panel .overview-root .dropdown-container.filter.has-selection .dropdown-button .select-label {
-    max-width: 90px;
+    max-width: 100px;
 }
 .vis-overview-panel .overview-root .dropdown-container.filter.has-selection .dropdown-button span {
     font-weight: 600;
@@ -614,6 +621,32 @@ label.checkbox-container.checked .checkbox-icon {
     font-size: 0.875rem;
     animation: drop-open 100ms linear;
 }
+.filter-status-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-right: 5px;
+}
+.filter-status-header .clear-filters-button {
+    display: flex;
+    color: #4e7099;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #4e7099;
+    border-radius: 4px;
+    padding: 3px 6px;
+    margin-top: 4px;
+    font-size: 0.75rem;
+    line-height: 0.75rem;
+}
+.filter-status-header .clear-filters-button:hover {
+    background-color: #fafafa;
+}
+.filter-status-header .clear-filters-button svg {
+    height: 12px;
+    margin-right: 5px;
+}
 .filter-status .ampersand {
     font-size: 1.125rem;
     font-weight: 300;
@@ -708,6 +741,16 @@ label.checkbox-container.checked .checkbox-icon {
 .vis-overview-panel .overview-root .checkbox-container {
     display: flex;
     align-items: center;
+    flex: 1;
+}
+.vis-overview-panel .overview-root .checkbox-container .input-label {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: flex-start;
+}
+.vis-overview-panel .overview-root .checkbox-container .count {
+    margin-left: 20px;
 }
 .vis-overview-panel .overview-root .checkbox-container:hover {
     cursor: pointer;
@@ -722,7 +765,7 @@ label.checkbox-container.checked .checkbox-icon {
     background-color: white;
     border: 1.5px solid #3d5066;
     border-radius: 1.5px;
-    margin: auto;
+    margin: 0px;
     margin-right: 10px;
 }
 .vis-overview-panel .overview-root .checkbox-icon svg {
