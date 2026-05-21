@@ -614,6 +614,32 @@ label.checkbox-container.checked .checkbox-icon {
     font-size: 0.875rem;
     animation: drop-open 100ms linear;
 }
+.filter-status-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-right: 5px;
+}
+.filter-status-header .clear-filters-button {
+    display: flex;
+    color: #4e7099;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #4e7099;
+    border-radius: 4px;
+    padding: 3px 6px;
+    margin-top: 4px;
+    font-size: 0.75rem;
+    line-height: 0.75rem;
+}
+.filter-status-header .clear-filters-button:hover {
+    background-color: #fafafa;
+}
+.filter-status-header .clear-filters-button svg {
+    height: 12px;
+    margin-right: 5px;
+}
 .filter-status .ampersand {
     font-size: 1.125rem;
     font-weight: 300;

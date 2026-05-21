@@ -20,7 +20,19 @@ export const FilterStatusPanel = ({
 }: FilterStatusPanelProps) => {
     return (
         <div className="filter-status">
-            <span>Filtered By:</span>
+            <div className="filter-status-header">
+                <span>Filtered By:</span>
+                {Object.keys(activeFilters)?.length > 1 && (
+                    <button className="clear-filters-button" onClick={clearFilters}>
+                        <svg className="icon" viewBox={ICONS.X_MARK.viewBox}>
+                            {ICONS.X_MARK.path.map(p => (
+                                <path fill="currentColor" key={p} d={p} />
+                            ))}
+                        </svg>
+                        <span>Clear All</span>
+                    </button>
+                )}
+            </div>
             {Object.keys(activeFilters).map((filterIdentifier, i) => {
                 const { title: filterTitle, type: filterType } = cohortFiltersObject?.[filterIdentifier];
 
