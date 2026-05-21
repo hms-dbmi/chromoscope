@@ -708,6 +708,16 @@ label.checkbox-container.checked .checkbox-icon {
 .vis-overview-panel .overview-root .checkbox-container {
     display: flex;
     align-items: center;
+    flex: 1;
+}
+.vis-overview-panel .overview-root .checkbox-container .input-label {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: flex-start;
+}
+.vis-overview-panel .overview-root .checkbox-container .count {
+    margin-left: 20px;
 }
 .vis-overview-panel .overview-root .checkbox-container:hover {
     cursor: pointer;
@@ -722,7 +732,7 @@ label.checkbox-container.checked .checkbox-icon {
     background-color: white;
     border: 1.5px solid #3d5066;
     border-radius: 1.5px;
-    margin: auto;
+    margin: 0px;
     margin-right: 10px;
 }
 .vis-overview-panel .overview-root .checkbox-icon svg {

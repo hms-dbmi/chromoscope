@@ -245,28 +245,29 @@ export const OverviewFilter = ({
                                 }`}
                             >
                                 <div className="dropdown-item-checkbox">
-                                    <label htmlFor={`${identifier}-${option.value}`} className="checkbox-container">
-                                        <input
-                                            id={`${identifier}-${option.value}`}
-                                            className="checkbox"
-                                            type="checkbox"
-                                            checked={isSelected}
-                                            onChange={() => handleOptionSelection(option)}
-                                        />
-                                        <span className="checkbox-icon">
-                                            {isSelected && (
-                                                <svg className="icon" viewBox={ICONS.CHECKMARK.viewBox}>
-                                                    {ICONS.CHECKMARK.path.map(p => (
-                                                        <path fill="currentColor" key={p} d={p} />
-                                                    ))}
-                                                </svg>
-                                            )}
+                                    <label className="checkbox-container">
+                                        <div className="input-label">
+                                            <input
+                                                className="checkbox"
+                                                type="checkbox"
+                                                checked={isSelected}
+                                                onChange={() => handleOptionSelection(option)}
+                                            />
+                                            <span className="checkbox-icon">
+                                                {isSelected && (
+                                                    <svg className="icon" viewBox={ICONS.CHECKMARK.viewBox}>
+                                                        {ICONS.CHECKMARK.path.map(p => (
+                                                            <path fill="currentColor" key={p} d={p} />
+                                                        ))}
+                                                    </svg>
+                                                )}
+                                            </span>
+                                            <span>{formattedValue}</span>
+                                        </div>
+                                        <span className="count">
+                                            {optionCounts?.[value as string] ?? option?.count ?? ''}
                                         </span>
-                                        <span>{formattedValue}</span>
                                     </label>
-                                    <span className="count">
-                                        {optionCounts?.[value as string] ?? option?.count ?? ''}
-                                    </span>
                                 </div>
                             </li>
                         );

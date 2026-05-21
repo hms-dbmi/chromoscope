@@ -71,8 +71,7 @@ export const OverviewPanel = ({
     // Get all samples
     const allSamples = cohorts[selectedCohort]?.samples || [];
 
-    // Get filters for the selected cohort
-    const cohortFiltersObject = cohorts?.[selectedCohort]?.filters || {};
+    const cohortFiltersObject = useMemo(() => cohorts?.[selectedCohort]?.filters || {}, [cohorts, selectedCohort]);
     const filterIdentifiers: string[] = Object.keys(cohortFiltersObject);
 
     // Create variable to store inverted filters
