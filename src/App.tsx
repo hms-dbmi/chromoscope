@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback, Suspense } from 'react';
 import { GoslingComponent, GoslingRef } from 'gosling.js';
 import { debounce } from 'lodash';
 import type { RouteComponentProps } from 'react-router-dom';
@@ -20,7 +20,7 @@ import { NavigationBar } from './ui/NavigationBar';
 import { InstructionsModal } from './ui/InstructionsModal';
 import { ClinicalPanel } from './ui/ClinicalPanel';
 import { AboutModal } from './ui/AboutModal';
-import { VisOverviewPanel } from './ui/VisOverviewPanel';
+const VisOverviewPanel = React.lazy(() => import('./ui/VisOverviewPanel').then(m => ({ default: m.VisOverviewPanel })));
 import SampleConfigForm from './ui/SampleConfigForm';
 import { VariantViewControls } from './ui/VariantViewControls';
 import { TrackTooltips } from './ui/TrackTooltips';
@@ -103,12 +103,13 @@ function App(props: RouteComponentProps) {
         externalUrl = externalUrl.split('&domain')[0];
     }
     const exampleId = urlParams.get('example');
-    const xDomain = urlParams.get('domain')
-        ? urlParams
-              .get('domain')
-              .split('-')
-              .map(d => +d)
-        : null;
+    const xDomain = (() => {
+        const raw = urlParams.get('domain');
+        if (!raw) return null;
+        const parts = raw.split('-').map(Number);
+        return parts.length === 2 && parts.every(n => !isNaN(n)) ? parts : null;
+    })();
+    const cohortIdFromUrl = urlParams.get('cohortId');
     const demoIndex = useRef(+urlParams.get('demoIndex') || 0);
     const [showSmallMultiples, setShowSmallMultiples] = useState(externalUrl === null);
     const [ready, setReady] = useState(externalUrl === null);
@@ -330,14 +331,78 @@ function App(props: RouteComponentProps) {
         setIsClinicalPanelOpen(!!demo?.clinicalInfo && isClinicalPanelOpen);
     }, [demo]);
 
-    // Load external demo cohort once MSK SPECTRUM cohort is available
+    // In minimal mode, fetch MSK SPECTRUM only if explicitly requested via cohortId
     useEffect(() => {
-        const cohortIdFromUrl = urlParams.get('cohortId');
+        if (!isMinimalMode || cohortIdFromUrl !== 'MSK SPECTRUM' || cohorts['MSK SPECTRUM']) return;
+
+        fetch(
+            'https://genomebrowser-uploads.hms.harvard.edu/data/dg204/SPECTRUM/SPECTRUM_config_with_clinicalInfo_sorted_v4.json'
+        )
+            .then(res => res.json())
+            .then(data => {
+                if (data?.name && data?.samples?.length > 0) {
+                    setCohorts(prev => ({
+                        ...prev,
+                        'MSK SPECTRUM': {
+                            filters: [{ field: 'cancer', title: 'Cancer Type', type: 'string' }] as any,
+                            name: data.name,
+                            samples: data.samples.map((sample: any, index: number) => ({
+                                ...sample,
+                                originalIndex: index
+                            }))
+                        }
+                    }));
+                }
+            })
+            .catch(() => {
+                console.error('Failed to fetch MSK SPECTRUM cohort data');
+            });
+    }, []);
+
+    // In minimal mode, fetch the external cohort directly on mount (no MSK SPECTRUM dependency)
+    useEffect(() => {
+        if (!isMinimalMode || !externalUrl) return;
+
+        fetch(externalUrl)
+            .then(response => response.text())
+            .then(d => {
+                const externalDemo = JSON.parse(d);
+                if (externalDemo?.samples?.length > 0 || (Array.isArray(externalDemo) && externalDemo.length > 0)) {
+                    let cohortId = externalDemo?.name ?? 'External Cohort';
+                    const externalSamples = externalDemo?.samples || externalDemo;
+                    if (cohorts?.[cohortId]) cohortId = cohortId + '_1';
+                    externalDemoCohortId.current = cohortId;
+                    setCohorts(prev => ({
+                        ...prev,
+                        [cohortId]: {
+                            name: cohortId,
+                            filters: externalDemo?.filters ?? [],
+                            samples: externalSamples.map((s: any, i: number) => ({ ...s, originalIndex: i }))
+                        }
+                    }));
+                    setIsLoadingExternalDemo(false);
+                } else {
+                    // Valid JSON but no usable samples — unblock rendering with default state
+                    setReady(true);
+                    setIsLoadingExternalDemo(false);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching external demo:', error);
+                setExternalError(error.message);
+                setShowSmallMultiples(true);
+                setReady(true);
+                setIsLoadingExternalDemo(false);
+            });
+    }, []);
+
+    // Load external demo cohort once MSK SPECTRUM cohort is available (non-minimal mode)
+    useEffect(() => {
         const indexFromUrl = demoIndex.current;
 
         // After the first two default samples were added, load the
         // external URL if it's provided
-        if (cohorts['MSK SPECTRUM'] && Object.keys(cohorts).length < 3 && externalUrl) {
+        if (!isMinimalMode && cohorts['MSK SPECTRUM'] && Object.keys(cohorts).length < 3 && externalUrl) {
             fetch(externalUrl)
                 .then(response =>
                     response.text().then(d => {
@@ -401,7 +466,7 @@ function App(props: RouteComponentProps) {
                 const currentDemoId = demo?.id;
 
                 // Only update if the demo would actually change
-                if (new_demo.id !== currentDemoId) {
+                if (new_demo?.id !== currentDemoId) {
                     demoIndex.current = indexFromUrl;
                     setSelectedCohort(cohortId);
                     handleDemoChange(new_demo);
@@ -835,26 +900,30 @@ function App(props: RouteComponentProps) {
                             setSelectedCohort={setSelectedCohort}
                         />
                     )}
-                    <VisOverviewPanel
-                        cohorts={cohorts}
-                        setCohorts={setCohorts}
-                        showSamples={showSamples}
-                        generateThumbnails={generateThumbnails}
-                        demo={demo}
-                        demoIndex={demoIndex}
-                        externalDemoUrl={externalDemoUrl}
-                        filteredSamples={filteredSamples}
-                        doneGeneratingThumbnails={doneGeneratingThumbnails}
-                        setShowSamples={setShowSamples}
-                        setShowAbout={setShowAbout}
-                        setFilterSampleBy={setFilterSampleBy}
-                        setFilteredSamples={setFilteredSamples}
-                        setGenerateThumbnails={setGenerateThumbnails}
-                        handleDemoChange={handleDemoChange}
-                        selectedCohort={selectedCohort}
-                        setSelectedCohort={setSelectedCohort}
-                        externalError={externalError}
-                    />
+                    {!isMinimalMode && (
+                        <Suspense fallback={null}>
+                            <VisOverviewPanel
+                                cohorts={cohorts}
+                                setCohorts={setCohorts}
+                                showSamples={showSamples}
+                                generateThumbnails={generateThumbnails}
+                                demo={demo}
+                                demoIndex={demoIndex}
+                                externalDemoUrl={externalDemoUrl}
+                                filteredSamples={filteredSamples}
+                                doneGeneratingThumbnails={doneGeneratingThumbnails}
+                                setShowSamples={setShowSamples}
+                                setShowAbout={setShowAbout}
+                                setFilterSampleBy={setFilterSampleBy}
+                                setFilteredSamples={setFilteredSamples}
+                                setGenerateThumbnails={setGenerateThumbnails}
+                                handleDemoChange={handleDemoChange}
+                                selectedCohort={selectedCohort}
+                                setSelectedCohort={setSelectedCohort}
+                                externalError={externalError}
+                            />
+                        </Suspense>
+                    )}
                     <div
                         id="gosling-panel"
                         className="gosling-panel"
