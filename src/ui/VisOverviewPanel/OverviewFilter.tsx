@@ -186,17 +186,19 @@ export const OverviewFilter = ({
                     <span id={'select-label-for-' + identifier} className="select-label">
                         {title}
                     </span>
+                </div>
+                <div className="count-container">
                     {activeFilters?.[identifier]?.length > 0 && (
                         <div className="selected-option-count">
                             <span>{activeFilters[identifier].length ?? ''}</span>
                         </div>
                     )}
+                    <svg className="icon" viewBox={ICONS.CHEVRON_UP.viewBox}>
+                        {ICONS.CHEVRON_UP.path.map(p => (
+                            <path fill="currentColor" key={p} d={p} />
+                        ))}
+                    </svg>
                 </div>
-                <svg className="icon" viewBox={ICONS.CHEVRON_UP.viewBox}>
-                    {ICONS.CHEVRON_UP.path.map(p => (
-                        <path fill="currentColor" key={p} d={p} />
-                    ))}
-                </svg>
             </button>
             <ul
                 id={`dropdown-list-for-${identifier}`}

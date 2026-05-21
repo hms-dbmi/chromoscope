@@ -304,8 +304,11 @@ label.checkbox-container.checked .checkbox-icon {
     display: flex;
     font-weight: 500;
 }
+.vis-overview-panel .overview-root .dropdown-container .count-container {
+    display: flex;
+}
 
-.vis-overview-panel .overview-root .dropdown-container .select-label-wrapper .selected-option-count {
+.vis-overview-panel .overview-root .dropdown-container .count-container .selected-option-count {
     display: flex;
     justify-content: center;
     background-color: #c6dbf1;
@@ -316,11 +319,15 @@ label.checkbox-container.checked .checkbox-icon {
     height: 20px;
     width: 20px;
 }
-.vis-overview-panel .overview-root .dropdown-container .select-label-wrapper .selected-option-count span {
+.vis-overview-panel .overview-root .dropdown-container .count-container .selected-option-count span {
     margin: auto;
     color: #2f68aa;
     font-size: 0.75rem;
+    line-height: 0.75rem;
     font-weight: 500;
+}
+.vis-overview-panel .overview-root .dropdown-container .count-container .icon {
+    margin-left: 10px;
 }
 
 .vis-overview-panel .overview-root .dropdown-container .dropdown-button.toggle-open {
@@ -497,7 +504,7 @@ label.checkbox-container.checked .checkbox-icon {
     color: #2f68aa;
 }
 .vis-overview-panel .overview-root .dropdown-container.filter.has-selection .dropdown-button .select-label {
-    max-width: 90px;
+    max-width: 100px;
 }
 .vis-overview-panel .overview-root .dropdown-container.filter.has-selection .dropdown-button span {
     font-weight: 600;
