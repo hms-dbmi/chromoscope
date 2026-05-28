@@ -473,7 +473,6 @@ label.checkbox-container.checked .checkbox-icon {
     align-items: center;
     justify-content: space-between;
     border-radius: 4px;
-    padding: 5px 10px;
     gap: 10px;
     flex: 1;
     min-width: 120px;
@@ -742,6 +741,7 @@ label.checkbox-container.checked .checkbox-icon {
     display: flex;
     align-items: center;
     flex: 1;
+    padding: 5px 10px;
 }
 .vis-overview-panel .overview-root .checkbox-container .input-label {
     display: flex;
