@@ -223,12 +223,12 @@
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
-    padding-right: 20px;
 }
 
 /* Checkbox for showing non-matches */
-.checkbox-container {
+.vis-overview-panel .overview-root .non-matches-checkbox .checkbox-container {
     font-weight: 500;
+    padding: 0px;
 }
 label.checkbox-container.checked .checkbox-icon {
     border-width: 2px;
