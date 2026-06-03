@@ -640,6 +640,7 @@ label.checkbox-container.checked .checkbox-icon {
     line-height: 0.75rem;
 }
 .filter-status-header .clear-filters-button:hover {
+    cursor: pointer;
     background-color: #fafafa;
 }
 .filter-status-header .clear-filters-button svg {
