@@ -321,7 +321,7 @@ label.checkbox-container.checked .checkbox-icon {
 }
 .vis-overview-panel .overview-root .dropdown-container .count-container .selected-option-count span {
     margin: auto;
-    color: #2f68aa;
+    color: #116cb0;
     font-size: 0.75rem;
     line-height: 0.75rem;
     font-weight: 500;
@@ -428,8 +428,8 @@ label.checkbox-container.checked .checkbox-icon {
     max-width: 180px;
     font-size: 1rem;
     font-weight: 400;
-    color: #617c9d;
-    border: 1.5px solid #617c9d;
+    color: #2c5172;
+    border: 1.5px solid #cbd9e9;
     border-radius: 4px;
     padding: 5px 10px;
 }
@@ -498,7 +498,7 @@ label.checkbox-container.checked .checkbox-icon {
     background-color: #deefff;
 }
 .vis-overview-panel .overview-root .dropdown-container.filter.has-selection .dropdown-button {
-    border: 1.5px solid #2f68aa;
+    border: 1.5px solid #0c6aaf;
     background-color: #f3f9ff;
     color: #2f68aa;
 }
