@@ -183,7 +183,7 @@ export const OverviewFilter = ({
                 aria-labelledby="select-label"
             >
                 <div className="select-label-wrapper">
-                    <span id={'select-label-for-' + identifier} className="select-label">
+                    <span id={'select-label-for-' + identifier} className="select-label" title={title}>
                         {title}
                     </span>
                 </div>
