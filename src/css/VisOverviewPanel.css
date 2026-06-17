@@ -611,38 +611,49 @@ label.checkbox-container.checked .checkbox-icon {
 .filter-status {
     display: flex;
     flex-direction: row;
+    align-items: center;
     color: #4e7099;
-    align-items: baseline;
     gap: 10px;
     width: 100%;
-    padding: 10px 38px;
+    padding: 10px 38px 30px 38px;
     font-weight: 500;
     font-size: 0.875rem;
     animation: drop-open 100ms linear;
 }
 .filter-status-header {
     display: flex;
-    flex-direction: column;
     align-items: flex-start;
-    justify-content: space-between;
+    justify-content: center;
     margin-right: 5px;
+    font-size: 1rem;
+    line-height: 1rem;
 }
-.filter-status-header .clear-filters-button {
+.filter-status-header span {
+    margin: auto 0px;
+}
+.filter-status-header .icon {
+    color: #95b1d1;
+    width: 18px;
+    margin: auto 5px auto 0px;
+    padding-bottom: 3px;
+}
+.filter-status .clear-filters-button {
     display: flex;
     color: #4e7099;
     align-items: center;
-    background-color: white;
-    border: 1px solid #4e7099;
-    border-radius: 4px;
-    padding: 3px 6px;
-    margin-top: 4px;
+    background-color: #f0f7ff;
+    border: 1px solid #9dbbd9;
+    border-radius: 10px;
+    padding: 4px 8px;
     font-size: 0.75rem;
+    font-weight: 500;
     line-height: 0.75rem;
+    margin-left: 5px;
 }
-.filter-status-header .clear-filters-button:hover {
-    background-color: #fafafa;
+.filter-status .clear-filters-button:hover {
+    background-color: #e7f0f8;
 }
-.filter-status-header .clear-filters-button svg {
+.filter-status .clear-filters-button svg {
     height: 12px;
     margin-right: 5px;
 }
@@ -661,6 +672,7 @@ label.checkbox-container.checked .checkbox-icon {
 }
 
 .selected-filter-options-container {
+    position: relative;
     display: flex;
     flex-direction: column;
 }
@@ -674,13 +686,13 @@ label.checkbox-container.checked .checkbox-icon {
 }
 .selected-filter-option {
     display: flex;
-    align-items: baseline;
     justify-content: space-between;
     background-color: #2f68aa;
     padding: 3px 2px 3px 10px;
     border-radius: 3px;
     color: white;
     min-width: 60px;
+    font-size: 1rem;
 }
 .selected-filter-option:first-of-type {
     margin-left: 5px;
@@ -696,9 +708,11 @@ label.checkbox-container.checked .checkbox-icon {
 }
 
 .selected-filter-option .remove-filter-option svg {
-    height: 15px;
+    height: 18px;
     width: 15px;
     margin: auto;
+    display: flex;
+    padding-bottom: 2px;
 }
 .selected-filter-option .remove-filter-option svg .icon {
     display: flex;
@@ -706,18 +720,19 @@ label.checkbox-container.checked .checkbox-icon {
 }
 
 .selected-filter-title {
-    position: relative;
+    position: absolute;
     color: #4e7099;
     font-style: italic;
-    font-size: 0.75rem;
-    margin-top: 3px;
+    font-size: 0.625rem;
     font-weight: 400;
+    bottom: -72%;
+    width: stretch;
 }
 .selected-filter-title::before {
     position: absolute;
     content: '';
     width: 99%;
-    transform: translate(-50%, -2px);
+    transform: translate(-50%, -4px);
     left: 50%;
     height: 2px;
     border-bottom: 1px solid #617c9d;
