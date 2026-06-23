@@ -68,40 +68,31 @@ export const OverviewPanel = ({
     const [showExternalDemoAlert, setShowExternalDemoAlert] = useState<boolean>(true);
     const [showNonMatches, setShowNonMatches] = useState<boolean>(false);
 
-    // Get all samples
     const allSamples = cohorts[selectedCohort]?.samples || [];
 
     const cohortFiltersObject = useMemo(() => cohorts?.[selectedCohort]?.filters || {}, [cohorts, selectedCohort]);
     const filterIdentifiers: string[] = Object.keys(cohortFiltersObject);
 
-    // Create variable to store inverted filters
     const invertedSamples = cohorts[selectedCohort]?.samples?.filter(
         (sample: SampleType) => !filteredSamples.includes(sample)
     );
 
-    // Compute filter options based on cohort filters
-    // Update when: cohorts or selectedCohort changes
     const filterValuesMap = useMemo(() => {
-        // Return if no filters are defined
         if (filterIdentifiers.length === 0) {
             return;
         }
 
         const filtersMap: FiltersMap = {};
 
-        // Extract the options from the filters property of the configuration
         filterIdentifiers.map((filterIdentifier: string, i: number) => {
             const { field, title, type } = cohortFiltersObject?.[filterIdentifier];
 
             const valuesMap = new Map<string | number | boolean, number>();
 
-            // Check each sample for all possible entries
             cohorts[selectedCohort]?.samples.forEach((sample: any) => {
-                //  Get nested field value
                 const nestedFieldValue = accessNestedField(sample, field);
 
                 if (nestedFieldValue !== null && nestedFieldValue !== undefined) {
-                    // add value to the map with count
                     if (valuesMap.has(nestedFieldValue)) {
                         valuesMap.set(nestedFieldValue, valuesMap.get(nestedFieldValue) + 1);
                     } else {
@@ -141,9 +132,7 @@ export const OverviewPanel = ({
 
                 // Continuous values have bins to compare against
                 if (filterValuesMap[identifier]?.type === 'continuous') {
-                    // Typecast to Number if necessary
                     const number = Number(sampleValue);
-                    // Check if `sampleValue` is between one of the bins
                     const bins = filterValuesMap[identifier].values;
                     const binIndex = getBinIndex(number, bins);
                     sampleValue = bins[binIndex]?.value || null;
@@ -165,20 +154,14 @@ export const OverviewPanel = ({
         const result: Record<string, SampleType[]> = {};
 
         Object.keys(cohortFiltersObject).forEach(filterIdentifier => {
-            // Clone active filters
             const activeFiltersWithoutSelf: ActiveFilters = { ...activeFilters };
-
-            // Remove current filter entirely
             delete activeFiltersWithoutSelf[filterIdentifier];
-
-            // Apply remaining filters
             result[filterIdentifier] = getFilteredSamples(allSamples, activeFiltersWithoutSelf);
         });
 
         return result;
     }, [allSamples, activeFilters, filterValuesMap, cohortFiltersObject]);
 
-    // Get counts for each option by filtering base subset on onlythat option
     const optionCounts = useMemo(() => {
         if (!filterValuesMap) return {};
 
@@ -187,7 +170,6 @@ export const OverviewPanel = ({
         Object.keys(filterValuesMap).forEach(filterId => {
             counts[filterId] = {};
 
-            // Get base subset
             const base = baseSubsets[filterId] || [];
             const currentValues = activeFilters[filterId] || [];
 
@@ -229,12 +211,10 @@ export const OverviewPanel = ({
     const getUpdatedActiveFilters = (filterIdentifier: string, value: Primitive) => {
         const currentValues = activeFilters[filterIdentifier] || [];
 
-        // Check if `value` already exist in the filter
         const updatedValues = currentValues.includes(value)
             ? currentValues.filter(v => v !== value)
             : [...currentValues, value];
 
-        // Copy activeFilters
         const updatedActiveFilters = { ...activeFilters };
 
         // Remove filter if all values are removed
@@ -256,13 +236,9 @@ export const OverviewPanel = ({
     const onFilterOptionSelection = (filterIdentifier: string, option: OptionValue) => {
         const { value } = option;
 
-        // Compute updated filters
         const updatedActiveFilters = getUpdatedActiveFilters(filterIdentifier, value);
-
-        // Apply filters
         const newFilteredSamples = getFilteredSamples(allSamples, updatedActiveFilters);
 
-        // Update state variables
         setFilteredSamples(newFilteredSamples);
         setActiveFilters(updatedActiveFilters);
 
@@ -272,7 +248,6 @@ export const OverviewPanel = ({
         }
     };
 
-    // Clear all filters and resets the filtered samples to all samples
     const clearFilters = () => {
         setActiveFilters({});
         setFilteredSamples(allSamples);
@@ -290,9 +265,7 @@ export const OverviewPanel = ({
         setFilteredSamples(cohorts[selectedCohort]?.samples || []);
     }, [cohorts, selectedCohort]);
 
-    // Scroll to top when new sample is selected
     useEffect(() => {
-        // Scroll to top when new cohort is selected
         if (selectedCohort) {
             const container = document.querySelector('.overview-container');
             if (container) {
