@@ -58,6 +58,7 @@ export const OverviewFilter = ({
     useLayoutEffect(() => {
         if (!showDropdown) return;
         const dropdown = document.querySelector('#dropdown-list-for-' + identifier);
+        if (!dropdown) return;
         const rect = dropdown.getBoundingClientRect();
 
         const isOverflowingRight = rect.right > window.innerWidth;

@@ -3,7 +3,7 @@ import React from 'react';
 import { CohortFilter } from '../../App';
 import { OptionValue, ActiveFilters } from './OverviewPanel';
 import { ICONS } from '../../icon';
-import { getBinaryOptionValue } from './OverviewFilter';
+import { transformOptionValue } from './OverviewFilter';
 
 type FilterStatusPanelProps = {
     activeFilters: ActiveFilters;
@@ -39,8 +39,7 @@ export const FilterStatusPanel = ({
                                 <div className="selected-filter-options">
                                     {activeFilters[filterIdentifier].map((value, i) => {
                                         // Format the value based on the filter type
-                                        const formattedValue =
-                                            filterType === 'binary' ? getBinaryOptionValue(value) : value;
+                                        const formattedValue = transformOptionValue(value, filterType);
 
                                         return (
                                             <div className="selected-filter-option-container" key={i}>
@@ -74,7 +73,7 @@ export const FilterStatusPanel = ({
                     </div>
                 );
             })}
-            {Object.keys(activeFilters)?.length > 1 && (
+            {Object.keys(activeFilters).length > 0 && (
                 <button className="clear-filters-button" onClick={clearFilters}>
                     <span>Clear All</span>
                 </button>

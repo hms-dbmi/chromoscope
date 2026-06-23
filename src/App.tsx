@@ -344,7 +344,7 @@ function App(props: RouteComponentProps) {
                     setCohorts(prev => ({
                         ...prev,
                         'MSK SPECTRUM': {
-                            filters: [{ field: 'cancer', title: 'Cancer Type', type: 'string' }] as any,
+                            filters: { cancer_type: { field: 'cancer', title: 'Cancer Type', type: 'string' } },
                             name: data.name,
                             samples: data.samples.map((sample: any, index: number) => ({
                                 ...sample,
@@ -376,7 +376,7 @@ function App(props: RouteComponentProps) {
                         ...prev,
                         [cohortId]: {
                             name: cohortId,
-                            filters: externalDemo?.filters ?? [],
+                            filters: externalDemo?.filters ?? {},
                             samples: externalSamples.map((s: any, i: number) => ({ ...s, originalIndex: i }))
                         }
                     }));
@@ -430,7 +430,7 @@ function App(props: RouteComponentProps) {
                                 ...cohorts,
                                 [cohortId]: {
                                     name: cohortId,
-                                    filters: externalDemo?.filters ?? [],
+                                    filters: externalDemo?.filters ?? {},
                                     samples: samples?.map((sample: any, index: number) => ({
                                         ...sample,
                                         originalIndex: index
