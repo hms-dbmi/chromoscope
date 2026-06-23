@@ -6,8 +6,6 @@ import { Primitive } from './OverviewPanel';
 
 type OverviewFilterProps = {
     identifier?: string;
-    nullValue?: string;
-    active?: boolean;
     title: string;
     type?: string;
     options?: OptionValue[];
@@ -15,7 +13,6 @@ type OverviewFilterProps = {
     cohortFiltersObject?: { [key: string]: CohortFilter };
     optionCounts?: Record<string, number>;
     onChange?: (value: string, option?: OptionValue | null) => void;
-    setActiveFilters?: (filters: ActiveFilters) => void;
 };
 
 export const getBinaryOptionValue = (option: Primitive): string | null => {
@@ -28,11 +25,10 @@ export const getBinaryOptionValue = (option: Primitive): string | null => {
     return null;
 };
 
-export const transformOptionValue = (value: Primitive, filterType: string) => {
+export const transformOptionValue = (value: Primitive, filterType: string | undefined) => {
     if (filterType === 'binary') {
         return getBinaryOptionValue(value);
     } else if (filterType === 'continuous') {
-        // Format the range as a string
         const [start, end] = (value as string).split('-').map(n => Number(n).toLocaleString());
         return start + ' - ' + end;
     }
@@ -46,7 +42,6 @@ export const OverviewFilter = ({
     activeFilters,
     optionCounts,
     onChange = null,
-    setActiveFilters = null,
     cohortFiltersObject
 }: OverviewFilterProps) => {
     const overviewFilterRef = useRef<HTMLDivElement>(null);
@@ -62,6 +57,7 @@ export const OverviewFilter = ({
     useLayoutEffect(() => {
         if (!showDropdown) return;
         const dropdown = document.querySelector('#dropdown-list-for-' + identifier);
+        if (!dropdown) return;
         const rect = dropdown.getBoundingClientRect();
 
         const isOverflowingRight = rect.right > window.innerWidth;
@@ -110,13 +106,8 @@ export const OverviewFilter = ({
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    // Function for handling option selection
     const handleOptionSelection = (option: OptionValue | null) => {
         onChange(identifier, option);
-
-        setShowDropdown(false);
-        setFocusedIndex(-1);
-        toggleButtonRef.current?.focus();
     };
 
     // Handle keyboard navigation for the dropdown
@@ -130,7 +121,6 @@ export const OverviewFilter = ({
 
         if (!showDropdown) return;
 
-        // // Map key events to actions
         switch (e.key) {
             case 'ArrowDown':
                 e.preventDefault();
@@ -144,16 +134,14 @@ export const OverviewFilter = ({
             case ' ':
                 e.preventDefault();
                 if (focusedIndex >= 0 && focusedIndex < options.length) {
-                    const selected = options[focusedIndex];
-                    handleOptionSelection(selected);
-                    setShowDropdown(false);
-                    setFocusedIndex(-1);
+                    handleOptionSelection(options[focusedIndex]);
                 }
                 break;
             case 'Escape':
                 e.preventDefault();
                 setShowDropdown(false);
                 setFocusedIndex(-1);
+                toggleButtonRef.current?.focus();
                 break;
             case 'Tab':
                 setShowDropdown(false);
@@ -183,7 +171,7 @@ export const OverviewFilter = ({
                 aria-labelledby="select-label"
             >
                 <div className="select-label-wrapper">
-                    <span id={'select-label-for-' + identifier} className="select-label">
+                    <span id={'select-label-for-' + identifier} className="select-label" title={title}>
                         {title}
                     </span>
                 </div>
@@ -223,7 +211,6 @@ export const OverviewFilter = ({
                         const activeOptions = activeFilters[identifier] || [];
                         const isSelected = activeOptions.includes(value);
 
-                        // Format the value based on the filter type
                         const filterType = cohortFiltersObject[identifier]?.type;
                         const formattedValue = transformOptionValue(value, filterType);
 

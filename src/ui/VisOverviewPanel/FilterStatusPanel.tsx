@@ -3,7 +3,7 @@ import React from 'react';
 import { CohortFilter } from '../../App';
 import { OptionValue, ActiveFilters } from './OverviewPanel';
 import { ICONS } from '../../icon';
-import { getBinaryOptionValue } from './OverviewFilter';
+import { transformOptionValue } from './OverviewFilter';
 
 type FilterStatusPanelProps = {
     activeFilters: ActiveFilters;
@@ -21,20 +21,15 @@ export const FilterStatusPanel = ({
     return (
         <div className="filter-status">
             <div className="filter-status-header">
-                <span>Filtered By:</span>
-                {Object.keys(activeFilters)?.length > 1 && (
-                    <button className="clear-filters-button" onClick={clearFilters}>
-                        <svg className="icon" viewBox={ICONS.X_MARK.viewBox}>
-                            {ICONS.X_MARK.path.map(p => (
-                                <path fill="currentColor" key={p} d={p} />
-                            ))}
-                        </svg>
-                        <span>Clear All</span>
-                    </button>
-                )}
+                <svg className="icon" viewBox={ICONS.FILTER.viewBox}>
+                    {ICONS.FILTER.path.map(p => (
+                        <path fill="currentColor" key={p} d={p} />
+                    ))}
+                </svg>
+                <span>Filters:</span>
             </div>
             {Object.keys(activeFilters).map((filterIdentifier, i) => {
-                const { title: filterTitle, type: filterType } = cohortFiltersObject?.[filterIdentifier];
+                const { title: filterTitle, type: filterType } = cohortFiltersObject?.[filterIdentifier] || {};
 
                 return (
                     <div className="filter-status-item-container" key={i}>
@@ -44,8 +39,7 @@ export const FilterStatusPanel = ({
                                 <div className="selected-filter-options">
                                     {activeFilters[filterIdentifier].map((value, i) => {
                                         // Format the value based on the filter type
-                                        const formattedValue =
-                                            filterType === 'binary' ? getBinaryOptionValue(value) : value;
+                                        const formattedValue = transformOptionValue(value, filterType);
 
                                         return (
                                             <div className="selected-filter-option-container" key={i}>
@@ -79,6 +73,11 @@ export const FilterStatusPanel = ({
                     </div>
                 );
             })}
+            {Object.keys(activeFilters).length > 0 && (
+                <button className="clear-filters-button" onClick={clearFilters}>
+                    <span>Clear All</span>
+                </button>
+            )}
         </div>
     );
 };

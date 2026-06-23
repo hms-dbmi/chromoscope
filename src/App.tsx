@@ -344,7 +344,7 @@ function App(props: RouteComponentProps) {
                     setCohorts(prev => ({
                         ...prev,
                         'MSK SPECTRUM': {
-                            filters: [{ field: 'cancer', title: 'Cancer Type', type: 'string' }] as any,
+                            filters: { cancer_type: { field: 'cancer', title: 'Cancer Type', type: 'string' } },
                             name: data.name,
                             samples: data.samples.map((sample: any, index: number) => ({
                                 ...sample,
@@ -376,7 +376,7 @@ function App(props: RouteComponentProps) {
                         ...prev,
                         [cohortId]: {
                             name: cohortId,
-                            filters: externalDemo?.filters ?? [],
+                            filters: externalDemo?.filters ?? {},
                             samples: externalSamples.map((s: any, i: number) => ({ ...s, originalIndex: i }))
                         }
                     }));
@@ -430,7 +430,7 @@ function App(props: RouteComponentProps) {
                                 ...cohorts,
                                 [cohortId]: {
                                     name: cohortId,
-                                    filters: externalDemo?.filters ?? [],
+                                    filters: externalDemo?.filters ?? {},
                                     samples: samples?.map((sample: any, index: number) => ({
                                         ...sample,
                                         originalIndex: index
@@ -768,7 +768,17 @@ function App(props: RouteComponentProps) {
             // we will show the bam files, so set the initial positions
             setBreakpoints([+x - ZOOM_PADDING, +xe + ZOOM_PADDING, +x1 - ZOOM_PADDING, +x1e + ZOOM_PADDING]);
             setBpIntervals([x, xe, x1, x1e]);
-            setSelectedSvId(e.data[0].sv_id + '');
+
+            const clickedSvId = e.data[0].sv_id + '';
+            setSelectedSvId(clickedSvId);
+
+            // Start timer when the same SV is clicked again
+            if (clickedSvId === selectedSvId) {
+                setTimeout(() => {
+                    isInteractable.current = true;
+                    setIsTransitioning(false);
+                }, SV_SELECTION_DELAY);
+            }
 
             // move to the bottom
             setTimeout(

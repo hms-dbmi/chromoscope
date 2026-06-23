@@ -36,13 +36,13 @@ export const CohortSelector = ({
                         setCohorts({
                             ...cohorts,
                             'MSK SPECTRUM': {
-                                filters: [
-                                    {
+                                filters: {
+                                    cancer_type: {
                                         field: 'cancer',
                                         title: 'Cancer Type',
                                         type: 'string'
                                     }
-                                ],
+                                },
                                 name: data.name,
                                 samples: data.samples?.map((sample: any, index: number) => ({
                                     ...sample,
@@ -52,11 +52,10 @@ export const CohortSelector = ({
                         });
                     }
                 })
-                .finally(() => {
-                    setIsLoading(false);
-                })
                 .catch(() => {
                     console.error('Failed to fetch MSK cohort data');
+                })
+                .finally(() => {
                     setIsLoading(false);
                 });
         }

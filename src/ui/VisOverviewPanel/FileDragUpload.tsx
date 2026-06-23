@@ -104,7 +104,7 @@ export const FileDragUpload = ({
                     const formattedData: ValidCohort = {
                         name: formattedDataName,
                         samples: formattedDataSamples,
-                        filters: data.filters ?? []
+                        filters: data.filters ?? {}
                     };
 
                     const { errors, samplesOkay } = cohortOkayToAdd(formattedData);
