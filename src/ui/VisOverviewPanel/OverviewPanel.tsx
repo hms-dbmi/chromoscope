@@ -353,7 +353,7 @@ export const OverviewPanel = ({
                         <div className="overview-controls">
                             <div className="overview-controls-filters">
                                 {filterIdentifiers.map((filterIdentifier, i) => {
-                                    const { field, title, type } = cohortFiltersObject?.[filterIdentifier];
+                                    const { title, type } = cohortFiltersObject?.[filterIdentifier];
 
                                     return (
                                         <OverviewFilter
@@ -362,11 +362,8 @@ export const OverviewPanel = ({
                                             identifier={filterIdentifier}
                                             title={title}
                                             options={filterValuesMap?.[filterIdentifier]?.values}
-                                            active={Object.keys(activeFilters).includes(field || '')}
                                             onChange={onFilterOptionSelection}
                                             activeFilters={activeFilters}
-                                            nullValue={type === 'binary' ? undefined : null}
-                                            setActiveFilters={setActiveFilters}
                                             cohortFiltersObject={cohortFiltersObject}
                                             optionCounts={optionCounts[filterIdentifier]}
                                         />

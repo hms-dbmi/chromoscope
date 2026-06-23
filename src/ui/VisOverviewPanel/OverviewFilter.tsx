@@ -6,8 +6,6 @@ import { Primitive } from './OverviewPanel';
 
 type OverviewFilterProps = {
     identifier?: string;
-    nullValue?: string;
-    active?: boolean;
     title: string;
     type?: string;
     options?: OptionValue[];
@@ -15,7 +13,6 @@ type OverviewFilterProps = {
     cohortFiltersObject?: { [key: string]: CohortFilter };
     optionCounts?: Record<string, number>;
     onChange?: (value: string, option?: OptionValue | null) => void;
-    setActiveFilters?: (filters: ActiveFilters) => void;
 };
 
 export const getBinaryOptionValue = (option: Primitive): string | null => {
@@ -46,7 +43,6 @@ export const OverviewFilter = ({
     activeFilters,
     optionCounts,
     onChange = null,
-    setActiveFilters = null,
     cohortFiltersObject
 }: OverviewFilterProps) => {
     const overviewFilterRef = useRef<HTMLDivElement>(null);
