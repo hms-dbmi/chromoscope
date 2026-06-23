@@ -136,8 +136,6 @@ export const OverviewPanel = ({
             return (Object.entries(activeFilters) ?? []).every(([identifier, acceptedValues]) => {
                 if (acceptedValues.length === 0) return true;
 
-                // console.log(identifier, acceptedValues);
-
                 const filterField = cohorts[selectedCohort]?.filters?.[identifier]?.field;
                 let sampleValue = accessNestedField(sample, filterField);
 
@@ -274,16 +272,20 @@ export const OverviewPanel = ({
         }
     };
 
-    /**
-     * Clears all filters and resets the filtered samples to all samples
-     */
+    // Clear all filters and resets the filtered samples to all samples
     const clearFilters = () => {
         setActiveFilters({});
         setFilteredSamples(allSamples);
         setShowNonMatches(false);
     };
 
-    // Update filtered samples when cohort changes
+    // Reset filters when the selected cohort changes
+    useEffect(() => {
+        setActiveFilters({});
+        setShowNonMatches(false);
+    }, [selectedCohort]);
+
+    // Update filtered samples when cohort data or selected cohort changes
     useEffect(() => {
         setFilteredSamples(cohorts[selectedCohort]?.samples || []);
     }, [cohorts, selectedCohort]);

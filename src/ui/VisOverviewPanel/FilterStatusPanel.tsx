@@ -29,7 +29,7 @@ export const FilterStatusPanel = ({
                 <span>Filters:</span>
             </div>
             {Object.keys(activeFilters).map((filterIdentifier, i) => {
-                const { title: filterTitle, type: filterType } = cohortFiltersObject?.[filterIdentifier];
+                const { title: filterTitle, type: filterType } = cohortFiltersObject?.[filterIdentifier] || {};
 
                 return (
                     <div className="filter-status-item-container" key={i}>

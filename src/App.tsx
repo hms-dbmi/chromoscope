@@ -768,7 +768,17 @@ function App(props: RouteComponentProps) {
             // we will show the bam files, so set the initial positions
             setBreakpoints([+x - ZOOM_PADDING, +xe + ZOOM_PADDING, +x1 - ZOOM_PADDING, +x1e + ZOOM_PADDING]);
             setBpIntervals([x, xe, x1, x1e]);
-            setSelectedSvId(e.data[0].sv_id + '');
+
+            const clickedSvId = e.data[0].sv_id + '';
+            setSelectedSvId(clickedSvId);
+
+            // Start timer when the same SV is clicked again
+            if (clickedSvId === selectedSvId) {
+                setTimeout(() => {
+                    isInteractable.current = true;
+                    setIsTransitioning(false);
+                }, SV_SELECTION_DELAY);
+            }
 
             // move to the bottom
             setTimeout(
