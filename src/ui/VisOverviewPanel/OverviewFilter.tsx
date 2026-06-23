@@ -25,7 +25,7 @@ export const getBinaryOptionValue = (option: Primitive): string | null => {
     return null;
 };
 
-export const transformOptionValue = (value: Primitive, filterType: string) => {
+export const transformOptionValue = (value: Primitive, filterType: string | undefined) => {
     if (filterType === 'binary') {
         return getBinaryOptionValue(value);
     } else if (filterType === 'continuous') {
