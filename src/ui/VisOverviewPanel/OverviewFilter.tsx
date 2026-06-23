@@ -106,13 +106,8 @@ export const OverviewFilter = ({
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    // Function for handling option selection
     const handleOptionSelection = (option: OptionValue | null) => {
         onChange(identifier, option);
-
-        setShowDropdown(false);
-        setFocusedIndex(-1);
-        toggleButtonRef.current?.focus();
     };
 
     // Handle keyboard navigation for the dropdown
@@ -126,7 +121,6 @@ export const OverviewFilter = ({
 
         if (!showDropdown) return;
 
-        // // Map key events to actions
         switch (e.key) {
             case 'ArrowDown':
                 e.preventDefault();
@@ -140,16 +134,14 @@ export const OverviewFilter = ({
             case ' ':
                 e.preventDefault();
                 if (focusedIndex >= 0 && focusedIndex < options.length) {
-                    const selected = options[focusedIndex];
-                    handleOptionSelection(selected);
-                    setShowDropdown(false);
-                    setFocusedIndex(-1);
+                    handleOptionSelection(options[focusedIndex]);
                 }
                 break;
             case 'Escape':
                 e.preventDefault();
                 setShowDropdown(false);
                 setFocusedIndex(-1);
+                toggleButtonRef.current?.focus();
                 break;
             case 'Tab':
                 setShowDropdown(false);

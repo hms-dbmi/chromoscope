@@ -52,11 +52,10 @@ export const CohortSelector = ({
                         });
                     }
                 })
-                .finally(() => {
-                    setIsLoading(false);
-                })
                 .catch(() => {
                     console.error('Failed to fetch MSK cohort data');
+                })
+                .finally(() => {
                     setIsLoading(false);
                 });
         }

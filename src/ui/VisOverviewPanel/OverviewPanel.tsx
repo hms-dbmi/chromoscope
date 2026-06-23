@@ -302,6 +302,8 @@ export const OverviewPanel = ({
     }, [selectedCohort]);
 
     // When a new sample is added, add a class to the overview container
+    const allSamplesCount = cohorts[selectedCohort]?.samples?.length ?? 0;
+
     useEffect(() => {
         const overviewContainer = document.querySelector('.overview-container');
         if (overviewContainer) {
@@ -310,7 +312,7 @@ export const OverviewPanel = ({
                 overviewContainer.classList.remove('new-sample-added');
             }, 3000);
         }
-    }, [filteredSamples]);
+    }, [allSamplesCount]);
 
     return (
         <div>
