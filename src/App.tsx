@@ -336,7 +336,7 @@ function App(props: RouteComponentProps) {
         if (!isMinimalMode || cohortIdFromUrl !== 'MSK SPECTRUM' || cohorts['MSK SPECTRUM']) return;
 
         fetch(
-            'https://genomebrowser-uploads.hms.harvard.edu/data/dg204/SPECTRUM/SPECTRUM_config_with_clinicalInfo_sorted_v4.json'
+            'https://somatic-browser-test.s3.us-east-1.amazonaws.com/SPECTRUM/SPECTRUM_config_with_clinicalInfo_sorted_aws_thumbnail.json'
         )
             .then(res => res.json())
             .then(data => {
