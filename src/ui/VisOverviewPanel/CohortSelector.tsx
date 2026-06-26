@@ -41,7 +41,8 @@ export const CohortSelector = ({
                                         field: 'cancer',
                                         title: 'Cancer Type',
                                         type: 'string'
-                                    }
+                                    },
+                                    ...(data?.filters || {})
                                 },
                                 name: data.name,
                                 samples: data.samples?.map((sample: any, index: number) => ({

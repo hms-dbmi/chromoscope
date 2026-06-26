@@ -344,7 +344,10 @@ function App(props: RouteComponentProps) {
                     setCohorts(prev => ({
                         ...prev,
                         'MSK SPECTRUM': {
-                            filters: { cancer_type: { field: 'cancer', title: 'Cancer Type', type: 'string' } },
+                            filters: {
+                                cancer_type: { field: 'cancer', title: 'Cancer Type', type: 'string' },
+                                ...(data?.filters || {})
+                            },
                             name: data.name,
                             samples: data.samples.map((sample: any, index: number) => ({
                                 ...sample,
