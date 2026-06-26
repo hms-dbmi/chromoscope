@@ -218,6 +218,7 @@
     border-bottom: 1px solid #d3d3d3;
     justify-content: space-between;
     align-items: flex-start;
+    background-color: #fafbfd;
 }
 .vis-overview-panel .overview-root .overview-controls .overview-controls-filters {
     display: flex;
@@ -424,12 +425,13 @@ label.checkbox-container.checked .checkbox-icon {
 }
 .vis-overview-panel .overview-root .dropdown-container.filter .dropdown-button {
     justify-content: space-between;
+    background-color: white;
     width: 180px;
     max-width: 180px;
     font-size: 1rem;
     font-weight: 400;
-    color: #2c5172;
-    border: 1.5px solid #cbd9e9;
+    color: #354f6e;
+    border: 1.5px solid #aabacd;
     border-radius: 4px;
     padding: 5px 10px;
 }
@@ -498,7 +500,7 @@ label.checkbox-container.checked .checkbox-icon {
     background-color: #deefff;
 }
 .vis-overview-panel .overview-root .dropdown-container.filter.has-selection .dropdown-button {
-    border: 1.5px solid #0c6aaf;
+    border: 1.5px solid #91adca;
     background-color: #f3f9ff;
     color: #2f68aa;
 }
@@ -612,6 +614,7 @@ label.checkbox-container.checked .checkbox-icon {
     display: flex;
     flex-direction: row;
     align-items: center;
+    background-color: #fafbfd;
     color: #4e7099;
     gap: 10px;
     width: 100%;
