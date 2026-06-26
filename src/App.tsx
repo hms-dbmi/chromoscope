@@ -327,8 +327,8 @@ function App(props: RouteComponentProps) {
         leftReads.current = [];
         rightReads.current = [];
 
-        // Update the appearance of the clinical panel
-        setIsClinicalPanelOpen(!!demo?.clinicalInfo && isClinicalPanelOpen);
+        // Open by default when clinical summary is available, close when it's not
+        setIsClinicalPanelOpen(!!demo?.clinicalInfo);
     }, [demo]);
 
     // In minimal mode, fetch MSK SPECTRUM only if explicitly requested via cohortId
