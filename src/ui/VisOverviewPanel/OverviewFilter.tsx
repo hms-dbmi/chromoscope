@@ -12,7 +12,7 @@ type OverviewFilterProps = {
     activeFilters?: ActiveFilters;
     cohortFiltersObject?: { [key: string]: CohortFilter };
     optionCounts?: Record<string, number>;
-    onChange?: (value: string, option?: OptionValue | null) => void;
+    onChange?: (value: string, option: OptionValue ) => void;
 };
 
 export const getBinaryOptionValue = (option: Primitive): string | null => {
@@ -108,6 +108,7 @@ export const OverviewFilter = ({
     }, []);
 
     const handleOptionSelection = (option: OptionValue | null) => {
+        setSelectedOption(option ? String(option.value) : null);
         onChange(identifier, option);
     };
 

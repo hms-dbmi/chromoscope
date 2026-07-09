@@ -404,7 +404,7 @@ export const OverviewPanel = ({
                             <div className="comparison-banner non-matches">
                                 <span>Non - Matches</span>
                             </div>
-                            <div className="overview-status">{`Total of ${invertedSamples.length} samples loaded`}</div>
+                            <div className="overview-status">{`Total of ${invertedSamples?.length ?? "0"} samples loaded`}</div>
                             <div className="samples-container">
                                 <SmallOverviewWrapper
                                     demo={demo}

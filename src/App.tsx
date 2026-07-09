@@ -738,7 +738,7 @@ function App(props: RouteComponentProps) {
         if (!gosRef.current) return;
 
         gosRef.current.api.subscribe('click', (_, e) => {
-            if (!isInteractable.current) return;
+            if (!isInteractable.current || !e.data?.[0]) return;
 
             const clickedSvId = e.data[0].sv_id + '';
             if (clickedSvId !== selectedSvId) {
