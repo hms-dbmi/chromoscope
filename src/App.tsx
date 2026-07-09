@@ -485,13 +485,17 @@ function App(props: RouteComponentProps) {
     }, [jumpButtonInfo]);
 
     useEffect(() => {
+        setFilterSampleBy('');
+    }, [selectedCohort]);
+
+    useEffect(() => {
+        const samples = cohorts[selectedCohort]?.samples || [];
         setFilteredSamples(
             filterSampleBy === ''
-                ? cohorts[selectedCohort].samples
-                : cohorts[selectedCohort].samples.filter(d => d.id.includes(filterSampleBy))
-            // filterSampleBy === '' ? selectedSamples : selectedSamples.filter(d => d.id.includes(filterSampleBy))
+                ? samples
+                : samples.filter(d => d.id.includes(filterSampleBy))
         );
-    }, [filterSampleBy]);
+    }, [filterSampleBy, cohorts, selectedCohort]);
 
     useEffect(() => {
         if (!gosRef.current || !demo?.bai || !demo?.bam) return;
@@ -734,10 +738,13 @@ function App(props: RouteComponentProps) {
         if (!gosRef.current) return;
 
         gosRef.current.api.subscribe('click', (_, e) => {
-            // Flag to prevent interactions while transitioning
             if (!isInteractable.current) return;
-            isInteractable.current = false;
-            setIsTransitioning(true);
+
+            const clickedSvId = e.data[0].sv_id + '';
+            if (clickedSvId !== selectedSvId) {
+                isInteractable.current = false;
+                setIsTransitioning(true);
+            }
 
             let x = +e.data[0].start1;
             let xe = +e.data[0].end1;
@@ -772,16 +779,7 @@ function App(props: RouteComponentProps) {
             setBreakpoints([+x - ZOOM_PADDING, +xe + ZOOM_PADDING, +x1 - ZOOM_PADDING, +x1e + ZOOM_PADDING]);
             setBpIntervals([x, xe, x1, x1e]);
 
-            const clickedSvId = e.data[0].sv_id + '';
             setSelectedSvId(clickedSvId);
-
-            // Start timer when the same SV is clicked again
-            if (clickedSvId === selectedSvId) {
-                setTimeout(() => {
-                    isInteractable.current = true;
-                    setIsTransitioning(false);
-                }, SV_SELECTION_DELAY);
-            }
 
             // move to the bottom
             setTimeout(

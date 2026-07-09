@@ -179,7 +179,7 @@ export const getBinnedValues = (rawValues: OptionValue[], numBins = 5): OptionVa
         const n = typeof value.value === 'number' ? value.value : Number(value.value);
         if (Number.isNaN(n)) return;
         const index = getBinIndex(n, bins);
-        bins[index].count += value?.count || 1;
+        if (index !== -1) bins[index].count += value?.count || 1;
     });
 
     return bins;

@@ -84,7 +84,7 @@ export const OverviewPanel = ({
 
         const filtersMap: FiltersMap = {};
 
-        filterIdentifiers.map((filterIdentifier: string, i: number) => {
+        filterIdentifiers.forEach((filterIdentifier: string, i: number) => {
             const { field, title, type } = cohortFiltersObject?.[filterIdentifier];
 
             const valuesMap = new Map<string | number | boolean, number>();

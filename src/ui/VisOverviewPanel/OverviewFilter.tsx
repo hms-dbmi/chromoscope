@@ -29,7 +29,8 @@ export const transformOptionValue = (value: Primitive, filterType: string | unde
     if (filterType === 'binary') {
         return getBinaryOptionValue(value);
     } else if (filterType === 'continuous') {
-        const [start, end] = (value as string).split('-').map(n => Number(n).toLocaleString());
+        const match = (value as string).match(/^(-?[\d.]+)-(-?[\d.]+)$/);
+        const [start, end] = match ? [match[1], match[2]].map(n => Number(n).toLocaleString()) : [value, value];
         return start + ' - ' + end;
     }
     return value;
@@ -39,7 +40,7 @@ export const OverviewFilter = ({
     identifier,
     title,
     options = [],
-    activeFilters,
+    activeFilters = {},
     optionCounts,
     onChange = null,
     cohortFiltersObject
