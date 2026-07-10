@@ -12,7 +12,7 @@ type OverviewFilterProps = {
     activeFilters?: ActiveFilters;
     cohortFiltersObject?: { [key: string]: CohortFilter };
     optionCounts?: Record<string, number>;
-    onChange?: (value: string, option?: OptionValue | null) => void;
+    onChange?: (value: string, option: OptionValue ) => void;
 };
 
 export const getBinaryOptionValue = (option: Primitive): string | null => {
@@ -29,7 +29,8 @@ export const transformOptionValue = (value: Primitive, filterType: string | unde
     if (filterType === 'binary') {
         return getBinaryOptionValue(value);
     } else if (filterType === 'continuous') {
-        const [start, end] = (value as string).split('-').map(n => Number(n).toLocaleString());
+        const match = (value as string).match(/^(-?[\d.]+)-(-?[\d.]+)$/);
+        const [start, end] = match ? [match[1], match[2]].map(n => Number(n).toLocaleString()) : [value, value];
         return start + ' - ' + end;
     }
     return value;
@@ -39,7 +40,7 @@ export const OverviewFilter = ({
     identifier,
     title,
     options = [],
-    activeFilters,
+    activeFilters = {},
     optionCounts,
     onChange = null,
     cohortFiltersObject
@@ -107,6 +108,7 @@ export const OverviewFilter = ({
     }, []);
 
     const handleOptionSelection = (option: OptionValue | null) => {
+        setSelectedOption(option ? String(option.value) : null);
         onChange(identifier, option);
     };
 

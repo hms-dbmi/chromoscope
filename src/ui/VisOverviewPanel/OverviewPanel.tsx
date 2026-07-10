@@ -84,7 +84,7 @@ export const OverviewPanel = ({
 
         const filtersMap: FiltersMap = {};
 
-        filterIdentifiers.map((filterIdentifier: string, i: number) => {
+        filterIdentifiers.forEach((filterIdentifier: string, i: number) => {
             const { field, title, type } = cohortFiltersObject?.[filterIdentifier];
 
             const valuesMap = new Map<string | number | boolean, number>();
@@ -404,7 +404,7 @@ export const OverviewPanel = ({
                             <div className="comparison-banner non-matches">
                                 <span>Non - Matches</span>
                             </div>
-                            <div className="overview-status">{`Total of ${invertedSamples.length} samples loaded`}</div>
+                            <div className="overview-status">{`Total of ${invertedSamples?.length ?? "0"} samples loaded`}</div>
                             <div className="samples-container">
                                 <SmallOverviewWrapper
                                     demo={demo}
