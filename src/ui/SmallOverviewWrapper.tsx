@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { embed } from 'gosling.js';
 
 import { Database } from '../database';
@@ -16,6 +16,63 @@ const log = new BrowserDatabase();
 const DB_DO_NOT_SHOW_ABOUT_BY_DEFAULT = (await log.get())?.doNotShowAboutByDefault ?? false;
 const DATABSE_THUMBNAILS = await db.get();
 const GENERATED_THUMBNAILS = {};
+
+// Defers the network fetch until the placeholder enters the viewport, so
+// filtered-out cards never compete for browser connections with visible ones.
+const ThumbnailImage = ({ src, placeholder }: { src: string; placeholder: string }) => {
+    const [activeSrc, setActiveSrc] = useState<string | null>(null);
+    const [loaded, setLoaded] = useState(false);
+    const placeholderRef = useRef<HTMLImageElement>(null);
+    const prevSrc = useRef<string>(null);
+
+    // Reset when src changes (e.g. cohort switch)
+    if (prevSrc.current !== src) {
+        prevSrc.current = src;
+        if (activeSrc !== null) setActiveSrc(null);
+        if (loaded) setLoaded(false);
+    }
+
+    // Only start fetching when the placeholder enters the viewport
+    useEffect(() => {
+        const el = placeholderRef.current;
+        if (!el || activeSrc) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setActiveSrc(src);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0, rootMargin: '600px' }
+        );
+
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [src, activeSrc]);
+
+    return (
+        <>
+            {!loaded && (
+                <img
+                    ref={placeholderRef}
+                    src={placeholder}
+                    className="overview-thumbnail"
+                    style={{ width: `${420 / 2}px`, height: `${420 / 2}px` }}
+                />
+            )}
+            {activeSrc && (
+                <img
+                    className="overview-thumbnail"
+                    src={activeSrc}
+                    style={loaded ? {} : { display: 'none' }}
+                    onLoad={() => setLoaded(true)}
+                    onError={() => setLoaded(true)}
+                />
+            )}
+        </>
+    );
+};
 
 const getThumbnail = (d: SampleType) => {
     return (
@@ -111,7 +168,7 @@ export const SmallOverviewWrapper = ({ demo, handleDemoChange, demoIndex, filter
             </div>
             <div className="overview-thumbnail-container" style={{ position: 'relative' }}>
                 {getThumbnail(d) ? (
-                    <img className="overview-thumbnail" src={getThumbnail(d)} />
+                    <ThumbnailImage src={getThumbnail(d)} placeholder={THUMBNAIL_PLACEHOLDER} />
                 ) : (
                     // <div style={{ marginLeft: 'calc(50% - 105px - 10px)' }}>
                     //     <GoslingComponent
