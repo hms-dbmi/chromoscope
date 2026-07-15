@@ -4,10 +4,13 @@ import { ICONS } from '../../icon';
 import { getAbsoluteMutationPosition } from '../../utils';
 import { SampleType } from '../../data/samples';
 
-export type SummaryItem = {
+// Differentiate between object and array summary types
+export type SummaryEntry = {
     label?: string;
-    value: string;
+    value: string | number | boolean;
 };
+export type SummaryArray = SummaryEntry[];
+export type SummaryObject = Record<string, SummaryEntry>;
 
 export type VariantItem = {
     gene: string;
@@ -29,7 +32,7 @@ export type SignatureItem = {
     hrDetect: boolean;
 };
 
-type DataRowProps = SummaryItem | VariantItem | SignatureItem;
+type DataRowProps = SummaryEntry | VariantItem | SignatureItem;
 
 // Data row with label and value
 const DataRow = (props: DataRowProps) => {
@@ -97,7 +100,7 @@ const ToggleRowGroup = ({ callout = null, header, data }: ToggleRowGroupProps) =
             )}
             <div className="body">
                 <ul className="data-list">
-                    {data.map((row: SummaryItem, i: number) => {
+                    {data.map((row: SummaryEntry, i: number) => {
                         return <DataRow key={i} label={row.label} value={row.value} />;
                     })}
                 </ul>
@@ -136,7 +139,7 @@ const ClinicalSummary = ({ data, callout = null }: PanelSectionProps) => {
                     </div>
                 )}
                 <ul className="data-list">
-                    {data.map((row: SummaryItem, i: number) => {
+                    {data.map((row: SummaryEntry, i: number) => {
                         return <DataRow key={i} label={row.label} value={row.value} />;
                     })}
                 </ul>
@@ -252,7 +255,7 @@ const MutationalSignatures = ({ data }: PanelSectionProps) => {
 };
 
 export type ClinicalInfoType = {
-    summary: SummaryItem[];
+    summary: SummaryArray | SummaryObject;
     variants: VariantItem[];
     signatures: SignatureItem[];
 };
@@ -279,6 +282,15 @@ export const ClinicalPanel = ({
 }: ClinicalPanelProps) => {
     const clinicalInformation = clinicalInfoRef.current;
     const cancer = demo?.cancer;
+
+    // If Summary is an object, convert it to an array
+    let clinicalInformationSummary: SummaryArray | SummaryObject = clinicalInformation?.summary ?? [];
+    if (clinicalInformationSummary && !Array.isArray(clinicalInformationSummary)) {
+        clinicalInformationSummary = Object.values(clinicalInformationSummary);
+    }
+
+    // Enforce array type for summary
+    const summaryArray: SummaryArray = Array.isArray(clinicalInformationSummary) ? clinicalInformationSummary : [];
 
     // Format cancer label to add as callout
     const formattedCancerLabel = cancer
@@ -333,7 +345,7 @@ export const ClinicalPanel = ({
 
                 {!!clinicalInfoRef.current && clinicalInformation ? (
                     <div className="content">
-                        <ClinicalSummary data={clinicalInformation?.summary ?? []} callout={formattedCancerLabel} />
+                        <ClinicalSummary data={summaryArray} callout={formattedCancerLabel} />
                         <ClinicallyRelevantVariants
                             handleVariantSelect={handleVariantSelect}
                             data={clinicalInformation?.variants ?? []}

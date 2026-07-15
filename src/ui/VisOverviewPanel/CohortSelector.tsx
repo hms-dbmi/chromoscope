@@ -26,7 +26,7 @@ export const CohortSelector = ({
         if (!cohorts?.['MSK SPECTRUM']) {
             setIsLoading(true);
             fetch(
-                'https://genomebrowser-uploads.hms.harvard.edu/data/dg204/SPECTRUM/SPECTRUM_config_with_clinicalInfo_sorted_v4.json'
+                'https://somatic-browser-test.s3.us-east-1.amazonaws.com/SPECTRUM/SPECTRUM_config_with_clinicalInfo_sorted_aws_thumbnail.json'
             )
                 .then(res => {
                     return res.json();
@@ -36,6 +36,14 @@ export const CohortSelector = ({
                         setCohorts({
                             ...cohorts,
                             'MSK SPECTRUM': {
+                                filters: {
+                                    cancer_type: {
+                                        field: 'cancer',
+                                        title: 'Cancer Type',
+                                        type: 'string'
+                                    },
+                                    ...(data?.filters || {})
+                                },
                                 name: data.name,
                                 samples: data.samples?.map((sample: any, index: number) => ({
                                     ...sample,
@@ -45,11 +53,10 @@ export const CohortSelector = ({
                         });
                     }
                 })
-                .finally(() => {
-                    setIsLoading(false);
-                })
                 .catch(() => {
                     console.error('Failed to fetch MSK cohort data');
+                })
+                .finally(() => {
                     setIsLoading(false);
                 });
         }

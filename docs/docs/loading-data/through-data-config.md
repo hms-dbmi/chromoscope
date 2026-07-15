@@ -15,6 +15,45 @@ https://chromoscope.bio/app/?external=[URL_TO_YOUR_CONFIG_FILE]
 https://chromoscope.bio/app/?external=https://gist.githubusercontent.com/sehilyi/a9bbbc3e63806d2282e1959e27a65a53/raw/b6c0ab07a220027196746f46607e916bd9751c70/goscan-multiple-samples.json
 ```
 
+## Config File Structure
+
+A config file can be provided in two formats:
+
+- **Simple format** (array): a plain JSON array of sample objects. Suitable for basic use cases without cohort-level metadata or filters.
+- **Cohort format** (object): a JSON object wrapping the samples array, with optional cohort-level properties. Required for using the [filter panel](#filter-panel).
+
+### Simple format
+
+```js
+[
+    { "id": "Patient101", "cancer": "Breast", "assembly": "hg19", "sv": "..." },
+    { "id": "Patient102", "cancer": "Breast", "assembly": "hg19", "sv": "..." }
+]
+```
+
+### Cohort format
+
+A JSON object with the following top-level properties:
+
+| Property | Type | Note |
+|---|---|---|
+| `name` | `string` | Optional. Display name for the cohort shown in the cohort selector. |
+| `samples` | `array` | Required. Array of sample objects (see [Sample Fields](#sample-fields)). |
+| `filters` | `object` | Optional. Dictionary of filter configurations. See [Filter Panel](#filter-panel). |
+
+```js
+{
+    "name": "My Cancer Cohort",
+    "filters": { ... },
+    "samples": [
+        { "id": "Patient101", "cancer": "Breast", "assembly": "hg19", "sv": "..." },
+        { "id": "Patient102", "cancer": "Breast", "assembly": "hg19", "sv": "..." }
+    ]
+}
+```
+
+## Sample Fields
+
 For each sample, you need to prepare the following information in a JSON object.
 
 | Property | Type | Note |
@@ -73,6 +112,46 @@ A multi-sample example:
 ]
 ```
 
+# Filter Panel
+
+The cohort format supports a `filters` property that enables an interactive filter panel in Chromoscope, allowing users to subset samples by clinical or metadata fields.
+
+The `filters` value is a JSON object where each key is a unique filter identifier and each value defines the filter configuration:
+
+| Property | Type | Note |
+|---|---|---|
+| `field` | `string` | Required. Dot-notation path to the field within a sample object, e.g. `"clinicalInfo.summary.age.value"`. |
+| `title` | `string` | Required. Human-readable label shown in the filter UI. |
+| `type` | `"categorical"` or `"continuous"` | Required. `"categorical"` shows a checkbox list of distinct values. `"continuous"` automatically bins numeric values into ranges. |
+
+```js
+{
+    "name": "Pediatric Cancer Cohort",
+    "filters": {
+        "cancer_type": {
+            "field": "clinicalInfo.summary.cancer_type.value",
+            "title": "Cancer Type",
+            "type": "categorical"
+        },
+        "age": {
+            "field": "clinicalInfo.summary.age.value",
+            "title": "Age (years)",
+            "type": "continuous"
+        },
+        "chromothripsis": {
+            "field": "clinicalInfo.summary.chromothripsis.value",
+            "title": "Chromothripsis",
+            "type": "categorical"
+        }
+    },
+    "samples": [ ... ]
+}
+```
+
+:::note
+Filter `field` paths use dot-notation to traverse nested properties within a sample object. To filter against `clinicalInfo.summary` fields, the summary must use the **object format** described below — not the legacy array format.
+:::
+
 # Genome Interpretation Panel
 
 The data for the genome interpretation panel can be recorded as additional features of the configuration file.
@@ -81,7 +160,31 @@ For each sample, there is an optional property (`clinicalInfo`) to provide clini
 
 You can provide three fields under the `clinicalInfo` property: `summary`, `variants`, `signatures`
 
-The `summary` field is a list of elements with two fields: `label` and `value`. Label can be any string, and will be displayed next to `value` which can also be any string.
+The `summary` field stores clinical metadata for a sample. It can be provided in two formats:
+
+**Object format** (recommended — required for filters):
+
+Each key is a field identifier and each value is an object with `label` and `value` fields. The key is used in filter `field` paths (e.g., `"clinicalInfo.summary.age.value"`).
+
+```js
+"summary": {
+    "cancer_type": { "label": "Cancer Type", "value": "Wilms Tumor" },
+    "age":         { "label": "Age (years)", "value": "5.67" },
+    "tp53":        { "label": "TP53 Status", "value": "Alt" }
+}
+```
+
+**Array format** (legacy — still supported, but incompatible with filters):
+
+A list of `{ "label", "value" }` objects displayed in order.
+
+```js
+"summary": [
+    { "label": "Cancer Type", "value": "Wilms Tumor" },
+    { "label": "Age (years)", "value": "5.67" },
+    { "label": "TP53 Status", "value": "Alt" }
+]
+```
 
 The `variants` field is a list of variants, each with the following fields:
 
@@ -96,7 +199,6 @@ The `variants` field is a list of variants, each with the following fields:
 | `VAF` | `number` | Optional. Variant allele fraction of a mutation in the sample, e.g., `0.45` |
 | `mutation` | `string` | Optional. Reference and alternative allele in genomic DNA, e.g., `"G>T"` |
 | `sv_id` | `string` | Optional. If the variant is a structural variant, if the `sv_id` is provided, the variant will be highlighted, e.g., `"bnd_1012513"` |
-}
 
 Refer to an example configuration file that contains the clinical information necessary for displaying the genome interpretation panel:
 

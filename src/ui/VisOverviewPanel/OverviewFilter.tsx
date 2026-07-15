@@ -1,27 +1,49 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { ICONS } from '../../icon';
-import { FilterOption } from './OverviewPanel';
+import { ActiveFilters, OptionValue } from './OverviewPanel';
+import { CohortFilter } from '../../App';
+import { Primitive } from './OverviewPanel';
 
 type OverviewFilterProps = {
     identifier?: string;
-    nullValue?: string;
-    active?: boolean;
     title: string;
-    options?: Array<any>;
-    activeFilters?: string[];
-    onChange?: (value: string) => void;
-    setActiveFilters?: (filters: string[]) => void;
+    type?: string;
+    options?: OptionValue[];
+    activeFilters?: ActiveFilters;
+    cohortFiltersObject?: { [key: string]: CohortFilter };
+    optionCounts?: Record<string, number>;
+    onChange?: (value: string, option: OptionValue ) => void;
+};
+
+export const getBinaryOptionValue = (option: Primitive): string | null => {
+    const value = option;
+    if (value === '1' || value === 1 || value === true) {
+        return 'Yes';
+    } else if (value === '0' || value === 0 || value === false) {
+        return 'No';
+    }
+    return null;
+};
+
+export const transformOptionValue = (value: Primitive, filterType: string | undefined) => {
+    if (filterType === 'binary') {
+        return getBinaryOptionValue(value);
+    } else if (filterType === 'continuous') {
+        const match = (value as string).match(/^(-?[\d.]+)-(-?[\d.]+)$/);
+        const [start, end] = match ? [match[1], match[2]].map(n => Number(n).toLocaleString()) : [value, value];
+        return start + ' - ' + end;
+    }
+    return value;
 };
 
 export const OverviewFilter = ({
     identifier,
-    nullValue = null,
-    active,
     title,
     options = [],
-    activeFilters,
+    activeFilters = {},
+    optionCounts,
     onChange = null,
-    setActiveFilters = null
+    cohortFiltersObject
 }: OverviewFilterProps) => {
     const overviewFilterRef = useRef<HTMLDivElement>(null);
     const toggleButtonRef = useRef<HTMLButtonElement>(null);
@@ -30,6 +52,21 @@ export const OverviewFilter = ({
     const [showDropdown, setShowDropdown] = useState(false);
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [focusedIndex, setFocusedIndex] = useState<number>(-1);
+
+    const isFilterActive = identifier in activeFilters;
+
+    useLayoutEffect(() => {
+        if (!showDropdown) return;
+        const dropdown = document.querySelector('#dropdown-list-for-' + identifier);
+        if (!dropdown) return;
+        const rect = dropdown.getBoundingClientRect();
+
+        const isOverflowingRight = rect.right > window.innerWidth;
+
+        if (isOverflowingRight) {
+            dropdown.classList.add('reverse-dropdown');
+        }
+    }, [showDropdown]);
 
     // Manage the focused index for keyboard navigation
     useEffect(() => {
@@ -50,7 +87,7 @@ export const OverviewFilter = ({
 
     useEffect(() => {
         // If another filter is active, set this filter to inactive
-        if (!activeFilters.includes(identifier)) {
+        if (!Object.keys(activeFilters).includes(identifier)) {
             setSelectedOption(null);
         }
     }, [activeFilters]);
@@ -70,23 +107,9 @@ export const OverviewFilter = ({
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    const handleOptionSelection = (option: FilterOption | null) => {
-        if (option === null) {
-            setSelectedOption(null);
-            setActiveFilters([]); // Clear all active filters
-        } else {
-            setSelectedOption(option.name); // Set the selected option name
-            setActiveFilters([identifier]); // Set active filter to only the current identifier
-        }
-
-        setShowDropdown(false);
-        setFocusedIndex(-1);
-        toggleButtonRef.current?.focus();
-
-        // URL
-        if (option?.url) {
-            onChange(option.url.replace('https://chromoscope.bio/app/?showSamples=true&external=', ''));
-        }
+    const handleOptionSelection = (option: OptionValue | null) => {
+        setSelectedOption(option ? String(option.value) : null);
+        onChange(identifier, option);
     };
 
     // Handle keyboard navigation for the dropdown
@@ -100,7 +123,6 @@ export const OverviewFilter = ({
 
         if (!showDropdown) return;
 
-        // Map key events to actions
         switch (e.key) {
             case 'ArrowDown':
                 e.preventDefault();
@@ -114,18 +136,14 @@ export const OverviewFilter = ({
             case ' ':
                 e.preventDefault();
                 if (focusedIndex >= 0 && focusedIndex < options.length) {
-                    const selected = options[focusedIndex];
-                    setSelectedOption(selected.name);
-                    setShowDropdown(false);
-                    setFocusedIndex(-1);
-                    if (onChange)
-                        onChange(selected.url.replace('https://chromoscope.bio/app/?showSamples=true&external=', ''));
+                    handleOptionSelection(options[focusedIndex]);
                 }
                 break;
             case 'Escape':
                 e.preventDefault();
                 setShowDropdown(false);
                 setFocusedIndex(-1);
+                toggleButtonRef.current?.focus();
                 break;
             case 'Tab':
                 setShowDropdown(false);
@@ -138,75 +156,110 @@ export const OverviewFilter = ({
 
     return (
         <div
-            className={`dropdown-container filter ${selectedOption ? 'has-selection' : ''}`}
+            className={`dropdown-container filter ${isFilterActive ? 'has-selection' : ''}`}
             ref={overviewFilterRef}
             role="combobox"
             aria-expanded={showDropdown}
             aria-haspopup="listbox"
-            aria-owns="dropdown-list"
+            aria-owns={'dropdown-list-for-' + identifier}
             onKeyDown={handleDropdownKeydown}
         >
             <button
                 className={`dropdown-button ${showDropdown ? 'toggle-open' : ''}`}
                 onClick={e => {
                     // Focus the selected option when opening the dropdown
-                    setShowDropdown(prev => {
-                        const isOpening = !prev;
-                        if (isOpening && selectedOption) {
-                            const selectedIdx = options.findIndex(o => o.name === selectedOption);
-                            setFocusedIndex(selectedIdx >= 0 ? selectedIdx : 0);
-                        }
-                        return isOpening;
-                    });
+                    setShowDropdown(!showDropdown);
                 }}
                 aria-labelledby="select-label"
             >
-                <span id="select-label">{selectedOption ?? title}</span>
-                <svg className="icon" viewBox={ICONS.CHEVRON_UP.viewBox}>
-                    <title>{showDropdown ? 'Chevron Up' : 'Chevron Down'}</title>
-                    {ICONS.CHEVRON_UP.path.map(p => (
-                        <path fill="currentColor" key={p} d={p} />
-                    ))}
-                </svg>
+                <div className="select-label-wrapper">
+                    <span id={'select-label-for-' + identifier} className="select-label" title={title}>
+                        {title}
+                    </span>
+                </div>
+                <div className="count-container">
+                    {activeFilters?.[identifier]?.length > 0 && (
+                        <div className="selected-option-count">
+                            <span>{activeFilters[identifier].length ?? ''}</span>
+                        </div>
+                    )}
+                    <svg className="icon" viewBox={ICONS.CHEVRON_UP.viewBox}>
+                        {ICONS.CHEVRON_UP.path.map(p => (
+                            <path fill="currentColor" key={p} d={p} />
+                        ))}
+                    </svg>
+                </div>
             </button>
-            <ul id="dropdown-list" role="listbox" className={`dropdown-items ${showDropdown ? 'd-flex' : 'd-none'}`}>
-                {/* First list option is the provided nullValue */}
-                <li
-                    key={'None'}
-                    role="option"
-                    tabIndex={focusedIndex === 0 ? 0 : -1}
-                    ref={el => {
-                        optionsRefs.current[0] = el;
-                    }}
-                    aria-selected={selectedOption === nullValue}
-                    onClick={() => handleOptionSelection(null)}
-                    onMouseEnter={() => setFocusedIndex(0)}
-                    className={`dropdown-item ${selectedOption === null ? 'selected' : ''} ${
-                        focusedIndex === 0 ? 'focused' : ''
-                    }`}
-                >
-                    None
-                </li>
+            <ul
+                id={`dropdown-list-for-${identifier}`}
+                role="listbox"
+                className={`dropdown-items ${showDropdown ? 'd-flex' : 'd-none'}`}
+            >
                 {options
-                    .sort((a, b) => (a.name > b.name ? 1 : -1))
-                    .map((option, i) => {
+                    .sort((a: OptionValue, b: OptionValue) => {
+                        const valA = (a as OptionValue).value;
+                        const valB = (b as OptionValue).value;
+
+                        if (typeof valA === 'number' && typeof valB === 'number') {
+                            return valA - valB;
+                        }
+
+                        // Cast to string to as fallback
+                        return ('' + valA).localeCompare('' + valB);
+                    })
+                    .map((option: OptionValue, i: number) => {
+                        const { value } = option;
+
+                        const activeOptions = activeFilters[identifier] || [];
+                        const isSelected = activeOptions.includes(value);
+
+                        const filterType = cohortFiltersObject[identifier]?.type;
+                        const formattedValue = transformOptionValue(value, filterType);
+
+                        // Hide if option (in isolation) has no results
+                        if (filterType === 'continuous' && option?.count === 0) {
+                            return null;
+                        }
+
                         return (
                             <li
-                                key={option.name}
+                                key={i}
                                 role="option"
-                                tabIndex={focusedIndex === i + 1 ? 0 : -1}
+                                tabIndex={focusedIndex === i ? 0 : -1}
                                 ref={el => {
-                                    optionsRefs.current[i + 1] = el;
+                                    optionsRefs.current[i] = el;
                                 }}
-                                aria-selected={selectedOption === option.name}
-                                onClick={() => handleOptionSelection(option)}
-                                onMouseEnter={() => setFocusedIndex(i + 1)}
-                                className={`dropdown-item ${selectedOption === option.name ? 'selected' : ''} ${
-                                    focusedIndex === i + 1 ? 'focused' : ''
+                                aria-selected={isSelected}
+                                onMouseEnter={() => setFocusedIndex(i)}
+                                className={`dropdown-item ${isSelected ? 'selected' : ''} ${
+                                    focusedIndex === i ? 'focused' : ''
                                 }`}
                             >
-                                <span>{option.name}</span>
-                                <span>{option?.count ? option.count : ''}</span>
+                                <div className="dropdown-item-checkbox">
+                                    <label className="checkbox-container">
+                                        <div className="input-label">
+                                            <input
+                                                className="checkbox"
+                                                type="checkbox"
+                                                checked={isSelected}
+                                                onChange={() => handleOptionSelection(option)}
+                                            />
+                                            <span className="checkbox-icon">
+                                                {isSelected && (
+                                                    <svg className="icon" viewBox={ICONS.CHECKMARK.viewBox}>
+                                                        {ICONS.CHECKMARK.path.map(p => (
+                                                            <path fill="currentColor" key={p} d={p} />
+                                                        ))}
+                                                    </svg>
+                                                )}
+                                            </span>
+                                            <span>{formattedValue}</span>
+                                        </div>
+                                        <span className="count">
+                                            {optionCounts?.[value as string] ?? option?.count ?? ''}
+                                        </span>
+                                    </label>
+                                </div>
                             </li>
                         );
                     })}

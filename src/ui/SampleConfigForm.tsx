@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SampleType } from '../data/samples';
 import { UploadModal } from './UploadModal';
-import { Cohorts } from '../App';
+import { Cohorts, CohortFilter } from '../App';
 
 export type SampleConfig = Partial<
     Omit<SampleType, 'group' | 'cnFields' | 'note' | 'drivers' | 'assembly' | 'thumbnail'>
@@ -16,6 +16,7 @@ export type ValidSampleConfig = Required<Pick<SampleConfig, 'id' | 'cancer' | 's
 export type ValidCohort = {
     name?: string;
     samples: ValidSampleConfig[];
+    filters?: { [key: string]: CohortFilter };
 };
 
 type SampleConfigFormProps = {

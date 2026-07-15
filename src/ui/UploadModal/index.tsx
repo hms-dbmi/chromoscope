@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { ICONS } from '../../icon';
 import { FileDragUpload } from '../VisOverviewPanel/FileDragUpload';
 import { SampleConfig, ValidCohort } from '../SampleConfigForm';
-import { Cohorts, Cohort } from '../../App';
+import { Cohorts, Cohort, CohortFilter } from '../../App';
 import { ValidSampleConfig } from '../SampleConfigForm';
 import { UploadModalFeedback } from './UploadModalFeedback';
 
@@ -188,18 +188,26 @@ export const UploadModal = ({
     const handleValidJsonParsed = (data: ValidCohort | SampleConfig[]) => {
         setError(null);
         setUploadedFileData(data);
-        setUploadedCohort(data as Cohort);
+        setUploadedCohort(data as ValidCohort);
     };
 
     // Function for adding samples to existing cohort
-    const addSamplesToCohort = (cohortId: string, samples: ValidSampleConfig[]) => {
+    const addSamplesToCohort = (
+        cohortId: string,
+        samples: ValidSampleConfig[],
+        filters?: { [key: string]: CohortFilter }
+    ) => {
         if (cohorts?.[cohortId]) {
             // Cohort exists, append samples
+            const prevCohortConfig = cohorts?.[cohortId];
             setCohorts({
                 ...cohorts,
                 [cohortId]: {
-                    ...cohorts?.[cohortId],
-                    samples: [...samples, ...cohorts[cohortId].samples]
+                    ...prevCohortConfig,
+                    // Add new samples to exisitng cohort samples
+                    samples: [...samples, ...prevCohortConfig.samples],
+                    // Merge filters and prioritize existing filters
+                    filters: { ...(filters ?? {}), ...prevCohortConfig.filters }
                 }
             });
             setUploadedCohort(null);
@@ -212,7 +220,11 @@ export const UploadModal = ({
      * @param cohortId {string}
      * @param samples {ValidSampleConfig[]}
      */
-    const createNewCohortWithSamples = (cohortId: string, samples: ValidSampleConfig[]) => {
+    const createNewCohortWithSamples = (
+        cohortId: string,
+        samples: ValidSampleConfig[],
+        filters?: { [key: string]: CohortFilter }
+    ) => {
         // Create new cohort ID if the given one already exists
         const newCohortId = !cohorts?.[cohortId] ? cohortId : cohortId + '_1';
 
@@ -220,7 +232,8 @@ export const UploadModal = ({
             ...cohorts,
             [newCohortId]: {
                 name: uploadedCohort?.name || newCohortId,
-                samples: samples
+                samples: samples,
+                filters: filters || {}
             }
         });
         setSelectedCohort(newCohortId);
@@ -787,7 +800,7 @@ export const UploadModal = ({
                             data-bs-dismiss="modal"
                             aria-label="Submit"
                             onClick={() => {
-                                addSamplesToCohort(selectedCohort, uploadedCohort.samples);
+                                addSamplesToCohort(selectedCohort, uploadedCohort.samples, uploadedCohort?.filters);
                                 clearSampleConfig();
                                 setUploadedFile(null);
                             }}
@@ -803,7 +816,11 @@ export const UploadModal = ({
                                 data-bs-dismiss="modal"
                                 aria-label="Submit"
                                 onClick={() => {
-                                    createNewCohortWithSamples(uploadedCohort.name, uploadedCohort.samples);
+                                    createNewCohortWithSamples(
+                                        uploadedCohort.name,
+                                        uploadedCohort.samples,
+                                        uploadedCohort?.filters
+                                    );
                                     clearSampleConfig();
                                     setUploadedFile(null);
                                 }}
